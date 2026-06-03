@@ -4,3 +4,6 @@ images_tmp/
 error_log
 *.log
 .env
+config.php
+config.server-test.php
+config.server-prod.php

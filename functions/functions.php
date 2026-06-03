@@ -2,8 +2,12 @@
 //use PHPMailer\PHPMailer\PHPMailer;
 //use PHPMailer\PHPMailer\Exception;
 
-$mysqli = new mysqli('localhost','davidnahmias','JmDn27091975','dne_beta');	
+require_once dirname(__DIR__) . '/config.php';
+$mysqli = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 $mysqli->set_charset("utf8");
+
+$protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? 'https' : 'http';
+define('BASE_URL', $protocol . '://' . $_SERVER['HTTP_HOST'] . rtrim(dirname($_SERVER['PHP_SELF']), '/\\') . '/');
 
 function fetch($result) {    
     $array = array();
