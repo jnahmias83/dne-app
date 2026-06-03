@@ -1,0 +1,6 @@
+vendor/
+uploads/
+images_tmp/
+error_log
+*.log
+.env

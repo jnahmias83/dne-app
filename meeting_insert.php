@@ -1,0 +1,707 @@
+<?php
+session_start();
+include 'functions/functions.php';
+
+$image1_name = '';
+$image1_width = 0;
+$image1_height = 0;
+$image1_rotation = 0;
+$image2_name = '';
+$image2_width = 0;
+$image2_height = 0;
+$image2_rotation = 0;
+$is_task_priority = 0;
+
+if($_POST['id_chapter'] == 0 || isEffectivelyEmpty($_POST['subject']) || 
+   isEffectivelyEmpty($_POST['area']) || $_POST['id_task'] == 0 || 
+   $_POST['id_responsible'] == 0 || $_POST['id_pass_on'] == 0) {
+	  echo "empty";
+}
+else {
+	$blank = ' ';
+	$id_progress_status = @$_POST['id_progress_status'];
+	if($_POST['id_progress_status'] == 0) {
+		$query = "SELECT * FROM dne_progress_status WHERE name = ? 
+		          AND id_project = ?";
+		$query = $mysqli->prepare($query);
+		$query->bind_param('si',$blank,$_POST['id_project']);   
+	    $query->execute();
+		$query->store_result();
+		$query = fetch_unique($query);
+		$id_progress_status = $query->id;
+	}
+	
+	$task_creation_date = @$_POST['task_creation_date'];
+	$is_change_row_style = 0;
+	$is_appears = 1;
+	
+	$query = "SELECT * FROM dne_tasks WHERE id = ?";
+	$query = $mysqli->prepare($query);
+	$query->bind_param('i',$_POST['id_task']);   
+	$query->execute();
+	$query->store_result();
+	$query = fetch_unique($query);
+	$task_name = $query->name_he;
+	
+	$query = "SELECT * FROM dne_progress_status WHERE id = ?";
+	$query = $mysqli->prepare($query);
+	$query->bind_param('i',$id_progress_status);   
+	$query->execute();
+	$query->store_result();
+	$query = fetch_unique($query);
+    $ps_name = $query->name_he;
+	
+	if($task_name == 'הנחיית ביצוע' || $task_name == 'סטטוס ביצוע' 
+	   || $task_name == 'בקשה/שאילתה' || $task_name == 'בקרת איכות' 
+	   || $ps_name == 'בוצע/נמסר' || $ps_name == 'בהמתנה' || 
+	   $ps_name == 'הנחיה/החלטה')
+		  $is_change_row_style = 1;
+	
+	/*if(isset($_SESSION['task_image1_data'])) {
+		$task_image1_data_array = explode("____",$_SESSION['task_image1_data']);
+		$image1_name = $task_image1_data_array[0];
+		$image1_width = $task_image1_data_array[1];
+		$image1_height = $task_image1_data_array[2];
+		$image1_rotation = $task_image1_data_array[3];
+	}
+
+	if(isset($_SESSION['task_image2_data'])) {
+		$task_image2_data_array = explode("____",$_SESSION['task_image2_data']);
+		$image2_name = $task_image2_data_array[0];
+		$image2_width = $task_image2_data_array[1];
+		$image2_height = $task_image2_data_array[2];
+		$image2_rotation = $task_image2_data_array[3];
+	}*/
+	
+	$log_remark = '';
+	if($_POST['remark'] != '')
+		$log_remark = htmlspecialchars($_POST['remark']);
+	
+	if($_POST['id'] == 0){ 
+	    if($_POST['id_progress_status'] != 0){
+		   $query = "SELECT * FROM dne_progress_status WHERE id = ?";
+		   $query = $mysqli->prepare($query);
+		   $query->bind_param('i',$_POST['id_progress_status']);   
+		   $query->execute();
+		   $query->store_result();
+		   $query = fetch_unique($query);
+		   if(@$query->name == 'ארכיון')
+			 $is_appears = 0;
+	    }
+		
+		if(isset($_FILES['image1']['name'])){
+			$image1_name = $_FILES['image1']['name'];
+			$imageUploadPath = 'uploads/'.$image1_name;
+			$fileType = pathinfo($imageUploadPath, PATHINFO_EXTENSION); 
+			
+			$allowTypes = array('jpg','png','jpeg','gif'); 
+			if(in_array($fileType, $allowTypes)){ 
+				$imageTemp = $_FILES["image1"]["tmp_name"]; 
+				$compressedImage = compressImage($imageTemp,$imageUploadPath,75); 
+				list($image1_width,$image1_height) = getimagesize($imageUploadPath);
+			}
+	    }
+		
+		if(isset($_FILES['image2']['name'])){
+			$image2_name = $_FILES['image2']['name'];
+			$imageUploadPath = 'uploads/'.$image2_name;
+			$fileType = pathinfo($imageUploadPath, PATHINFO_EXTENSION); 
+			
+			$allowTypes = array('jpg','png','jpeg','gif'); 
+			if(in_array($fileType, $allowTypes)){ 
+				$imageTemp = $_FILES["image2"]["tmp_name"]; 
+				$compressedImage = compressImage($imageTemp, $imageUploadPath,75); 
+				list($image2_width,$image2_height) = getimagesize($imageUploadPath);
+			}
+		}
+		
+		$track_type = 0;
+		$reminder_date = '0000-00-00';
+		
+		if(@$_POST['is_reminds']){
+			$track_type = 1;
+			$reminder_date = date('Y-m-d', strtotime($_POST['destination_date'] . ' -3 days'));		
+		}
+				
+		$query = "INSERT INTO dne_meetings (id_user,id_project,id_chapter,
+		          ids_rdv,subject,area,description,id_task,id_responsible,
+				  id_pass_on,task_creation_date,destination_date,
+				  id_progress_status,is_appears,is_change_row_style,
+				  image1,image1_width,image1_height,is_appears_img1,image2,
+				  image2_width,image2_height,is_appears_img2,id_track_responsible,lang,
+				  track_type,reminder_date,is_agrees,is_reminds,updated_date) 
+				  VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		$query = $mysqli->prepare($query);
+		$query->bind_param('iiissssiiissiiisiiisiiiisisiis',
+		                   $_SESSION['id_user'],$_POST['id_project'],
+						   $_POST['id_chapter'],$_POST['id_rdv'],
+						   htmlspecialchars($_POST['subject']),
+						   htmlspecialchars($_POST['area']),
+						   htmlspecialchars($_POST['description']),
+						   $_POST['id_task'],$_POST['id_responsible'],
+						   $_POST['id_pass_on'],$task_creation_date,
+						   $_POST['destination_date'],$id_progress_status,
+						   $is_appears,$is_change_row_style,$image1_name,
+						   $image1_width,$image1_height,
+						   $_POST['is_appears_img1'],$image2_name,
+						   $image2_width,$image2_height,
+						   $_POST['is_appears_img2'],$_SESSION['id_user'],
+						   $_POST['lang'],$track_type,$reminder_date,
+						   $_POST['is_agrees'],$_POST['is_reminds'],date("Y-m-d"));
+		$query->execute();
+		$inserted_meeting = $query->insert_id;
+
+        $query = "SELECT id_task FROM dne_chapters WHERE id_project = ?";
+		$query = $mysqli->prepare($query);
+		$query->bind_param('i',$_POST['id_project']);   
+		$query->execute();
+		$query->store_result();
+		$query = fetch_unique($query);
+        
+		if(@$query->id_task == 0){
+			$query = "UPDATE dne_chapters SET id_task = ?,id_responsible = ?,
+					  id_pass_on = ? WHERE id = ?";
+			$query = $mysqli->prepare($query);
+			$query->bind_param('iiii',$_POST['id_task'],
+			                   $_POST['id_responsible'],$_POST['id_pass_on'],
+			                   $_POST['id_chapter']);	
+			$query->execute();
+		}			
+		
+		$query = "INSERT INTO dne_log_meeting_updates (id_user,id_meeting,
+		          action_date,action,destination_date,
+				  id_progress_status,updated_users) VALUES(?,?,?,?,?,?,?)";
+		$query = $mysqli->prepare($query);
+		$query->bind_param('iisssii',$_SESSION['id_user'],$inserted_meeting,
+		                  date('Y-m-d'),$_POST['action'],
+						  $_POST['destination_date'],$id_progress_status,
+						  $_SESSION['id_user']);
+		$query->execute();
+		
+		$query = $mysqli->prepare("SELECT * FROM dne_latest_tasks_data 
+		                          WHERE id_project = ? AND id_user = ?");
+	    $query->bind_param("ii",$_POST['id_project'],$_SESSION['id_user']);
+	    $query->execute(); 
+		$query->store_result();
+
+        if($_POST['is_reminds']){
+			$is_remark_appears_log = 1;
+			$remark = 'תזכורת 3 ימים לפני';
+			
+			$query = "INSERT INTO dne_log_meeting_tracking (id_user,id_meeting,action_date,remark,is_remark_appears_log,
+			          updated_users) VALUES(?,?,?,?,?,?)";
+			$query = $mysqli->prepare($query);
+			$query->bind_param('iissis',$_SESSION['id_user'],$inserted_meeting,date('Y-m-d'),$remark,$is_remark_appears_log,
+			                   $_SESSION['id_user']);
+			$query->execute();	
+		}
+        
+		echo 'inserted_'.$inserted_meeting;		
+	}
+	else if($_POST['id'] > 0){	
+		$all_ids_to_edit_array = explode(',',$_POST['all_ids_to_edit']);    
+		
+		if(isset($_FILES['image1']['name'])) {
+			$image1_name = $_FILES['image1']['name'];
+			$imageUploadPath = 'uploads/'.$image1_name;
+			$fileType = pathinfo($imageUploadPath, PATHINFO_EXTENSION); 
+	 
+			$allowTypes = array('jpg','png','jpeg','gif'); 
+			if(in_array($fileType, $allowTypes)){ 
+				$imageTemp = $_FILES["image1"]["tmp_name"]; 
+				$compressedImage = compressImage($imageTemp,$imageUploadPath,75); 
+				list($image1_width,$image1_height) = getimagesize($imageUploadPath);
+			}
+		
+			$query = "UPDATE dne_meetings SET image1 = ?,image1_width = ?,
+					  image1_height = ? WHERE id = ?";
+			$query = $mysqli->prepare($query);
+			$query->bind_param('siii',$image1_name,$image1_width,
+			                   $image1_height,$_POST['id']);	
+			$query->execute();
+		}
+		
+		if(isset($_FILES['image2']['name'])){
+			$image2_name = $_FILES['image2']['name'];
+			$imageUploadPath = 'uploads/'.$image2_name;
+			$fileType = pathinfo($imageUploadPath, PATHINFO_EXTENSION); 
+		 
+			$allowTypes = array('jpg','png','jpeg','gif'); 
+			if(in_array($fileType, $allowTypes)){ 
+				$imageTemp = $_FILES["image2"]["tmp_name"]; 
+				$compressedImage = compressImage($imageTemp,$imageUploadPath,75); 
+				list($image2_width,$image2_height) = getimagesize($imageUploadPath);
+			}
+			
+			$query = "UPDATE dne_meetings SET image2 = ?,image2_width = ?,
+					  image2_height = ? WHERE id = ?";
+			$query = $mysqli->prepare($query);
+			$query->bind_param('siii',$image2_name,$image2_width,
+			                  $image2_height,$_POST['id']);	
+			$query->execute();
+		}		
+				
+		if($ps_name == 'בביצוע') {
+		   $query = "UPDATE dne_meetings SET status_updated_date = ?,
+		             status_in_ex_updated_date = ? WHERE id = ?";
+		   $query = $mysqli->prepare($query);
+		   $query->bind_param('ssi',date('Y-m-d'),date('Y-m-d'),$_POST['id']);	
+		   $query->execute();
+		}
+		
+		else if($ps_name == 'איחור') {
+		   $query = "UPDATE dne_meetings SET status_updated_date = ?,
+		             status_late_updated_date = ? WHERE id = ?";
+		   $query = $mysqli->prepare($query);
+		   $query->bind_param('ssi',date('Y-m-d'),date('Y-m-d'),$_POST['id']);
+		   $query->execute();
+		}
+		
+	    else if($ps_name == 'בוצע/נמסר') {
+			$task_creation_date = date('Y-m-d');
+			$is_change_row_style = 1;
+			$is_not_priority = 0;
+	
+			$query = "UPDATE dne_meetings SET status_updated_date = ?,
+			          status_finished_updated_date = ?,is_priority = ? 
+					  WHERE id = ?";
+		    $query = $mysqli->prepare($query);
+		    $query->bind_param('ssii',date('Y-m-d'),date('Y-m-d'),
+			                   $is_not_priority,$_POST['id']);	
+		    $query->execute();
+	    }
+		
+		else if($ps_name == 'בהמתנה') {
+		   $query = "UPDATE dne_meetings SET status_updated_date = ?,
+		             status_hold_updated_date = ? WHERE id = ?";
+		   $query = $mysqli->prepare($query);
+		   $query->bind_param('ssi',date('Y-m-d'),date('Y-m-d'),$_POST['id']);	
+		   $query->execute();
+		}
+		
+		else if($ps_name == 'ארכיון') {
+			$is_appears = 0;
+			$is_not_priority = 0;
+			
+			$query = "UPDATE dne_meetings SET status_updated_date = ?,
+			          status_archived_updated_date = ?,is_priority = ? 
+					  WHERE id = ?";
+		    $query = $mysqli->prepare($query);
+		    $query->bind_param('ssii',date('Y-m-d'),date('Y-m-d'),
+			                   $is_not_priority,$_POST['id']);	
+		    $query->execute();
+		}
+		
+		else if($ps_name == 'הנחיה/החלטה') {
+		   $query = "UPDATE dne_meetings SET status_updated_date = ?,
+		             status_decision_updated_date = ? WHERE id = ?";
+		   $query = $mysqli->prepare($query);
+		   $query->bind_param('ssi',date('Y-m-d'),date('Y-m-d'),$_POST['id']);	
+		   $query->execute();
+		}
+		
+		if($_POST['all_ids_to_edit'] != ''){
+			for($i=0;$i<sizeof($all_ids_to_edit_array);$i++){
+				$query = $mysqli->prepare("SELECT * FROM dne_meetings 
+					                      WHERE id = ?");
+				$query->bind_param("i",$all_ids_to_edit_array[$i]);
+				$query->execute();
+				$query->store_result();
+				$elem_meeting = fetch_unique($query);
+	
+				if(@$all_ids_to_edit_array[$i] == @$_POST['id']){
+					$id_chapter = @$_POST['id_chapter'];
+					$ids_rdv = @$_POST['ids_rdv_checked'];
+					$subject = @$_POST['subject'];
+					$area = @$_POST['area'];
+					$description = $_POST['description'];
+					$id_task = @$_POST['id_task'];
+					$id_responsible = @$_POST['id_responsible'];
+					$id_pass_on = @$_POST['id_pass_on'];
+					$destination_date = @$_POST['destination_date'];	    
+					$id_progress_status = @$_POST['id_progress_status'];
+				}
+				else if(@$all_ids_to_edit_array[$i] != @$_POST['id']){
+					$id_chapter = @$elem_meeting->id_chapter;
+					$ids_rdv = @$elem_meeting->ids_rdv;
+				   	$subject = @$elem_meeting->subject;
+                    $area = @$elem_meeting->area;
+                    $description = @$elem_meeting->description;
+					
+					$id_task = @$elem_meeting->id_task;
+				    if(@$id_task != @$_POST['id_task'])
+					   $id_task = @$_POST['id_task'];
+
+                    $id_responsible = @$elem_meeting->id_responsible;
+				    if(@$id_responsible != @$_POST['id_responsible'])
+					   $id_responsible = @$_POST['id_responsible'];
+
+                    $id_pass_on = @$elem_meeting->id_pass_on;
+				    if(@$id_pass_on != @$_POST['id_pass_on'])
+					   $id_pass_on = @$_POST['id_pass_on'];
+				   
+					$destination_date = @$elem_meeting->destination_date;
+					if(@$destination_date != @$_POST['destination_date'])
+						$destination_date = @$_POST['destination_date'];        
+				
+					$id_progress_status = @$elem_meeting->id_progress_status;
+					if(@$id_progress_status != @$_POST['id_progress_status'])
+						$id_progress_status = @$_POST['id_progress_status'];										   
+				}
+
+                $track_type = 0;
+		        $reminder_date = '0000-00-00';
+		
+				if(@$_POST['is_reminds']){
+					$track_type = 1;
+					$reminder_date = date('Y-m-d', strtotime($_POST['destination_date'] . ' -3 days'));		
+				}				
+
+				$query = "UPDATE dne_meetings SET id_chapter = ?,
+						 ids_rdv = ?,subject = ?,area = ?,
+						 description = ?,id_task = ?,id_responsible = ?,
+						 id_pass_on = ?,task_creation_date = ?,
+						 destination_date = ?,id_progress_status = ?,
+						 is_appears = ?,is_change_row_style = ?,
+						 is_appears_img1 = ?,is_appears_img2 = ?,lang = ?,
+						 track_type = ?,reminder_date = ?,
+						 is_agrees = ?,is_reminds = ? WHERE id = ?";
+				$query = $mysqli->prepare($query);
+				$query->bind_param('issssiiissiiiiisisiii',
+								   $id_chapter,$ids_rdv,
+								   htmlspecialchars($subject),
+								   htmlspecialchars($area),
+								   htmlspecialchars($description),
+								   $id_task,$id_responsible,$id_pass_on,
+								   $task_creation_date,$destination_date,
+								   $id_progress_status,$is_appears,
+								   $is_change_row_style,
+								   $_POST['is_appears_img1'],  
+								   $_POST['is_appears_img2'],
+								   $_POST['lang'],$track_type,$reminder_date,
+								   $_POST['is_agrees'],$_POST['is_reminds'],
+								   $all_ids_to_edit_array[$i]);	
+				$query->execute();				
+ 
+                $log_destination_date = '';
+                if(@$elem_meeting->destination_date != @$_POST['destination_date'])
+					$log_destination_date = @$_POST['destination_date'];
+				  
+                $log_id_progress_status = 0;
+                if(@$elem_meeting->id_progress_status != @$_POST['id_progress_status'])
+					$log_id_progress_status = @$_POST['id_progress_status']; 					
+				
+				$query = "INSERT INTO dne_log_meeting_updates 
+						  (id_user,id_meeting,action_date,action,
+						   destination_date,remark,id_progress_status,
+						   updated_users) 
+						   VALUES(?,?,?,?,?,?,?,?)";
+				$query = $mysqli->prepare($query);
+				$query->bind_param('iissssii',$_SESSION['id_user'],
+								   $all_ids_to_edit_array[$i],date('Y-m-d'),
+								   $_POST['action'],$log_destination_date,
+								   $log_remark,$log_id_progress_status,
+								   $_SESSION['id_user']);
+				$query->execute();	
+				
+				if($_POST['is_reminds']){
+					$is_remark_appears_log = 1;	
+					$remark = 'תזכורת 3 ימים לפני';
+					
+					$query = "INSERT INTO dne_log_meeting_tracking (id_user,id_meeting,action_date,remark,is_remark_appears_log,
+							  updated_users) VALUES(?,?,?,?,?,?)";
+					$query = $mysqli->prepare($query);
+					$query->bind_param('iissis',$_SESSION['id_user'],$all_ids_to_edit_array[$i],date('Y-m-d'),
+					                   $remark,$is_remark_appears_log,$_SESSION['id_user']);
+					$query->execute();	
+				}
+				
+				if(($elem_meeting->id_chapter != $_POST['id_chapter']) || 			  
+				  ($elem_meeting->subject != $_POST['subject']) || 
+			      ($elem_meeting->area != $_POST['area']) || 
+				  ($elem_meeting->description != $_POST['description']) || 
+			      ($elem_meeting->id_task != $_POST['id_task']) || 
+				  ($elem_meeting->id_responsible != $_POST['id_responsible']) || 
+			      ($elem_meeting->id_pass_on != $_POST['id_pass_on']))
+		        {			
+					$query = "UPDATE dne_meetings SET updated_date = ? 
+					          WHERE id = ?";
+					$query = $mysqli->prepare($query);
+					$query->bind_param('si',date('Y-m-d'),
+					                   $all_ids_to_edit_array[$i]);	
+					$query->execute();
+			    }
+			}
+		}
+		else {
+            $query = "SELECT * FROM dne_meetings WHERE id = ?";
+		    $query = $mysqli->prepare($query);
+		    $query->bind_param('i',$_POST['id']);   
+		    $query->execute();
+		    $query->store_result();
+		    $meeting = fetch_unique($query);  
+
+            $track_type = 0;
+		    $reminder_date = '0000-00-00';
+		
+		    if(@$_POST['is_reminds']){
+				$track_type = 1;
+				$reminder_date = date('Y-m-d', strtotime($_POST['destination_date'] . ' -3 days'));		
+			}			
+
+			$query = "UPDATE dne_meetings SET id_chapter = ?,ids_rdv = ?,
+			          subject = ?,area = ?,description = ?,id_task = ?,
+					  id_responsible = ?,id_pass_on = ?,
+					  task_creation_date = ?,destination_date = ?,
+					  id_progress_status = ?,is_appears = ?,
+					  is_change_row_style = ?,is_appears_img1 = ?,
+					  is_appears_img2 = ?,lang = ?,track_type = ?,reminder_date = ?,
+					  is_agrees = ?,is_reminds = ? WHERE id = ?";
+			$query = $mysqli->prepare($query);
+			$query->bind_param('issssiiissiiiiisisiii',
+			                   $_POST['id_chapter'],
+							   $_POST['ids_rdv_checked'],
+							   htmlspecialchars($_POST['subject']),
+							   htmlspecialchars($_POST['area']),
+							   htmlspecialchars($_POST['description']),
+							   $_POST['id_task'],$_POST['id_responsible'],
+							   $_POST['id_pass_on'],$task_creation_date,
+							   $_POST['destination_date'],
+							   $_POST['id_progress_status'],
+							   $is_appears,$is_change_row_style,
+							   $_POST['is_appears_img1'],
+							   $_POST['is_appears_img2'],$_POST['lang'],$track_type,$reminder_date,
+							   $_POST['is_agrees'],$_POST['is_reminds'],$_POST['id']);	
+			$query->execute();
+			
+			$log_destination_date = '';
+            if(@$meeting->destination_date != @$_POST['destination_date'])
+			   $log_destination_date = @$_POST['destination_date']; 	
+
+            $log_id_progress_status = 0;
+            if(@$meeting->id_progress_status != @$_POST['id_progress_status'])
+			   $log_id_progress_status = @$_POST['id_progress_status']; 					
+
+			$query = "INSERT INTO dne_log_meeting_updates 
+					  (id_user,id_meeting,action_date,action,
+					  destination_date,remark,id_progress_status,
+					  updated_users) 
+					  VALUES(?,?,?,?,?,?,?,?)";
+			$query = $mysqli->prepare($query);
+			$query->bind_param('iissssii',$_SESSION['id_user'],
+							    $_POST['id'],date('Y-m-d'),$_POST['action'],
+								$log_destination_date,$log_remark,
+								$log_id_progress_status,
+								$_SESSION['id_user']);
+			$query->execute();
+
+            if($_POST['is_reminds']){
+				$is_remark_appears_log = 1;	
+				$remark = 'תזכורת 3 ימים לפני';
+					
+				$query = "INSERT INTO dne_log_meeting_tracking (id_user,id_meeting,action_date,remark,is_remark_appears_log,
+							  updated_users) VALUES(?,?,?,?,?,?)";
+				$query = $mysqli->prepare($query);
+				$query->bind_param('iissis',$_SESSION['id_user'],$_POST['id'],date('Y-m-d'),$remark,$is_remark_appears_log,
+				                   $_SESSION['id_user']);
+				$query->execute();	
+			}			
+			
+			if(($meeting->id_chapter != $_POST['id_chapter']) ||  
+			  ($meeting->subject != $_POST['subject']) || 
+			  ($meeting->area != $_POST['area']) || 
+			  ($meeting->description != $_POST['description']) || 
+			  ($meeting->id_task != $_POST['id_task']) || 
+			  ($meeting->id_responsible != $_POST['id_responsible']) || 
+			  ($meeting->id_pass_on != $_POST['id_pass_on']))
+		    {			
+				$query = "UPDATE dne_meetings SET updated_date = ? 
+				          WHERE id = ?";
+				$query = $mysqli->prepare($query);
+				$query->bind_param('si',date('Y-m-d'),$_POST['id']);	
+				$query->execute();
+			}
+		}
+		
+		echo 'updated';	
+	}
+	
+	$query = "SELECT * FROM dne_custom_reports WHERE id_project = ?";
+	$query = $mysqli->prepare($query);
+	$query->bind_param('i',$_POST['id_project']);   
+	$query->execute();
+	$query->store_result();
+	$custom_reports = fetch($query);
+	
+	foreach ($custom_reports as $item){	
+		$position_where = strpos($item->sql_str,"WHERE");
+		$where_length = strlen($item->sql_str)-$position_where;
+		$where_part_sql = substr($item->sql_str,$position_where,$where_length); 
+		$where_part_sql_array = explode(' AND ',$where_part_sql);
+		
+		$allow = true;
+		if($item->id_supplier > 0){
+			$query = "SELECT * FROM dne_responsibles WHERE id_projects_suppliers = ?";
+			$query = $mysqli->prepare($query);
+			$query->bind_param('i',$item->id_supplier);   
+			$query->execute();
+			$query->store_result();
+			$project_responsibles = fetch($query);
+			$project_responsibles_array = array();
+            					
+		    foreach($project_responsibles as $item){
+				array_push($project_responsibles_array,$item->id);
+			}
+
+            if(!in_array($_POST['id_responsible'],$project_responsibles_array))
+				$allow = false;			
+		}
+		
+		for($i=0;$i < sizeof($where_part_sql_array);$i++){
+			if(strpos($where_part_sql_array[$i],'id_chapter')!= false){
+				$position_chapter_in = strpos($where_part_sql_array[$i],"IN(");
+				$where_chapter_in_length = strlen($where_part_sql_array[$i])-$position_chapter_in;
+				$where_part_chapter_in = substr($where_part_sql_array[$i],$position_chapter_in,$where_chapter_in_length);
+				$chapter_ids = substr($where_part_chapter_in,3,-1);
+				
+				if(strpos($chapter_ids,$_POST['id_chapter']) == false)
+				   $chapter_ids .= ','.$_POST['id_chapter']; 				
+				$new_chapter_in = 'm.id_chapter IN('.$chapter_ids.')';
+				$where_part_sql_array[$i] = $new_chapter_in;  
+			}
+			if(strpos($where_part_sql_array[$i],'id_task') !== false && strpos($where_part_sql_array[$i],'id_task_type') === false) {
+				$position_task_in = strpos($where_part_sql_array[$i],"IN(");
+				$where_task_in_length = strlen($where_part_sql_array[$i])-$position_task_in;
+				$where_part_task_in = substr($where_part_sql_array[$i],$position_task_in,$where_task_in_length);
+				$task_ids = substr($where_part_task_in,3,-1); 
+				
+				if(strpos($task_ids,$_POST['id_task']) == false)
+				   $task_ids .= ','.$_POST['id_task'];							   
+				$new_task_in = 'm.id_task IN('.$task_ids.')';
+				$where_part_sql_array[$i] = $new_task_in;             						   
+			}
+			
+			if($item->and_or_responsibles == "AND"){
+				if(strpos($where_part_sql_array[$i],'id_responsible') !== false) {
+					$position_responsible_in = strpos($where_part_sql_array[$i], "IN(");
+					$where_responsible_in_length = strlen($where_part_sql_array[$i]) - $position_responsible_in;
+					$where_part_responsible_in = substr($where_part_sql_array[$i], $position_responsible_in, $where_responsible_in_length);
+					$responsible_ids = substr($where_part_responsible_in, 3, -1); 
+
+					if($allow && strpos($responsible_ids, $_POST['id_responsible']) == false) 
+					   $responsible_ids .= ','.$_POST['id_responsible'];	
+					$where_part_sql_array[$i] = 'm.id_responsible IN('.$responsible_ids .')';
+				}
+				if(strpos($where_part_sql_array[$i],'id_pass_on') !== false) {
+					$position_pass_on_in = strpos($where_part_sql_array[$i], "IN(");
+					$where_pass_on_in_length = strlen($where_part_sql_array[$i]) - $position_pass_on_in;
+					$where_part_pass_on_in = substr($where_part_sql_array[$i], $position_pass_on_in, $where_pass_on_in_length);
+					$pass_on_ids = substr($where_part_pass_on_in, 3, -1); 
+					
+					if($allow && strpos($pass_on_ids, $_POST['id_pass_on']) == false) 
+						$pass_on_ids .= ',' . $_POST['id_pass_on'];
+					$where_part_sql_array[$i] = 'm.id_pass_on IN('.$pass_on_ids .')';
+				}
+			}
+            else {
+				if(strpos($where_part_sql_array[$i],'id_responsible IN') !== false || strpos($where_part_sql_array[$i],'id_pass_on IN') !== false) {
+					$responsible_ids = '';				
+					if($allow && strpos($where_part_sql_array[$i],'id_responsible IN') !== false) {
+						$position_responsible_in = strpos($where_part_sql_array[$i], "id_responsible IN(") + strlen("id_responsible IN(");
+						$responsible_ids_part = substr($where_part_sql_array[$i], $position_responsible_in);
+						$responsible_ids = substr($responsible_ids_part, 0, strpos($responsible_ids_part, ')'));
+					}
+
+					$pass_on_ids = '';
+					if($allow && strpos($where_part_sql_array[$i],'id_pass_on IN') !== false) {
+						$position_pass_on_in = strpos($where_part_sql_array[$i], "id_pass_on IN(") + strlen("id_pass_on IN(");
+						$pass_on_ids_part = substr($where_part_sql_array[$i], $position_pass_on_in);
+						$pass_on_ids = substr($pass_on_ids_part, 0, strpos($pass_on_ids_part, ')'));
+					}
+
+					$all_ids = array_filter(array_merge(
+						explode(',', $responsible_ids),
+						explode(',', $pass_on_ids)
+					));
+
+					if(!in_array($_POST['id_responsible'], $all_ids)) {
+						$all_ids[] = $_POST['id_responsible'];
+					}
+
+					$unique_ids = implode(',',array_unique($all_ids));
+					$where_part_sql_array[$i] = '(m.id_responsible IN('.$unique_ids .') OR m.id_pass_on IN('.$unique_ids.'))';
+				}
+			}				
+		}
+		
+		$new_sql_str = 'SELECT c.name AS name,m.id AS id,
+						m.id_user AS id_user,
+						m.id_task_type AS id_task_type,
+						m.id_chapter AS id_chapter,m.subject AS subject,
+						m.ids_rdv AS ids_rdv,m.area,m.description,
+						m.id_task,m.id_responsible,m.id_pass_on,
+						m.task_creation_date,m.destination_date,
+						m.id_progress_status,
+						m.updated_date AS updated_date,
+						m.image1 AS image1,m.image1_width AS image1_width,
+						m.image1_height AS image1_height,
+						m.is_appears_img1 AS is_appears_img1,
+						m.image2 AS image2,m.image2_width AS image2_width,
+						m.image2_height AS image2_height,
+						m.is_appears_img2 AS is_appears_img2,
+						m.is_change_row_style AS is_change_row_style,
+						m.track_type AS track_type,
+                        m.id_track_responsible AS id_track_responsible,
+                        m.reminder_time AS reminder_time,
+						m.reminder_date AS reminder_date,
+                        m.is_agrees AS is_agrees,m.is_reminds AS is_reminds					
+						FROM dne_meetings m 
+						LEFT JOIN dne_chapters c ON m.id_chapter = c.id 
+						LEFT JOIN dne_tasks t ON m.id_task = t.id
+						LEFT JOIN dne_progress_status ps ON m.id_progress_status = ps.id					
+						LEFT JOIN dne_responsibles r ON m.id_responsible = r.id '.
+						implode(' AND ',$where_part_sql_array);
+			   
+		$chapters_list = @$item->chapters_list;
+		if(strpos($chapters_list,$_POST['id_chapter']) == false){
+			if($chapters_list == "")
+				$chapters_list = $_POST['id_chapter'];
+			else 
+				$chapters_list .= ','.$_POST['id_chapter'];
+		}
+		
+		$tasks_list = @$item->tasks_list;
+		if(strpos($tasks_list,$_POST['id_task']) == false){
+			if($tasks_list == "")
+				$tasks_list = $_POST['id_task'];
+			else 
+				$tasks_list .= ','.$_POST['id_task'];
+		}
+		
+		$responsibles_list = @$item->responsibles_list;
+		if(strpos($responsibles_list,$_POST['id_responsible']) == false){
+			if($responsibles_list == "")
+				$responsibles_list = $_POST['id_responsible'];
+			else 
+				$responsibles_list .= ','.$_POST['id_responsible'];
+		}
+		
+		$pass_ons_list = @$item->pass_ons_list;
+		if(strpos($pass_ons_list,$_POST['id_pass_on']) == false){
+			if($pass_ons_list == "")
+				$pass_ons_list = $_POST['id_pass_on'];
+			else 
+			   $pass_ons_list .= ','.$_POST['id_pass_on'];
+		}
+		
+		$query = "UPDATE dne_custom_reports SET chapters_list = ?,
+				  tasks_list = ?,responsibles_list = ?,pass_ons_list = ?,
+				  sql_str = ? WHERE id = ?";
+		$query = $mysqli->prepare($query);
+		$query->bind_param('sssssi',$chapters_list,$tasks_list,
+						   $responsibles_list,$pass_ons_list,
+						   $new_sql_str,$item->id);	
+		$query->execute();		
+	}
+}
+?>

@@ -1,0 +1,44 @@
+<?php
+$srcPath = 'images/red-target-icon.png';          // image source
+$dstPath = 'image_no_bg.png';    // image résultat
+
+$img = imagecreatefrompng($srcPath);
+if (!$img) {
+    exit('Erreur image');
+}
+
+/* Préserver alpha */
+imagesavealpha($img, true);
+imagealphablending($img, false);
+
+$w = imagesx($img);
+$h = imagesy($img);
+
+/* Couleur transparente */
+$transparent = imagecolorallocatealpha($img, 0, 0, 0, 127);
+
+/* Seuil de blanc (ajuste si besoin) */
+$threshold = 245;
+
+for ($x = 0; $x < $w; $x++) {
+    for ($y = 0; $y < $h; $y++) {
+
+        $rgb = imagecolorat($img, $x, $y);
+
+        $r = ($rgb >> 16) & 0xFF;
+        $g = ($rgb >> 8) & 0xFF;
+        $b = $rgb & 0xFF;
+
+        /* Si pixel blanc ou quasi blanc */
+        if ($r > $threshold && $g > $threshold && $b > $threshold) {
+            imagesetpixel($img, $x, $y, $transparent);
+        }
+    }
+}
+
+/* Sauvegarde */
+imagepng($img, $dstPath);
+imagedestroy($img);
+
+echo "Fond blanc supprimé ✅<br>";
+echo "<img src='$dstPath'>";

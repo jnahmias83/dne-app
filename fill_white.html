@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Convertir PNG en blanc</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    canvas { margin-top: 20px; border: 1px solid #ccc; }
+  </style>
+</head>
+<body>
+
+<h2>Uploader un PNG et le convertir en blanc</h2>
+
+<input type="file" id="upload" accept="image/png" />
+<canvas id="canvas"></canvas>
+
+<script>
+const input = document.getElementById('upload');
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+input.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(event) {
+        const img = new Image();
+        img.onload = function() {
+            canvas.width = img.width;
+            canvas.height = img.height;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, 0, 0);
+
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const data = imageData.data;
+
+            // 🔹 Colorer tous les pixels opaques en blanc
+            for (let i = 0; i < data.length; i += 4) {
+                const alpha = data[i + 3];
+                if (alpha > 0) {
+                    data[i] = 255;     // R
+                    data[i + 1] = 255; // G
+                    data[i + 2] = 255; // B
+                    // alpha inchangé pour conserver la transparence
+                }
+            }
+
+            ctx.putImageData(imageData, 0, 0); // ← c’est la ligne manquante
+        };
+        img.src = event.target.result;
+    };
+    reader.readAsDataURL(file);
+});
+</script>
+
+</body>
+</html>
