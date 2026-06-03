@@ -217,7 +217,7 @@ if(@$_POST['all_ids_to_edit'] == '') {
 	$task_details .= @$old_destination_date.'|~|';
 	$task_details .= @$meeting->destination_date.'|~|';
 	$task_details .= @$meeting->c_name.'|~|';
-	$task_details .= $meeting->area.'|~|';
+	$task_details .= @$meeting->area.'|~|';
 	$task_details .= str_replace('&nbsp;','',@$description).'|~|';
 	$task_details .= @$meeting->image1.'|~|';
 	$task_details .= @$meeting->ps_id.'|~|';

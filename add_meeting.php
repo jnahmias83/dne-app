@@ -1323,7 +1323,7 @@ function handleSuccess(meeting_id,share_doc,_inserted_meeting_id){
 					url: 'save_image.php',
 					data: {imageData:imageData,meeting_id:inserted_meeting_id},
 					success: function(response){
-						    const imageUrl = 'https://davidnahmiasengineering.com/Development/'+response;	
+						    const imageUrl = '<?= BASE_URL ?>'+response;
 							shareImage(imageUrl,inserted_meeting_id,$('#project_id').val(),_inserted_meeting_id,0);						
 					}, 
 				});

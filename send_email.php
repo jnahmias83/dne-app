@@ -157,7 +157,7 @@ else {
 						  </tr>";
 						  
     if(@$meeting->image1 != '') {
-	    $image1Path = "https://davidnahmiasengineering.com/Development/uploads/".@$meeting->image1;
+	    $image1Path = BASE_URL."uploads/".@$meeting->image1;
 		$image1_height = 230;
 	    $image1_width;
 		                                    
@@ -172,7 +172,7 @@ else {
 	}
 	
 	if(@$meeting->image2 != '') {
-	    $image2Path = "https://davidnahmiasengineering.com/Development/uploads/".@$meeting->image2;
+	    $image2Path = BASE_URL."uploads/".@$meeting->image2;
 		$image2_height = 230;
 	    $image2_width;
 		                                    
@@ -187,7 +187,7 @@ else {
 	}
 	
 	$html_message .=        "<tr style='text-align:center;'>
-                                <td colspan='3'><img src='https://davidnahmiasengineering.com/Development/images/davidnahmias_stripe.png' width='480' alt='' /></td>
+                                <td colspan='3'><img src='".BASE_URL."images/davidnahmias_stripe.png' width='480' alt='' /></td>
 							 </tr>	
 		                </table>
 	                </body></html>";

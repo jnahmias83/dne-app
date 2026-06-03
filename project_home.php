@@ -703,7 +703,7 @@ $(document).ready(function() {
 						url: 'save_image.php',
 						data: {imageData:imageData,meeting_id:meeting_id},
 						success: function(response) {
-							const imageUrl = 'https://davidnahmiasengineering.com/Development/'+response;	
+							const imageUrl = '<?= BASE_URL ?>'+response;
 							shareImage(imageUrl,meeting_id,project_id,'');
 						}, 
 				   });

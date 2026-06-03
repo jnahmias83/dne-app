@@ -131,7 +131,7 @@ $border_bottom = 'border-bottom:1px solid white';
 
 class PDF extends TCPDF {
     public function Footer() { 
-		$mysqli = new mysqli('localhost','davidnahmias','JmDn27091975','dn-engineering');
+		$mysqli = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 		
         if ($mysqli->connect_error) {
             die("Connection failed: " . $mysqli->connect_error);
