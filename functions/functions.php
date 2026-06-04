@@ -211,34 +211,6 @@ function decryptIt($str) {
     return($str_decoded);
 }
 
-/*function php_mailer($fromEmail,$fromName,$to,$subject,$message,$attachment) {	
-	$mail = new PHPMailer(true);
-	
-	try {
-		$mail->SMTPDebug = 2;  
-		$mail->CharSet = 'UTF-8';      
-		$mail->Host = 'smtp.gmail.com';  
-		$mail->SMTPAuth = true;                              
-		$mail->Username = 'ophtalweb@ophtalmic-compagnie.fr';                 
-		$mail->Password = 'fs254d5sfs';                         
-		$mail->SMTPSecure = 'tls';                          
-		$mail->Port = 587; 	
-
-		$mail->setFrom($fromEmail,$fromName);     
-		$mail->addAddress($to);              
-		$mail->isHTML(true);                                 
-		$mail->Subject = $subject;
-		$mail->Body = $message;
-		$mail->send();
-			
-		echo 'Mailer';
-		return 1;
-	}
-	catch(Exception $e) {
-		echo 'Mailer Error: ' . $mail->ErrorInfo;
-	    return 0;	
-	}
-}*/
 
 function compressImage($source, $destination, $quality) { 
     // Get image info 
@@ -325,8 +297,7 @@ function resizeImage($file, $max_width, $max_height, $outputFile) {
 } 
 
 function getLang($code){
-	$mysqli = new mysqli('localhost','davidnahmias','JmDn27091975','dne_beta');
-	$mysqli->set_charset("utf8");
+	global $mysqli;
 	$query = $mysqli->prepare("SELECT ".$_SESSION['lang']." AS result 
 	                          FROM dne_lang WHERE code='".$code."'");
 	$query->execute();
@@ -336,8 +307,7 @@ function getLang($code){
 }
 
 function getLang2($lang,$code){
-	$mysqli = new mysqli('localhost','davidnahmias','JmDn27091975','dne_beta');
-	$mysqli->set_charset("utf8");
+	global $mysqli;
 	$query = $mysqli->prepare("SELECT ".$lang." AS result 
 	                          FROM dne_lang WHERE code='".$code."'");
 	$query->execute();
@@ -354,8 +324,7 @@ function isEffectivelyEmpty($field) {
 }
 
 function checkIfChangedField($meeting_id,$field){
-	$mysqli = new mysqli('localhost','davidnahmias','JmDn27091975','dn-engineering');
-	$mysqli->set_charset("utf8");
+	global $mysqli;
 	
 	if($field == 'destination_date')
 		$sql = "SELECT id FROM dne_log_meeting_updates 
