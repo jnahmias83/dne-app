@@ -7,3 +7,5 @@ error_log
 config.php
 config.server-test.php
 config.server-prod.php
+deploy-test.log
+deploy-prod.log

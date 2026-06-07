@@ -83,7 +83,7 @@ include 'menu_budget_reports.php';
 							<?=@$order->s_name_he?>
 						</div>
 				    </div>
-			    <?  } ?>
+			    <?php } ?>
 				
 				<div class="row marginTop10">
 				   <div class="col-1"></div>
@@ -135,7 +135,7 @@ include 'menu_budget_reports.php';
 										<div class="col-12">
 											<strong>PDF הזמנה</strong>
 											<br/>					
-											<input type="file" class="marginTop10" name="pdf_order" id="pdf_order" accept="*/*" />
+											<input type="file" class="marginTop10" name="pdf_order" id="pdf_order" accept=".pdf,application/pdf" />
 											<?php if($id > 0) { ?>&nbsp;<a href="uploads/<?=@$order->pdf_order?>" target="_blank"><?=@$order->pdf_order?></a><?php } ?>			
 										</div>
 									</div>	
@@ -193,20 +193,15 @@ include 'menu_budget_reports.php';
 </html>
 
 <script>
-let pdf_order;
-
-$(document).on('change','#pdf_order',function() {
-    pdf_order = $('#pdf_order')[0].files[0];
-});
-
 $('#suppliers').chosen();
 
-$('#save_btn').click (function (e){ 
-	let form_data = new FormData();	
+$('#save_btn').click (function (e){
+	let form_data = new FormData();
 	form_data.append('id',$('#id').val());
 	form_data.append('id_projects_suppliers',$('#suppliers').val());
 	form_data.append('sum_order',$('#sum_order').val());
-	form_data.append('pdf_order',pdf_order);
+	let pdf_file = $('#pdf_order')[0].files[0];
+	if (pdf_file) form_data.append('pdf_order', pdf_file);
 	form_data.append('vat',$('#vat').val());
 	form_data.append('signature_date',$('#signature_date').val());
 	form_data.append('description',$('#description').val());
