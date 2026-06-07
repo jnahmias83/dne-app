@@ -127,7 +127,7 @@ include 'menu_budget_reports.php';
 							<?=@$payment->s_name_he?>
 						</div>
 				   </div>
-			    <? } ?>
+			    <?php } ?>
 				
 				<div class="row marginTop10">
 				   <div class="col-1"></div>
@@ -186,7 +186,7 @@ include 'menu_budget_reports.php';
 											<p>
 											   <strong class="label-font-size">PDF תשלום</strong>
 											   <br/>					
-											   <input type="file" class="marginTop5 width95Percents" name="pdf_payment" id="pdf_payment" />
+											   <input type="file" class="marginTop5 width95Percents" name="pdf_payment" id="pdf_payment" accept=".pdf,application/pdf" />
 											   <?php if($id > 0) { ?>&nbsp;<a href="uploads/<?=@$payment->pdf_payment?>" target="_blank"><?=@$payment->pdf_payment?></a><?php } ?>		
 											</p>
 											<p>
@@ -210,7 +210,7 @@ include 'menu_budget_reports.php';
 										   <p>
 											 <strong class="label-font-size">PDF חשבונית</strong>
 											 <br/>					
-											 <input type="file" class="marginTop5 width95Percents" name="pdf_invoice" id="pdf_invoice" />
+											 <input type="file" class="marginTop5 width95Percents" name="pdf_invoice" id="pdf_invoice" accept=".pdf,application/pdf" />
 											 <?php if($id > 0) { ?>&nbsp;<a href="uploads/<?=@$payment->pdf_invoice?>" target="_blank"><?=@$payment->pdf_invoice?></a><?php } ?>		
 										   </p>
 										   <p>
@@ -256,28 +256,19 @@ include 'menu_budget_reports.php';
 </html>
 
 <script>
-var pdf_payment;
-var pdf_invoice;
-
-$(document).on('change','#pdf_payment',function() {
-    pdf_payment = $('#pdf_payment')[0].files[0];
-});
-
-$(document).on('change','#pdf_invoice',function() {
-    pdf_invoice = $('#pdf_invoice')[0].files[0];
-});
-
 $('#suppliers').chosen();
 
-$('#save_btn').click (function (e){  
-	var form_data = new FormData();	
+$('#save_btn').click (function (e){
+	var form_data = new FormData();
 	form_data.append('id',$('#id').val());
 	form_data.append('id_projects_suppliers',$('#suppliers').val());
 	form_data.append('description',$('#description').val());
-	form_data.append('pdf_payment',pdf_payment);
+	var pdf_payment = $('#pdf_payment')[0].files[0];
+	if (pdf_payment) form_data.append('pdf_payment', pdf_payment);
 	form_data.append('payment_date',$('#payment_date').val());
 	form_data.append('paid_amount',$('#paid_amount').val());
-	form_data.append('pdf_invoice',pdf_invoice);
+	var pdf_invoice = $('#pdf_invoice')[0].files[0];
+	if (pdf_invoice) form_data.append('pdf_invoice', pdf_invoice);
 	form_data.append('invoice_date',$('#invoice_date').val());
 	form_data.append('vat',$('#vat').val());	
 	$.ajax({

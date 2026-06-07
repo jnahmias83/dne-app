@@ -128,7 +128,7 @@ include 'menu_budget_reports.php';
 							 <?=@$budget_cost_eval->name?>
 						</div>
 				   </div>
-				<? } ?>
+				<?php } ?>
 				
 				<div class="row marginTop10">
 				   <div class="col-1"></div>
@@ -217,7 +217,7 @@ include 'menu_budget_reports.php';
 										<div class="col-12">
 											<strong><?=@$pdf_evaluation_label?></strong>
 											<br/>					
-											<input type="file" class="marginTop5" name="pdf_evaluation" id="pdf_evaluation" />
+											<input type="file" class="marginTop5" name="pdf_evaluation" id="pdf_evaluation" accept=".pdf,application/pdf" />
 											<?php if($id > 0) { ?><div><a href="uploads/<?=@$budget_cost_eval->pdf_evaluation?>" target="_blank"><?=@$budget_cost_eval->pdf_evaluation?></a></div><?php } ?>			
 										</div>
 									</div>
@@ -368,12 +368,7 @@ include 'menu_budget_reports.php';
 </html>
 
 <script>
-var pdf_evaluation;
 var domain_type;
-
-$(document).on('change','#pdf_evaluation',function() {
-    pdf_evaluation = $('#pdf_evaluation')[0].files[0];
-});
 
 function displayDomainsList() {
 	if($("input:radio[name='domain_type']").is(':checked'))
@@ -405,7 +400,8 @@ $('#add_costs_eval_modul_btn').click (function (e){
 	form_data.append('id_project',$('#project_id').val());
 	form_data.append('id_field_of_work',id_field_of_work);
 	form_data.append('description',$('#description').val());
-	form_data.append('pdf_evaluation',pdf_evaluation);
+	var pdf_evaluation = $('#pdf_evaluation')[0].files[0];
+	if (pdf_evaluation) form_data.append('pdf_evaluation', pdf_evaluation);
 	form_data.append('evaluation_cost',$('#evaluation_cost').val());
 	form_data.append('evaluation_date',$('#evaluation_date').val());
 	
@@ -541,7 +537,8 @@ $('#save_btn').click (function (e){
     else if(domain_type == 'D')
 	   form_data.append('id_field_of_work',$('#designers').val());
 	form_data.append('description',$('#description').val());
-	form_data.append('pdf_evaluation',pdf_evaluation);
+	var pdf_evaluation = $('#pdf_evaluation')[0].files[0];
+	if (pdf_evaluation) form_data.append('pdf_evaluation', pdf_evaluation);
 	form_data.append('evaluation_cost',$('#evaluation_cost').val());
 	form_data.append('evaluation_date',$('#evaluation_date').val());
 	

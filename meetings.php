@@ -1799,8 +1799,8 @@ include 'menu_tasks.php';
 															<?=html_entity_decode($subject)?>
 														</div>
 													</td>
-												<? } 
-												
+												<?php }
+
 												if(in_array('area',$columns_list_array)){ ?> 
 													<td id="td_area_<?=@$meeting_id?>" class="<?php if(end($columns_list_array) == "area") echo $border_cell_table_end;?>" style="<?=@$text_align?>;<?=@$padding?>:5px;<?=@$area_bgcolor?>;" contenteditable="true" onblur="setData(<?=@$meeting_id?>,<?=@$iteration?>,'area',0,0,'screen');">
 														<div class="height-auto fontSize12 cursor-pointer overflow-y-scroll" id="area_<?=@$meeting_id?>" name="area_<?=@$meeting_id?>" style="direction:<?=@$dir?>;width:100%;<?=@$padding?>:5px;<?=@$area_bgcolor?>;" contenteditable="true">
@@ -2358,8 +2358,8 @@ include 'menu_tasks.php';
 														<td style="<?=@$text_align?>;<?=@$padding?>:5px;<?=@$subject_bgcolor?>;">
 															<?=html_entity_decode(@$subject)?>
 														</td>
-													<? } 
-													
+													<?php }
+
 													if(in_array('area',$columns_list_array)) { ?> 
 														<td style="<?=@$text_align?>;<?=@$padding?>:5px;<?=@$area_bgcolor?>;">
 															<?=html_entity_decode(@$area)?> 

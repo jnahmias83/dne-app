@@ -747,8 +747,8 @@ include 'menu_tasks.php';
 													<td style="<?=@$text_align?>;<?=@$padding?>:5px;<?=@$subject_bg_color?>;">
 														<?=@$subject?>
 													</td>
-												<? } 
-												
+												<?php }
+
 												if(in_array('area',$columns_list_array)) { ?> 
 													<td style="<?=@$text_align?>;<?=@$padding?>:5px;<?=@$area_bg_color?>;">
 														<?=@$area?>
@@ -1154,8 +1154,8 @@ include 'menu_tasks.php';
 														<td style="<?=@$text_align?>;<?=@$padding?>:5px;<?=@$subject_bg_color?>;">
 															<?=@$subject?>
 														</td>
-													<? } 
-													
+													<?php }
+
 													if(in_array('area',$columns_list_array)) { ?> 
 														<td style="<?=@$text_align?>;<?=@$padding?>:5px;<?=@$area_bg_color?>;">
 															<?=@$area?> 

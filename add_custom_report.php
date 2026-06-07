@@ -114,7 +114,7 @@ foreach(@$chapters as $chapter){
 	  array_push($chapters_ids_array,@$chapter->id);
 }
 
-$tasks_array = array();
+$tasks_array = array();
 $tasks_ids_array = array();
 $query = $mysqli->prepare("SELECT * FROM dne_tasks 
 						  WHERE id_project = ?");
@@ -448,7 +448,7 @@ include 'menu_tasks.php';
 								
 								<div class="row marginTop20 <?=@$dir?> fontSize13">
 									<div class="col-12">
-										<input type="checkbox" id="is_include_pass_on_tasks" name="is_include_pass_on_tasks" value="1" <?php if(!isset($custom_report) || @$custom_report->is_include_pass_on_tasks == 1){ echo 'checked';}?> />&nbsp;
+										<input type="checkbox" id="is_include_pass_on_tasks" name="is_include_pass_on_tasks" value="1" <?php if(@$custom_report->is_include_pass_on_tasks == 1){ echo 'checked';}?> />&nbsp;
 										<input type="button" class="btn btn-primary width80Percents fontSize13 mb-2" value="<?=nl2br(@$include_pass_on_tasks_label)?>" href="#" />
 									</div>
 								</div>

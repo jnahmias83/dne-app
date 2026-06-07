@@ -99,7 +99,7 @@ include 'menu_budget_reports.php';
 							<?=@$account->s_name_he?>
 						</div>
 					</div>  				   			  
-				<? } ?>
+				<?php } ?>
 				
 				<div class="row marginTop10">
 				   <div class="col-1"></div>
@@ -156,7 +156,7 @@ include 'menu_budget_reports.php';
 											<p>
 												<strong class="label-font-size">PDF הגשה</strong>
 												<br/>					
-												<input type="file" class="marginTop5" name="pdf_submission" id="pdf_submission" />
+												<input type="file" class="marginTop5" name="pdf_submission" id="pdf_submission" accept=".pdf,application/pdf" />
 												<?php if($id > 0) { ?>&nbsp;<a href="uploads/<?=@$account->pdf_submission?>" target="_blank"><?=@$account->pdf_submission?></a><?php } ?>			
 											</p>
 											<p>
@@ -179,7 +179,7 @@ include 'menu_budget_reports.php';
 											<p>
 											   <strong class="label-font-size">PDF אישור</strong>
 											   <br/>					
-											   <input type="file" class="marginTop5" name="pdf_approval" id="pdf_approval" />
+											   <input type="file" class="marginTop5" name="pdf_approval" id="pdf_approval" accept=".pdf,application/pdf" />
 											   <?php if($id > 0) { ?>&nbsp;<a href="uploads/<?=@$account->pdf_approval?>" target="_blank"><?=@$account->pdf_approval?></a><?php } ?>			
 											</p>
 											<p>
@@ -235,17 +235,6 @@ include 'menu_budget_reports.php';
 </html>
 
 <script>
-var pdf_submission;
-var pdf_approval;
-
-$(document).on('change','#pdf_submission',function() {
-    pdf_submission = $('#pdf_submission')[0].files[0];
-});
-
-$(document).on('change','#pdf_approval',function() {
-    pdf_approval = $('#pdf_approval')[0].files[0];
-});
-
 $('#suppliers').chosen();
 
 let create_order_from_account = 0;
@@ -262,10 +251,12 @@ $('#save_btn').click (function (e){
 	form_data.append('id',$('#id').val());
 	form_data.append('id_projects_suppliers',$('#suppliers').val());
 	form_data.append('description',$('#description').val());
-	form_data.append('pdf_submission',pdf_submission);
+	var pdf_submission = $('#pdf_submission')[0].files[0];
+	if (pdf_submission) form_data.append('pdf_submission', pdf_submission);
 	form_data.append('submit_date',$('#submit_date').val());
 	form_data.append('submitted_account',$('#submitted_account').val());
-	form_data.append('pdf_approval',pdf_approval);
+	var pdf_approval = $('#pdf_approval')[0].files[0];
+	if (pdf_approval) form_data.append('pdf_approval', pdf_approval);
 	form_data.append('approval_date',$('#approval_date').val());
 	form_data.append('approved_amount',$('#approved_amount').val());
 	form_data.append('create_order_from_account',create_order_from_account);
