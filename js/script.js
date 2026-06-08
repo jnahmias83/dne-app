@@ -934,13 +934,10 @@ function hidePopup(modal,iteration,meeting_id,from){
 }
 
 function setBellBcgColor(track_type){
-	const $icon = $('#target-icon-popup');
-    
-    if(track_type == 0) 
-         $('#target-icon-popup').attr('src','images/grey-target-icon.png');
-    
+    if(track_type == 0)
+        $('#target-icon-popup').css('color','#888');
     else if(track_type == 1)
-        $('#target-icon-popup').attr('src','images/red-target-icon.png');
+        $('#target-icon-popup').css('color','red');
 }
 
 function setEmergencyTaskCSS(is_priority){
