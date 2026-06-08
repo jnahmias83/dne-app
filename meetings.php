@@ -167,7 +167,7 @@ if($id_custom_report > 0){
 			$sql = @$_SESSION['filter_sql'];
 			$is_images = @$_SESSION['filter_is_images'];
 			$is_colors = @$_SESSION['filter_is_colors'];
-			$lang = @$_SESSION['filter_lang'];
+			$lang = @$_SESSION['filter_lang'] ?: @$project->lang;
 			$_SESSION['lang'] = $lang;
 			
 			if($lang == 'HE') 
@@ -360,7 +360,7 @@ else if($id_rdv_report > 0){
 		$sql = @$_SESSION['filter_sql'];
 		$is_images = @$_SESSION['filter_is_images'];
 		$is_colors = @$_SESSION['filter_is_colors'];
-		$lang = @$_SESSION['filter_lang'];
+		$lang = $is_specific_filter ? @$_SESSION['filter_lang'] : @$project->lang;
 		$period_new_tasks = @$_SESSION['filter_period_new_tasks'];
 		$columns_list = @$_SESSION['filter_columns_list'];
 		
