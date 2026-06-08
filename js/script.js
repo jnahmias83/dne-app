@@ -236,7 +236,7 @@ function setData(meeting_id,iteration,field,isRemark,forShare,screen_type){
 						$('#hidden_is_priority').val(data_array[0]);
 						$('#hidden_track_type').val(data_array[1]);
 						setEmergencyTaskCSS(data_array[0]);
-						setBellBcgColor(data_array[1]);
+						setBellBcgColor(parseInt(data_array[1]) || 0);
 
 						let form_data2 = new FormData();
 						form_data2.append('id_meeting', localStorage.getItem('next_meeting_id'));
@@ -1100,7 +1100,7 @@ function navigateTasks(meeting_ids, action){
 			$('#hidden_is_priority').val(data_array[0]);
 			$('#hidden_track_type').val(data_array[1]);
 			setEmergencyTaskCSS(data_array[0]);
-			setBellBcgColor(data_array[1]);
+			setBellBcgColor(parseInt(data_array[1]) || 0);
 		}
 	});
 
