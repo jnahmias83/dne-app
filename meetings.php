@@ -3460,23 +3460,33 @@ $(document).ready(function(){
 	   setReportData('colors');	
 	});
 	
-	$('#toggle_switch_track').on('click', function(){
-		if(this.checked) {
+	const trackingKey = 'track_off_<?=$project_id?>';
+
+	function applyTrackingState(isOn) {
+		if(isOn) {
 			$('#target-icon').attr('src','images/red-target-icon.png');
 			$('[id^="div-tracking-remarks-"]').css('display','block');
-			sessionStorage.removeItem('track_off_<?=$project_id?>');
+			$('#toggle_switch_track').prop('checked', true);
+			sessionStorage.removeItem(trackingKey);
 		} else {
 			$('#target-icon').attr('src','images/grey-target-icon.png');
 			$('[id^="div-tracking-remarks-"]').css('display','none');
-			sessionStorage.setItem('track_off_<?=$project_id?>', '1');
+			$('#toggle_switch_track').prop('checked', false);
+			sessionStorage.setItem(trackingKey, '1');
 		}
+	}
+
+	$('#toggle_switch_track').on('click', function(){
+		applyTrackingState(this.checked);
 	});
 
-	if(sessionStorage.getItem('track_off_<?=$project_id?>') === '1') {
-		$('#target-icon').attr('src','images/grey-target-icon.png');
-		$('[id^="div-tracking-remarks-"]').css('display','none');
-		$('#toggle_switch_track').prop('checked', false);
-	}
+	$('#track_btn').on('click', function(){
+		let newState = !$('#toggle_switch_track').prop('checked');
+		applyTrackingState(newState);
+	});
+
+	if(sessionStorage.getItem(trackingKey) === '1')
+		applyTrackingState(false);
 	
 	let params = new URLSearchParams(window.location.search);
 
