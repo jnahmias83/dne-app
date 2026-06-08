@@ -3467,12 +3467,12 @@ $(document).ready(function(){
 			$('#target-icon').attr('src','images/red-target-icon.png');
 			$('[id^="div-tracking-remarks-"]').css('display','block');
 			$('#toggle_switch_track').prop('checked', true);
-			sessionStorage.removeItem(trackingKey);
+			localStorage.removeItem(trackingKey);
 		} else {
 			$('#target-icon').attr('src','images/grey-target-icon.png');
 			$('[id^="div-tracking-remarks-"]').css('display','none');
 			$('#toggle_switch_track').prop('checked', false);
-			sessionStorage.setItem(trackingKey, '1');
+			localStorage.setItem(trackingKey, '1');
 		}
 	}
 
@@ -3485,7 +3485,7 @@ $(document).ready(function(){
 		applyTrackingState(newState);
 	});
 
-	if(sessionStorage.getItem(trackingKey) === '1')
+	if(localStorage.getItem(trackingKey) === '1')
 		applyTrackingState(false);
 	
 	let params = new URLSearchParams(window.location.search);
