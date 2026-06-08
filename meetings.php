@@ -2900,7 +2900,7 @@ include 'menu_tasks.php';
 										</div>			
 										<div class="width20Percents">	    
 										    <a id="tracking_btn" class="btn colorBlack width130" style="box-shadow:none;">
-												<img id='target-icon-popup' src="images/grey-target-icon.png" alt="target icon" width="30" height="30" />
+												<i id="target-icon-popup" class="fas fa-bullseye" style="font-size:26px;color:#888;"></i>
 												<br/>
 												<strong class="fontSize14">מעקב</strong>
 									        </a>
@@ -3809,7 +3809,7 @@ $(document).ready(function(){
 	    else 
 		  $('#div_reminder_date').hide();
 	 
-	    $('#modalTaskTracking .modal-title').html("<img src='images/grey-target-icon.png' alt='target icon' width='30' height='30'>&nbsp;&nbsp;מעקב אקטיבי&nbsp;&nbsp;<img src='images/grey-target-icon.png' alt='target icon' width='30' height='30'>");
+	    $('#modalTaskTracking .modal-title').html("<i class='fas fa-bullseye' style='font-size:22px;color:#888;'></i>&nbsp;&nbsp;מעקב אקטיבי&nbsp;&nbsp;<i class='fas fa-bullseye' style='font-size:22px;color:#888;'></i>");
 		$('.subtitle').html(chapter+"<br/>"+subject+"&nbsp;|&nbsp;"+area).css('line-height','1.1em');
 	  
 	    $('#div_reminder_date').css('display','block');
