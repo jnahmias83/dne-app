@@ -1877,7 +1877,7 @@ include 'menu_tasks.php';
 												
 												if(in_array('destination date',$columns_list_array)){ ?>
 													<td id="td_destination_date_<?=@$meeting_id?>" class="<?php if(end($columns_list_array) == "destination date") echo $border_cell_table_end;?> cursor-pointer alignCenter" style="<?=@$text_align?>;<?=@$padding?>:5px;<?=@$dest_date_color?>;<?=@$dest_date_bgcolor?>;">			
-													   <input type="text" id="destination_date_<?=@$meeting_id?>" name="destination_date_<?=@$meeting_id?>" class="fontSize13 border-none width60 cursor-pointer alignCenter" style="direction:<?=@$dir?>;<?=@$dest_date_color?>;<?=@$dest_date_bgcolor?>;" value="<?=date('M d', strtotime(@$destination_date))?>" data-meetingid="<?=@$meeting_id?>" data-iteration="<?=@$iteration?>" data-chapter="<?=@$chapter_name?>" data-name="<?=@$subject?>" data-area="<?=@$area?>" data-destinationdate="<?=@$destination_date?>" />
+													   <input type="text" id="destination_date_<?=@$meeting_id?>" name="destination_date_<?=@$meeting_id?>" class="fontSize13 border-none width60 cursor-pointer alignCenter" style="direction:<?=@$dir?>;<?=@$dest_date_color?>;<?=@$dest_date_bgcolor?>;" value="<?=@$destination_date ? date('M d', strtotime(@$destination_date)) : ''?>" data-meetingid="<?=@$meeting_id?>" data-iteration="<?=@$iteration?>" data-chapter="<?=@$chapter_name?>" data-name="<?=@$subject?>" data-area="<?=@$area?>" data-destinationdate="<?=@$destination_date?>" />
 													</td>
 												<?php }
 												
@@ -2400,9 +2400,9 @@ include 'menu_tasks.php';
 													
 													if(in_array('destination date',$columns_list_array)) { ?>
 														<td class="alignCenter" style="<?=@$dest_date_color?>;<?=@$dest_date_bgcolor?>;">		
-															<?=date('M d', strtotime(@$destination_date))?>
+															<?=@$destination_date ? date('M d', strtotime(@$destination_date)) : ''?>
 													<?php }
-													
+
 													if(in_array('progress status',$columns_list_array)) { ?>
 														<td style="<?=@$text_align?>;<?=@$padding?>:5px;<?=@$progress_status_color?>;<?=@$progress_status_bgcolor?>;">
 															<?=@$progress_status?>
