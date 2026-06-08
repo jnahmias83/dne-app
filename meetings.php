@@ -3347,9 +3347,12 @@ $(document).ready(function(){
 	
 	$('#modalTaskFollowupActions').on('hidden.bs.modal', function (){
 		localStorage.removeItem('is_modal_task_actions_opened');
-    });		
-	
-	if(localStorage.getItem("is_modal_task_actions_opened") === "true"){
+		let $row = $('#meetings_table tr.meeting_' + meeting_id);
+		if ($row.length) $row[0].scrollIntoView({block: 'center'});
+    });
+
+	if(localStorage.getItem("is_modal_task_actions_opened") === "true" &&
+	   localStorage.getItem("project_id") == "<?=$project_id?>"){
 	   project_id = localStorage.getItem("project_id");
 	   meeting_id = localStorage.getItem("meeting_id");
 	   iteration = localStorage.getItem("iteration");
@@ -3384,8 +3387,12 @@ $(document).ready(function(){
 	    
 	   setBellBcgColor(track_type);
 	   setEmergencyTaskCSS(is_priority);
-	   $('#modalContent').append("<input type='hidden' id='hidden_meeting_id' value='"+meeting_id+"'><input type='hidden' id='hidden_iteration' value='"+iteration+"'><input type='hidden' id='hidden_project_id' value='"+project_id+"'><input type='hidden' id='hidden_user_id' value='"+user_id+"'><input type='hidden' id='hidden_chapter' value='"+chapter+"'><input type='hidden' id='hidden_name' value='"+subject+"'><input type='hidden' id='hidden_area' value='"+area+"'><input type='hidden' id='hidden_recipient' value='"+recipient+"'><input type='hidden' id='hidden_responsible_id' value='"+responsible_id+"'><input type='hidden' id='hidden_is_priority' value='"+is_priority+"'><input type='hidden' id='hidden_remark' value='"+remark+"'><input type='hidden' id='hidden_track_responsible_id' value='"+track_responsible_id+"'><input type='hidden' id='hidden_track_type' value='"+track_type+"'><input type='hidden' id='hidden_reminder_date' value='"+reminder_date+"'><input type='hidden' id='hidden_reminder_time' value='"+reminder_time+"'>"); 
+	   $('#modalContent').append("<input type='hidden' id='hidden_meeting_id' value='"+meeting_id+"'><input type='hidden' id='hidden_iteration' value='"+iteration+"'><input type='hidden' id='hidden_project_id' value='"+project_id+"'><input type='hidden' id='hidden_user_id' value='"+user_id+"'><input type='hidden' id='hidden_chapter' value='"+chapter+"'><input type='hidden' id='hidden_name' value='"+subject+"'><input type='hidden' id='hidden_area' value='"+area+"'><input type='hidden' id='hidden_recipient' value='"+recipient+"'><input type='hidden' id='hidden_responsible_id' value='"+responsible_id+"'><input type='hidden' id='hidden_is_priority' value='"+is_priority+"'><input type='hidden' id='hidden_remark' value='"+remark+"'><input type='hidden' id='hidden_track_responsible_id' value='"+track_responsible_id+"'><input type='hidden' id='hidden_track_type' value='"+track_type+"'><input type='hidden' id='hidden_reminder_date' value='"+reminder_date+"'><input type='hidden' id='hidden_reminder_time' value='"+reminder_time+"'>");
 	   $('#modalTaskFollowupActions').modal('show');
+	   setTimeout(function(){
+	       let $row = $('#meetings_table tr.meeting_' + meeting_id);
+	       if ($row.length) $row[0].scrollIntoView({block: 'center'});
+	   }, 400);
 	}
 	
 	if(localStorage.getItem("is_modal_tasks_hystory_opened")){
