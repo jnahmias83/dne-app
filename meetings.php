@@ -3809,7 +3809,7 @@ $(document).ready(function(){
 	    else 
 		  $('#div_reminder_date').hide();
 	 
-	    $('.modal-title').html("<img src='images/target-icon.png' alt='status icon' width='30' height='30'>&nbsp;&nbsp;מעקב אקטיבי&nbsp;&nbsp;<img src='images/target-icon.png' alt='status icon' width='30' height='30'>");
+	    $('#modalTaskTracking .modal-title').html("<img src='images/grey-target-icon.png' alt='target icon' width='30' height='30'>&nbsp;&nbsp;מעקב אקטיבי&nbsp;&nbsp;<img src='images/grey-target-icon.png' alt='target icon' width='30' height='30'>");
 		$('.subtitle').html(chapter+"<br/>"+subject+"&nbsp;|&nbsp;"+area).css('line-height','1.1em');
 	  
 	    $('#div_reminder_date').css('display','block');
