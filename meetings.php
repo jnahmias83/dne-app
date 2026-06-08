@@ -3461,24 +3461,21 @@ $(document).ready(function(){
 	});
 	
 	$('#toggle_switch_track').on('click', function(){
-		if(click_set_track_count %2 == 0) {
+		if(this.checked) {
 			$('#target-icon').attr('src','images/red-target-icon.png');
 			$('[id^="div-tracking-remarks-"]').css('display','block');
 			sessionStorage.removeItem('track_off_<?=$project_id?>');
-		}
-		else {
+		} else {
 			$('#target-icon').attr('src','images/grey-target-icon.png');
 			$('[id^="div-tracking-remarks-"]').css('display','none');
 			sessionStorage.setItem('track_off_<?=$project_id?>', '1');
 		}
-		click_set_track_count++;
 	});
 
 	if(sessionStorage.getItem('track_off_<?=$project_id?>') === '1') {
 		$('#target-icon').attr('src','images/grey-target-icon.png');
 		$('[id^="div-tracking-remarks-"]').css('display','none');
 		$('#toggle_switch_track').prop('checked', false);
-		click_set_track_count = 2;
 	}
 	
 	let params = new URLSearchParams(window.location.search);
