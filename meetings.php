@@ -553,7 +553,6 @@ $responsibles = fetch($query);
 
 $query = $mysqli->prepare("SELECT * FROM dne_tasks
                           WHERE id_project = ?
-						  AND is_appears_tasks_list = 1
 						  ORDER BY id_display");
 $query->bind_param("i",$project_id);
 $query->execute();
@@ -1821,14 +1820,14 @@ include 'menu_tasks.php';
 												if(in_array('_task',$columns_list_array)){ ?>
 													<td id="td_task_<?=@$meeting_id?>" class="<?php if(end($columns_list_array) == "_task") echo $border_cell_table_end;?> cursor-pointer" style="<?=@$task_bgcolor?>">
 														<select id="task_<?=@$meeting_id?>" class="form-control font-weight-bold fontSize12 border-none cursor-pointer alignCenter" style="direction:<?=@$dir?>;width:98%;<?=@$task_color?>;<?=@$task_bgcolor?>;" onchange="setData(<?=@$meeting_id?>,<?=@$iteration?>,'id_task',0,0,'screen');">	
-															<?php 
+															<?php
 															foreach($tasks as $task){
 															?>
 																<option value="<?=@$task->id?>" <?php if($task->id == @$task_id) echo "selected";?>>
 																	<strong><?php if($lang == 'HE') echo @$task->name_he;else if($lang == 'EN') echo @$task->name?></strong>
 																</option>
 																<?php
-															}	
+															}
 															?>         														
 														</select>
 													</td>
@@ -2632,7 +2631,8 @@ include 'menu_tasks.php';
 					    <div id="modalContent">
 							<div class="row marginTop5">
 								<div class="col-12">
-									<?php foreach ($tasks as $item){ 										
+									<?php foreach ($tasks as $item){
+										    if (!empty($tasks_ids) && !in_array($item->id, explode(',', $tasks_ids))) continue;
 										    $checked = ($item->id == @$task_filter && strpos(@$_SESSION['filter_tasks_list'], ',') === false) ? 'checked' : '';
 									?>
 											<label class="display-block">
