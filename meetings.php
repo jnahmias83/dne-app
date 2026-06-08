@@ -456,6 +456,9 @@ else if($id_rdv_report > 0){
 
 $columns_list_array = explode(',',@$columns_list);
 
+if (empty($lang))
+	$lang = @$project->lang;
+
 if(@$_GET['lang'] != '')
 	$lang = @$_GET['lang'];
 

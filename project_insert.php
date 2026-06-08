@@ -20,10 +20,10 @@ else {
 		}
 		else {
 			if($_POST['id'] == 0){
-				$query = "INSERT INTO dne_projects (name,name_he,nickname,created_date) VALUES(?,?,?,?)";
+				$query = "INSERT INTO dne_projects (name,name_he,nickname,lang,created_date) VALUES(?,?,?,?,?)";
 				$query = $mysqli->prepare($query);
-				$query->bind_param('ssss',$_POST['project_name'],$_POST['project_name_he'],
-				                   strtoupper($_POST['project_nickname']),date('Y-m-d'));
+				$query->bind_param('sssss',$_POST['project_name'],$_POST['project_name_he'],
+				                   strtoupper($_POST['project_nickname']),$_POST['project_lang'],date('Y-m-d'));
 				$query->execute();
 				$id_project = $query->insert_id;
 				
@@ -188,11 +188,11 @@ else {
 				$query->execute();
 					
 				$query = "UPDATE dne_projects SET name = ?,name_he = ?,nickname = ?,
-						 is_project_active = ?,updated_date = ? WHERE id = ?";
+						 is_project_active = ?,lang = ?,updated_date = ? WHERE id = ?";
 				$query = $mysqli->prepare($query);
-				$query->bind_param('sssisi',$_POST['project_name'],$_POST['project_name_he'],
+				$query->bind_param('sssissi',$_POST['project_name'],$_POST['project_name_he'],
 				                   strtoupper($_POST['project_nickname']),$_POST['is_project_active'],
-								   date("Y-m-d"),$_POST['id']);	
+								   $_POST['project_lang'],date("Y-m-d"),$_POST['id']);	
 				$query->execute();
 				echo 'updated';
 			}
