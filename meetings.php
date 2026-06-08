@@ -3230,6 +3230,7 @@ else {
 }
 	
 $(document).ready(function(){
+	localStorage.setItem('dne_last_url', window.location.href);
 	let container = $('.container');
 
 	if($('#row').val() != ''){
