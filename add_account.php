@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 include 'include/header.php';
 include 'functions/functions.php';
 
@@ -247,15 +247,15 @@ $('#create_order_cb').click (function (e){
 });
 
 $('#save_btn').click (function (e){  
-	var form_data = new FormData();	
+	let form_data = new FormData();	
 	form_data.append('id',$('#id').val());
 	form_data.append('id_projects_suppliers',$('#suppliers').val());
 	form_data.append('description',$('#description').val());
-	var pdf_submission = $('#pdf_submission')[0].files[0];
+	let pdf_submission = $('#pdf_submission')[0].files[0];
 	if (pdf_submission) form_data.append('pdf_submission', pdf_submission);
 	form_data.append('submit_date',$('#submit_date').val());
 	form_data.append('submitted_account',$('#submitted_account').val());
-	var pdf_approval = $('#pdf_approval')[0].files[0];
+	let pdf_approval = $('#pdf_approval')[0].files[0];
 	if (pdf_approval) form_data.append('pdf_approval', pdf_approval);
 	form_data.append('approval_date',$('#approval_date').val());
 	form_data.append('approved_amount',$('#approved_amount').val());

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 include 'include/header.php';
 include 'functions/functions.php';
 
@@ -368,7 +368,7 @@ include 'menu_budget_reports.php';
 </html>
 
 <script>
-var domain_type;
+let domain_type;
 
 function displayDomainsList() {
 	if($("input:radio[name='domain_type']").is(':checked'))
@@ -388,19 +388,19 @@ $('#add_costs_eval_modul_btn').click (function (e){
     if($("input:radio[name='domain_type']").is(':checked'))
 	    domain_type = $('#domain_type:checked').val();
 	
-	var id_field_of_work = 0;
+	let id_field_of_work = 0;
 	if(domain_type == 'S')
 	   id_field_of_work = $('#suppliers').val();
     else if(domain_type == 'D')
 	   id_field_of_work = $('#designers').val();
 	
-	var form_data = new FormData();
+	let form_data = new FormData();
 	form_data.append('fromAddCem','Yes');
 	form_data.append('id',0);
 	form_data.append('id_project',$('#project_id').val());
 	form_data.append('id_field_of_work',id_field_of_work);
 	form_data.append('description',$('#description').val());
-	var pdf_evaluation = $('#pdf_evaluation')[0].files[0];
+	let pdf_evaluation = $('#pdf_evaluation')[0].files[0];
 	if (pdf_evaluation) form_data.append('pdf_evaluation', pdf_evaluation);
 	form_data.append('evaluation_cost',$('#evaluation_cost').val());
 	form_data.append('evaluation_date',$('#evaluation_date').val());
@@ -419,12 +419,12 @@ $('#add_costs_eval_modul_btn').click (function (e){
 })
 
 function editeCostsEvalModul(cem_id) {
-	var cem_elem_description = '#cem_elem_description_'+cem_id;
-	var cem_elem_unit = '#cem_elem_unit_'+cem_id;
-	var cem_elem_quantity = '#cem_elem_quantity_'+cem_id;
-	var cem_elem_price = '#cem_elem_price_'+cem_id;
+	let cem_elem_description = '#cem_elem_description_'+cem_id;
+	let cem_elem_unit = '#cem_elem_unit_'+cem_id;
+	let cem_elem_quantity = '#cem_elem_quantity_'+cem_id;
+	let cem_elem_price = '#cem_elem_price_'+cem_id;
 	
-	var form_data = new FormData();
+	let form_data = new FormData();
 	form_data.append('action','update');
 	form_data.append('id',cem_id);
 	form_data.append('description',$(cem_elem_description).val());
@@ -466,7 +466,7 @@ function editeCostsEvalModul(cem_id) {
 
 function removeCostsEvalModul(cem_id) {
 	if(confirm('<?=@$msg_confirm_delete?>')) {
-        var form_data = new FormData();	
+        let form_data = new FormData();	
 		form_data.append('cem_id',cem_id);			
 		$.ajax({
 			type: 'POST',
@@ -484,7 +484,7 @@ function removeCostsEvalModul(cem_id) {
 }
 
 $('#save_add_cost_eval_btn').click (function (e){ 
-	var form_data = new FormData();
+	let form_data = new FormData();
 	form_data.append('action','insert');
 	form_data.append('id_budget_costs_eval',$('#id').val());
 	form_data.append('description',$('#cost_eval_description').val());
@@ -528,7 +528,7 @@ $('#save_btn').click (function (e){
     if($("input:radio[name='domain_type']").is(':checked'))
 	    domain_type = $('#domain_type:checked').val();
 	
-	var form_data = new FormData();	
+	let form_data = new FormData();	
 	form_data.append('id',$('#id').val());
 	form_data.append('id_project',$('#project_id').val());
 	
@@ -537,7 +537,7 @@ $('#save_btn').click (function (e){
     else if(domain_type == 'D')
 	   form_data.append('id_field_of_work',$('#designers').val());
 	form_data.append('description',$('#description').val());
-	var pdf_evaluation = $('#pdf_evaluation')[0].files[0];
+	let pdf_evaluation = $('#pdf_evaluation')[0].files[0];
 	if (pdf_evaluation) form_data.append('pdf_evaluation', pdf_evaluation);
 	form_data.append('evaluation_cost',$('#evaluation_cost').val());
 	form_data.append('evaluation_date',$('#evaluation_date').val());

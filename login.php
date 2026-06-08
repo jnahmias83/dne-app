@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 include 'include/header.php';
 include 'functions/functions.php';
 
@@ -98,9 +98,9 @@ if(isset($_POST['login_btn'])) {
 
 <script>
 function validPassword(){
-  var upperCase = new RegExp('[A-Z]');
-  var lowerCase = new RegExp('[a-z]');
-  var digit = new RegExp('[0-9]');
+  let upperCase = new RegExp('[A-Z]');
+  let lowerCase = new RegExp('[a-z]');
+  let digit = new RegExp('[0-9]');
 
   if($('#password').val().match(upperCase) && $('#password').val().match(lowerCase) && $('#password').val().match(digit) && $('#password').val().length>=8)  
   {
