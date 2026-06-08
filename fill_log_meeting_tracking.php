@@ -30,11 +30,11 @@ foreach($log_meeting_tracking as $item){
 	$query->execute();
 }
 
-$query = "INSERT INTO dne_log_meeting_tracking (id_user,id_meeting,action_date,remark,updated_users) 
-          VALUES(?,?,?,?,?)";
+$query = "INSERT INTO dne_log_meeting_tracking (id_user,id_meeting,action_date,remark,updated_users,is_remark_appears_log)
+          VALUES(?,?,?,?,?,?)";
 $query = $mysqli->prepare($query);
-$query->bind_param('iissi',$_SESSION['id_user'],$_POST['meeting_id'],date('Y-m-d'),
-                   htmlspecialchars($_POST['remark']),$_SESSION['id_user']);
+$query->bind_param('iisssi',$_SESSION['id_user'],$_POST['meeting_id'],date('Y-m-d'),
+                   htmlspecialchars($_POST['remark']),$_SESSION['id_user'],$one);
 $query->execute();
 
 $query = $mysqli->prepare("SELECT id FROM dne_to_do_today 
