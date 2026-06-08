@@ -2900,7 +2900,7 @@ include 'menu_tasks.php';
 										</div>			
 										<div class="width20Percents">	    
 										    <a id="tracking_btn" class="btn colorBlack width130" style="box-shadow:none;">
-												<i id="target-icon-popup" class="fas fa-bullseye" style="font-size:26px;color:red;"></i>
+												<i id="target-icon-popup" class="fas fa-bullseye" style="font-size:26px;color:#888;"></i>
 												<br/>
 												<strong class="fontSize14">מעקב</strong>
 									        </a>
@@ -3465,13 +3465,11 @@ $(document).ready(function(){
 	function applyTrackingState(isOn) {
 		if(isOn) {
 			$('#target-icon').attr('src','images/red-target-icon.png');
-			$('#target-icon-popup').css('color','red');
 			$('[id^="div-tracking-remarks-"]').css('display','block');
 			$('#toggle_switch_track').prop('checked', true);
 			sessionStorage.removeItem(trackingKey);
 		} else {
 			$('#target-icon').attr('src','images/grey-target-icon.png');
-			$('#target-icon-popup').css('color','#888');
 			$('[id^="div-tracking-remarks-"]').css('display','none');
 			$('#toggle_switch_track').prop('checked', false);
 			sessionStorage.setItem(trackingKey, '1');
