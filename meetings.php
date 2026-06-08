@@ -131,7 +131,7 @@ if($id_custom_report > 0){
 			$sql = @$custom_report->sql_str;
 			$is_images = @$custom_report->is_images;
 			$is_colors = @$custom_report->is_colors;
-			$lang = @$custom_report->lang;
+			$lang = @$project->lang ?: @$custom_report->lang;
 			$_SESSION['lang'] = $lang;
 			
 			if($lang == 'HE') 
