@@ -2632,7 +2632,7 @@ include 'menu_tasks.php';
 							<div class="row marginTop5">
 								<div class="col-12">
 									<?php foreach ($tasks as $item){
-										    if (!empty($tasks_ids) && !in_array($item->id, explode(',', $tasks_ids))) continue;
+										    if (isset($custom_report) && !empty($custom_report->tasks_list) && !in_array($item->id, explode(',', $custom_report->tasks_list))) continue;
 										    $checked = ($item->id == @$task_filter && strpos(@$_SESSION['filter_tasks_list'], ',') === false) ? 'checked' : '';
 									?>
 											<label class="display-block">
