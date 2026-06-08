@@ -164,7 +164,7 @@ if($log_meeting_updates_num_rows > 0 || $log_meeting_tracking_num_rows > 0){
 					    if(@$is_remark_appears_log)
 							$is_remark_appears_log_checked = 'checked';
 						
-					    $content .= "<tr class='alignCenter' style='background-color:".@$bg_color_inputs->b_bgcolor."'>
+					    $content .= "<tr class='alignCenter' style='background-color:#ffe4e4'>
 										<td>".@$_POST['id_meeting']."</td>
 										<td>".@$user->firstname."&nbsp;".@$user->lastname."</td>
 										<td>".@substr(@$action_date,8,2)."/".substr(@$action_date,5,2)."/".substr(@$action_date,0,4)."</td>
