@@ -3382,10 +3382,9 @@ $(document).ready(function(){
 				let task_details = data.split('|~|');
 				let content = fillContentTaskDetails(meeting_id,'',task_details,true);
 				$('#div_content_task_details').html(content);
+				setBellBcgColor(parseInt(task_details[22]) || 0);
 			},
 	   });
-
-	   setBellBcgColor(track_type);
 	   setEmergencyTaskCSS(is_priority);
 	   $('#modalContent').append("<input type='hidden' id='hidden_meeting_id' value='"+meeting_id+"'><input type='hidden' id='hidden_iteration' value='"+iteration+"'><input type='hidden' id='hidden_project_id' value='"+project_id+"'><input type='hidden' id='hidden_user_id' value='"+user_id+"'><input type='hidden' id='hidden_chapter' value='"+chapter+"'><input type='hidden' id='hidden_name' value='"+subject+"'><input type='hidden' id='hidden_area' value='"+area+"'><input type='hidden' id='hidden_recipient' value='"+recipient+"'><input type='hidden' id='hidden_responsible_id' value='"+responsible_id+"'><input type='hidden' id='hidden_is_priority' value='"+is_priority+"'><input type='hidden' id='hidden_remark' value='"+remark+"'><input type='hidden' id='hidden_track_responsible_id' value='"+track_responsible_id+"'><input type='hidden' id='hidden_track_type' value='"+track_type+"'><input type='hidden' id='hidden_reminder_date' value='"+reminder_date+"'><input type='hidden' id='hidden_reminder_time' value='"+reminder_time+"'>");
 	   $('#modalTaskFollowupActions').modal('show');
@@ -3733,13 +3732,12 @@ $(document).ready(function(){
 			processData: false,
 			contentType: false,
 			success: function(data){
-				let task_details = data.split('|~|');	
+				let task_details = data.split('|~|');
 				let content = fillContentTaskDetails(meeting_id,'',task_details,true);
 				$('#div_content_task_details').html(content);
+				setBellBcgColor(parseInt(task_details[22]) || 0);
 			},
 	    });
-	   
-	    setBellBcgColor(track_type);
 	    setEmergencyTaskCSS(is_priority);
 	   
 	    $.ajax({
