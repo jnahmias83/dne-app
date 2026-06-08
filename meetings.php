@@ -3874,17 +3874,19 @@ $(document).ready(function(){
 	    if($('#hidden_reminder_time').val() == 6) 
 		  $('#reminder_after_selected_date').prop('checked',true);
 	   
-        $('#users option').each(function() {			
-		    if($('#hidden_track_responsible_id').val() == 0){
-				if($(this).val() == $('#hidden_user_id').val()) 
-					$(this).prop('selected', true);
-		    }		    	
-		   
-		    if($('#hidden_track_responsible_id').val() && ($(this).val() == $('#hidden_track_responsible_id').val()))
-				$(this).prop('selected', true);  
+        let savedResp = parseInt($('#hidden_track_responsible_id').val()) || 0;
+	    $('#users option').each(function() {
+	        if(savedResp === 0){
+	            if($(this).val() == $('#hidden_user_id').val())
+	                $(this).prop('selected', true);
+	        } else {
+	            if($(this).val() == savedResp)
+	                $(this).prop('selected', true);
+	        }
 	    });
-	   
-	    let form_data = new FormData();  
+	    $('#users').css('background-color', savedResp === 0 ? '#fffacd' : '');
+
+	    let form_data = new FormData();
 		form_data.append('id_meeting',meeting_id);
 		form_data.append('isTracking',1);
 		
@@ -3905,6 +3907,7 @@ $(document).ready(function(){
     });
 	
 	$('[id="users"]').on('change', function() {
+		$(this).css('background-color', '');
 		setData($('#hidden_meeting_id').val(),$('#hidden_iteration').val(),'track_responsible_id',0,0,'popup');
 	});
 	
