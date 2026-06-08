@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 include 'include/header.php';
 include 'functions/functions.php';
 
@@ -364,7 +364,7 @@ $progress_status_s = fetch($query);
 
 <script>
 $('#to_add_meeting_btn').click (function (e){  
-	var form_data = new FormData();		
+	let form_data = new FormData();		
 	form_data.append('report_date',$('#report_date').val());
 	
 	$.ajax({
@@ -381,7 +381,7 @@ $('#to_add_meeting_btn').click (function (e){
 })
 
 function DuplicateRecord(meeting_id) {
-	var form_data = new FormData();	
+	let form_data = new FormData();	
 	form_data.append('table_name','dne_meetings');
 	form_data.append('id',meeting_id);
 	$.ajax({
@@ -398,20 +398,20 @@ function DuplicateRecord(meeting_id) {
 }
 
 function editeMeeting(meeting_id) {
-	var subject = '#subject_'+meeting_id;
-	var area = '#area_'+meeting_id;
-	var description = '#description_'+meeting_id;
-	var task = '#task_'+meeting_id;
-	var responsible = '#responsible_'+meeting_id;
-	var pass_on = '#pass_on_'+meeting_id;
-	var task_creation_date = '#task_creation_date_'+meeting_id;
-	var destination_date = '#destination_date_'+meeting_id;
-	var progress_status = '#progress_status_'+meeting_id;
-	var is_appears_img1 = '#is_appears_img1_'+meeting_id;
-	var is_appears_img2 = '#is_appears_img2_'+meeting_id;
-	var is_appears_img3 = '#is_appears_img3_'+meeting_id;
+	let subject = '#subject_'+meeting_id;
+	let area = '#area_'+meeting_id;
+	let description = '#description_'+meeting_id;
+	let task = '#task_'+meeting_id;
+	let responsible = '#responsible_'+meeting_id;
+	let pass_on = '#pass_on_'+meeting_id;
+	let task_creation_date = '#task_creation_date_'+meeting_id;
+	let destination_date = '#destination_date_'+meeting_id;
+	let progress_status = '#progress_status_'+meeting_id;
+	let is_appears_img1 = '#is_appears_img1_'+meeting_id;
+	let is_appears_img2 = '#is_appears_img2_'+meeting_id;
+	let is_appears_img3 = '#is_appears_img3_'+meeting_id;
 	
-	var form_data = new FormData();
+	let form_data = new FormData();
 	form_data.append('id',meeting_id);
 	form_data.append('id_project',$('#project_id').val());
 	form_data.append('subject',$(subject).val());
@@ -451,7 +451,7 @@ function editeMeeting(meeting_id) {
 
 function removeMeeting(id) {
 	if(confirm("האם אתה בטוח למחוק את המשימה הזאת ?")) {
-        var form_data = new FormData();	
+        let form_data = new FormData();	
 		form_data.append('id',id);			
 		$.ajax({
 			type: 'POST',
@@ -468,7 +468,7 @@ function removeMeeting(id) {
     return false;
 }
 function toNewMeetingsReport() {
-	var form_data = new FormData();	
+	let form_data = new FormData();	
 	    form_data.append('from','new meetings');
 		form_data.append('id_project',$('#project_id').val());			
 		$.ajax({

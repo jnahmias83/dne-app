@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 include 'include/header.php';
 include 'functions/functions.php';
 
@@ -96,7 +96,7 @@ $task = fetch_unique($query);
 
 <script>
 $('#save_btn').click (function (e){ 
-	var form_data = new FormData();	
+	let form_data = new FormData();	
 	form_data.append('id',$('#id').val());
 	form_data.append('id_project',0);
 	form_data.append('name',$('#name').val());

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 include 'include/header.php';
 include 'functions/functions.php';
 error_reporting(E_ALL);
@@ -63,7 +63,7 @@ $projects_suppliers = fetch_unique($query);
 
 <script>
 $('#save_btn').click (function (e){   
-	var form_data = new FormData();	
+	let form_data = new FormData();	
 	form_data.append('id',$('#id').val());
 	form_data.append('in_charge_name',$('#in_charge_name').val());
 	form_data.append('in_charge_phone',$('#in_charge_phone').val());

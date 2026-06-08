@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 include 'include/header.php';
 include 'functions/functions.php';
 
@@ -113,7 +113,7 @@ include 'menu_budget_reports.php';
 <script>
 function removeCostEval(id) {
 	if(confirm("Are you sure to remove this cost eval?")) {
-        var form_data = new FormData();	
+        let form_data = new FormData();	
 		form_data.append('id',id);			
 		$.ajax({
 			type: 'POST',
