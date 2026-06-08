@@ -3424,7 +3424,24 @@ $(document).ready(function(){
 		setlocalStorage($('#hidden_meeting_id').val(),$('#iteration').val());
 		window.location.reload();
     });
-	
+
+	// Save scroll position as user scrolls (throttled, per project)
+	let scrollSaveTimer;
+	window.addEventListener('scroll', function(){
+		clearTimeout(scrollSaveTimer);
+		scrollSaveTimer = setTimeout(function(){
+			if(!$('#modalTaskFollowupActions').hasClass('show'))
+				localStorage.setItem('scroll_Y_<?=$project_id?>', Math.round(window.scrollY));
+		}, 200);
+	});
+
+	// Restore scroll on load only if no popup was restored for this project
+	if(!(localStorage.getItem("is_modal_task_actions_opened") === "true" &&
+	     localStorage.getItem("project_id") == "<?=$project_id?>")){
+		let savedY = localStorage.getItem('scroll_Y_<?=$project_id?>');
+		if(savedY) setTimeout(function(){ window.scrollTo({top: parseInt(savedY)}); }, 250);
+	}
+
 	$("#select_lang").change(function(){
         setReportData('lang');		
     });	
