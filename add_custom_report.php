@@ -550,9 +550,9 @@ include 'menu_tasks.php';
 							<div class="col-12">					
 								<strong><?=@$language_label?> ?</strong>
 								&nbsp;
-								<input type="radio" id="lang_he" name="lang" value="HE" <?php if(($id == 0 && @$project->lang == 'HE') || ($id == 0 && @$_SESSION['filter_lang'] == '') || ($id == 0 && @$rdv->rdv_lang == 'HE') || ($id == 0 && !@$is_specific_filter) || (@$_SESSION['filter_lang'] == '' && @$custom_report->lang == 0) || ($is_specific_filter && @$_SESSION['filter_lang'] == 'HE') || ($id > 0 && $custom_report->lang == 'HE')) echo "checked";?> />&nbsp; <?=@$hebrew_label?>
+								<input type="radio" id="lang_he" name="lang" value="HE" <?php if(($id == 0 && @$rdv->rdv_lang == 'HE') || ($id == 0 && !@$is_specific_filter && @$project->lang != 'EN') || (@$_SESSION['filter_lang'] == '' && @$custom_report->lang == 0) || ($is_specific_filter && @$_SESSION['filter_lang'] == 'HE') || ($id > 0 && $custom_report->lang == 'HE')) echo "checked";?> />&nbsp; <?=@$hebrew_label?>
 								&nbsp;
-								<input type="radio" id="lang_en" name="lang" value="EN" <?php if(($id == 0 && @$project->lang == 'EN') || (@$_SESSION['filter_lang'] == '' && @$custom_report->lang == 1) || ($id == 0 && @$rdv->rdv_lang == 'EN') || ($is_specific_filter && @$_SESSION['filter_lang'] == 'EN') || ($id > 0 && $custom_report->lang == 'EN')) echo "checked";?> />&nbsp; <?=@$english_label?>
+								<input type="radio" id="lang_en" name="lang" value="EN" <?php if(($id == 0 && @$project->lang == 'EN') || ($id == 0 && !@$is_specific_filter && @$project->lang == 'EN') || (@$_SESSION['filter_lang'] == '' && @$custom_report->lang == 1) || ($id == 0 && @$rdv->rdv_lang == 'EN') || ($is_specific_filter && @$_SESSION['filter_lang'] == 'EN') || ($id > 0 && $custom_report->lang == 'EN')) echo "checked";?> />&nbsp; <?=@$english_label?>
 							</div>
 						</div>
 						

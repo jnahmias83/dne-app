@@ -202,6 +202,16 @@ if($from == 'taskslist')
 									</div>
 								</div>
 							<?php } ?>
+
+							<div class="row marginTop10 alignCenter dir-rtl">
+								<div class="col-12">
+									<strong>שפת ברירת מחדל</strong>&nbsp;
+									<select id="project_lang" class="height30 marginRight8">
+										<option value="HE" <?php if($id == 0 || (@$project->lang == '' || @$project->lang == 'HE')) echo 'selected';?>>עברית</option>
+										<option value="EN" <?php if(@$project->lang == 'EN') echo 'selected';?>>English</option>
+									</select>
+								</div>
+							</div>
 																							
 							<div class="row alignCenter dir-rtl">
 								<div class="col-12">
@@ -238,6 +248,7 @@ $('#save_btn').click (function (e){
 	form_data.append('project_initiator_nickname',$('#project_initiator_nickname').val());
 	form_data.append('project_initiator_email',$('#project_initiator_email').val());
 	form_data.append('is_project_active',$('input[name="is_project_active"]:checked').val());
+	form_data.append('project_lang',$('#project_lang').val());
 	$.ajax({
 		type: 'POST',
 		url: 'project_insert.php',
