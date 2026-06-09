@@ -195,84 +195,101 @@ include 'menu_budget_reports.php';
 <script>
 $('#suppliers').chosen();
 
-$('#save_btn').click (function (e){
-	let form_data = new FormData();
-	form_data.append('id',$('#id').val());
-	form_data.append('id_projects_suppliers',$('#suppliers').val());
-	form_data.append('sum_order',$('#sum_order').val());
+$('#save_btn').click(function(e) {
 	let pdf_file = $('#pdf_order')[0].files[0];
-	if (pdf_file) form_data.append('pdf_order', pdf_file);
-	form_data.append('vat',$('#vat').val());
-	form_data.append('signature_date',$('#signature_date').val());
-	form_data.append('description',$('#description').val());
-	$.ajax({
-		type: 'POST',
-		url: 'order_insert.php',
-		data: form_data,
-		cache: false,
-		processData: false,
-		contentType: false,
-		timeout: 60000,
-        beforeSend: function() {
-			$("#progress-popup").show();
-			$("#div_message_alert_down").html('');
-			let progress = 0;
-			let interval = setInterval(function() {
-				if (progress < 90) {
-					progress += 10;
-					$("#progress-bar").css("width", progress + "%");
+
+	function doSubmit(form_data) {
+		$.ajax({
+			type: 'POST',
+			url: 'order_insert.php',
+			data: form_data,
+			cache: false,
+			processData: false,
+			contentType: false,
+			timeout: 60000,
+			beforeSend: function() {
+				$("#progress-popup").show();
+				$("#div_message_alert_down").html('');
+				let progress = 0;
+				let interval = setInterval(function() {
+					if (progress < 90) {
+						progress += 10;
+						$("#progress-bar").css("width", progress + "%");
+					} else {
+						clearInterval(interval);
+					}
+				}, 200);
+				$("#progress-popup").data("interval", interval);
+			},
+			complete: function() {
+				clearInterval($("#progress-popup").data("interval"));
+				$("#progress-bar").css("width", "100%");
+				setTimeout(function() {
+					$("#progress-popup").hide();
+					$("#progress-bar").css("width", "0%");
+				}, 300);
+			},
+			error: function(xhr, status, error) {
+				$('#div_message_alert_down').html("<span style='color:red;font-size:13px;'>Upload failed (" + status + "). Please try again.</span>");
+			},
+			success: function(data) {
+				if(data == 'empty' || data.indexOf('no_file') === 0) {
+					if($('#sum_order').val().length == 0)
+						$('#sum_order').css('border-color','red');
+					else
+						$('#sum_order').css('border-color','initial');
+					if($('#signature_date').val().length == 0)
+						$('#signature_date').css('border-color','red');
+					else
+						$('#signature_date').css('border-color','initial');
+					if($('#pdf_order').val().length == 0)
+						$('#pdf_order').css('border-color','red');
+					else
+						$('#pdf_order').css('border-color','initial');
+					$('#div_message_alert_down').html("<span style='color:red;font-size:13px;'>Please fill all the mandatory fields</span>");
+				} else if(data == 'inserted' || data == 'updated') {
+					let url;
+					if($('#from').val() == 'budget')
+						url = 'budget.php?project_id='+$('#project_id').val()+'&lang_screen='+$('#lang_screen').val();
+					else if($('#from').val() == 'accounts_payments')
+						url = 'accounts_payments.php?ps_id='+$('#ps_id').val()+'&lang_screen='+$('#lang_screen').val();
+					else
+						url = 'orders.php?project_id='+$('#project_id').val()+'&lang_screen='+$('#lang_screen').val();
+					location.href = url;
 				} else {
-					clearInterval(interval);
+					$('#div_message_alert_down').html("<span style='color:red;font-size:13px;'>Upload error. Please try again.</span>");
 				}
-			}, 200);
-			$("#progress-popup").data("interval", interval);
-		},
-		complete: function() {
-			clearInterval($("#progress-popup").data("interval"));
-			$("#progress-bar").css("width", "100%");
-			setTimeout(function() {
-				$("#progress-popup").hide();
-				$("#progress-bar").css("width", "0%");
-			}, 300);
-		},
-		error: function(xhr, status, error) {
-			$('#div_message_alert_down').html("<span style='color:red;font-size:13px;'>Upload failed (" + status + "). Please try again.</span>");
-		},
-		success: function(data){
-			if(data == 'empty' || data.indexOf('no_file') === 0) {
-				if($('#sum_order').val().length == 0)
-					$('#sum_order').css('border-color','red');
-				else if(!($('#sum_order').val().length == 0))
-					$('#sum_order').css('border-color','initial');
-
-				if($('#signature_date').val().length == 0)
-					$('#signature_date').css('border-color','red');
-				else if(!($('#signature_date').val().length == 0))
-					$('#signature_date').css('border-color','initial');
-
-				if($('#pdf_order').val().length == 0)
-					$('#pdf_order').css('border-color','red');
-				else if(!($('#pdf_order').val().length == 0))
-					$('#pdf_order').css('border-color','initial');
-
-				$('#div_message_alert_down').html("<span style='color:red;font-size:13px;'>Please fill all the mandatory fields</span>");
 			}
-			else if(data == 'inserted' || data == 'updated') {
-				let url;
-				if($('#from').val() == 'budget')
-				   url = 'budget.php?project_id='+$('#project_id').val()+'&lang_screen='+$('#lang_screen').val();
-				else if($('#from').val() == 'accounts_payments')
-				   url = 'accounts_payments.php?ps_id='+$('#ps_id').val()+'&lang_screen='+$('#lang_screen').val();
-				else
-				   url = 'orders.php?project_id='+$('#project_id').val()+'&lang_screen='+$('#lang_screen').val();
-				location.href = url;
-			} else {
-				$('#div_message_alert_down').html("<span style='color:red;font-size:13px;'>Upload error. Please try again.</span>");
-			}
-		},
-	});												       			   
+		});
+	}
+
+	let form_data = new FormData();
+	form_data.append('id', $('#id').val());
+	form_data.append('id_projects_suppliers', $('#suppliers').val());
+	form_data.append('sum_order', $('#sum_order').val());
+	form_data.append('vat', $('#vat').val());
+	form_data.append('signature_date', $('#signature_date').val());
+	form_data.append('description', $('#description').val());
+
+	if (pdf_file) {
+		if (pdf_file.size === 0) {
+			$('#div_message_alert_down').html("<span style='color:red;font-size:13px;'>File not ready. Please download it first and try again.</span>");
+			return;
+		}
+		let reader = new FileReader();
+		reader.onload = function(e) {
+			let blob = new Blob([e.target.result], { type: pdf_file.type || 'application/pdf' });
+			form_data.append('pdf_order', blob, pdf_file.name);
+			doSubmit(form_data);
+		};
+		reader.onerror = function() {
+			$('#div_message_alert_down').html("<span style='color:red;font-size:13px;'>Cannot read file. Please try again.</span>");
+		};
+		reader.readAsArrayBuffer(pdf_file);
+	} else {
+		doSubmit(form_data);
+	}
 })
-
 $('#cancel_btn').click(function(){
     let url;
     if($('#from').val() == 'budget')
