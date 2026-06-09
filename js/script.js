@@ -455,7 +455,7 @@ function fillContentTaskDetails(meeting_id,iteration,task_details,forShare){
 	content += '<tr class="alignCenter height26">';
 	var taskBg    = task_details[26] || '#5b8dd9';
 	var taskColor = task_details[28] || '#ffffff';
-	content += '<td class="fontSize14 border-left-white"><span class="colorGrey font-weight-bold">משימת</span><br/><span style="display:inline-block;padding:6px 14px;color:'+taskColor+';background-color:'+taskBg+';font-weight:bold;box-sizing:border-box;border-radius:50px;">'+task_details[14]+'</span></td>';
+	content += '<td class="fontSize14 border-left-white"><span class="colorGrey font-weight-bold">משימת</span><br/><span style="display:inline-block;padding:6px 14px;color:'+taskColor+';background-color:'+taskBg+';font-weight:bold;box-sizing:border-box;border-radius:10px;">'+task_details[14]+'</span></td>';
 	content += '<td class="fontSize14 border-left-white"><span class="colorGrey font-weight-bold">אחראי</span><br/><strong class="fontSize16 colorRed">'+task_details[2]+'</strong></td>';
 	content += '<td class="fontSize14"><span class="colorGrey font-weight-bold">להעביר ל</span><br/><span class="fontSize16 color-4d7380">'+task_details[3]+'</span></td>';
 	content += '</tr>';
