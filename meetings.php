@@ -4721,35 +4721,19 @@ $(function() {
     if (!term) return;
 
     var esc = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    var re = new RegExp(esc, 'gi');
+    var re = new RegExp('(' + esc + ')', 'gi');
 
-    function boldTextNodes(el) {
-        var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null, false);
-        var nodes = [];
-        var node;
-        while ((node = walker.nextNode())) nodes.push(node);
-
-        nodes.forEach(function(tn) {
+    function highlightEl(el) {
+        var html = el.innerHTML;
+        var result = html.replace(/(<[^>]+>|[^<]+)/g, function(part) {
+            if (part.charAt(0) === '<') return part;
             re.lastIndex = 0;
-            if (!re.test(tn.nodeValue)) return;
-            re.lastIndex = 0;
-            var frag = document.createDocumentFragment();
-            var remaining = tn.nodeValue;
-            var m;
-            while ((m = re.exec(remaining)) !== null) {
-                if (m.index > 0) frag.appendChild(document.createTextNode(remaining.slice(0, m.index)));
-                var b = document.createElement('span');
-                b.className = 'sf-hl';
-                b.textContent = m[0];
-                frag.appendChild(b);
-                remaining = remaining.slice(m.index + m[0].length);
-                re.lastIndex = 0;
-            }
-            if (remaining) frag.appendChild(document.createTextNode(remaining));
-            tn.parentNode.replaceChild(frag, tn);
+            return part.replace(re, '<span class="sf-hl">$1</span>');
         });
+        re.lastIndex = 0;
+        if (result !== html) el.innerHTML = result;
     }
 
-    document.querySelectorAll('[id^="subject_"],[id^="area_"],[id^="description_"]').forEach(boldTextNodes);
+    document.querySelectorAll('[id^="subject_"],[id^="area_"],[id^="description_"]').forEach(highlightEl);
 });
 </script>
