@@ -483,13 +483,9 @@ foreach($chapters as $item) {
 			$update_cell_bg_color = 'background-color:white';
 			
 			$task_creation_date = @$item->task_creation_date;
-			$task_creation_date_display = '';
-			if(@$item->task_creation_date != '0000-00-00')
-				$task_creation_date_display = substr(@$item->task_creation_date,8,2).'/'.substr(@$item->task_creation_date,5,2);
+			$task_creation_date_display = smartDate(@$item->task_creation_date, $lang);
 			
-			$destination_date_display = '';
-			if(@$item->destination_date != '0000-00-00')
-				$destination_date_display = substr(@$item->destination_date,8,2).'/'.substr(@$item->destination_date,5,2);
+			$destination_date_display = smartDate(@$item->destination_date, $lang);
 			
 			$progress_status_id = @$item->id_progress_status;
 			
@@ -662,9 +658,9 @@ foreach($chapters as $item) {
 			$html1_body.= nl2br(@$description);
 			
 			if(@$remark_changes_status != '') 
-				$html1_body.= '<br/><div style="font-weight:bold;'.@$color_remark_change_status.'">['.substr(@$action_date,8,2).'/'.substr(@$action_date,5,2).'] - '.@$remark_changes_status.'</div>';
+				$html1_body.= '<br/><div style="font-weight:bold;'.@$color_remark_change_status.'">['.smartDate(@$action_date, $lang).'] - '.@$remark_changes_status.'</div>';
 			if(@$remark != '') 
-				$html1_body.= '<div style="font-weight:bold;'.@$color_remark.'">['.substr(@$action_date_remark,8,2).'/'.substr(@$action_date_remark,5,2).'] - '.@$remark.'</div>';
+				$html1_body.= '<div style="font-weight:bold;'.@$color_remark.'">['.smartDate(@$action_date_remark, $lang).'] - '.@$remark.'</div>';
 			
 			$html1_body.= '</td>';
 			
@@ -887,13 +883,9 @@ foreach($chapters as $item) {
 			$update_cell_bg_color = 'background-color:white';
 			
 			$task_creation_date = @$item->task_creation_date;
-			$task_creation_date_display = '';
-			if(@$item->task_creation_date != '0000-00-00')
-				$task_creation_date_display = substr(@$item->task_creation_date,8,2).'/'.substr(@$item->task_creation_date,5,2);
+			$task_creation_date_display = smartDate(@$item->task_creation_date, $lang);
 			
-			$destination_date_display = '';
-			if(@$item->destination_date != '0000-00-00')
-				$destination_date_display = substr(@$item->destination_date,8,2).'/'.substr(@$item->destination_date,5,2);
+			$destination_date_display = smartDate(@$item->destination_date, $lang);
 			
 			$progress_status_id = @$item->id_progress_status;
 			
@@ -1069,9 +1061,9 @@ foreach($chapters as $item) {
 				$html2_body.= nl2br(@$description);
 				
 				if(@$remark_changes_status != '') 
-				   $html2_body.= '<br/><div style="font-weight:bold;'.@$color_remark_change_status.'">['.substr(@$action_date,8,2).'/'.substr(@$action_date,5,2).'] - '.@$remark_changes_status.'</div>';
-			    if(@$remark != '') 
-				   $html2_body.= '<div style="font-weight:bold;'.@$color_remark.'">['.substr(@$action_date_remark,8,2).'/'.substr(@$action_date_remark,5,2).'] - '.@$remark.'</div>';
+				   $html2_body.= '<br/><div style="font-weight:bold;'.@$color_remark_change_status.'">['.smartDate(@$action_date, $lang).'] - '.@$remark_changes_status.'</div>';
+			    if(@$remark != '')
+				   $html2_body.= '<div style="font-weight:bold;'.@$color_remark.'">['.smartDate(@$action_date_remark, $lang).'] - '.@$remark.'</div>';
 			
 				$html2_body.= '</td>';
 				

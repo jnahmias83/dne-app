@@ -760,14 +760,10 @@ foreach($chapters as $item){
 			$is_change_row_style = @$item->is_change_row_style;
 			
 			$task_creation_date = @$item->task_creation_date;
-			$task_creation_date_display = '';
-			if(@$item->task_creation_date != '0000-00-00')
-				$task_creation_date_display = date('M d', strtotime(@$task_creation_date));
+			$task_creation_date_display = smartDate(@$task_creation_date, $lang);
 			
 			$destination_date = @$item->destination_date;
-			$destination_date_display = '';	
-			if(@$item->destination_date != '0000-00-00')
-				$destination_date_display = date('M d', strtotime(@$destination_date));
+			$destination_date_display = smartDate(@$destination_date, $lang);
 			
 			$updated_date = @$item->updated_date;
 			
@@ -842,7 +838,7 @@ foreach($chapters as $item){
 
 				if(trim($remark) != '') {
 					$description .= '<div dir="'.@$dir_table.'" style="'.$remark_color.';'.@$text_align.'">';
-					$description .= '<span dir="'.@$dir_table.'">['.substr($action_date,8,2).'/'.substr($action_date,5,2).']</span>';
+					$description .= '<span dir="'.@$dir_table.'">['.smartDate($action_date, $lang).']</span>';
 					$description .= ' <span dir="'.@$dir_table.'">'.@$progress_status_log_updates.'</span>';
 					$description .= ' <span dir="'.@$dir_table.'">'.@$item->user_nickname.'</span> : <span dir="'.@$dir_table.'">'.$remark.'</span>';
 					$description .= '</div>';
@@ -1271,14 +1267,10 @@ foreach($chapters as $item) {
 			$is_change_row_style = @$item->is_change_row_style;
 			
 			$task_creation_date = @$item->task_creation_date;
-			$task_creation_date_display = '';
-			if(@$item->task_creation_date != '0000-00-00')
-				$task_creation_date_display = date('M d', strtotime(@$task_creation_date));
+			$task_creation_date_display = smartDate(@$task_creation_date, $lang);
 			
 			$destination_date = @$item->destination_date;
-			$destination_date_display = '';	
-			if(@$item->destination_date != '0000-00-00')
-				$destination_date_display = date('M d', strtotime(@$destination_date));
+			$destination_date_display = smartDate(@$destination_date, $lang);
 			
 			$updated_date = @$item->updated_date;
 			
@@ -1322,7 +1314,7 @@ foreach($chapters as $item) {
 				$action_date = @$item->action_date;
 				
 				if($remark != '')
-					$description .= '<div style="'.@$remark_color.'"><span style="direction:rtl;unicode-bidi:embed;">['.substr(@$action_date,8,2).'/'.substr(@$action_date,5,2).']</span> - <span style="direction:rtl;unicode-bidi:embed;">'.@$item->user_nickname.'</span><span style="direction:rtl;unicode-bidi:embed;"> - '.@$remark.'</span></div>';		
+					$description .= '<div style="'.@$remark_color.'"><span style="direction:rtl;unicode-bidi:embed;">['.smartDate(@$action_date, $lang).']</span> - <span style="direction:rtl;unicode-bidi:embed;">'.@$item->user_nickname.'</span><span style="direction:rtl;unicode-bidi:embed;"> - '.@$remark.'</span></div>';		
 			}
 
             $is_agrees = @$item->is_agrees;

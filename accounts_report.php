@@ -148,9 +148,7 @@ $count = 0;
 foreach($accounts as $item) { 
     $count++;
 	
-	$submit_date = '';
-	if(@$item->submit_date != '0000-00-00')
-		$submit_date = substr(@$item->submit_date,8,2).'/'.substr(@$item->submit_date,5,2).'/'.substr(@$item->submit_date,2,2);
+	$submit_date = smartDate(@$item->submit_date, $lang);
 	
 	$submitted_account = '';
 	if(@$item->submitted_account != 0.00)
@@ -160,9 +158,7 @@ foreach($accounts as $item) {
 			:number_format($item->submitted_account,2,'.',',').'&nbsp;&#8362;')
 		:'';
 	
-	$approval_date = '';
-	if(@$item->approval_date != '0000-00-00')
-		$approval_date = substr(@$item->approval_date,8,2).'/'.substr(@$item->approval_date,5,2).'/'.substr(@$item->approval_date,2,2);
+	$approval_date = smartDate(@$item->approval_date, $lang);
 	
 	$approved_amount = '';
 	if(@$item->approved_amount != 0.00)
@@ -172,9 +168,7 @@ foreach($accounts as $item) {
 			:number_format($item->approved_amount,2,'.',',').'&nbsp;&#8362;')
 		:'';
 	
-	$invoice_date = '';
-	if(@$item->invoice_date != '0000-00-00')
-		$invoice_date = substr(@$item->invoice_date,8,2).'/'.substr(@$item->invoice_date,5,2).'/'.substr(@$item->invoice_date,2,2);
+	$invoice_date = smartDate(@$item->invoice_date, $lang);
 	
     $html.='<tr height="30px;" style="font-size:12px;">';
 	$html.='<td width="30px;" style="text-align:center;border:1px solid black;">'.$count.'</td>';

@@ -148,9 +148,7 @@ $count = 0;
 foreach($payments_missing_invoice as $item) { 
     $count++;
 
-	$payment_date = '';
-	if(@$item->payment_date != '0000-00-00')
-		$payment_date = substr(@$item->payment_date,8,2).'/'.substr(@$item->payment_date,5,2).'/'.substr(@$item->payment_date,2,2);
+	$payment_date = smartDate(@$item->payment_date, $lang);
 	
 	$paid_amount_vat_included = '';
 	if(@$item->paid_amount_vat_included != 0.00){
