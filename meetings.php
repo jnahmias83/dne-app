@@ -4709,3 +4709,42 @@ td[id^="td_area_"] > div {
     display: none;
 }
 </style>
+
+<script>
+$(function() {
+    var term = $('#search_filter').val();
+    if (!term) return;
+
+    var esc = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    var re = new RegExp(esc, 'gi');
+
+    function boldTextNodes(el) {
+        var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null, false);
+        var nodes = [];
+        var node;
+        while ((node = walker.nextNode())) nodes.push(node);
+
+        nodes.forEach(function(tn) {
+            re.lastIndex = 0;
+            if (!re.test(tn.nodeValue)) return;
+            re.lastIndex = 0;
+            var frag = document.createDocumentFragment();
+            var remaining = tn.nodeValue;
+            var m;
+            while ((m = re.exec(remaining)) !== null) {
+                if (m.index > 0) frag.appendChild(document.createTextNode(remaining.slice(0, m.index)));
+                var b = document.createElement('b');
+                b.className = 'sf-hl';
+                b.textContent = m[0];
+                frag.appendChild(b);
+                remaining = remaining.slice(m.index + m[0].length);
+                re.lastIndex = 0;
+            }
+            if (remaining) frag.appendChild(document.createTextNode(remaining));
+            tn.parentNode.replaceChild(frag, tn);
+        });
+    }
+
+    document.querySelectorAll('[id^="subject_"],[id^="area_"],[id^="description_"]').forEach(boldTextNodes);
+});
+</script>
