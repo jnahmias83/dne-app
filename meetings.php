@@ -1877,7 +1877,7 @@ include 'menu_tasks.php';
 												
 												if(in_array('destination date',$columns_list_array)){ ?>
 													<td id="td_destination_date_<?=@$meeting_id?>" class="<?php if(end($columns_list_array) == "destination date") echo $border_cell_table_end;?> cursor-pointer alignCenter" style="<?=@$text_align?>;<?=@$padding?>:5px;<?=@$dest_date_color?>;<?=@$dest_date_bgcolor?>;">			
-													   <input type="text" id="destination_date_<?=@$meeting_id?>" name="destination_date_<?=@$meeting_id?>" class="fontSize13 border-none width60 cursor-pointer alignCenter" style="direction:<?=@$dir?>;<?=@$dest_date_color?>;<?=@$dest_date_bgcolor?>;" value="<?=date('M d', strtotime(@$destination_date))?>" data-meetingid="<?=@$meeting_id?>" data-iteration="<?=@$iteration?>" data-chapter="<?=@$chapter_name?>" data-name="<?=@$subject?>" data-area="<?=@$area?>" data-destinationdate="<?=@$destination_date?>" />
+													   <input type="text" id="destination_date_<?=@$meeting_id?>" name="destination_date_<?=@$meeting_id?>" class="fontSize13 border-none width60 cursor-pointer alignCenter" style="direction:<?=@$dir?>;<?=@$dest_date_color?>;<?=@$dest_date_bgcolor?>;" value="<?=@$destination_date ? date('M d', strtotime(@$destination_date)) : ''?>" data-meetingid="<?=@$meeting_id?>" data-iteration="<?=@$iteration?>" data-chapter="<?=@$chapter_name?>" data-name="<?=@$subject?>" data-area="<?=@$area?>" data-destinationdate="<?=@$destination_date?>" />
 													</td>
 												<?php }
 												
@@ -2400,9 +2400,9 @@ include 'menu_tasks.php';
 													
 													if(in_array('destination date',$columns_list_array)) { ?>
 														<td class="alignCenter" style="<?=@$dest_date_color?>;<?=@$dest_date_bgcolor?>;">		
-															<?=date('M d', strtotime(@$destination_date))?>
+															<?=@$destination_date ? date('M d', strtotime(@$destination_date)) : ''?>
 													<?php }
-													
+
 													if(in_array('progress status',$columns_list_array)) { ?>
 														<td style="<?=@$text_align?>;<?=@$padding?>:5px;<?=@$progress_status_color?>;<?=@$progress_status_bgcolor?>;">
 															<?=@$progress_status?>
@@ -3230,6 +3230,7 @@ else {
 }
 	
 $(document).ready(function(){
+	localStorage.setItem('dne_last_url', window.location.href);
 	let container = $('.container');
 
 	if($('#row').val() != ''){
@@ -3466,12 +3467,12 @@ $(document).ready(function(){
 			$('#target-icon').attr('src','images/red-target-icon.png');
 			$('[id^="div-tracking-remarks-"]').css('display','block');
 			$('#toggle_switch_track').prop('checked', true);
-			sessionStorage.removeItem(trackingKey);
+			localStorage.removeItem(trackingKey);
 		} else {
 			$('#target-icon').attr('src','images/grey-target-icon.png');
 			$('[id^="div-tracking-remarks-"]').css('display','none');
 			$('#toggle_switch_track').prop('checked', false);
-			sessionStorage.setItem(trackingKey, '1');
+			localStorage.setItem(trackingKey, '1');
 		}
 	}
 
@@ -3484,7 +3485,7 @@ $(document).ready(function(){
 		applyTrackingState(newState);
 	});
 
-	if(sessionStorage.getItem(trackingKey) === '1')
+	if(localStorage.getItem(trackingKey) === '1')
 		applyTrackingState(false);
 	
 	let params = new URLSearchParams(window.location.search);
