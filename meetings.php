@@ -4105,16 +4105,18 @@ const shortRowStyle = 'overflow:hidden; white-space:nowrap; text-overflow:ellips
 const fullRowStyle  = 'overflow:auto; white-space:normal; height:auto; line-height:normal; display:block; font-size:12px;';
 
 function applyShortMode($td, maxChars){
-    const fullText = $td.data('fullText') || $td.text().trim();
-    $td.data('fullText', fullText);
-    const shortText = fullText.length > maxChars ? fullText.substring(0, maxChars) + ' …' : fullText;
+    // Save original HTML once (preserves <br>/<div> line breaks)
+    if($td.data('fullHtml') === undefined)
+        $td.data('fullHtml', $td.html());
+    const plainText = $td.text().trim();
+    const shortText = plainText.length > maxChars ? plainText.substring(0, maxChars) + ' …' : plainText;
     $td.html('<div style="' + shortRowStyle + '">' + shortText + '</div>');
 }
 
 function applyFullMode($td){
-    const fullText = $td.data('fullText');
-    if(fullText !== undefined)
-        $td.html('<div style="' + fullRowStyle + '">' + fullText + '</div>');
+    const fullHtml = $td.data('fullHtml');
+    if(fullHtml !== undefined)
+        $td.html(fullHtml);  // restore original HTML with line breaks
 }
 
 $(document).on('change', 'input[name="options"]', function (){
