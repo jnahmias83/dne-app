@@ -4711,9 +4711,7 @@ td[id^="td_area_"] > div {
 
 span.sf-hl {
     font-weight: bold;
-    display: inline;
-    direction: inherit;
-    unicode-bidi: embed;
+    display: contents;
 }
 </style>
 
