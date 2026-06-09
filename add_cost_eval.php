@@ -400,22 +400,40 @@ $('#add_costs_eval_modul_btn').click (function (e){
 	form_data.append('id_project',$('#project_id').val());
 	form_data.append('id_field_of_work',id_field_of_work);
 	form_data.append('description',$('#description').val());
-	let pdf_evaluation = $('#pdf_evaluation')[0].files[0];
-	if (pdf_evaluation) form_data.append('pdf_evaluation', pdf_evaluation);
 	form_data.append('evaluation_cost',$('#evaluation_cost').val());
 	form_data.append('evaluation_date',$('#evaluation_date').val());
-	
-	$.ajax({
-		type: 'POST',
-		url: 'cost_eval_insert.php',
-		data: form_data,
-		cache: false,
-		processData: false,
-		contentType: false,		
-		success: function(data){			
-              location.href = 'add_cost_eval.php?id='+data+'&project_id='+$('#project_id').val();		
-		}
-	});		       			   
+
+	let pdf_eval_file_new = $('#pdf_evaluation')[0].files[0];
+
+	function doAjaxCem(fd) {
+		$.ajax({
+			type: 'POST',
+			url: 'cost_eval_insert.php',
+			data: fd,
+			cache: false,
+			processData: false,
+			contentType: false,
+			timeout: 60000,
+			error: function(xhr, status) {
+				alert('Upload failed (' + status + '). Please try again.');
+			},
+			success: function(data) {
+				location.href = 'add_cost_eval.php?id='+data+'&project_id='+$('#project_id').val();
+			}
+		});
+	}
+
+	if (pdf_eval_file_new) {
+		if (pdf_eval_file_new.size === 0) { alert('File not ready. Please download it first.'); return; }
+		let r = new FileReader();
+		r.onload = function(e) {
+			form_data.append('pdf_evaluation', new Blob([e.target.result], { type: pdf_eval_file_new.type || 'application/pdf' }), pdf_eval_file_new.name);
+			doAjaxCem(form_data);
+		};
+		r.readAsArrayBuffer(pdf_eval_file_new);
+	} else {
+		doAjaxCem(form_data);
+	}		       			   
 })
 
 function editeCostsEvalModul(cem_id) {
@@ -537,35 +555,58 @@ $('#save_btn').click (function (e){
     else if(domain_type == 'D')
 	   form_data.append('id_field_of_work',$('#designers').val());
 	form_data.append('description',$('#description').val());
-	let pdf_evaluation = $('#pdf_evaluation')[0].files[0];
-	if (pdf_evaluation) form_data.append('pdf_evaluation', pdf_evaluation);
 	form_data.append('evaluation_cost',$('#evaluation_cost').val());
 	form_data.append('evaluation_date',$('#evaluation_date').val());
-	
-	$.ajax({
-		type: 'POST',
-		url: 'cost_eval_insert.php',
-		data: form_data,
-		cache: false,
-		processData: false,
-		contentType: false,
-        beforeSend: function() {
-			$("#progress-popup").show();
-			let progress = 0;
-			let interval = setInterval(function() {
-				if (progress < 90) {
-					progress += 10;
-					$("#progress-bar").css("width", progress + "%");
-				} else {
-					clearInterval(interval);
-				}
-			}, 200);
-			$("#progress-popup").data("interval", interval);
-		},		
-		success: function(data){  
-		   location.href = 'budget_costs_eval.php?project_id='+$('#project_id').val();		
-		},
-	});										       			   
+
+	let pdf_eval_file = $('#pdf_evaluation')[0].files[0];
+
+	function doAjaxSave(fd) {
+		$.ajax({
+			type: 'POST',
+			url: 'cost_eval_insert.php',
+			data: fd,
+			cache: false,
+			processData: false,
+			contentType: false,
+			timeout: 60000,
+			beforeSend: function() {
+				$("#progress-popup").show();
+				let progress = 0;
+				let interval = setInterval(function() {
+					if (progress < 90) {
+						progress += 10;
+						$("#progress-bar").css("width", progress + "%");
+					} else {
+						clearInterval(interval);
+					}
+				}, 200);
+				$("#progress-popup").data("interval", interval);
+			},
+			complete: function() {
+				clearInterval($("#progress-popup").data("interval"));
+				$("#progress-bar").css("width","100%");
+				setTimeout(function(){ $("#progress-popup").hide(); $("#progress-bar").css("width","0%"); }, 300);
+			},
+			error: function(xhr, status) {
+				alert('Upload failed (' + status + '). Please try again.');
+			},
+			success: function(data) {
+				location.href = 'budget_costs_eval.php?project_id='+$('#project_id').val();
+			}
+		});
+	}
+
+	if (pdf_eval_file) {
+		if (pdf_eval_file.size === 0) { alert('File not ready. Please download it first.'); return; }
+		let r = new FileReader();
+		r.onload = function(e) {
+			form_data.append('pdf_evaluation', new Blob([e.target.result], { type: pdf_eval_file.type || 'application/pdf' }), pdf_eval_file.name);
+			doAjaxSave(form_data);
+		};
+		r.readAsArrayBuffer(pdf_eval_file);
+	} else {
+		doAjaxSave(form_data);
+	}										       			   
 })
 
 $('#cancel_btn').click(function(){
