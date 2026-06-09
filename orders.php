@@ -100,7 +100,7 @@ include 'menu_budget_reports.php';
 										
 										$signature_date = '';
 										if(@$item->signature_date != '0000-00-00')
-											$signature_date = substr(@$item->signature_date,8,2).'/'.substr(@$item->signature_date,5,2).'/'.substr(@$item->signature_date,2,2);
+											$signature_date = smartDate(@$item->signature_date, @$lang_screen);
 										
 										$sum_order = '';
 										if(@$item->sum_order != 0.00)

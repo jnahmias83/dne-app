@@ -395,7 +395,7 @@ include 'menu_tasks.php';
 												   value="<?=date('Y-m-d')?>" />
 										<?php } else { ?>
 											<span class="<?=@$margin_8?> text-size">
-												<?=substr(@$task_creation_date,8,2).'/'.substr(@$task_creation_date,5,2).'/'.substr(@$task_creation_date,2,2)?>
+												<?=smartDate(@$task_creation_date)?>
 											</span>
 										<?php } ?>
 									</div>
@@ -417,7 +417,7 @@ include 'menu_tasks.php';
 																<input type="checkbox" id="rdv_<?=@$item->id?>" name="rdvs[]" value="<?=@$item->id?>" checked />
 															</div>
 															<div>
-																<?=substr(@$item->rdv_date,8,2).'/'.substr(@$item->rdv_date,5,2).'/'.substr(@$item->rdv_date,0,4).'-'.@$item->rdv_name?>
+																<?=smartDate(@$item->rdv_date).'-'.@$item->rdv_name?>
 															</div>
 														</div>
 													<?php } ?>

@@ -451,7 +451,7 @@ else if($id_rdv_report > 0){
     else
 	   $project_name = '<span class="fontSize26 font-weight-bold">Project '.htmlspecialchars($project->name).'</span><br/><span class="fontSize26 color-349feb font-family-david font-weight-bold">'.htmlspecialchars($meeting_name).' Meeting</span>';	
     
-	$title = '<strong><u>'.htmlspecialchars($rdv_name).'</u></strong><br/><u class="fontSize20 font-weight-bold">'.substr($rdv_date,8,2).'/'.substr($rdv_date,5,2).'/'.substr($rdv_date,0,4).'</u>';
+	$title = '<strong><u>'.htmlspecialchars($rdv_name).'</u></strong><br/><u class="fontSize20 font-weight-bold">'.smartDate($rdv_date, $lang).'</u>';
 }
 
 $columns_list_array = explode(',',@$columns_list);
@@ -1537,7 +1537,7 @@ include 'menu_tasks.php';
 												if(@$remark != ''){
 													$description .= "<div class='marginTop5 colorGreen display-block".@$dir_log_meeting_updates."'>"
 																	."<span style='direction:".@$dir.";unicode-bidi:embed;'>"
-																	."[".substr(@$action_date,8,2).'/'.substr(@$action_date,5,2)."]"
+																	."[".smartDate(@$action_date, $lang)."]"
 																	."</span> "
 																	." <span style='direction:".@$dir.";unicode-bidi:embed;'>"
 																	.@$item->user_nickname;
@@ -1575,13 +1575,13 @@ include 'menu_tasks.php';
 												$tracking_data = '(';
 											
 											if($reminder_date != '0000-00-00')
-												$tracking_data .= substr($reminder_date,8,2).'/'.substr($reminder_date,5,2);
-											
+												$tracking_data .= smartDate($reminder_date, $lang);
+
 											if(@$track_responsible_name != '')
 												$tracking_data .= ','.@$track_responsible_name;
-											
+
 											if($reminder_date != '0000-00-00' || @$track_responsible_name != '')
-												$tracking_data .= ')';	
+												$tracking_data .= ')';
 
                                             $dir_log_meeting_tracking = 'alignRight';
 												if(@$item->lang == 'EN')
@@ -1594,7 +1594,7 @@ include 'menu_tasks.php';
 												if(@$track_type && @$remark != ''){
 													$description .= "<div id='div-tracking-remarks-'".@$meeting_id."' class='marginTop5 colorRed display-block".@$dir_log_meeting_tracking."'>
 																	<span class='colorGrey dir-rtl unicode-bidi-embed'>["
-																	.substr(@$item->action_date,8,2).'/'.substr(@$item->action_date,5,2)."]</span> 
+																	.smartDate(@$item->action_date, $lang)."]</span>
 																	<span class='colorGrey dir-rtl unicode-bidi-embed'>".@$item->user_nickname." - במעקב</span>";			
 												
 												    $description .= "	: 
@@ -1871,13 +1871,13 @@ include 'menu_tasks.php';
 												
 												if(in_array('task creation',$columns_list_array)){ ?>
 													<td id="td_task_creation_date_<?=@$meeting_id?>" class="<?php if(end($columns_list_array) == "task creation") echo $border_cell_table_end;?> cursor-pointer alignCenter" style="<?=@$task_creation_date_bgcolor?>">
-														<input type="text" id="task_creation_date_<?=@$meeting_id?>" name="task_creation_date_<?=@$meeting_id?>" class="fontSize13 border-none width60 cursor-pointer alignCenter" style="direction:<?=@$dir?>;<?=@$task_creation_date_color?>;<?=@$task_creation_date_bgcolor?>;" value="<?=date('M d', strtotime(@$task_creation_date))?>" data-meetingid="<?=@$meeting_id?>" data-iteration=<?=@$iteration?> data-taskcreationdate="<?=@$task_creation_date?>" />
+														<input type="text" id="task_creation_date_<?=@$meeting_id?>" name="task_creation_date_<?=@$meeting_id?>" class="fontSize13 border-none width60 cursor-pointer alignCenter" style="direction:<?=@$dir?>;<?=@$task_creation_date_color?>;<?=@$task_creation_date_bgcolor?>;" value="<?=smartDate(@$task_creation_date, $lang)?>" data-meetingid="<?=@$meeting_id?>" data-iteration=<?=@$iteration?> data-taskcreationdate="<?=@$task_creation_date?>" />
 													</td>
 												<?php }
 												
 												if(in_array('destination date',$columns_list_array)){ ?>
 													<td id="td_destination_date_<?=@$meeting_id?>" class="<?php if(end($columns_list_array) == "destination date") echo $border_cell_table_end;?> cursor-pointer alignCenter" style="<?=@$text_align?>;<?=@$padding?>:5px;<?=@$dest_date_color?>;<?=@$dest_date_bgcolor?>;">			
-													   <input type="text" id="destination_date_<?=@$meeting_id?>" name="destination_date_<?=@$meeting_id?>" class="fontSize13 border-none width60 cursor-pointer alignCenter" style="direction:<?=@$dir?>;<?=@$dest_date_color?>;<?=@$dest_date_bgcolor?>;" value="<?=@$destination_date ? date('M d', strtotime(@$destination_date)) : ''?>" data-meetingid="<?=@$meeting_id?>" data-iteration="<?=@$iteration?>" data-chapter="<?=@$chapter_name?>" data-name="<?=@$subject?>" data-area="<?=@$area?>" data-destinationdate="<?=@$destination_date?>" />
+													   <input type="text" id="destination_date_<?=@$meeting_id?>" name="destination_date_<?=@$meeting_id?>" class="fontSize13 border-none width60 cursor-pointer alignCenter" style="direction:<?=@$dir?>;<?=@$dest_date_color?>;<?=@$dest_date_bgcolor?>;" value="<?=smartDate(@$destination_date, $lang)?>" data-meetingid="<?=@$meeting_id?>" data-iteration="<?=@$iteration?>" data-chapter="<?=@$chapter_name?>" data-name="<?=@$subject?>" data-area="<?=@$area?>" data-destinationdate="<?=@$destination_date?>" />
 													</td>
 												<?php }
 												
@@ -2128,7 +2128,7 @@ include 'menu_tasks.php';
 														$description .= "<div class='marginTop5 colorGreen display-block ".@$dir_log_meeting_updates."'>"
 																	    .@$item->user_nickname." "
 																	    ."<span style='direction:".@$dir.";unicode-bidi:embed;'>"
-																		."[".substr(@$action_date,8,2).'/'.substr(@$action_date,5,2)."]"
+																		."[".smartDate(@$action_date, $lang)."]"
 																		."</span> : "
 																		.html_entity_decode(@$remark)
 																		 ."</div>";
@@ -2152,13 +2152,13 @@ include 'menu_tasks.php';
 													$tracking_data = '(';
 											    
 												if($reminder_date != '0000-00-00')
-													$tracking_data .= substr($reminder_date,8,2).'/'.substr($reminder_date,5,2);
-												
+													$tracking_data .= smartDate($reminder_date, $lang);
+
 												if(@$track_responsible_name != '')
 													$tracking_data .= ','.@$track_responsible_name;
-												
+
 												if($reminder_date != '0000-00-00' || @$track_responsible_name != '')
-													$tracking_data .= ')';	
+													$tracking_data .= ')';
 
                                                 $dir_log_meeting_tracking = 'alignRight paddingRight10';
 												if(@$item->lang == 'EN')
@@ -2170,7 +2170,7 @@ include 'menu_tasks.php';
 											    
 													if(@$track_type && @$remark != '')
 														$description .= "<div id='div-tracking-remarks-'".@$meeting_id."' class='marginTop5 colorRed display-block ".@$dir_log_meeting_tracking."'>
-																		<span class='colorGrey dir-rtl unicode-bidi-embed'>[".substr(@$item->action_date,8,2).'/'.substr(@$item->action_date,5,2)."]</span> <span class='colorGrey dir-rtl unicode-bidi-embed'>".@$item->user_nickname."</span> : <span class='colorRed dir-rtl unicode-bidi-embed display-inline-block'>".html_entity_decode(@$item->remark)."</span><span class='marginRight5 colorRed dir-rtl unicode-bidi-embed display-inline-block'>".@$tracking_data."</span>
+																		<span class='colorGrey dir-rtl unicode-bidi-embed'>[".smartDate(@$item->action_date, $lang)."]</span> <span class='colorGrey dir-rtl unicode-bidi-embed'>".@$item->user_nickname."</span> : <span class='colorRed dir-rtl unicode-bidi-embed display-inline-block'>".html_entity_decode(@$item->remark)."</span><span class='marginRight5 colorRed dir-rtl unicode-bidi-embed display-inline-block'>".@$tracking_data."</span>
 																		</div>";
 												}																	
 												
@@ -2394,13 +2394,13 @@ include 'menu_tasks.php';
 													
 													if(in_array('task creation',$columns_list_array)) { ?>
 														<td class="alignCenter" style="<?=@$task_creation_date_bgcolor?>;">
-															<?=date('M d', strtotime(@$task_creation_date))?>
+															<?=smartDate(@$task_creation_date, $lang)?>
 														</td>
 													<?php }
-													
+
 													if(in_array('destination date',$columns_list_array)) { ?>
-														<td class="alignCenter" style="<?=@$dest_date_color?>;<?=@$dest_date_bgcolor?>;">		
-															<?=@$destination_date ? date('M d', strtotime(@$destination_date)) : ''?>
+														<td class="alignCenter" style="<?=@$dest_date_color?>;<?=@$dest_date_bgcolor?>;">
+															<?=smartDate(@$destination_date, $lang)?>
 													<?php }
 
 													if(in_array('progress status',$columns_list_array)) { ?>

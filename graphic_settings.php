@@ -35,7 +35,7 @@ $bg_color_inputs = fetch_unique($query);
 				   <div class="col-md-12">
 					   הגדרות גרפיקה
 					   <br/>
-					   <?=substr(date('Y-m-d'),8,2).'/'.substr(date('Y-m-d'),5,2).'/'.substr(date('Y-m-d'),0,4)?>
+					   <?=smartDate(date('Y-m-d'))?>
 				   </div>
 				</div>
 				

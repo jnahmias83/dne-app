@@ -100,7 +100,7 @@ include 'menu_tasks.php';
 								 <?php 
 								foreach($rdvs as $item) { ?>
 									<option value="<?=@$item->id?>">
-										<?=substr($item->rdv_date,8,2).'/'.substr($item->rdv_date,5,2).'/'.substr($item->rdv_date,0,4).'-'.@$item->rdv_name?>
+										<?=smartDate($item->rdv_date).'-'.@$item->rdv_name?>
 									</option>
 								<?php
 								}
@@ -138,7 +138,7 @@ include 'menu_tasks.php';
 									 <?php 
 									foreach($rdvs as $item) { ?>
 										<option value="<?=@$item->id?>">
-											<?=substr($item->rdv_date,8,2).'/'.substr($item->rdv_date,5,2).'/'.substr($item->rdv_date,0,4).'-'.@$item->rdv_name?>
+											<?=smartDate($item->rdv_date).'-'.@$item->rdv_name?>
 										</option>
 									<?php
 									}

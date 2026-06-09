@@ -27,7 +27,7 @@ $projects_suppliers = fetch_unique($query);
 			</div>
 			<div class="row" style="margin-top:20px;text-align:center;">
 				<div class="col-md-12" style="font-size:20px;">
-					<span style="color:blue;"><?=@$projects_suppliers->nickname."<br/>".@$projects_suppliers->name."<br/>".substr(date('Y-m-d'),8,2)."/".substr(date('Y-m-d'),5,2)."/".substr(date('Y-m-d'),0,4)?></span>
+					<span style="color:blue;"><?=@$projects_suppliers->nickname."<br/>".@$projects_suppliers->name."<br/>".smartDate(date('Y-m-d'))?></span>
 				</div>
 			</div>
 			

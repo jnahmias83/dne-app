@@ -81,7 +81,7 @@ if(@$_POST['isTracking'] == 1){
 				$tracking_data = '(';
 											
 			if($item->reminder_date != '0000-00-00')
-				$tracking_data .= substr($item->reminder_date,8,2).'/'.substr($item->reminder_date,5,2);
+				$tracking_data .= smartDate($item->reminder_date, @$_POST['lang']);
 			
 			if($item->reminder_date != '0000-00-00' && $track_responsible_name != '')
 				$tracking_data .= ',';
@@ -97,7 +97,7 @@ if(@$_POST['isTracking'] == 1){
 			$content .=           "<input type='checkbox' id='log_meeting_tracking_{$item->id}' name='log_meeting_tracking[]' value='{$item->id}' onclick=\"setTextColor('div_log_meeting_tracking_{$item->id}',this,'colorRed')\" />";
 			$content .=      "</div>";
 			$content .=      "<div id='div_log_meeting_tracking_{$item->id}' class='".@$padding." fontSize13 width90Percents colorGrey border-black ".$align."'>";      
-			$content .=           "<span class='dir-rtl unicode-bidi-embed'>[".substr(@$item->action_date,8,2).'/'.substr(@$item->action_date,5,2)."]</span> <span class='dir-rtl unicode-bidi-embed'>".@$item->user_nickname."</span>";
+			$content .=           "<span class='dir-rtl unicode-bidi-embed'>[".smartDate(@$item->action_date, @$_POST['lang'])."]</span> <span class='dir-rtl unicode-bidi-embed'>".@$item->user_nickname."</span>";
 			$content .= " - <span class='dir-rtl unicode-bidi-embed'>מעקב</span>";						
 			$content .= " : <span class='dir-rtl unicode-bidi-embed display-inline-block'>".html_entity_decode(@$item->remark)."</span> <span class='dir-rtl unicode-bidi-embed'>".@$tracking_data."</span>					         
 			              </div></div>";
@@ -133,7 +133,7 @@ else {
 			}
 				
 			$content .=   "<div id='div_log_meeting_updates_{$item->id}' class='".@$padding." fontSize13 width90Percents colorGrey border-black ".@$align."'>";      
-			$content .=   "<span class='dir-rtl unicode-bidi-embed'>[".substr(@$item->action_date,8,2).'/'.substr(@$item->action_date,5,2)."]</span> <span class='dir-rtl unicode-bidi-embed'>".@$item->user_nickname."</span>";
+			$content .=   "<span class='dir-rtl unicode-bidi-embed'>[".smartDate(@$item->action_date, @$_POST['lang'])."]</span> <span class='dir-rtl unicode-bidi-embed'>".@$item->user_nickname."</span>";
 			
 			if(preg_match('/\p{L}/u', $progress_status)){
 				$content .= " - <span class='dir-rtl unicode-bidi-embed'>".@$progress_status."</span>";

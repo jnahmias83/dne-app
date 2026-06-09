@@ -14,7 +14,7 @@ $headers .= "Content-Type: multipart/mixed; boundary=\"$boundary\"\r\n";
 if($_POST['from'] == 'payments_missing_invoice') {
 	$subject = 'חסר חשבונית';
 	$html_message = "<html><body style='direction:rtl;'>";
-	$html_message.= "שלום,<br/><br/> בפרוייקט ".$_POST['project_name_he']." התבצע תשלום בסך "."&#8362;".$_POST['paid_amount_vat_included']." ביום ".substr($_POST['payment_date'],8,2)."/".substr($_POST['payment_date'],5,2)."/".substr($_POST['payment_date'],2,2).".<br/><br/>טרם התקבלה חשבונית מס/קבלה.<br/><br/>אנא להעביר אלינו את המסמך במייל חוזר.<br/><br/>בברכה,<br/><br/>דוד נחמיאס.";
+	$html_message.= "שלום,<br/><br/> בפרוייקט ".$_POST['project_name_he']." התבצע תשלום בסך "."&#8362;".$_POST['paid_amount_vat_included']." ביום ".smartDate(@$_POST['payment_date'], 'HE').".<br/><br/>טרם התקבלה חשבונית מס/קבלה.<br/><br/>אנא להעביר אלינו את המסמך במייל חוזר.<br/><br/>בברכה,<br/><br/>דוד נחמיאס.";
 	$html_message .= "</body></html>";
 	$body = "--$boundary\r\n";
 	$body .= "Content-Type: text/html; charset=UTF-8\r\n";
@@ -79,10 +79,10 @@ else {
 		$remark = html_entity_decode(@$item->remark);
 		$action_date = @$item->action_date;
 		
-		$all_remarks .= "<div class='marginTop5'>[".substr(@$action_date,8,2).'/'.substr(@$action_date,5,2).'] - '.html_entity_decode(@$remark).'</div>';
+		$all_remarks .= "<div class='marginTop5'>[".smartDate(@$action_date).'] - '.html_entity_decode(@$remark).'</div>';
 		
 		if(@$remark != '')
-			$description.= "<div class='marginTop5 colorGreen'>[".substr(@$action_date,8,2).'/'.substr(@$action_date,5,2).'] - '.html_entity_decode(@$remark).'</div>';
+			$description.= "<div class='marginTop5 colorGreen'>[".smartDate(@$action_date).'] - '.html_entity_decode(@$remark).'</div>';
 	}																						
     
 	$new_task_label = 'חדשה';
@@ -131,9 +131,9 @@ else {
 						      <td style='font-size:14px;border-left:1px solid white;'>משימת ".@$meeting->t_name_he."</td><td><span style='font-size:14px;'>אחראי</span><br/><strong style='font-size:16px;color:red;'>".@$meeting->r_name."</strong></td><td><span style='font-size:14px;'>להעביר ל</span><br/><span style='font-size:16px;'>".@$meeting->po_name."</span></td>
 						  </tr>	 
 						  <tr style='text-align:center;'>
-						      <td colspan='3'><div style='font-size:14px;'>תאריך יעד <span style='color:red;font-size:16px;'>".substr($old_destination_date,8,2)."/".substr($old_destination_date,5,2)."/".substr($old_destination_date,0,4)."</span>";
+						      <td colspan='3'><div style='font-size:14px;'>תאריך יעד <span style='color:red;font-size:16px;'>".smartDate($old_destination_date)."</span>";
 	if($count_delay_dest_date > 0)
-	    $html_message .= " נדחה ".$count_delay_dest_date.' פעמ(ים) ל- '.substr($destination_date,8,2)."/".substr($destination_date,5,2)."/".substr($destination_date,0,4);
+	    $html_message .= " נדחה ".$count_delay_dest_date.' פעמ(ים) ל- '.smartDate($destination_date);
 						  	  
 	$html_message.=	"            </div>
 	                          </td>
