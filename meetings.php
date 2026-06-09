@@ -4509,7 +4509,7 @@ function setFilter(id_report,id,search_text,filter_type){
 			params.push('m.id_responsible IN('+responsibles+')');
 	}
        
-	if(progress_status != '')
+	if(progress_status != '' && filter_type != 'search_filter')
 	  params.push('m.id_progress_status IN('+progress_status+')');
 
 	let creation_date = '';
