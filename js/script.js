@@ -450,7 +450,7 @@ function removeAccountPayment(ap_type,record_id){
 
 function fillContentTaskDetails(meeting_id,iteration,task_details,forShare){
 	let content = '<table dir="rtl" width="100%">';
-	content += '<tr class="alignCenter height26"><td colspan="3" class="bgColorBlue2 colorWhite font-weight-bold alignCenter paddingTop2 paddingBottom5">'+task_details[1]+'</td></tr>';
+	content += '<tr class="alignCenter height26"><td colspan="3" class="bgColorBlue2 colorWhite font-weight-bold alignCenter paddingTop2 paddingBottom5">'+(forShare ? task_details[27]+'<br/>' : '')+task_details[1]+'</td></tr>';
 	
 	content += '<tr class="alignCenter height26">';
 	content += '<td class="fontSize14 border-left-white"><span class="colorGrey font-weight-bold">משימת</span><br/><span style="display:inline-block;padding:6px 14px;color:'+task_details[28]+';background-color:'+task_details[26]+';font-weight:bold;box-sizing:border-box;border-radius:50px;">'+task_details[14]+'</span></td>';
