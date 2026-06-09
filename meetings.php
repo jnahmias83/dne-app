@@ -1791,13 +1791,10 @@ include 'menu_tasks.php';
 											    <td id="td_cbx_meetings_to_update_<?=@$meeting_id?>" class="alignCenter <?=@$border_cell_table_start?> <?=@$border_cell_cbx?>" style="<?=@$td_count_bgcolor?>">
 												    <input type="checkbox" id="meetings_to_update_cbx_<?=@$meeting_id?>" name="meetings_to_update_cbx[]" class="meetings_to_update_cbx" value="<?=@$meeting_id?>" />	
 												</td>
-												<td id="td_count_<?=@$meeting_id?>" class="alignCenter <?=@$border_cell_number?>" style="<?=@$td_count_bgcolor?><?php if(@$track_type) echo ';display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;'; ?>">
-													<a id="task_actions_<?=@$meeting_id?>" data-projectid="<?=@$project_id?>" data-lang="<?=@$lang?>" data-meetingid="<?=@$meeting_id?>" data-iteration=<?=@$iteration?> data-userid="<?=@$user_id?>" data-ispriority="<?=@$is_priority?>" data-remark="<?=@$remark?>" data-chapter="<?=@$chapter_name?>" data-name="<?=@$subject?>" data-area="<?=@$area?>" data-recipient="<?=@$responsible_email?>" data-responsibleid="<?=@$responsible_id?>" data-destinationdate="<?=@$destination_date?>" data-progresstatusid="<?=@$progress_status_id?>" data-trackresponsibleid="<?=@$id_track_responsible?>" data-tracktype="<?=@$track_type?>" data-reminderdate="<?=@$reminder_date?>" data-remindertime="<?=@$reminder_time?>" class="text-decoration-none cursor-pointer fontSize12 padding-7x-3y font-weight-bold borderRadius10" style="<?=@$num_bgcolor?>!important;<?=@$num_border_color?>;display:inline-block;"><?=@$count?></a>
-													<?php if(@$track_type): ?>
-													<span class="badge-circle" style="background-color:#e53935;width:15px;height:15px;font-size:8px;display:inline-flex;" title="<?=htmlspecialchars(@$track_responsible_name)?>">
-														<?=mb_strtoupper(mb_substr(@$track_responsible_name, 0, 2, 'UTF-8'))?>
-													</span>
-													<?php endif; ?>
+												<td id="td_count_<?=@$meeting_id?>" class="alignCenter <?=@$border_cell_number?>" style="<?=@$td_count_bgcolor?>">
+													<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;height:100%;width:100%;">
+														<a id="task_actions_<?=@$meeting_id?>" data-projectid="<?=@$project_id?>" data-lang="<?=@$lang?>" data-meetingid="<?=@$meeting_id?>" data-iteration=<?=@$iteration?> data-userid="<?=@$user_id?>" data-ispriority="<?=@$is_priority?>" data-remark="<?=@$remark?>" data-chapter="<?=@$chapter_name?>" data-name="<?=@$subject?>" data-area="<?=@$area?>" data-recipient="<?=@$responsible_email?>" data-responsibleid="<?=@$responsible_id?>" data-destinationdate="<?=@$destination_date?>" data-progresstatusid="<?=@$progress_status_id?>" data-trackresponsibleid="<?=@$id_track_responsible?>" data-tracktype="<?=@$track_type?>" data-reminderdate="<?=@$reminder_date?>" data-remindertime="<?=@$reminder_time?>" class="text-decoration-none cursor-pointer fontSize12 padding-7x-3y font-weight-bold borderRadius10" style="<?=@$num_bgcolor?>!important;<?=@$num_border_color?>"><?=@$count?></a><?php if(@$track_type && @$track_responsible_name != ''): ?><span class="badge-circle" style="background-color:#e53935;width:15px;height:15px;font-size:8px;display:inline-flex;box-shadow:none;" title="<?=htmlspecialchars(@$track_responsible_name)?>"><?=mb_strtoupper(mb_substr(@$track_responsible_name, 0, 2, 'UTF-8'))?></span><?php endif; ?>
+													</div>
 												</td>
 												
 												<?php if(in_array('subject',$columns_list_array)){ ?>
