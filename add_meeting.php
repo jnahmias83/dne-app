@@ -680,8 +680,9 @@ include 'menu_tasks.php';
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
-let image1,image2 = '';
+let image1 = '', image2 = '';
 let is_appears_img1,is_appears_img2 = 0;
+let image1_compressing = false, image2_compressing = false;
 
 function compressFile(file, maxDim, quality) {
     maxDim = maxDim || 1920;
@@ -832,6 +833,7 @@ $(document).ready(function(){
 		is_appears_img1 = 1;
 		$('#div-image1').show();
 
+		image1_compressing = true;
 		compressFile(file).then(function(result) {
 			image1 = result.file;
 			preview_image1.attr("src", result.dataURL);
@@ -839,6 +841,17 @@ $(document).ready(function(){
 			div_image1.css("display","block");
 			image1_container.css("display","block");
 			div_rotations_image1.css("display","block");
+		}).catch(function() {
+			image1 = file;
+			let r = new FileReader();
+			r.onload = function(e) { preview_image1.attr("src", e.target.result); };
+			r.readAsDataURL(file);
+			div_delete_image1.css("display","block");
+			div_image1.css("display","block");
+			image1_container.css("display","block");
+			div_rotations_image1.css("display","block");
+		}).finally(function() {
+			image1_compressing = false;
 		});
 	});
 	
@@ -858,6 +871,7 @@ $(document).ready(function(){
 		is_appears_img2 = 1;
 		$('#div-image2').show();
 
+		image2_compressing = true;
 		compressFile(file).then(function(result) {
 			image2 = result.file;
 			preview_image2.attr("src", result.dataURL);
@@ -865,6 +879,17 @@ $(document).ready(function(){
 			div_image2.css("display","block");
 			image2_container.css("display","block");
 			div_rotations_image2.css("display","block");
+		}).catch(function() {
+			image2 = file;
+			let r = new FileReader();
+			r.onload = function(e) { preview_image2.attr("src", e.target.result); };
+			r.readAsDataURL(file);
+			div_delete_image2.css("display","block");
+			div_image2.css("display","block");
+			image2_container.css("display","block");
+			div_rotations_image2.css("display","block");
+		}).finally(function() {
+			image2_compressing = false;
 		});
 	});
 
@@ -1091,7 +1116,12 @@ function remarkClear(){
 }
 
 function saveMeetingData(share_doc){
-	let action = 'חדשה'; 
+	if (image1_compressing || image2_compressing) {
+		alert('Veuillez patienter, le traitement de l\'image est en cours...');
+		return;
+	}
+
+	let action = 'חדשה';
 	
 	let subject = $('#subject').text().trim();
 	let area = $('#area').text().trim();
@@ -1142,9 +1172,9 @@ function saveMeetingData(share_doc){
 	form_data.append('task_creation_date', task_creation_date);
 	form_data.append('destination_date', $('#destination_date').val());
 	form_data.append('id_progress_status', id_progress_status);
-	form_data.append('image1', image1);
+	form_data.append('image1', image1 || '');
     form_data.append('is_appears_img1', is_appears_img1);
-    form_data.append('image2', image2);
+    form_data.append('image2', image2 || '');
     form_data.append('is_appears_img2', is_appears_img2);
 	form_data.append('lang', $('#lang').val());
 	form_data.append('is_agrees', is_agrees);
