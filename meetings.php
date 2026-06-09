@@ -4708,6 +4708,11 @@ td[id^="td_area_"] > div {
 .btn-group-toggle input[type="radio"] {
     display: none;
 }
+
+span.sf-hl {
+    font-weight: bold;
+    display: inline;
+}
 </style>
 
 <script>
@@ -4733,7 +4738,7 @@ $(function() {
             var m;
             while ((m = re.exec(remaining)) !== null) {
                 if (m.index > 0) frag.appendChild(document.createTextNode(remaining.slice(0, m.index)));
-                var b = document.createElement('b');
+                var b = document.createElement('span');
                 b.className = 'sf-hl';
                 b.textContent = m[0];
                 frag.appendChild(b);
