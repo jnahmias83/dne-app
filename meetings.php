@@ -4717,22 +4717,22 @@ span.sf-hl {
 
 <script>
 $(function() {
-    var term = $('#search_filter').val();
+    let term = $('#search_filter').val();
     if (!term) return;
 
-    var esc = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    var re = new RegExp('(' + esc + ')', 'gi');
+    let esc = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    let re = new RegExp('(' + esc + ')', 'gi');
 
     function highlightEl(el) {
-        var html = el.innerHTML;
-        var result = html.replace(/(<[^>]+>|[^<]+)/g, function(part) {
+        let html = el.innerHTML;
+        let result = html.replace(/(<[^>]+>|[^<]+)/g, function(part) {
             if (part.charAt(0) === '<') return part;
             re.lastIndex = 0;
             return part.replace(re, '<span class="sf-hl">$1</span>');
         });
         re.lastIndex = 0;
         if (result !== html) {
-            var ce = el.getAttribute('contenteditable');
+            let ce = el.getAttribute('contenteditable');
             el.removeAttribute('contenteditable');
             el.innerHTML = result;
             if (ce !== null) el.setAttribute('contenteditable', ce);

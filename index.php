@@ -12,7 +12,7 @@ if(empty($_SESSION['id_user'])){
 <body>
 <script>
 try {
-    var last = localStorage.getItem('dne_last_url');
+    let last = localStorage.getItem('dne_last_url');
     if(last && last.indexOf('meetings.php') !== -1){
         window.location.href = last;
     } else {

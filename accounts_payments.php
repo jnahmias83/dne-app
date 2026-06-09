@@ -377,6 +377,8 @@ include 'menu_budget_reports.php';
 
 								<input type="hidden" id="remaining_to_pay_vat_included" value="<?=@$remaining_to_pay_vat_included_display?>" />
 								<input type="hidden" id="percent_to_pay_from_orders_vat_included" value="<?=@$percent_to_pay_from_orders_vat_included_display?>" />
+								<input type="hidden" id="total_paid_amount_vat_included_val" value="<?=@$total_paid_amount_vat_included_display?>" />
+								<input type="hidden" id="percent_paid_display_val" value="<?=@$percent_paid_display?>" />
 								
 								<tr class="height30">
 									<td class="border-black bgColorSkyblue" id="th_total_accounts_payments" colspan="4"></td>
@@ -384,25 +386,29 @@ include 'menu_budget_reports.php';
 									<td class="th_accounts_payments_item border-black bgColorSkyblue" colspan="2"><strong><?='-'.@$total_paid_amount_vat_included_display?></strong></td>
 								</tr>
 								<tr class="height30">
-									<td class="bgColorWhite" colspan="4" rowspan="2"></td>
+									<td class="bgColorWhite" colspan="4"></td>
 									<td <?php if($accounts_payments_num_rows > 0) { echo 'colspan=3';} else echo 'colspan=2';?> class="border-black" id="pending_payment_cell"><span id="span_pending_payment"></span>&nbsp;<?=@$pending_payment_display?></td>
-								</tr>
-								<tr class="bgColorBeige height30">
-									<td <?php if($accounts_payments_num_rows > 0) { echo 'colspan=3';} else echo 'colspan=2';?> class="border-black" id="pending_payment_vat_excluded_cell"><div id="div_pending_payment_vat_excluded"></div>&nbsp;<?=@$pending_payment_vat_excluded_display?> (<?=@$percent_paid_from_orders_vat_excluded_display?>)</td>
 								</tr>
 							</table>
 								
-							<table id="table_total_paid_vat_excluded" class="marginTop15 width40Percents fontSize13 font-weight-bold">
+							<table id="table_summary" class="marginTop15 fontSize13 font-weight-bold">
 								<tr>
-								   <td id="td_total_paid_vat_excluded" class="bgColorBeige alignCenter"></td>
-								   <td class="bgColorBeige alignCenter"><?=@$total_paid_amount_vat_excluded_display?></td>
+									<td id="td_summary_header" colspan="3" class="bgColorSkyblue border-black alignCenter"></td>
 								</tr>
 								<tr>
-								   <td id="td_percent_paid" class="bgColorBeige alignCenter"></td>
-								   <td class="bgColorBeige alignCenter"><?=@$percent_paid_display?></td>
+									<td id="td_to_pay_label" class="bgColorSkyblue border-black alignCenter padding-4x-4y"></td>
+									<td class="bgColorSkyblue border-black alignCenter padding-4x-4y"><?=@$pending_payment_display?></td>
+									<td class="bgColorSkyblue border-black alignCenter padding-4x-4y"></td>
 								</tr>
 								<tr>
-									<td id="td_remaining_to_pay" colspan="2" class="paddingTop5 border-white fontSize13"></td>		 
+									<td id="td_paid_label" class="bgColorBeige border-black alignCenter padding-4x-4y"></td>
+									<td class="bgColorBeige border-black alignCenter padding-4x-4y"><?=@$total_paid_amount_vat_included_display?></td>
+									<td id="td_paid_pct" class="bgColorBeige border-black alignCenter padding-4x-4y"></td>
+								</tr>
+								<tr>
+									<td id="td_remaining_label" class="bgColorBeige border-black alignCenter padding-4x-4y"></td>
+									<td class="bgColorBeige border-black alignCenter padding-4x-4y"><?=@$remaining_to_pay_vat_included_display?></td>
+									<td id="td_remaining_pct" class="bgColorBeige border-black alignCenter padding-4x-4y"></td>
 								</tr>
 							</table>
 						</div>
@@ -484,7 +490,6 @@ $(document).ready(function() {
 		  $('.th_orders_item').css({"text-align":"left",'padding-left':'5px'});
 		  $('#th_pending_payments').css({"background-color":"white","border":"none"});
 		  $('#pending_payment_cell').css({"text-align":"center","font-weight":"bold"});
-		  $('#pending_payment_vat_excluded_cell').css({"text-align":"center","font-weight":"bold"});	  
 		  $(".bgColorWhite").removeClass("td_white_he");
 		  $(".bgColorWhite").addClass("td_white_en");
 		  $('.th_not_approved_accounts_item').css({"text-align":"left",'padding-left':'5px'});
@@ -505,16 +510,17 @@ $(document).ready(function() {
 		  $('#th_total_orders').html("<strong>Total orders - excluding VAT</strong>");
 		  $('#th_payments').html('Payments<br/><span style="font-size:12px;">VAT Included</span>');
 		  $('#span_pending_payment').html('<strong>To be paid</strong>');
-		  $('#div_pending_payment_vat_excluded').html('<strong>For payment VAT excluded</strong>');
 		  $('#div_title_not_approved_accounts_list').html('Not Approved Accounts List');
 		  $('#div_title_not_approved_accounts_list').css({"text-align":"left","font-size":"22px"});
 		  $('#th_submitted_account').html('Submitted<br/>Account');
 		  $('#th_submit_date').html('Submission<br/>Date');
-		  $('#table_total_paid_vat_excluded').css({"direction":"ltr","float":"right"});
-		  $('#td_total_paid_vat_excluded').html('Paid - VAT excluded');
-		  $('#td_percent_paid').html('Paid in % of total orders');
-		  $('#td_remaining_to_pay').text(`Remaining to pay(VAT included) ${$('#remaining_to_pay_vat_included').val()} (${$('#percent_to_pay_from_orders_vat_included').val()})`);
-		  $('#td_remaining_to_pay').css({'color':'grey'});
+		  $('#table_summary').css({"direction":"ltr","float":"right"});
+		  $('#td_summary_header').html('<strong>VAT included</strong>');
+		  $('#td_to_pay_label').html('<strong>To be paid</strong>');
+		  $('#td_paid_label').html('<strong>Paid</strong>');
+		  $('#td_remaining_label').html('<strong>Remaining to pay</strong>');
+		  $('#td_paid_pct').html('<strong>' + $('#percent_paid_display_val').val() + '</strong>');
+		  $('#td_remaining_pct').html('<strong>' + $('#percent_to_pay_from_orders_vat_included').val() + '</strong>');
 			 
 		  $('a[id^="a_account_payment_type"]').each(function () {
 			  let elem = 'hidden_'+$(this).attr('id').substring($(this).attr('id').indexOf('a_')+2);
@@ -546,7 +552,6 @@ $(document).ready(function() {
 		  $('#th_accounts').html("חשבונות לתשלום<br/><span style='font-size:12px;'>כולל מע''מ</span>");
 		  $('#th_payments').html("תשלומים<br/><span style='font-size:12px;'>כולל מע''מ</span>");
 		  $('#span_pending_payment').html('סכום לתשלום');
-		  $('#div_pending_payment_vat_excluded').html("<strong>לתשלום לא כולל מע''מ</strong>");
 		  $('#orders_list').css({"direction":"rtl","width":"100%"});
 		  $('#accounts_payments_list').css({"direction":"rtl","width":"100%"});
 		  $('#not_approved_accounts_list').css({"direction":"rtl","width":"100%"});
@@ -557,8 +562,7 @@ $(document).ready(function() {
 		  $('.th_accounts_payments_item').css({"text-align":"right",'padding-right':'5px'});
 		  $('.th_orders_item').css({"text-align":"right",'padding-right':'5px'});
 		  $('#pending_payment_cell').css({"text-align":"center","font-weight":"bold"});
-		  $('#pending_payment_vat_excluded_cell').css({"text-align":"center","font-weight":"bold","font-family":"David"});
-	      $(".bgColorWhite").removeClass("td_white_en");
+		  $(".bgColorWhite").removeClass("td_white_en");
 		  $(".bgColorWhite").addClass("td_white_he");
 		  $('#div_title_not_approved_accounts_list').html('רשימת חשבונות לא מאושרים');
 		  $('#div_title_not_approved_accounts_list').css({"text-align":"right","font-size":"22px"});
@@ -566,11 +570,13 @@ $(document).ready(function() {
 		  $('#th_submit_date').html('תאריך ההגשה');
 		  $('#th_total_accounts_payments').html("<strong>סה''כ</strong>");
 		  $('.th_not_approved_accounts_item').css({"text-align":"right",'padding-right':'5px'});
-		  $('#table_total_paid_vat_excluded').css({"direction":"rtl","float":"left"});
-		  $('#td_total_paid_vat_excluded').html("שולם  - לא כולל מע''מ");
-		  $('#td_percent_paid').html('שולם ב-% מסך ההזמנות');
-		  $('#td_remaining_to_pay').text(`נשאר לשלם (כולל מע''ם) ${$('#remaining_to_pay_vat_included').val()} (${$('#percent_to_pay_from_orders_vat_included').val()})`);
-		  $('#td_remaining_to_pay').css({'color':'grey'});
+		  $('#table_summary').css({"direction":"rtl","float":"left"});
+		  $('#td_summary_header').html("<strong>כולל מע''מ</strong>");
+		  $('#td_to_pay_label').html('<strong>לתשלום</strong>');
+		  $('#td_paid_label').html('<strong>שולם</strong>');
+		  $('#td_remaining_label').html('<strong>שאר לשלם</strong>');
+		  $('#td_paid_pct').html('<strong>' + $('#percent_paid_display_val').val() + '</strong>');
+		  $('#td_remaining_pct').html('<strong>' + $('#percent_to_pay_from_orders_vat_included').val() + '</strong>');
 		  
 		   $('a[id^="a_account_payment_type"]').each(function () {
 			  let elem = 'hidden_'+$(this).attr('id').substring($(this).attr('id').indexOf('a_')+2);
