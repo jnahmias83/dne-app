@@ -1481,7 +1481,7 @@ include 'menu_tasks.php';
 											$num_border_color = 'border:1px solid transparent';
 											
 											if(@$track_type)
-												$num_bgcolor = 'background-color:'.@$bg_color_inputs->b_bgcolor;
+												$num_bgcolor = 'background-color:'.(@$bg_color_inputs->b_bgcolor ?: '#cbddec');
 											
 											if(@$track_type && @$id_track_responsible == @$_SESSION['id_user'])
 												$num_border_color = 'border:2px solid '.@$bg_color_inputs->f_bgcolor;
