@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 include 'include/header.php';
 include 'functions/functions.php';
 
@@ -793,19 +793,19 @@ foreach($all_what_news as $wn){
 									$tracking_data = '(';
 											
 								if($reminder_date != '0000-00-00')
-									$tracking_data .= substr($reminder_date,8,2).'/'.substr($reminder_date,5,2);
-								
+									$tracking_data .= smartDate($reminder_date);
+
 								if($reminder_date != '0000-00-00' && $track_responsible_name != '')
 									$tracking_data .= ',';
-								
+
 								if(@$track_responsible_name != '')
 									$tracking_data .= @$track_responsible_name;
-								
+
 								if($reminder_date != '0000-00-00' || @$track_responsible_name != '')
 									$tracking_data .= ')';
 								?>
-								<tr class="task-row fontSize13">	
-									<td>										
+								<tr class="task-row fontSize13">
+									<td>
 										<a id="task_name_<?=@$wn->id?>" class="text-decoration-none w-100 d-block">		
 											<div class="marginTop5 marginBottom5 flex flex-wrap justify-content-center align-items-center task_name width100Percents cursor-pointer" data-projectnickname="<?=@$wn->p_nickname?>" data-meetingid="<?=@$wn->id?>" data-projectid="<?=@$wn->p_id?>" data-userid="<?=@$user_id?>" data-chapter="<?=@$wn->chapter_name?>" data-name="<?=@$wn->subject?>" data-area="<?=@$wn->area?>" data-recipient="<?=@$responsible_email?>" data-responsibleid="<?=@$wn->id_responsible?>" data-destinationdate="<?=@$wn->destination_date?>" data-progresstatusid="<?=@$wn->id_progress_status?>" data-ispriority="<?=@$wn->is_priority?>" data-trackresponsibleid="<?=@$id_track_responsible?>" data-tracktype="<?=@$track_type?>" data-reminderdate="<?=@$reminder_date?>" data-remindertime="<?=@$reminder_time?>" data-istodotoday="0">
 												<div class="width15Percents">	
@@ -847,8 +847,7 @@ foreach($all_what_news as $wn){
 																	</span>
 																	<span class="color-19bf42 dir-rtl font-weight-bold unicode-bidi-embed">
 																		<?php 
-																		$action_date = new DateTime(@$wn->lmu_action_date);
-																		echo $action_date->format("d M")?>
+																		echo smartDate(@$wn->lmu_action_date)?>
 																	</span>		
 																	<?php if(strlen($progress_status_name) > 2){ ?>
 																		&nbsp;-
@@ -860,8 +859,7 @@ foreach($all_what_news as $wn){
 																	    if($destination_date != '0000-00-00'){ ?>
 																		  &nbsp;-
 																			<span class="dir-rtl unicode-bidi-embed color-19bf42 font-weight-bold">
-																				<?php $destination_date = new DateTime(@$destination_date);
-																					echo '(יעד - '.$destination_date->format("d M").')'?>
+																				<?php echo '(יעד - '.smartDate($destination_date).')'?>
 																			</span> 
 																	<?php } ?>															
 																</div>
@@ -877,9 +875,7 @@ foreach($all_what_news as $wn){
 																	<?=@$wn->user_nickname?>
 																</span>		
 																<span class="colorRed dir-rtl font-weight-bold unicode-bidi-embed">
-																	<?php 
-																	$action_date = new DateTime(@$wn->lmt_action_date);
-																	echo $action_date->format("d M")?> :
+																	<?php echo smartDate(@$wn->lmt_action_date)?> :
 																</span>												
 																<span class="colorRed dir-rtl unicode-bidi-embed display-inline-block font-weight-bold">
 																	<?=html_entity_decode(@$remark)?>
@@ -1244,7 +1240,7 @@ foreach($all_what_news as $wn){
 														$tracking_data = '(';
 											
 													if($reminder_date != '0000-00-00')
-														$tracking_data .= substr($reminder_date,8,2).'/'.substr($reminder_date,5,2);
+														$tracking_data .= smartDate($reminder_date);
 													
 													if($reminder_date != '0000-00-00' && $track_responsible_name != '')
 														$tracking_data .= ',';
@@ -1292,7 +1288,7 @@ foreach($all_what_news as $wn){
 																					<?php foreach($log_meeting_tracking as $item){ ?>
 																						<div class="marginTop5 fontSize9 text-end">
 																							<span class="colorGrey dir-rtl unicode-bidi-embed">
-																								[<?=substr(@$item->action_date,8,2).'/'.substr(@$item->action_date,5,2) ?>]
+																								[<?=smartDate(@$item->action_date)?>]
 																							</span>
                                                                                             <span class="colorGrey dir-rtl unicode-bidi-embed">
 																								<?=@$item->user_nickname ?>
@@ -1399,7 +1395,7 @@ foreach($all_what_news as $wn){
 														$tracking_data = '(';
 											
 													if($reminder_date != '0000-00-00')
-														$tracking_data .= substr($reminder_date,8,2).'/'.substr($reminder_date,5,2);
+														$tracking_data .= smartDate($reminder_date);
 													
 													if($reminder_date != '0000-00-00' && $track_responsible_name != '')
 														$tracking_data .= ',';
@@ -1420,7 +1416,7 @@ foreach($all_what_news as $wn){
 														$tracking_data = '(';
 											
 													if($reminder_date != '0000-00-00')
-														$tracking_data .= substr($reminder_date,8,2).'/'.substr($reminder_date,5,2);
+														$tracking_data .= smartDate($reminder_date);
 													
 													if($reminder_date != '0000-00-00' && $track_responsible_name != '')
 														$tracking_data .= ',';
@@ -1463,7 +1459,7 @@ foreach($all_what_news as $wn){
 																			<div class="marginRight5 marginTop5 flex flex-wrap justify-content-center">
 																				<div class="width100Percents">
 																					<span class="dir-rtl colorGrey unicode-bidi-embed">
-																						[<?=substr(@$wn->lmu_action_date,8,2).'/'.substr(@$wn->lmu_action_date,5,2)?>]
+																						[<?=smartDate(@$wn->lmu_action_date)?>]
 																					</span> 
 																					<span class="colorGrey dir-rtl unicode-bidi-embed">
 																						<?=@$wn->user_nickname?>
@@ -1481,7 +1477,7 @@ foreach($all_what_news as $wn){
 																				<div class="marginTop5 flex flex-wrap justify-content-center">
 																					<div class="width100Percents">
 																						<span class="dir-rtl colorGrey unicode-bidi-embed">
-																							[<?=substr(@$wn->lmt_action_date,8,2).'/'.substr(@$wn->lmt_action_date,5,2)?>]
+																							[<?=smartDate(@$wn->lmt_action_date)?>]
 																						</span> 
 																						<span class="colorGrey dir-rtl unicode-bidi-embed">
 																							<?=@$wn->user_nickname?>
@@ -1654,7 +1650,7 @@ foreach($all_what_news as $wn){
 																<?php if(@$list_from == 'reminders'){ ?>
 																	<div class="marginTop10">
 																		<i class="fa-solid fa-bell colorRed"></i>
-																		<strong><?=substr(@$tdt->reminder_date,8,2).'/'.substr(@$tdt->reminder_date,5,2)?></strong>
+																		<strong><?=smartDate(@$tdt->reminder_date)?></strong>
 																	</div>
 																<?php } ?>
 															</div>

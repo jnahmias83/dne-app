@@ -73,7 +73,7 @@ if($log_meeting_updates_num_rows > 0 || $log_meeting_tracking_num_rows > 0){
 						
 						$destination_date = '';
 						if(@$item->destination_date != '0000-00-00')
-							$destination_date = substr(@$item->destination_date,8,2)."/".substr(@$item->destination_date,5,2);
+							$destination_date = smartDate(@$item->destination_date);
 						               					
 						$is_remark_appears_log = @$item->is_remark_appears_log;	
 						$remark = @$item->remark;
@@ -100,7 +100,7 @@ if($log_meeting_updates_num_rows > 0 || $log_meeting_tracking_num_rows > 0){
 					    $content .= "<tr class='alignCenter'>
 										<td>".@$_POST['id_meeting']."</td>
 										<td>".@$user->firstname."&nbsp;".@$user->lastname."</td>
-										<td>".@substr(@$action_date,8,2)."/".substr(@$action_date,5,2)."/".substr(@$action_date,0,4)."</td>
+										<td>".smartDate(@$action_date)."</td>
 										<td>".@$action."</td>
 										<td>".@$destination_date."</td>
 										<td>
@@ -140,7 +140,7 @@ if($log_meeting_updates_num_rows > 0 || $log_meeting_tracking_num_rows > 0){
 						
 						$reminder_date = '';
 						if(@$query->reminder_date != '0000-00-00')
-							$reminder_date = substr(@$query->reminder_date,8,2)."/".substr(@$query->reminder_date,5,2);
+							$reminder_date = smartDate(@$query->reminder_date);
 						               					
 						$is_remark_appears_log = @$item->is_remark_appears_log;	
 						$remark = @$item->remark;
@@ -167,7 +167,7 @@ if($log_meeting_updates_num_rows > 0 || $log_meeting_tracking_num_rows > 0){
 					    $content .= "<tr class='alignCenter' style='background-color:#ffe4e4'>
 										<td>".@$_POST['id_meeting']."</td>
 										<td>".@$user->firstname."&nbsp;".@$user->lastname."</td>
-										<td>".@substr(@$action_date,8,2)."/".substr(@$action_date,5,2)."/".substr(@$action_date,0,4)."</td>
+										<td>".smartDate(@$action_date)."</td>
 										<td>מעקב</td>
 										<td>".@$reminder_date."</td>
 										<td>

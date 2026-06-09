@@ -69,7 +69,7 @@ if(@$_POST['all_ids_to_edit'] == '') {
 		$action_date = @$item->action_date;
 		$user_nickname = @$item->user_nickname;
 		
-		$all_remarks .= "<div class='marginTop5'>".@$user_nickname." - [".substr(@$action_date,8,2).'/'.substr(@$action_date,5,2).'] - '.html_entity_decode(@$remark).'</div>';
+		$all_remarks .= "<div class='marginTop5'>".@$user_nickname." - [".smartDate(@$action_date, @$meeting->lang).'] - '.html_entity_decode(@$remark).'</div>';
 		
 		$progress_status_log_updates = @$item->ps_name_he;
 		if(@$meeting->lang == 'EN')
@@ -78,7 +78,7 @@ if(@$_POST['all_ids_to_edit'] == '') {
 		if(@$remark != '')
 			$description .= "<div class='marginTop5 fontSize13 colorGreen'>"
 							."<span class='dir-rtl unicode-bidi-embed'>"
-							."[".substr(@$action_date,8,2).'/'.substr(@$action_date,5,2)."]"
+							."[".smartDate(@$action_date, @$meeting->lang)."]"
 							."</span> "
 							."<span class='dir-rtl unicode-bidi-embed'>"
 							.@$user_nickname
@@ -113,7 +113,7 @@ if(@$_POST['all_ids_to_edit'] == '') {
 			$tracking_data = '(';
 											
 		if(@$meeting->reminder_date != '0000-00-00')
-			$tracking_data .= substr(@$meeting->reminder_date,8,2).'/'.substr(@$meeting->reminder_date,5,2);
+			$tracking_data .= smartDate(@$meeting->reminder_date, @$meeting->lang);
 		
 		if(@$meeting->reminder_date != '0000-00-00' && $track_responsible_name != '')
 			$tracking_data .= ',';
@@ -145,17 +145,7 @@ if(@$_POST['all_ids_to_edit'] == '') {
 	  
 		    $action_date = @$item->action_date;
 			
-			$formatter = new IntlDateFormatter(
-				'he_IL', 
-				IntlDateFormatter::NONE,
-				IntlDateFormatter::NONE,
-				null,
-				null,
-				'd MMM'
-			);
-			
-			$action_date = new DateTime(@$item->action_date);
-			$action_date =  $formatter->format($action_date);														
+			$action_date = smartDate(@$item->action_date, @$meeting->lang);
 			
 			$user_nickname = @$item->user_nickname;
 

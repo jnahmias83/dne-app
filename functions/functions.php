@@ -165,6 +165,24 @@ function get_year($date) {
 	return $annee;
 }
 
+function smartDate($date, $lang = null) {
+    if (!$date || $date == '0000-00-00') return '';
+    $ts = strtotime($date);
+    if (!$ts || $ts <= 0) return '';
+    if (!$lang) $lang = @$_SESSION['lang'] ?: 'HE';
+    static $months = [
+        'FR' => ['','jan','fév','mar','avr','mai','juin','juil','aoû','sep','oct','nov','déc'],
+        'EN' => ['','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+        'HE' => ['','ינו','פבר','מרץ','אפר','מאי','יוני','יולי','אוג','ספט','אוק','נוב','דצמ'],
+    ];
+    $month_num = (int)date('n', $ts);
+    $day       = (int)date('j', $ts);
+    $year      = date('y', $ts);
+    $lang_key  = isset($months[$lang]) ? $lang : 'HE';
+    $m         = $months[$lang_key][$month_num];
+    return ($ts >= strtotime('-12 months')) ? $day.' '.$m : $m.' '.$year;
+}
+
 if (!function_exists('cleanCut')) {
     function cleanCut($string,$length,$cutString = '...') {
 		if(strlen($string) <= $length) {

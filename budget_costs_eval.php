@@ -77,7 +77,7 @@ include 'menu_budget_reports.php';
 								
 								$evaluation_date = '';
 								if(@$item->evaluation_date != '0000-00-00')
-									$evaluation_date = substr(@$item->evaluation_date,8,2).'/'.substr(@$item->evaluation_date,5,2).'/'.substr(@$item->evaluation_date,2,2);
+									$evaluation_date = smartDate(@$item->evaluation_date, @$lang_screen);
 								
 								$evaluation_cost_display = '';
 								if(@$item->evaluation_cost > 0) {

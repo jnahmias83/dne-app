@@ -176,7 +176,7 @@ include 'menu_budget_reports.php';
 								foreach($orders as $item){		
 									$signature_date = '';
 									if(@$item->signature_date != '0000-00-00')
-										$signature_date = substr(@$item->signature_date,8,2).'/'.substr(@$item->signature_date,5,2).'/'.substr(@$item->signature_date,2,2);				
+										$signature_date = smartDate(@$item->signature_date, @$lang_screen);				
 									
 									$sum_orders_display = '';
 									if(@$item->sum_order != 0.00) {
@@ -265,7 +265,7 @@ include 'menu_budget_reports.php';
 										
 										$account_payment_date = '';
 										if(@$item->account_payment_date != '0000-00-00')
-											$account_payment_date = substr(@$item->account_payment_date,8,2).'/'.substr(@$item->account_payment_date,5,2).'/'.substr(@$item->account_payment_date,2,2);				
+											$account_payment_date = smartDate(@$item->account_payment_date, @$lang_screen);				
 										
 										$approved_amount = @$item->approved_amount;	
 										$approved_amount_display = number_format(@$approved_amount,(@$approved_amount == floor(@$approved_amount)?0:2), '.', ',').'&#8362;';	
@@ -428,7 +428,7 @@ include 'menu_budget_reports.php';
 										foreach($not_approved_accounts as $item) { 
 											$submit_date = '';
 											if(@$item->submit_date != '0000-00-00')
-											  $submit_date = substr(@$item->submit_date,8,2).'/'.substr(@$item->submit_date,5,2).'/'.substr(@$item->submit_date,2,2);				
+											  $submit_date = smartDate(@$item->submit_date, @$lang_screen);				
 											
 											$submitted_account_display = '';
 											if(@$item->submitted_account > 0) {

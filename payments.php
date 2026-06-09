@@ -104,7 +104,7 @@ include 'menu_budget_reports.php';
 										
 										$payment_date = '';
 										if(@$item->payment_date != '0000-00-00')
-											$payment_date = substr(@$item->payment_date,8,2).'/'.substr(@$item->payment_date,5,2).'/'.substr(@$item->payment_date,2,2);
+											$payment_date = smartDate(@$item->payment_date, @$lang_screen);
 										
 										$paid_amount_vat_included = '';
 										if(@$item->paid_amount_vat_included != 0.00)
@@ -124,7 +124,7 @@ include 'menu_budget_reports.php';
 									
 										$invoice_date = '';
 										if(@$item->invoice_date != '0000-00-00')
-											$invoice_date = substr(@$item->invoice_date,8,2).'/'.substr(@$item->invoice_date,5,2).'/'.substr(@$item->invoice_date,2,2);
+											$invoice_date = smartDate(@$item->invoice_date, @$lang_screen);
 										?>
 										
 										<input type="hidden" id="hidden_s_name_<?=@$item->id_projects_suppliers?>" value="<?php if(strlen(@$item->s_name) > 15) echo mb_substr(@$item->s_name,0,15,'UTF-8');else echo @$item->s_name?>" />

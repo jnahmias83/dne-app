@@ -149,7 +149,7 @@ $what_news_label = 'מה חדש';
 												</div>
 												<?php if($ut->remark != '') { ?>
 													<div class="marginTop10 alignRight">
-														<span class="colorGreen font-weight-bold">[<?=substr(@$ut->action_date,8,2).'/'.substr(@$ut->action_date,5,2)?>]</span>&nbsp;<?=html_entity_decode(@$ut->remark)?>
+														<span class="colorGreen font-weight-bold">[<?=smartDate(@$ut->action_date)?>]</span>&nbsp;<?=html_entity_decode(@$ut->remark)?>
 													</div>
 										        <?php } ?>
 											</td>
