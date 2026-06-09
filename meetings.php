@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 include 'include/header.php';
 include 'functions/functions.php';
 include "functions/PHPMailer/PHPMailer.php";
@@ -1908,7 +1908,7 @@ include 'menu_tasks.php';
 										    </tr>
 											<?php
 											if(@$is_images == 1 && (($image1 != '' && $is_appears_img1) || ($image2 != '' && $is_appears_img2)) && strpos($image1,'Snag') === false && strpos($image2,'Snag') === false){ ?>
-											    <tr class="bgColor-f5f6f8">
+											    <tr class="bgColor-f5f6f8 tr-image-row">
 												   <td class="<?=@$border_cell_table_start?> <?=@$border_cell_table_end?>" colspan="<?=@$colspan_image_tr?>">
 													  <img class="<?=@$margin_between_images?> object-fit-fixed" src="<?='uploads/'.$image1?>" width="<?=@$image1_width?>" height="<?=@$image1_height?>" />
 												      <?php if($image2 != '' && $is_appears_img2 && strpos($image2,'Snag') === false) { ?>
@@ -2411,7 +2411,7 @@ include 'menu_tasks.php';
 													
 								                </tr>
 												<?php if(strpos($image1,'Snag') === false && strpos($image2,'Snag') === false) { ?>
-												       <tr class="bgColor-f5f6f8">
+												       <tr class="bgColor-f5f6f8 tr-image-row">
 													       <td colspan="<?=sizeof(@$columns_list_array)?>">
 														       <img class="<?=@$margin_between_images?> object-fit-fixed" src="<?='uploads/'.$image1?>" width="<?=@$image1_width?>" height="<?=@$image1_height?>" />
 															   <?php if($image2 != '' && $is_appears_img2 && strpos($image2,'Snag') === false) { ?>
@@ -4101,26 +4101,31 @@ $(document).ready(function(){
     }
 });
 
+const shortRowStyle = 'overflow:hidden; white-space:nowrap; text-overflow:ellipsis; display:block; width:100%; height:22px; line-height:22px; font-size:12px;';
+const fullRowStyle  = 'overflow:auto; white-space:normal; height:auto; line-height:normal; display:block; font-size:12px;';
+
+function applyShortMode($td, maxChars){
+    const fullText = $td.data('fullText') || $td.text().trim();
+    $td.data('fullText', fullText);
+    const shortText = fullText.length > maxChars ? fullText.substring(0, maxChars) + ' …' : fullText;
+    $td.html('<div style="' + shortRowStyle + '">' + shortText + '</div>');
+}
+
+function applyFullMode($td){
+    const fullText = $td.data('fullText');
+    if(fullText !== undefined)
+        $td.html('<div style="' + fullRowStyle + '">' + fullText + '</div>');
+}
+
 $(document).on('change', 'input[name="options"]', function (){
     const isShort = this.id === 'option2';
-    const maxChars = 100;      
-    const maxWidth = '120px';   
+    const maxChars = 100;
     $('td[id^="td_subject_"], td[id^="td_area_"], td[id^="td_description_"]').each(function (){
-        const $td = $(this);
-        const fullText = $td.data('fullText') || $td.text();
-        $td.data('fullText', fullText);
-
-        if (isShort){
-            let shortText = fullText.length > maxChars ? fullText.substring(0, maxChars) + ' …' : fullText;
-
-            $td.html('<div style="overflow:hidden; white-space:nowrap; text-overflow:ellipsis; ' +
-                     'max-width:' + maxWidth + '; height:22px; line-height:22px; display:inline-block;">' +
-                     shortText + '</div>');
-        } else {
-            $td.html('<div style="overflow:auto; white-space:normal; height:auto; line-height:normal; display:block;">' +
-                     fullText + '</div>');
-        }
+        if(isShort) applyShortMode($(this), maxChars);
+        else        applyFullMode($(this));
     });
+
+    $('.tr-image-row').toggle(!isShort);
 
     $('select[id^="task_"], select[id^="responsible_"], select[id^="pass_on_"], select[id^="_progress_status_"]').css({
         'display': 'inline-block',
@@ -4131,6 +4136,21 @@ $(document).on('change', 'input[name="options"]', function (){
         'display': 'inline-block',
         'visibility': 'visible',
         'height': ''
+    });
+});
+
+$(document).on('mouseenter', 'tr[id*="row_"]', function(){
+    if(!$('#option2').is(':checked')) return;
+    $(this).find('td[id^="td_subject_"], td[id^="td_area_"], td[id^="td_description_"]').each(function(){
+        applyFullMode($(this));
+    });
+});
+
+$(document).on('mouseleave', 'tr[id*="row_"]', function(){
+    if(!$('#option2').is(':checked')) return;
+    const maxChars = 100;
+    $(this).find('td[id^="td_subject_"], td[id^="td_area_"], td[id^="td_description_"]').each(function(){
+        applyShortMode($(this), maxChars);
     });
 });
 
