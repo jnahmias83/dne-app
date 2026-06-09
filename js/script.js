@@ -125,11 +125,11 @@ function setData(meeting_id,iteration,field,isRemark,forShare,screen_type){
     
 	if(field == 'subject'){
 		form_data.append('field',field);
-		form_data.append('subject',$(subject_elem).html());
+		form_data.append('subject',$(subject_elem).html().replace(/<\/?mark>/gi, ''));
 	}
     else if(field == 'area'){
 		form_data.append('field',field);
-		form_data.append('area',$(area_elem).html());
+		form_data.append('area',$(area_elem).html().replace(/<\/?mark>/gi, ''));
 	}
 	else if(field == 'description'){
 		form_data.append('field',field);

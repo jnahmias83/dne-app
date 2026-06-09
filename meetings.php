@@ -1442,31 +1442,40 @@ include 'menu_tasks.php';
 											$id_task_type = @$item->id_task_type;
 											$subject = @$item->subject;
 											$area = @$item->area;
-											
+											if ($search_filter) {
+												$esc_sf = preg_quote($search_filter, '/');
+												$subject = preg_replace('/(' . $esc_sf . ')/iu', '<mark>$1</mark>', $subject);
+												$area = preg_replace('/(' . $esc_sf . ')/iu', '<mark>$1</mark>', $area);
+											}
+
 											$task_creation_date = '';
 											if(@$item->task_creation_date != '0000-00-00')
 												$task_creation_date = @$item->task_creation_date;
-											
+
 											$destination_date = '';
 											if(@$item->destination_date != '0000-00-00')
-												$destination_date = @$item->destination_date;					
-											
+												$destination_date = @$item->destination_date;
+
 											$updated_date = @$item->updated_date;
-											
+
 											$is_change_row_style = @$item->is_change_row_style;
-											
+
 											$image1 = @$item->image1;
 											$is_appears_img1 = @$item->is_appears_img1;
 											$image1_width = @$item->image1_width;
 											$image1_height = @$item->image1_height;
-											
+
 											$image2 = @$item->image2;
 											$is_appears_img2 = @$item->is_appears_img2;
 											$image2_width = @$item->image2_width;
 											$image2_height = @$item->image2_height;
-											
+
 											$description_popup = nl2br(@$item->description);
 											$description = @$item->description;
+											if ($search_filter) {
+												$esc_sf = preg_quote($search_filter, '/');
+												$description = preg_replace('/(' . $esc_sf . ')/iu', '<mark>$1</mark>', $description);
+											}
 												
 											$id_track_responsible = @$item->id_track_responsible;
 											$query = $mysqli->prepare("SELECT nickname FROM dne_users WHERE id = ?");
@@ -2064,18 +2073,27 @@ include 'menu_tasks.php';
 												$id_task_type = @$item->id_task_type;
 												$subject = @$item->subject;
 												$area = @$item->area;
-												
+												if ($search_filter) {
+													$esc_sf = preg_quote($search_filter, '/');
+													$subject = preg_replace('/(' . $esc_sf . ')/iu', '<mark>$1</mark>', $subject);
+													$area = preg_replace('/(' . $esc_sf . ')/iu', '<mark>$1</mark>', $area);
+												}
+
 												$task_creation_date = '';
 												if(@$item->task_creation_date != '0000-00-00')
 													$task_creation_date = @$item->task_creation_date;
-												
+
 												$destination_date = '';
 												if(@$item->destination_date != '0000-00-00')
-													$destination_date = @$item->destination_date;							
-												
+													$destination_date = @$item->destination_date;
+
 												$updated_date = @$item->updated_date;
-												
+
 												$description = @$item->description;
+												if ($search_filter) {
+													$esc_sf = preg_quote($search_filter, '/');
+													$description = preg_replace('/(' . $esc_sf . ')/iu', '<mark>$1</mark>', $description);
+												}
 												
 												$id_track_responsible = @$item->id_track_responsible;
 												$query = $mysqli->prepare("SELECT nickname FROM dne_users WHERE id = ?");
@@ -4448,7 +4466,8 @@ function setFilter(id_report,id,search_text,filter_type){
 		destination_date_end = formatedEndDate;	       
     }
 
-	let sql = 'SELECT c.name AS name,m.id AS id,m.is_priority AS is_priority,m.id_user AS id_user,m.id_task_type AS id_task_type,m.id_chapter AS id_chapter,m.subject AS subject,m.ids_rdv AS ids_rdv,m.area,m.description,m.id_task,m.id_responsible,m.id_pass_on,m.task_creation_date,m.destination_date,m.id_progress_status,m.updated_date AS updated_date,m.image1 AS image1,m.is_appears_img1 AS is_appears_img1,m.image1_width AS image1_width,m.image1_height AS image1_height,m.image2 AS image2,m.image2_width AS image2_width,m.image2_height AS image2_height,m.is_appears_img2 AS is_appears_img2,m.is_change_row_style AS is_change_row_style,m.id_track_responsible AS id_track_responsible,m.track_type AS track_type,m.reminder_time AS reminder_time,m.reminder_date AS reminder_date FROM dne_meetings m LEFT JOIN dne_chapters c ON m.id_chapter = c.id LEFT JOIN dne_tasks t ON m.id_task = t.id WHERE m.id_project ='+$('#project_id').val()+ ' AND m.is_appears = 1 ';
+	let is_appears_cond = (filter_type == 'search_filter' && search_text.trim() != '') ? 'is_appears IN(0,1)' : 'is_appears = 1';
+	let sql = 'SELECT c.name AS name,m.id AS id,m.is_priority AS is_priority,m.id_user AS id_user,m.id_task_type AS id_task_type,m.id_chapter AS id_chapter,m.subject AS subject,m.ids_rdv AS ids_rdv,m.area,m.description,m.id_task,m.id_responsible,m.id_pass_on,m.task_creation_date,m.destination_date,m.id_progress_status,m.updated_date AS updated_date,m.image1 AS image1,m.is_appears_img1 AS is_appears_img1,m.image1_width AS image1_width,m.image1_height AS image1_height,m.image2 AS image2,m.image2_width AS image2_width,m.image2_height AS image2_height,m.is_appears_img2 AS is_appears_img2,m.is_change_row_style AS is_change_row_style,m.id_track_responsible AS id_track_responsible,m.track_type AS track_type,m.reminder_time AS reminder_time,m.reminder_date AS reminder_date FROM dne_meetings m LEFT JOIN dne_chapters c ON m.id_chapter = c.id LEFT JOIN dne_tasks t ON m.id_task = t.id WHERE m.id_project ='+$('#project_id').val()+ ' AND m.' + is_appears_cond + ' ';
 
 	let params = [];
 
