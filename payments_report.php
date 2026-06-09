@@ -148,9 +148,7 @@ $count = 0;
 foreach($payments as $item) { 
     $count++;
 
-	$payment_date = '';
-	if(@$item->payment_date != '0000-00-00')
-		$payment_date = substr(@$item->payment_date,8,2).'/'.substr(@$item->payment_date,5,2).'/'.substr(@$item->payment_date,2,2);
+	$payment_date = smartDate(@$item->payment_date, $lang);
 	
 	$paid_amount_vat_included = '';
 	if(@$item->paid_amount_vat_included != 0.00){
@@ -169,9 +167,7 @@ foreach($payments as $item) {
 			.'&nbsp;&#8362;';
 	}
 	
-	$invoice_date = '';
-	if(@$item->invoice_date != '0000-00-00')
-		$invoice_date = substr(@$item->invoice_date,8,2).'/'.substr(@$item->invoice_date,5,2).'/'.substr(@$item->invoice_date,2,2);
+	$invoice_date = smartDate(@$item->invoice_date, $lang);
 	
     $html.='<tr height="30px;" style="font-size:12px;">';
 	$html.='<td width="30px;" style="text-align:center;border:1px solid black;">'.$count.'</td>';

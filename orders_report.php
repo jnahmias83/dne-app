@@ -86,9 +86,7 @@ foreach($orders as $item){
 	if($count == $orders_num_rows)
 	   $border_bottom = 'border-bottom:1px solid black';
 
-	$signature_date = '';
-	if($item->signature_date != '0000-00-00') 
-		$signature_date = substr($item->signature_date,8,2).'/'.substr($item->signature_date,5,2).'/'.substr($item->signature_date,2,2);
+	$signature_date = smartDate($item->signature_date, $lang);
 	
     $html.='<tr height="30px;" style="font-size:12px;background-color:'.$data_bg_color.';">'; 
 	$html.='<td width="30px;" style="text-align:center;border:1px solid black;'.@$border_bottom.'">'.$count.'</td>';

@@ -588,10 +588,10 @@ include 'menu_tasks.php';
 											$action_date_remark = @$query->action_date;
 											
 											if(@$remark_changes_status != '')
-                                               $description.= "<div class='marginTop5 colorGreen'>[".substr(@$action_date,8,2).'/'.substr(@$action_date,5,2).'] - '.@$remark_changes_status.'</div>';											
+                                               $description.= "<div class='marginTop5 colorGreen'>[".smartDate(@$action_date, $lang).'] - '.@$remark_changes_status.'</div>';
 											
 											if(@$remark != '')
-                                               $description.= "<div class='marginTop5 colorRed'>[".substr(@$action_date_remark,8,2).'/'.substr(@$action_date_remark,5,2).'] - '.@$remark.'</div>';											
+                                               $description.= "<div class='marginTop5 colorRed'>[".smartDate(@$action_date_remark, $lang).'] - '.@$remark.'</div>';
 											
 											$responsible_id = @$item->id_responsible;
 											$pass_on_id = @$item->id_pass_on;
@@ -779,13 +779,13 @@ include 'menu_tasks.php';
 												
 												if(in_array('task creation',$columns_list_array)) { ?>
 													<td style="<?=@$text_align?>;<?=@$padding?>:5px;<?=@$task_creation_date_bg_color?>;">
-														<?=substr(@$task_creation_date,8,2).'/'.substr(@$task_creation_date,5,2).'/'.substr(@$task_creation_date,2,2)?>
+														<?=smartDate(@$task_creation_date, $lang)?>
 													</td>
 												<?php }
 												
 												if(in_array('destination date',$columns_list_array)) { ?>
 													<td style="<?=@$text_align?>;<?=@$padding?>:5px;<?=@$dest_date_color?>;<?=@$dest_date_bg_color?>;">		
-														<?=substr(@$destination_date,8,2).'/'.substr(@$destination_date,5,2).'/'.substr(@$destination_date,2,2)?>
+														<?=smartDate(@$destination_date, $lang)?>
 													</td>
 												<?php }
 												
@@ -996,10 +996,10 @@ include 'menu_tasks.php';
 												$action_date_remark = @$query->action_date;
 											
 												if(@$remark_changes_status != '')
-												   $description.= "<div class='marginTop5 colorGreen'>(".substr(@$action_date,8,2).'/'.substr(@$action_date,5,2).') - '.@$remark_changes_status.'</div>';											
+												   $description.= "<div class='marginTop5 colorGreen'>(".smartDate(@$action_date, $lang).') - '.@$remark_changes_status.'</div>';
 												
 												if(@$remark != '')
-												   $description.= "<div class='marginTop5 colorRed'>(".substr(@$action_date_remark,8,2).'/'.substr(@$action_date_remark,5,2).') - '.@$remark.'</div>';											
+												   $description.= "<div class='marginTop5 colorRed'>(".smartDate(@$action_date_remark, $lang).') - '.@$remark.'</div>';
 												
 												$responsible_id = @$item->id_responsible;
 												$pass_on_id = @$item->id_pass_on;
@@ -1186,13 +1186,13 @@ include 'menu_tasks.php';
 													
 													if(in_array('task creation',$columns_list_array)) { ?>
 														<td style="<?=@$text_align?>;<?=@$padding?>:5px;<?=@$task_creation_date_bg_color?>;">
-															<?=substr(@$task_creation_date,8,2).'/'.substr(@$task_creation_date,5,2).'/'.substr(@$task_creation_date,2,2)?>
+															<?=smartDate(@$task_creation_date, $lang)?>
 														</td>
 													<?php }
 													
 													if(in_array('destination date',$columns_list_array)) { ?>
 														<td style="<?=@$text_align?>;<?=@$padding?>:5px;<?=@$dest_date_color?>;<?=@$dest_date_bg_color?>;">		
-															<?=substr(@$destination_date,8,2).'/'.substr(@$destination_date,5,2).'/'.substr(@$destination_date,2,2)?>
+															<?=smartDate(@$destination_date, $lang)?>
 													<?php }
 													
 													if(in_array('progress status',$columns_list_array)) { ?>

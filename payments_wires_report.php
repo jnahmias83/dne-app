@@ -542,9 +542,7 @@ if($asbr == 1){
 			    if($count3 == $elems_orders_num_rows)
 	               $elem_border_bottom = 'border:1px solid black';
 
-				$signature_date = '';
-				if(@$item->signature_date != '0000-00-00')
-				  $signature_date = substr(@$item->signature_date,8,2).'/'.substr(@$item->signature_date,5,2).'/'.substr(@$item->signature_date,2,2);				
+				$signature_date = smartDate(@$item->signature_date, $lang);
 		
 				$sum_orders_display = '';
 				if(@$item->sum_order != 0.00){
@@ -620,9 +618,7 @@ if($asbr == 1){
 					   $description = $item->p_description;
 					}
 					
-					$account_payment_date = '';
-					if(@$item->account_payment_date != '0000-00-00')
-						$account_payment_date = substr(@$item->account_payment_date,8,2).'/'.substr(@$item->account_payment_date,5,2).'/'.substr(@$item->account_payment_date,2,2);				
+					$account_payment_date = smartDate(@$item->account_payment_date, $lang);
 					
 					if(@$item->account_payment_type == 'account'){
 						$approved_amount = @$item->approved_amount;	
@@ -762,9 +758,7 @@ if($asbr == 1){
 				    if($count5 == $elems_not_approved_accounts_num_rows)
 	                   $elem_border_bottom = 'border:1px solid black';
 			   
-					$submit_date = '';
-					if(@$item->submit_date != '0000-00-00')
-					  $submit_date = substr(@$item->submit_date,8,2).'/'.substr(@$item->submit_date,5,2).'/'.substr(@$item->submit_date,2,2);				
+					$submit_date = smartDate(@$item->submit_date, $lang);
 					
 					$submitted_account_display = '';
 					if(@$item->submitted_account > 0){
