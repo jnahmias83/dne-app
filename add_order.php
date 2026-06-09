@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 include 'include/header.php';
 include 'functions/functions.php';
 
@@ -135,7 +135,7 @@ include 'menu_budget_reports.php';
 										<div class="col-12">
 											<strong>PDF הזמנה</strong>
 											<br/>					
-											<input type="file" class="marginTop10" name="pdf_order" id="pdf_order" accept=".pdf,application/pdf" />
+											<input type="file" class="marginTop10" name="pdf_order" id="pdf_order" accept="application/pdf,.pdf" />
 											<?php if($id > 0) { ?>&nbsp;<a href="uploads/<?=@$order->pdf_order?>" target="_blank"><?=@$order->pdf_order?></a><?php } ?>			
 										</div>
 									</div>	
@@ -212,8 +212,10 @@ $('#save_btn').click (function (e){
 		cache: false,
 		processData: false,
 		contentType: false,
+		timeout: 60000,
         beforeSend: function() {
 			$("#progress-popup").show();
+			$("#div_message_alert_down").html('');
 			let progress = 0;
 			let interval = setInterval(function() {
 				if (progress < 90) {
@@ -224,27 +226,38 @@ $('#save_btn').click (function (e){
 				}
 			}, 200);
 			$("#progress-popup").data("interval", interval);
-		},		
-		success: function(data){  
-			if(data == 'empty')	{
-				if($('#sum_order').val().length == 0)			
+		},
+		complete: function() {
+			clearInterval($("#progress-popup").data("interval"));
+			$("#progress-bar").css("width", "100%");
+			setTimeout(function() {
+				$("#progress-popup").hide();
+				$("#progress-bar").css("width", "0%");
+			}, 300);
+		},
+		error: function(xhr, status, error) {
+			$('#div_message_alert_down').html("<span style='color:red;font-size:13px;'>Upload failed (" + status + "). Please try again.</span>");
+		},
+		success: function(data){
+			if(data == 'empty' || data.indexOf('no_file') === 0) {
+				if($('#sum_order').val().length == 0)
 					$('#sum_order').css('border-color','red');
 				else if(!($('#sum_order').val().length == 0))
-					$('#sum_order').css('border-color','initial');	
+					$('#sum_order').css('border-color','initial');
 
-				if($('#signature_date').val().length == 0)			
+				if($('#signature_date').val().length == 0)
 					$('#signature_date').css('border-color','red');
 				else if(!($('#signature_date').val().length == 0))
-					$('#signature_date').css('border-color','initial');		
-				
-				if($('#pdf_order').val().length == 0)			
+					$('#signature_date').css('border-color','initial');
+
+				if($('#pdf_order').val().length == 0)
 					$('#pdf_order').css('border-color','red');
 				else if(!($('#pdf_order').val().length == 0))
-					$('#pdf_order').css('border-color','initial');	
-				
-				$('#div_message_alert_down').html("<span style=color:red;font-size:13px;>Please fill all the mandatory fields</span>"); 
+					$('#pdf_order').css('border-color','initial');
+
+				$('#div_message_alert_down').html("<span style='color:red;font-size:13px;'>Please fill all the mandatory fields</span>");
 			}
-			else {
+			else if(data == 'inserted' || data == 'updated') {
 				let url;
 				if($('#from').val() == 'budget')
 				   url = 'budget.php?project_id='+$('#project_id').val()+'&lang_screen='+$('#lang_screen').val();
@@ -253,7 +266,9 @@ $('#save_btn').click (function (e){
 				else
 				   url = 'orders.php?project_id='+$('#project_id').val()+'&lang_screen='+$('#lang_screen').val();
 				location.href = url;
-			}	
+			} else {
+				$('#div_message_alert_down').html("<span style='color:red;font-size:13px;'>Upload error. Please try again.</span>");
+			}
 		},
 	});												       			   
 })
