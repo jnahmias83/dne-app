@@ -1592,15 +1592,14 @@ include 'menu_tasks.php';
 												$action_date = @$item->action_date;
 											    
 												if(@$track_type && @$remark != ''){
-													$description .= "<div id='div-tracking-remarks-'".@$meeting_id."' class='marginTop5 colorRed display-block".@$dir_log_meeting_tracking."'>
-																	<span class='colorGrey dir-rtl unicode-bidi-embed'>["
-																	.smartDate(@$item->action_date, $lang)."]</span>
-																	<span class='colorGrey dir-rtl unicode-bidi-embed'>".@$item->user_nickname." - במעקב</span>";			
-												
-												    $description .= "	: 
-																	<span class='colorRed dir-rtl unicode-bidi-embed display-inline-block'>".html_entity_decode(@$item->remark)."</span>
-																	<span class='marginRight5 colorRed dir-rtl unicode-bidi-embed display-inline-block'>".@$tracking_data."</span>
-																	</div>";
+													$track_initials = mb_strtoupper(mb_substr(@$item->user_nickname, 0, 2, 'UTF-8'));
+													$description .= "<div id='div-tracking-remarks-'".@$meeting_id."' class='marginTop5 display-block ".@$dir_log_meeting_tracking."' style='line-height:1.8;'>"
+																  . "<span class='badge-circle' style='display:inline-flex;background-color:#333;width:15px;height:15px;font-size:8px;vertical-align:middle;'>".$track_initials."</span>"
+																  . " <span class='colorGrey dir-rtl unicode-bidi-embed' style='vertical-align:middle;'>".@$item->user_nickname."</span>"
+																  . " <span class='colorGrey dir-rtl unicode-bidi-embed' style='vertical-align:middle;'>".smartDate(@$item->action_date, $lang)."</span>"
+																  . " : <span class='colorRed dir-rtl unicode-bidi-embed display-inline-block'>".html_entity_decode(@$item->remark)."</span>"
+																  . "<span class='marginRight5 colorRed dir-rtl unicode-bidi-embed display-inline-block'>".@$tracking_data."</span>"
+																  . "</div>";
 												}
 											}											
 											
@@ -1792,8 +1791,13 @@ include 'menu_tasks.php';
 											    <td id="td_cbx_meetings_to_update_<?=@$meeting_id?>" class="alignCenter <?=@$border_cell_table_start?> <?=@$border_cell_cbx?>" style="<?=@$td_count_bgcolor?>">
 												    <input type="checkbox" id="meetings_to_update_cbx_<?=@$meeting_id?>" name="meetings_to_update_cbx[]" class="meetings_to_update_cbx" value="<?=@$meeting_id?>" />	
 												</td>
-												<td id="td_count_<?=@$meeting_id?>" class="alignCenter <?=@$border_cell_number?>" style="<?=@$td_count_bgcolor?>">
+												<td id="td_count_<?=@$meeting_id?>" class="alignCenter <?=@$border_cell_number?>" style="<?=@$td_count_bgcolor?><?php if(@$track_type) echo ';display:flex;flex-direction:column;align-items:center;justify-content:space-between;min-height:36px;padding:3px 4px;'; ?>">
 													<a id="task_actions_<?=@$meeting_id?>" data-projectid="<?=@$project_id?>" data-lang="<?=@$lang?>" data-meetingid="<?=@$meeting_id?>" data-iteration=<?=@$iteration?> data-userid="<?=@$user_id?>" data-ispriority="<?=@$is_priority?>" data-remark="<?=@$remark?>" data-chapter="<?=@$chapter_name?>" data-name="<?=@$subject?>" data-area="<?=@$area?>" data-recipient="<?=@$responsible_email?>" data-responsibleid="<?=@$responsible_id?>" data-destinationdate="<?=@$destination_date?>" data-progresstatusid="<?=@$progress_status_id?>" data-trackresponsibleid="<?=@$id_track_responsible?>" data-tracktype="<?=@$track_type?>" data-reminderdate="<?=@$reminder_date?>" data-remindertime="<?=@$reminder_time?>" class="text-decoration-none cursor-pointer fontSize12 padding-7x-3y font-weight-bold borderRadius10" style="<?=@$num_bgcolor?>!important;<?=@$num_border_color?>"><?=@$count?></a>
+													<?php if(@$track_type): ?>
+													<span class="badge-circle" style="background-color:#e53935;width:15px;height:15px;font-size:8px;display:inline-flex;align-self:flex-end;" title="<?=htmlspecialchars(@$track_responsible_name)?>">
+														<?=mb_strtoupper(mb_substr(@$track_responsible_name, 0, 2, 'UTF-8'))?>
+													</span>
+													<?php endif; ?>
 												</td>
 												
 												<?php if(in_array('subject',$columns_list_array)){ ?>
@@ -2168,10 +2172,16 @@ include 'menu_tasks.php';
 													$remark = @$item->remark;	
 													$action_date = @$item->action_date;
 											    
-													if(@$track_type && @$remark != '')
-														$description .= "<div id='div-tracking-remarks-'".@$meeting_id."' class='marginTop5 colorRed display-block ".@$dir_log_meeting_tracking."'>
-																		<span class='colorGrey dir-rtl unicode-bidi-embed'>[".smartDate(@$item->action_date, $lang)."]</span> <span class='colorGrey dir-rtl unicode-bidi-embed'>".@$item->user_nickname."</span> : <span class='colorRed dir-rtl unicode-bidi-embed display-inline-block'>".html_entity_decode(@$item->remark)."</span><span class='marginRight5 colorRed dir-rtl unicode-bidi-embed display-inline-block'>".@$tracking_data."</span>
-																		</div>";
+													if(@$track_type && @$remark != ''){
+														$track_initials2 = mb_strtoupper(mb_substr(@$item->user_nickname, 0, 2, 'UTF-8'));
+														$description .= "<div id='div-tracking-remarks-'".@$meeting_id."' class='marginTop5 display-block ".@$dir_log_meeting_tracking."' style='line-height:1.8;'>"
+																	  . "<span class='badge-circle' style='display:inline-flex;background-color:#333;width:15px;height:15px;font-size:8px;vertical-align:middle;'>".$track_initials2."</span>"
+																	  . " <span class='colorGrey dir-rtl unicode-bidi-embed' style='vertical-align:middle;'>".@$item->user_nickname."</span>"
+																	  . " <span class='colorGrey dir-rtl unicode-bidi-embed' style='vertical-align:middle;'>".smartDate(@$item->action_date, $lang)."</span>"
+																	  . " : <span class='colorRed dir-rtl unicode-bidi-embed display-inline-block'>".html_entity_decode(@$item->remark)."</span>"
+																	  . "<span class='marginRight5 colorRed dir-rtl unicode-bidi-embed display-inline-block'>".@$tracking_data."</span>"
+																	  . "</div>";
+													}
 												}																	
 												
 												if(@$image1_width > 0 && @$image1_height > 0) {
