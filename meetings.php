@@ -4733,7 +4733,12 @@ $(function() {
             return part.replace(re, '<span class="sf-hl">$1</span>');
         });
         re.lastIndex = 0;
-        if (result !== html) el.innerHTML = result;
+        if (result !== html) {
+            var ce = el.getAttribute('contenteditable');
+            el.removeAttribute('contenteditable');
+            el.innerHTML = result;
+            if (ce !== null) el.setAttribute('contenteditable', ce);
+        }
     }
 
     document.querySelectorAll('[id^="subject_"],[id^="area_"],[id^="description_"]').forEach(highlightEl);
