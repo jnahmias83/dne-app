@@ -682,6 +682,38 @@ include 'menu_tasks.php';
 <script>
 let image1,image2 = '';
 let is_appears_img1,is_appears_img2 = 0;
+
+function compressFile(file, maxDim, quality) {
+    maxDim = maxDim || 1920;
+    quality = quality || 0.85;
+    return new Promise(function(resolve) {
+        let reader = new FileReader();
+        reader.onload = function(e) {
+            let img = new Image();
+            img.onload = function() {
+                let w = img.width, h = img.height;
+                if (w > maxDim || h > maxDim) {
+                    if (w >= h) { h = Math.round(h * maxDim / w); w = maxDim; }
+                    else { w = Math.round(w * maxDim / h); h = maxDim; }
+                }
+                let canvas = document.createElement('canvas');
+                canvas.width = w; canvas.height = h;
+                canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+                let dataURL = canvas.toDataURL('image/jpeg', quality);
+                let byteString = atob(dataURL.split(',')[1]);
+                let ab = new ArrayBuffer(byteString.length);
+                let ia = new Uint8Array(ab);
+                for (let i = 0; i < byteString.length; i++) ia[i] = byteString.charCodeAt(i);
+                let blob = new Blob([ab], {type: 'image/jpeg'});
+                let baseName = file.name.replace(/\.[^/.]+$/, '');
+                let compressedFile = new File([blob], baseName + '.jpg', {type: 'image/jpeg'});
+                resolve({file: compressedFile, dataURL: dataURL});
+            };
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    });
+}
 let div_image1 = $("#div-image1"); 
 let div_image2 = $("#div-image2"); 
 let div_delete_image1 = $("#div-delete-image1"); 
@@ -785,73 +817,55 @@ $(document).ready(function(){
 	});
 
 	$(document).on('change','#image1', function (){
+		let file = $('#image1')[0].files[0];
+		let image1_name = file.name;
+
+		let hebrewCharsRegex = /[\u0590-\u05FF]/;
+		if (hebrewCharsRegex.test(image1_name)) {
+			alert('The file name contains Hebrew characters.');
+			$('#image1').val('');
+			$('#is_appears_img1').prop('checked',false);
+			return;
+		}
+
+		$('#is_appears_img1').prop('checked',true);
+		is_appears_img1 = 1;
 		$('#div-image1').show();
-		image1 = $('#image1')[0].files[0];	
-		let image1_name = image1.name;
 
-		let reader = new FileReader();
-
-		reader.onload = function (e) {
-			preview_image1.attr("src",e.target.result);
-            div_delete_image1.css("display","block");
+		compressFile(file).then(function(result) {
+			image1 = result.file;
+			preview_image1.attr("src", result.dataURL);
+			div_delete_image1.css("display","block");
 			div_image1.css("display","block");
 			image1_container.css("display","block");
 			div_rotations_image1.css("display","block");
-
-			//loadTaskImage('image1',0,e.target.result);
-		};
-		
-		$('#is_appears_img1').prop('checked',true);
-		is_appears_img1 = 1;
-		
-		reader.readAsDataURL(image1);
-
-		let hebrewCharsRegex = /[\u0590-\u05FF]/;
-
-		if (hebrewCharsRegex.test(image1_name)) {
-			alert('The file name contains Hebrew characters.');
-
-			$('#image1').val('');
-			$('#is_appears_img1').prop('checked',false);
-		} else {
-			$('#is_appears_img1').prop('checked',true);
-			is_appears_img1 = 1; 
-		}
+		});
 	});
 	
 	$(document).on('change','#image2', function (){
+		let file = $('#image2')[0].files[0];
+		let image2_name = file.name;
+
+		let hebrewCharsRegex = /[\u0590-\u05FF]/;
+		if (hebrewCharsRegex.test(image2_name)){
+			alert('The file name contains Hebrew characters.');
+			$('#image2').val('');
+			$('#is_appears_img2').prop('checked',false);
+			return;
+		}
+
+		$('#is_appears_img2').prop('checked',true);
+		is_appears_img2 = 1;
 		$('#div-image2').show();
-		image2 = $('#image2')[0].files[0];
-		let image2_name = image2.name;
 
-		let reader = new FileReader();
-
-		reader.onload = function (e){
-			preview_image2.attr("src",e.target.result);
-            div_delete_image2.css("display","block");
+		compressFile(file).then(function(result) {
+			image2 = result.file;
+			preview_image2.attr("src", result.dataURL);
+			div_delete_image2.css("display","block");
 			div_image2.css("display","block");
 			image2_container.css("display","block");
 			div_rotations_image2.css("display","block");
-
-			//loadTaskImage('image2',0,e.target.result);
-		};
-		
-		$('#is_appears_img2').prop('checked',true);
-		is_appears_img2 = 1;
-
-		reader.readAsDataURL(image2);
-
-		let hebrewCharsRegex = /[\u0590-\u05FF]/;
-
-		if (hebrewCharsRegex.test(image2_name)){
-			alert('The file name contains Hebrew characters.');
-
-			$('#image2').val('');
-			$('#is_appears_img2').prop('checked',false);
-		} else {
-			$('#is_appears_img2').prop('checked',true);
-			is_appears_img2 = 1; 
-		}
+		});
 	});
 
 	function loadTaskImage(image,angle,imageSrc){	
@@ -872,7 +886,7 @@ $(document).ready(function(){
 				ctx_image1.drawImage(_image1,-_image1.width/2,-_image1.height/2);
 				ctx_image1.restore();
 
-				let rotated_image1 = canvas_image1.toDataURL('image/png');
+				let rotated_image1 = canvas_image1.toDataURL('image/jpeg', 0.85);
 
 				let form_data = new FormData();
 				
@@ -916,7 +930,7 @@ $(document).ready(function(){
 				ctx_image2.drawImage(_image2,-_image2.width/2,-_image2.height/2);
 				ctx_image2.restore();
 
-				let rotated_image2 = canvas_image2.toDataURL('image/png');
+				let rotated_image2 = canvas_image2.toDataURL('image/jpeg', 0.85);
 
 				let form_data = new FormData();
 				form_data.append('image2', rotated_image2);
