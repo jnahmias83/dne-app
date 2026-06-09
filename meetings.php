@@ -1442,11 +1442,6 @@ include 'menu_tasks.php';
 											$id_task_type = @$item->id_task_type;
 											$subject = @$item->subject;
 											$area = @$item->area;
-											if ($search_filter) {
-												$esc_sf = preg_quote($search_filter, '/');
-												$subject = preg_replace('/(' . $esc_sf . ')/iu', '<mark>$1</mark>', $subject);
-												$area = preg_replace('/(' . $esc_sf . ')/iu', '<mark>$1</mark>', $area);
-											}
 
 											$task_creation_date = '';
 											if(@$item->task_creation_date != '0000-00-00')
@@ -1472,11 +1467,7 @@ include 'menu_tasks.php';
 
 											$description_popup = nl2br(@$item->description);
 											$description = @$item->description;
-											if ($search_filter) {
-												$esc_sf = preg_quote($search_filter, '/');
-												$description = preg_replace('/(' . $esc_sf . ')/iu', '<mark>$1</mark>', $description);
-											}
-												
+
 											$id_track_responsible = @$item->id_track_responsible;
 											$query = $mysqli->prepare("SELECT nickname FROM dne_users WHERE id = ?");
 											$query->bind_param('i',$id_track_responsible);	
@@ -2073,12 +2064,6 @@ include 'menu_tasks.php';
 												$id_task_type = @$item->id_task_type;
 												$subject = @$item->subject;
 												$area = @$item->area;
-												if ($search_filter) {
-													$esc_sf = preg_quote($search_filter, '/');
-													$subject = preg_replace('/(' . $esc_sf . ')/iu', '<mark>$1</mark>', $subject);
-													$area = preg_replace('/(' . $esc_sf . ')/iu', '<mark>$1</mark>', $area);
-												}
-
 												$task_creation_date = '';
 												if(@$item->task_creation_date != '0000-00-00')
 													$task_creation_date = @$item->task_creation_date;
@@ -2090,10 +2075,6 @@ include 'menu_tasks.php';
 												$updated_date = @$item->updated_date;
 
 												$description = @$item->description;
-												if ($search_filter) {
-													$esc_sf = preg_quote($search_filter, '/');
-													$description = preg_replace('/(' . $esc_sf . ')/iu', '<mark>$1</mark>', $description);
-												}
 												
 												$id_track_responsible = @$item->id_track_responsible;
 												$query = $mysqli->prepare("SELECT nickname FROM dne_users WHERE id = ?");
