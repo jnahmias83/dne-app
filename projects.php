@@ -528,8 +528,8 @@ foreach($all_what_news as $wn){
 								<tr class="task-row fontSize13">	
 									<td>	
 										<a id="task_name_<?=@$ut->id?>" class="text-decoration-none w-100">
-											<div class="flex flex-wrap justify-content-center align-items-center task_name width100Percents cursor-pointer" data-projectnickname="<?=@$ut->p_nickname?>" data-meetingid="<?=@$ut->id?>" data-projectid="<?=@$ut->p_id?>" data-userid="<?=@$user_id?>" data-chapter="<?=@$ut->chapter_name?>" data-name="<?=@$ut->subject?>" data-area="<?=@$ut->area?>" data-recipient="<?=@$responsible_email?>" data-responsibleid="<?=@$ut->id_responsible?>" data-destinationdate="<?=@$ut->destination_date?>" data-progresstatusid="<?=@$ut->id_progress_status?>" data-ispriority="<?=@$ut->is_priority?>" data-trackresponsibleid="<?=@$id_track_responsible?>" data-tracktype="<?=@$track_type?>" data-reminderdate="<?=@$reminder_date?>" data-remindertime="<?=@$reminder_time?>" data-istodotoday="0">
-												<div class="width15Percents">		
+											<div class="flex flex-wrap justify-content-center align-items-center task_name width100Percents cursor-pointer" data-projectnickname="<?=@$ut->p_nickname?>" data-meetingid="<?=@$ut->id?>" data-projectid="<?=@$ut->p_id?>" data-userid="<?=@$user_id?>" data-lang="<?=@$ut->p_lang?>" data-chapter="<?=@$ut->chapter_name?>" data-name="<?=@$ut->subject?>" data-area="<?=@$ut->area?>" data-recipient="<?=@$responsible_email?>" data-responsibleid="<?=@$ut->id_responsible?>" data-destinationdate="<?=@$ut->destination_date?>" data-progresstatusid="<?=@$ut->id_progress_status?>" data-ispriority="<?=@$ut->is_priority?>" data-trackresponsibleid="<?=@$id_track_responsible?>" data-tracktype="<?=@$track_type?>" data-reminderdate="<?=@$reminder_date?>" data-remindertime="<?=@$reminder_time?>" data-istodotoday="0">
+												<div class="width15Percents">
 													<a class="drag-task cursor-pointer alignCenter text-decoration-none" data-id="<?=@$ut->id?>" data-listfrom="user_tasks">
 														<i class="fa-solid fa-thumbtack"></i>
 													</a>
@@ -642,7 +642,7 @@ foreach($all_what_news as $wn){
 								<tr class="task-row fontSize13">	
 									<td>
 										<a id="task_name_<?=@$at->id?>" class="text-decoration-none w-100">
-											<div class="flex flex-wrap justify-content-center align-items-center task_name cursor-pointer" data-projectnickname="<?=@$at->p_nickname?>" data-meetingid="<?=@$at->id?>" data-projectid="<?=@$at->p_id?>" data-userid="<?=@$user_id?>" data-chapter="<?=@$at->chapter_name?>" data-name="<?=@$at->subject?>" data-area="<?=@$at->area?>" data-recipient="<?=@$responsible_email?>" data-responsibleid="<?=@$at->id_responsible?>" data-destinationdate="<?=@$at->destination_date?>" data-progresstatusid="<?=@$at->id_progress_status?>" data-ispriority="<?=@$at->is_priority?>" data-trackresponsibleid="<?=@$id_track_responsible?>" data-tracktype="<?=@$track_type?>" data-reminderdate="<?=@$reminder_date?>" data-remindertime="<?=@$reminder_time?>" data-istodotoday="0">
+											<div class="flex flex-wrap justify-content-center align-items-center task_name cursor-pointer" data-projectnickname="<?=@$at->p_nickname?>" data-meetingid="<?=@$at->id?>" data-projectid="<?=@$at->p_id?>" data-userid="<?=@$user_id?>" data-lang="<?=@$at->p_lang?>" data-chapter="<?=@$at->chapter_name?>" data-name="<?=@$at->subject?>" data-area="<?=@$at->area?>" data-recipient="<?=@$responsible_email?>" data-responsibleid="<?=@$at->id_responsible?>" data-destinationdate="<?=@$at->destination_date?>" data-progresstatusid="<?=@$at->id_progress_status?>" data-ispriority="<?=@$at->is_priority?>" data-trackresponsibleid="<?=@$id_track_responsible?>" data-tracktype="<?=@$track_type?>" data-reminderdate="<?=@$reminder_date?>" data-remindertime="<?=@$reminder_time?>" data-istodotoday="0">
 												<div class="width15Percents">		
 													<a class="drag-task cursor-pointer alignCenter text-decoration-none" data-id="<?=@$at->id?>" data-listfrom="active_tracking">
 														<i class="fa-solid fa-thumbtack"></i>
@@ -807,7 +807,7 @@ foreach($all_what_news as $wn){
 								<tr class="task-row fontSize13">
 									<td>
 										<a id="task_name_<?=@$wn->id?>" class="text-decoration-none w-100 d-block">		
-											<div class="marginTop5 marginBottom5 flex flex-wrap justify-content-center align-items-center task_name width100Percents cursor-pointer" data-projectnickname="<?=@$wn->p_nickname?>" data-meetingid="<?=@$wn->id?>" data-projectid="<?=@$wn->p_id?>" data-userid="<?=@$user_id?>" data-chapter="<?=@$wn->chapter_name?>" data-name="<?=@$wn->subject?>" data-area="<?=@$wn->area?>" data-recipient="<?=@$responsible_email?>" data-responsibleid="<?=@$wn->id_responsible?>" data-destinationdate="<?=@$wn->destination_date?>" data-progresstatusid="<?=@$wn->id_progress_status?>" data-ispriority="<?=@$wn->is_priority?>" data-trackresponsibleid="<?=@$id_track_responsible?>" data-tracktype="<?=@$track_type?>" data-reminderdate="<?=@$reminder_date?>" data-remindertime="<?=@$reminder_time?>" data-istodotoday="0">
+											<div class="marginTop5 marginBottom5 flex flex-wrap justify-content-center align-items-center task_name width100Percents cursor-pointer" data-projectnickname="<?=@$wn->p_nickname?>" data-meetingid="<?=@$wn->id?>" data-projectid="<?=@$wn->p_id?>" data-userid="<?=@$user_id?>" data-lang="<?=@$wn->p_lang?>" data-chapter="<?=@$wn->chapter_name?>" data-name="<?=@$wn->subject?>" data-area="<?=@$wn->area?>" data-recipient="<?=@$responsible_email?>" data-responsibleid="<?=@$wn->id_responsible?>" data-destinationdate="<?=@$wn->destination_date?>" data-progresstatusid="<?=@$wn->id_progress_status?>" data-ispriority="<?=@$wn->is_priority?>" data-trackresponsibleid="<?=@$id_track_responsible?>" data-tracktype="<?=@$track_type?>" data-reminderdate="<?=@$reminder_date?>" data-remindertime="<?=@$reminder_time?>" data-istodotoday="0">
 												<div class="width15Percents">	
 													<span class="marginRight5 colorWhite bgColor-1a5276 border-black borderRadius10 padding-4x-4y fw-bold fontSize9">
 													  <?=@$wn->p_nickname?>
@@ -1124,7 +1124,7 @@ foreach($all_what_news as $wn){
 														<td>
 														    <input type="hidden" id="p_nickname_<?=@$ut->id?>" value="<?=@$pr->nickname?>">
 															<a id="task_name_<?=@$ut->id?>" class="text-decoration-none w-100 d-block">
-																<div class="marginTop5 marginBottom5 flex flex-wrap justify-content-center align-items-center task_name width100Percents cursor-pointer" data-projectnickname="<?=@$ut->p_nickname?>" data-meetingid="<?=@$ut->id?>" data-projectid="<?=@$pr->id?>" data-userid="<?=@$user_id?>" data-chapter="<?=@$ut->chapter_name?>" data-name="<?=@$ut->subject?>" data-area="<?=@$ut->area?>" data-recipient="<?=@$responsible_email?>" data-responsibleid="<?=@$ut->id_responsible?>" data-destinationdate="<?=@$ut->destination_date?>" data-progresstatusid="<?=@$ut->id_progress_status?>" data-ispriority="<?=@$ut->is_priority?>" data-trackresponsibleid="<?=@$id_track_responsible?>" data-tracktype="<?=@$track_type?>" data-reminderdate="<?=@$reminder_date?>" data-remindertime="<?=@$reminder_time?>" data-istodotoday="0">
+																<div class="marginTop5 marginBottom5 flex flex-wrap justify-content-center align-items-center task_name width100Percents cursor-pointer" data-projectnickname="<?=@$ut->p_nickname?>" data-meetingid="<?=@$ut->id?>" data-projectid="<?=@$pr->id?>" data-userid="<?=@$user_id?>" data-lang="<?=@$ut->p_lang?>" data-chapter="<?=@$ut->chapter_name?>" data-name="<?=@$ut->subject?>" data-area="<?=@$ut->area?>" data-recipient="<?=@$responsible_email?>" data-responsibleid="<?=@$ut->id_responsible?>" data-destinationdate="<?=@$ut->destination_date?>" data-progresstatusid="<?=@$ut->id_progress_status?>" data-ispriority="<?=@$ut->is_priority?>" data-trackresponsibleid="<?=@$id_track_responsible?>" data-tracktype="<?=@$track_type?>" data-reminderdate="<?=@$reminder_date?>" data-remindertime="<?=@$reminder_time?>" data-istodotoday="0">
 																	<div class="width10Percents">
 																		<a class="drag-task cursor-pointer alignCenter text-decoration-none" data-id="<?=@$ut->id?>" data-listfrom="user_tasks">
 																			<i class="paddingTop10 fa-solid fa-thumbtack"></i>
@@ -1431,7 +1431,7 @@ foreach($all_what_news as $wn){
 														<td>
 															<input type="hidden" id="p_nickname_<?=@$wn->id?>" value="<?=@$pr->nickname?>">
 															<a id="task_name_<?=@$wn->id?>" class="text-decoration-none w-100 d-block">		
-																<div class="marginTop5 marginBottom5 flex flex-wrap justify-content-center align-items-center task_name width100Percents cursor-pointer" data-projectnickname="<?=@$wn->p_nickname?>" data-meetingid="<?=@$wn->id?>" data-projectid="<?=@$wn->p_id?>" data-userid="<?=@$user_id?>" data-chapter="<?=@$wn->chapter_name?>" data-name="<?=@$wn->subject?>" data-area="<?=@$wn->area?>" data-recipient="<?=@$responsible_email?>" data-responsibleid="<?=@$wn->id_responsible?>" data-destinationdate="<?=@$wn->destination_date?>" data-progresstatusid="<?=@$wn->id_progress_status?>" data-ispriority="<?=@$wn->is_priority?>" data-trackresponsibleid="<?=@$id_track_responsible?>" data-tracktype="<?=@$track_type?>" data-reminderdate="<?=@$reminder_date?>" data-remindertime="<?=@$reminder_time?>" data-istodotoday="0">		
+																<div class="marginTop5 marginBottom5 flex flex-wrap justify-content-center align-items-center task_name width100Percents cursor-pointer" data-projectnickname="<?=@$wn->p_nickname?>" data-meetingid="<?=@$wn->id?>" data-projectid="<?=@$wn->p_id?>" data-userid="<?=@$user_id?>" data-lang="<?=@$wn->p_lang?>" data-chapter="<?=@$wn->chapter_name?>" data-name="<?=@$wn->subject?>" data-area="<?=@$wn->area?>" data-recipient="<?=@$responsible_email?>" data-responsibleid="<?=@$wn->id_responsible?>" data-destinationdate="<?=@$wn->destination_date?>" data-progresstatusid="<?=@$wn->id_progress_status?>" data-ispriority="<?=@$wn->is_priority?>" data-trackresponsibleid="<?=@$id_track_responsible?>" data-tracktype="<?=@$track_type?>" data-reminderdate="<?=@$reminder_date?>" data-remindertime="<?=@$reminder_time?>" data-istodotoday="0">		
 																	<div class="width100Percents">
 																		<div class="marginRight5 flex flex-wrap justify-content-center align-items-center" style="line-height:0.1">
 																			<div class="width65Percents align-items-center">
@@ -2616,10 +2616,10 @@ $(document).ready(function(){
 	    }
     });
 	
-	$(document).on('click','.task_name', function (){ 
-		project_id = $(this).data('projectid'); 
-		project_nickname = $(this).data('projectnickname'); 
-        lang = 'HE'; 	
+	$(document).on('click','.task_name', function (){
+		project_id = $(this).data('projectid');
+		project_nickname = $(this).data('projectnickname');
+        lang = $(this).data('lang') || 'HE';
 		meeting_id = $(this).data('meetingid');  
 		chapter = $(this).data('chapter');
 		subject = $(this).data('name');
