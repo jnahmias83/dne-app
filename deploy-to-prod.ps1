@@ -16,10 +16,8 @@ $plainPass  = [Runtime.InteropServices.Marshal]::PtrToStringAuto(
 Add-Type -AssemblyName System.Web
 $encodedPass = [System.Web.HttpUtility]::UrlEncode($plainPass)
 
-# Get files changed in the last N commits
-$n = Read-Host "Combien de commits a deployer? (defaut: 1)"
-if (-not $n -or $n -notmatch '^\d+$') { $n = 1 }
-$files = & git -C $localBase diff "HEAD~$n" --name-only | Sort-Object -Unique
+# Get files changed in the last commit
+$files = & git -C $localBase diff "HEAD~1" --name-only | Sort-Object -Unique
 
 if (-not $files) {
     Write-Host "No files found from last commit. Nothing to upload." -ForegroundColor Yellow

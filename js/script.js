@@ -125,11 +125,11 @@ function setData(meeting_id,iteration,field,isRemark,forShare,screen_type){
     
 	if(field == 'subject'){
 		form_data.append('field',field);
-		form_data.append('subject',$(subject_elem).html());
+		form_data.append('subject',$(subject_elem).html().replace(/<span class="sf-hl">([^<]*)<\/span>/gi, '$1'));
 	}
     else if(field == 'area'){
 		form_data.append('field',field);
-		form_data.append('area',$(area_elem).html());
+		form_data.append('area',$(area_elem).html().replace(/<span class="sf-hl">([^<]*)<\/span>/gi, '$1'));
 	}
 	else if(field == 'description'){
 		form_data.append('field',field);
@@ -453,8 +453,8 @@ function fillContentTaskDetails(meeting_id,iteration,task_details,forShare){
 	content += '<tr class="alignCenter height26"><td colspan="3" class="bgColorBlue2 colorWhite font-weight-bold alignCenter paddingTop2 paddingBottom5">'+(forShare ? task_details[27]+'<br/>' : '')+task_details[1]+'</td></tr>';
 	
 	content += '<tr class="alignCenter height26">';
-	var taskBg    = task_details[26] || '#5b8dd9';
-	var taskColor = task_details[28] || '#ffffff';
+	let taskBg    = task_details[26] || '#5b8dd9';
+	let taskColor = task_details[28] || '#ffffff';
 	content += '<td class="fontSize14 border-left-white"><span class="colorGrey font-weight-bold">משימת</span><br/><span style="display:inline-block;padding:6px 14px;color:'+taskColor+';background-color:'+taskBg+';font-weight:bold;box-sizing:border-box;border-radius:20px;">'+task_details[14]+'</span></td>';
 	content += '<td class="fontSize14 border-left-white"><span class="colorGrey font-weight-bold">אחראי</span><br/><strong class="fontSize16 colorRed">'+task_details[2]+'</strong></td>';
 	content += '<td class="fontSize14"><span class="colorGrey font-weight-bold">להעביר ל</span><br/><span class="fontSize16 color-4d7380">'+task_details[3]+'</span></td>';

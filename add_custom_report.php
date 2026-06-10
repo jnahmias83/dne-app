@@ -803,15 +803,19 @@ $(document).ready(function() {
         );
   }
   
-  $('#is_include_pass_on_tasks').change(function() { 
+  $('#is_include_pass_on_tasks').change(function() {
     if ($(this).is(':checked')) {
 	  $('#or_responsibles').prop('checked',true);
 	  $('input[id="pass_ons"]').prop('checked', false);
 	  $('input[id="all_pass_ons"]').prop('checked', false);
-	 
+
 	  $('#responsibles:checked').each(function(i){
-	      $('input[id="pass_ons"][value="' + $(this).val() + '"]').prop('checked', true);  
+	      $('input[id="pass_ons"][value="' + $(this).val() + '"]').prop('checked', true);
 	  });
+	}
+	else {
+	  $('input[id="pass_ons"]').prop('checked', true);
+	  $('input[id="all_pass_ons"]').prop('checked', true);
 	}
   });
   
@@ -819,10 +823,14 @@ $(document).ready(function() {
 	  if($(this).val() != 0) {
 		  $.post('populate_responsibles_list.php',{id_projects_suppliers:$(this).val(),all_responsibles_list:$('#responsibles_ids').val()},function(data){
 		  $('#responsibles_list').html(data);
+		  setTimeout(function(){
+			  $('#is_include_pass_on_tasks').prop('checked', true).trigger('change');
+		  }, 0);
 	     });
 	  }
-	  else 
+	  else {
 		 $('#is_include_pass_on_tasks').prop('checked',false);
+	  }
   });
   
   let count = 0;

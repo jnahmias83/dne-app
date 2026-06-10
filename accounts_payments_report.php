@@ -374,6 +374,7 @@ $percent_paid_display = '';
 $percent_paid_vat_excluded_display = '';
 $percent_paid_from_orders_vat_excluded_display = '';
 $percent_to_pay_from_orders_vat_included_display = '';
+$remaining_to_pay_vat_included_display = '';
 
 if($accounts_payments_num_rows > 0){
     if(isset($total_approved_amount_vat_included)){
@@ -456,26 +457,38 @@ $html.='<td colspan="4" style="'.$style_td_totals.'border:1px solid black;"><str
 $html.='<td style="'.@$text_align.';'.@$padding.':5px;border:1px solid black;"><strong>'.@$total_approved_amount_vat_included_display.'</strong></td>';
 $html.='<td dir="ltr" style="'.@$text_align.';'.@$padding.':5px;border:1px solid black;"><strong>-'.@$total_paid_amount_vat_included_display.'</strong></td>';
 $html.='</tr>';
-$html.='<tr style="font-size:10px;text-align:center;"><td colspan="4" rowspan="2">'.@$table_ap_down_text.'</td><td style="background-color:#dcf1fa;font-size:12px;border:1px solid black;" colspan="2"><strong>'.getLang2($lang,'pending_payment').'&nbsp;'.@$pending_payment_display.'</strong></td></tr>';
-$html.='<tr style="font-size:10px;text-align:center;background-color:#f5f5dc;"><td colspan="2" style="border:1px solid black;"><strong>'.getLang2($lang,'total_to_be_paid_vat_excluded').'<br/>'.@$pending_payment_vat_excluded_display.'&nbsp;('.@$percent_paid_from_orders_vat_excluded_display.')</strong></td></tr>';
+$html.='<tr style="font-size:10px;text-align:center;"><td colspan="4">'.@$table_ap_down_text.'</td><td style="background-color:#dcf1fa;font-size:12px;border:1px solid black;" colspan="2"><strong>'.getLang2($lang,'pending_payment').'&nbsp;'.@$pending_payment_display.'</strong></td></tr>';
 $html.='</table>';
 $html.='</td></tr></table>';
 
-$html.='<table style="margin-top:15px;font-weight:bold;" cellpadding="5">';
-$html.='<tr><td colspan="3"></td></tr>';
+$vat_incl_header    = ($lang == 'HE') ? "כולל מע''מ"    : 'VAT included';
+$to_pay_label       = ($lang == 'HE') ? 'לתשלום'        : 'To be paid';
+$paid_label         = ($lang == 'HE') ? 'שולם'          : 'Paid';
+$remaining_label    = ($lang == 'HE') ? 'שאר לשלם'      : 'Remaining to pay';
+
+$html.='<table><tr><td height="10">&nbsp;</td></tr></table>';
+$html.='<table style="font-weight:bold;" cellpadding="5">';
 $html.='<tr style="font-size:10px;">';
 $html.='<td width="50%"></td>';
-$html.='<td style="text-align:center;border:1px solid black;background-color:#f5f5dc;" width="25%">'.getLang2($lang,'paid_vat_excluded').'</td>';
-$html.='<td style="text-align:center;border:1px solid black;background-color:#f5f5dc;" width="25%">'.@$total_paid_amount_vat_excluded_display.'</td>';
+$html.='<td colspan="3" style="text-align:center;border:1px solid black;background-color:#dcf1fa;" width="50%"><strong>'.$vat_incl_header.'</strong></td>';
 $html.='</tr>';
 $html.='<tr style="font-size:10px;">';
-$html.='<td style="text-align:center;" width="50%"></td>';
-$html.='<td style="text-align:center;border:1px solid black;background-color:#f5f5dc;" width="25%">'.getLang2($lang,'percent_paid').'</td>';
-$html.='<td style="text-align:center;border:1px solid black;background-color:#f5f5dc;" width="25%">'.@$percent_paid_display.'</td>';
+$html.='<td width="50%"></td>';
+$html.='<td style="text-align:center;border:1px solid black;background-color:#dcf1fa;" width="17%"><strong>'.$to_pay_label.'</strong></td>';
+$html.='<td style="text-align:center;border:1px solid black;background-color:#dcf1fa;" width="17%"><strong>'.@$pending_payment_display.'</strong></td>';
+$html.='<td style="border:1px solid black;background-color:#dcf1fa;" width="16%"></td>';
 $html.='</tr>';
 $html.='<tr style="font-size:10px;">';
-$html.='<td></td>';
-$html.='<td style="border:1px solid white;color:grey;" colspan="2" width="50%">'.$remaining_to_pay_text.'</td>';
+$html.='<td width="50%"></td>';
+$html.='<td style="text-align:center;border:1px solid black;background-color:#f5f5dc;" width="17%"><strong>'.$paid_label.'</strong></td>';
+$html.='<td style="text-align:center;border:1px solid black;background-color:#f5f5dc;" width="17%"><strong>'.@$total_paid_amount_vat_included_display.'</strong></td>';
+$html.='<td style="text-align:center;border:1px solid black;background-color:#f5f5dc;" width="16%"><strong>'.@$percent_paid_display.'</strong></td>';
+$html.='</tr>';
+$html.='<tr style="font-size:10px;">';
+$html.='<td width="50%"></td>';
+$html.='<td style="text-align:center;border:1px solid black;background-color:#f5f5dc;" width="17%"><strong>'.$remaining_label.'</strong></td>';
+$html.='<td style="text-align:center;border:1px solid black;background-color:#f5f5dc;" width="17%"><strong>'.@$remaining_to_pay_vat_included_display.'</strong></td>';
+$html.='<td style="text-align:center;border:1px solid black;background-color:#f5f5dc;" width="16%"><strong>'.@$percent_to_pay_from_orders_vat_included_display.'</strong></td>';
 $html.='</tr>';
 $html.='</table>';
 

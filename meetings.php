@@ -1442,32 +1442,32 @@ include 'menu_tasks.php';
 											$id_task_type = @$item->id_task_type;
 											$subject = @$item->subject;
 											$area = @$item->area;
-											
+
 											$task_creation_date = '';
 											if(@$item->task_creation_date != '0000-00-00')
 												$task_creation_date = @$item->task_creation_date;
-											
+
 											$destination_date = '';
 											if(@$item->destination_date != '0000-00-00')
-												$destination_date = @$item->destination_date;					
-											
+												$destination_date = @$item->destination_date;
+
 											$updated_date = @$item->updated_date;
-											
+
 											$is_change_row_style = @$item->is_change_row_style;
-											
+
 											$image1 = @$item->image1;
 											$is_appears_img1 = @$item->is_appears_img1;
 											$image1_width = @$item->image1_width;
 											$image1_height = @$item->image1_height;
-											
+
 											$image2 = @$item->image2;
 											$is_appears_img2 = @$item->is_appears_img2;
 											$image2_width = @$item->image2_width;
 											$image2_height = @$item->image2_height;
-											
+
 											$description_popup = nl2br(@$item->description);
 											$description = @$item->description;
-												
+
 											$id_track_responsible = @$item->id_track_responsible;
 											$query = $mysqli->prepare("SELECT nickname FROM dne_users WHERE id = ?");
 											$query->bind_param('i',$id_track_responsible);	
@@ -1480,8 +1480,7 @@ include 'menu_tasks.php';
 											$num_bgcolor = 'background-color:#cbddec';
 											$num_border_color = 'border:1px solid transparent';
 											
-											if(@$track_type)
-												$num_bgcolor = 'background-color:'.@$bg_color_inputs->b_bgcolor;
+											// num_bgcolor stays #cbddec regardless of track_type
 											
 											if(@$track_type && @$id_track_responsible == @$_SESSION['id_user'])
 												$num_border_color = 'border:2px solid '.@$bg_color_inputs->f_bgcolor;
@@ -1592,15 +1591,14 @@ include 'menu_tasks.php';
 												$action_date = @$item->action_date;
 											    
 												if(@$track_type && @$remark != ''){
-													$description .= "<div id='div-tracking-remarks-'".@$meeting_id."' class='marginTop5 colorRed display-block".@$dir_log_meeting_tracking."'>
-																	<span class='colorGrey dir-rtl unicode-bidi-embed'>["
-																	.smartDate(@$item->action_date, $lang)."]</span>
-																	<span class='colorGrey dir-rtl unicode-bidi-embed'>".@$item->user_nickname." - במעקב</span>";			
-												
-												    $description .= "	: 
-																	<span class='colorRed dir-rtl unicode-bidi-embed display-inline-block'>".html_entity_decode(@$item->remark)."</span>
-																	<span class='marginRight5 colorRed dir-rtl unicode-bidi-embed display-inline-block'>".@$tracking_data."</span>
-																	</div>";
+													$track_initials = mb_strtoupper(mb_substr(@$item->user_nickname, 0, 2, 'UTF-8'));
+													$description .= "<div id='div-tracking-remarks-'".@$meeting_id."' class='marginTop5 display-block ".@$dir_log_meeting_tracking."' style='line-height:1.8;'>"
+																  . "<span class='badge-circle' style='display:inline-flex;background-color:#333;width:15px;height:15px;font-size:8px;vertical-align:middle;'>".$track_initials."</span>"
+																  . " <span class='colorGrey dir-rtl unicode-bidi-embed' style='vertical-align:middle;'>".@$item->user_nickname."</span>"
+																  . " <span class='colorGrey dir-rtl unicode-bidi-embed' style='vertical-align:middle;'>".smartDate(@$item->action_date, $lang)."</span>"
+																  . " : <span class='colorRed dir-rtl unicode-bidi-embed display-inline-block'>".html_entity_decode(@$item->remark)."</span>"
+																  . "<span class='marginRight5 colorRed dir-rtl unicode-bidi-embed display-inline-block'>".@$tracking_data."</span>"
+																  . "</div>";
 												}
 											}											
 											
@@ -1793,7 +1791,9 @@ include 'menu_tasks.php';
 												    <input type="checkbox" id="meetings_to_update_cbx_<?=@$meeting_id?>" name="meetings_to_update_cbx[]" class="meetings_to_update_cbx" value="<?=@$meeting_id?>" />	
 												</td>
 												<td id="td_count_<?=@$meeting_id?>" class="alignCenter <?=@$border_cell_number?>" style="<?=@$td_count_bgcolor?>">
-													<a id="task_actions_<?=@$meeting_id?>" data-projectid="<?=@$project_id?>" data-lang="<?=@$lang?>" data-meetingid="<?=@$meeting_id?>" data-iteration=<?=@$iteration?> data-userid="<?=@$user_id?>" data-ispriority="<?=@$is_priority?>" data-remark="<?=@$remark?>" data-chapter="<?=@$chapter_name?>" data-name="<?=@$subject?>" data-area="<?=@$area?>" data-recipient="<?=@$responsible_email?>" data-responsibleid="<?=@$responsible_id?>" data-destinationdate="<?=@$destination_date?>" data-progresstatusid="<?=@$progress_status_id?>" data-trackresponsibleid="<?=@$id_track_responsible?>" data-tracktype="<?=@$track_type?>" data-reminderdate="<?=@$reminder_date?>" data-remindertime="<?=@$reminder_time?>" class="text-decoration-none cursor-pointer fontSize12 padding-7x-3y font-weight-bold borderRadius10" style="<?=@$num_bgcolor?>!important;<?=@$num_border_color?>"><?=@$count?></a>
+													<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;height:100%;width:100%;">
+														<a id="task_actions_<?=@$meeting_id?>" data-projectid="<?=@$project_id?>" data-lang="<?=@$lang?>" data-meetingid="<?=@$meeting_id?>" data-iteration=<?=@$iteration?> data-userid="<?=@$user_id?>" data-ispriority="<?=@$is_priority?>" data-remark="<?=@$remark?>" data-chapter="<?=@$chapter_name?>" data-name="<?=@$subject?>" data-area="<?=@$area?>" data-recipient="<?=@$responsible_email?>" data-responsibleid="<?=@$responsible_id?>" data-destinationdate="<?=@$destination_date?>" data-progresstatusid="<?=@$progress_status_id?>" data-trackresponsibleid="<?=@$id_track_responsible?>" data-tracktype="<?=@$track_type?>" data-reminderdate="<?=@$reminder_date?>" data-remindertime="<?=@$reminder_time?>" class="text-decoration-none cursor-pointer fontSize12 padding-7x-3y font-weight-bold borderRadius10" style="<?=@$num_bgcolor?>!important;<?=@$num_border_color?>;display:inline-block;"><?=@$count?></a><?php if(@$track_type && @$track_responsible_name != ''): ?><span class="badge-circle" style="background-color:#e53935;width:18px;height:18px;font-size:9px;display:inline-flex;box-shadow:none;" title="<?=htmlspecialchars(@$track_responsible_name)?>"><?=mb_strtoupper(mb_substr(@$track_responsible_name, 0, 2, 'UTF-8'))?></span><?php endif; ?>
+													</div>
 												</td>
 												
 												<?php if(in_array('subject',$columns_list_array)){ ?>
@@ -2064,17 +2064,16 @@ include 'menu_tasks.php';
 												$id_task_type = @$item->id_task_type;
 												$subject = @$item->subject;
 												$area = @$item->area;
-												
 												$task_creation_date = '';
 												if(@$item->task_creation_date != '0000-00-00')
 													$task_creation_date = @$item->task_creation_date;
-												
+
 												$destination_date = '';
 												if(@$item->destination_date != '0000-00-00')
-													$destination_date = @$item->destination_date;							
-												
+													$destination_date = @$item->destination_date;
+
 												$updated_date = @$item->updated_date;
-												
+
 												$description = @$item->description;
 												
 												$id_track_responsible = @$item->id_track_responsible;
@@ -2168,10 +2167,16 @@ include 'menu_tasks.php';
 													$remark = @$item->remark;	
 													$action_date = @$item->action_date;
 											    
-													if(@$track_type && @$remark != '')
-														$description .= "<div id='div-tracking-remarks-'".@$meeting_id."' class='marginTop5 colorRed display-block ".@$dir_log_meeting_tracking."'>
-																		<span class='colorGrey dir-rtl unicode-bidi-embed'>[".smartDate(@$item->action_date, $lang)."]</span> <span class='colorGrey dir-rtl unicode-bidi-embed'>".@$item->user_nickname."</span> : <span class='colorRed dir-rtl unicode-bidi-embed display-inline-block'>".html_entity_decode(@$item->remark)."</span><span class='marginRight5 colorRed dir-rtl unicode-bidi-embed display-inline-block'>".@$tracking_data."</span>
-																		</div>";
+													if(@$track_type && @$remark != ''){
+														$track_initials2 = mb_strtoupper(mb_substr(@$item->user_nickname, 0, 2, 'UTF-8'));
+														$description .= "<div id='div-tracking-remarks-'".@$meeting_id."' class='marginTop5 display-block ".@$dir_log_meeting_tracking."' style='line-height:1.8;'>"
+																	  . "<span class='badge-circle' style='display:inline-flex;background-color:#333;width:15px;height:15px;font-size:8px;vertical-align:middle;'>".$track_initials2."</span>"
+																	  . " <span class='colorGrey dir-rtl unicode-bidi-embed' style='vertical-align:middle;'>".@$item->user_nickname."</span>"
+																	  . " <span class='colorGrey dir-rtl unicode-bidi-embed' style='vertical-align:middle;'>".smartDate(@$item->action_date, $lang)."</span>"
+																	  . " : <span class='colorRed dir-rtl unicode-bidi-embed display-inline-block'>".html_entity_decode(@$item->remark)."</span>"
+																	  . "<span class='marginRight5 colorRed dir-rtl unicode-bidi-embed display-inline-block'>".@$tracking_data."</span>"
+																	  . "</div>";
+													}
 												}																	
 												
 												if(@$image1_width > 0 && @$image1_height > 0) {
@@ -4442,7 +4447,8 @@ function setFilter(id_report,id,search_text,filter_type){
 		destination_date_end = formatedEndDate;	       
     }
 
-	let sql = 'SELECT c.name AS name,m.id AS id,m.is_priority AS is_priority,m.id_user AS id_user,m.id_task_type AS id_task_type,m.id_chapter AS id_chapter,m.subject AS subject,m.ids_rdv AS ids_rdv,m.area,m.description,m.id_task,m.id_responsible,m.id_pass_on,m.task_creation_date,m.destination_date,m.id_progress_status,m.updated_date AS updated_date,m.image1 AS image1,m.is_appears_img1 AS is_appears_img1,m.image1_width AS image1_width,m.image1_height AS image1_height,m.image2 AS image2,m.image2_width AS image2_width,m.image2_height AS image2_height,m.is_appears_img2 AS is_appears_img2,m.is_change_row_style AS is_change_row_style,m.id_track_responsible AS id_track_responsible,m.track_type AS track_type,m.reminder_time AS reminder_time,m.reminder_date AS reminder_date FROM dne_meetings m LEFT JOIN dne_chapters c ON m.id_chapter = c.id LEFT JOIN dne_tasks t ON m.id_task = t.id WHERE m.id_project ='+$('#project_id').val()+ ' AND m.is_appears = 1 ';
+	let is_appears_cond = (filter_type == 'search_filter' && search_text.trim() != '') ? 'is_appears IN(0,1)' : 'is_appears = 1';
+	let sql = 'SELECT c.name AS name,m.id AS id,m.is_priority AS is_priority,m.id_user AS id_user,m.id_task_type AS id_task_type,m.id_chapter AS id_chapter,m.subject AS subject,m.ids_rdv AS ids_rdv,m.area,m.description,m.id_task,m.id_responsible,m.id_pass_on,m.task_creation_date,m.destination_date,m.id_progress_status,m.updated_date AS updated_date,m.image1 AS image1,m.is_appears_img1 AS is_appears_img1,m.image1_width AS image1_width,m.image1_height AS image1_height,m.image2 AS image2,m.image2_width AS image2_width,m.image2_height AS image2_height,m.is_appears_img2 AS is_appears_img2,m.is_change_row_style AS is_change_row_style,m.id_track_responsible AS id_track_responsible,m.track_type AS track_type,m.reminder_time AS reminder_time,m.reminder_date AS reminder_date FROM dne_meetings m LEFT JOIN dne_chapters c ON m.id_chapter = c.id LEFT JOIN dne_tasks t ON m.id_task = t.id WHERE m.id_project ='+$('#project_id').val()+ ' AND m.' + is_appears_cond + ' ';
 
 	let params = [];
 
@@ -4484,7 +4490,7 @@ function setFilter(id_report,id,search_text,filter_type){
 			params.push('m.id_responsible IN('+responsibles+')');
 	}
        
-	if(progress_status != '')
+	if(progress_status != '' && filter_type != 'search_filter')
 	  params.push('m.id_progress_status IN('+progress_status+')');
 
 	let creation_date = '';
@@ -4702,4 +4708,37 @@ td[id^="td_area_"] > div {
 .btn-group-toggle input[type="radio"] {
     display: none;
 }
+
+span.sf-hl {
+    font-weight: bold;
+    display: contents;
+}
 </style>
+
+<script>
+$(function() {
+    let term = $('#search_filter').val();
+    if (!term) return;
+
+    let esc = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    let re = new RegExp('(' + esc + ')', 'gi');
+
+    function highlightEl(el) {
+        let html = el.innerHTML;
+        let result = html.replace(/(<[^>]+>|[^<]+)/g, function(part) {
+            if (part.charAt(0) === '<') return part;
+            re.lastIndex = 0;
+            return part.replace(re, '<span class="sf-hl">$1</span>');
+        });
+        re.lastIndex = 0;
+        if (result !== html) {
+            let ce = el.getAttribute('contenteditable');
+            el.removeAttribute('contenteditable');
+            el.innerHTML = result;
+            if (ce !== null) el.setAttribute('contenteditable', ce);
+        }
+    }
+
+    document.querySelectorAll('[id^="subject_"],[id^="area_"],[id^="description_"]').forEach(highlightEl);
+});
+</script>

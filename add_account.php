@@ -246,59 +246,98 @@ $('#create_order_cb').click (function (e){
 	  create_order_from_account = 0;
 });
 
-$('#save_btn').click (function (e){  
-	let form_data = new FormData();	
-	form_data.append('id',$('#id').val());
-	form_data.append('id_projects_suppliers',$('#suppliers').val());
-	form_data.append('description',$('#description').val());
-	let pdf_submission = $('#pdf_submission')[0].files[0];
-	if (pdf_submission) form_data.append('pdf_submission', pdf_submission);
-	form_data.append('submit_date',$('#submit_date').val());
-	form_data.append('submitted_account',$('#submitted_account').val());
-	let pdf_approval = $('#pdf_approval')[0].files[0];
-	if (pdf_approval) form_data.append('pdf_approval', pdf_approval);
-	form_data.append('approval_date',$('#approval_date').val());
-	form_data.append('approved_amount',$('#approved_amount').val());
-	form_data.append('create_order_from_account',create_order_from_account);
-	form_data.append('vat',$('#vat').val());
-	
-	$.ajax({
-		type: 'POST',
-		url: 'account_insert.php',
-		data: form_data,
-		cache: false,
-		processData: false,
-		contentType: false,	
-        beforeSend: function() {
-			$("#progress-popup").show();
-			let progress = 0;
-			let interval = setInterval(function() {
-				if (progress < 90) {
-					progress += 10;
-					$("#progress-bar").css("width", progress + "%");
-				} else {
-					clearInterval(interval);
-				}
-			}, 200);
-			$("#progress-popup").data("interval", interval);
-		},		
-		success: function(data){  
-			let url;
-			if($('#from').val() == 'not_app_acts')
-			   url = 'not_approved_accounts.php';
-			else if($('#from').val() == 'budget')
-			   url = 'budget.php?project_id='+$('#project_id').val()+'&lang_screen='+$('#lang_screen').val();
-			else if($('#from').val() == 'accounts_payments')
-			   url = 'accounts_payments.php?ps_id='+$('#ps_id').val()+'&lang_screen='+$('#lang_screen').val();
-			else if($('#from').val() == 'projects')
-			   url = 'projects.php';
-			else 
-			   url = 'accounts.php?project_id='+$('#project_id').val()+$('#lang_screen').val();
-			location.href = url;
-	    },
-	});												       			   
-})
+$('#save_btn').click(function(e) {
+	let pdf_submission_file = $('#pdf_submission')[0].files[0];
+	let pdf_approval_file   = $('#pdf_approval')[0].files[0];
 
+	function readFileAsBlob(file) {
+		return new Promise(function(resolve, reject) {
+			if (!file) { resolve(null); return; }
+			if (file.size === 0) { reject('empty:' + file.name); return; }
+			let reader = new FileReader();
+			reader.onload = function(e) {
+				resolve({ blob: new Blob([e.target.result], { type: file.type || 'application/pdf' }), name: file.name });
+			};
+			reader.onerror = function() { reject('read:' + file.name); };
+			reader.readAsArrayBuffer(file);
+		});
+	}
+
+	function doSubmit(form_data) {
+		$.ajax({
+			type: 'POST',
+			url: 'account_insert.php',
+			data: form_data,
+			cache: false,
+			processData: false,
+			contentType: false,
+			timeout: 60000,
+			beforeSend: function() {
+				$("#progress-popup").show();
+				$("#div_message_alert_down").html('');
+				let progress = 0;
+				let interval = setInterval(function() {
+					if (progress < 90) {
+						progress += 10;
+						$("#progress-bar").css("width", progress + "%");
+					} else {
+						clearInterval(interval);
+					}
+				}, 200);
+				$("#progress-popup").data("interval", interval);
+			},
+			complete: function() {
+				clearInterval($("#progress-popup").data("interval"));
+				$("#progress-bar").css("width", "100%");
+				setTimeout(function() {
+					$("#progress-popup").hide();
+					$("#progress-bar").css("width", "0%");
+				}, 300);
+			},
+			error: function(xhr, status, error) {
+				$('#div_message_alert_down').html("<span style='color:red;font-size:13px;'>Upload failed (" + status + "). Please try again.</span>");
+			},
+			success: function(data) {
+				let url;
+				if($('#from').val() == 'not_app_acts')
+					url = 'not_approved_accounts.php';
+				else if($('#from').val() == 'budget')
+					url = 'budget.php?project_id='+$('#project_id').val()+'&lang_screen='+$('#lang_screen').val();
+				else if($('#from').val() == 'accounts_payments')
+					url = 'accounts_payments.php?ps_id='+$('#ps_id').val()+'&lang_screen='+$('#lang_screen').val();
+				else if($('#from').val() == 'projects')
+					url = 'projects.php';
+				else
+					url = 'accounts.php?project_id='+$('#project_id').val()+$('#lang_screen').val();
+				location.href = url;
+			}
+		});
+	}
+
+	let form_data = new FormData();
+	form_data.append('id', $('#id').val());
+	form_data.append('id_projects_suppliers', $('#suppliers').val());
+	form_data.append('description', $('#description').val());
+	form_data.append('submit_date', $('#submit_date').val());
+	form_data.append('submitted_account', $('#submitted_account').val());
+	form_data.append('approval_date', $('#approval_date').val());
+	form_data.append('approved_amount', $('#approved_amount').val());
+	form_data.append('create_order_from_account', create_order_from_account);
+	form_data.append('vat', $('#vat').val());
+
+	Promise.all([readFileAsBlob(pdf_submission_file), readFileAsBlob(pdf_approval_file)])
+		.then(function(results) {
+			if (results[0]) form_data.append('pdf_submission', results[0].blob, results[0].name);
+			if (results[1]) form_data.append('pdf_approval',   results[1].blob, results[1].name);
+			doSubmit(form_data);
+		})
+		.catch(function(err) {
+			let msg = err.indexOf('empty:') === 0
+				? 'File not ready. Please download it first and try again.'
+				: 'Cannot read file. Please try again.';
+			$('#div_message_alert_down').html("<span style='color:red;font-size:13px;'>" + msg + "</span>");
+		});
+})
 $('#cancel_btn').click(function(){
 	let url;
 	if($('#from').val() == 'not_app_acts')

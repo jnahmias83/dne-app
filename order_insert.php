@@ -20,14 +20,16 @@ else if($_POST['id'] == 0 && !isset($_FILES['pdf_order']['name'])) {
 }
 else {
 	if($_POST['id'] == 0){
-		if(isset($_FILES['pdf_order']['name']) && $_FILES['pdf_order']['error'] === 0) {
+		if(isset($_FILES['pdf_order']) && $_FILES['pdf_order']['error'] === UPLOAD_ERR_OK) {
 			$original_name = basename($_FILES['pdf_order']['name']);
-			$extension = pathinfo($original_name, PATHINFO_EXTENSION);
+			$extension = strtolower(pathinfo($original_name, PATHINFO_EXTENSION));
+			if(!in_array($extension, ['pdf'])) { echo "no_file"; exit; }
 			$clean_project_name = preg_replace('/[^A-Za-z0-9_\-]/', '_', $project->name);
 			$pdf_order_name = 'pdf_order_'.$clean_project_name.'_'.time().'.'.$extension;
 			move_uploaded_file($_FILES['pdf_order']['tmp_name'],'uploads/'.$pdf_order_name);
 		} else {
-			echo "no_file"; 
+			$upload_err = isset($_FILES['pdf_order']['error']) ? $_FILES['pdf_order']['error'] : -1;
+			echo "no_file_" . $upload_err;
 			exit;
 		}
 	

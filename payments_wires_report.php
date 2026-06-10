@@ -667,7 +667,9 @@ if($asbr == 1){
 			$elem_pending_payment_vat_excluded_display = '';
 			$elem_percent_paid_display = '';
 			$elem_percent_paid_vat_excluded_display = '';
-            $elem_percent_paid_from_orders_vat_excluded_display = '';
+			$elem_percent_paid_from_orders_vat_excluded_display = '';
+			$elem_remaining_to_pay_vat_included_display = '';
+			$elem_percent_to_pay_from_orders_vat_included_display = '';
 
 			if($elems_accounts_payments_num_rows > 0){
 				$val = floatval(@$elem_total_approved_amount_vat_included);
@@ -704,36 +706,61 @@ if($asbr == 1){
 				
 				if($elem_total_sum_orders > 0){
 					$val = (@$elem_total_paid_amount_vat_excluded / $elem_total_sum_orders)*100;
-					$elem_percent_paid_display = 
+					$elem_percent_paid_display =
 						number_format($val,($val == floor($val)?0:2),'.',',').'%';
 
                     $val = (@$elem_pending_payment_vat_excluded/@$elem_total_sum_orders)*100;
 					$elem_percent_paid_from_orders_vat_excluded_display =
 						number_format($val,($val == floor($val)?0:2),'.',',').'%';
-					}
-			}				
+				}
+
+				$elem_total_sum_orders_vat_included = $elem_total_sum_orders * (1 + (@$vat->vat/100));
+				if($elem_total_sum_orders_vat_included > 0) {
+					$elem_remaining_to_pay_vat_included = $elem_total_sum_orders_vat_included - $elem_total_paid_amount_vat_included;
+					$val = floatval($elem_remaining_to_pay_vat_included);
+					$elem_remaining_to_pay_vat_included_display = number_format($val,($val == floor($val)?0:2),'.',',').'&#8362;';
+					$pct = ($elem_remaining_to_pay_vat_included / $elem_total_sum_orders_vat_included) * 100;
+					$elem_percent_to_pay_from_orders_vat_included_display = number_format($pct,($pct == floor($pct)?0:2),'.',',').'%';
+				}
+			}
 	
 			$html3_body.='<tr style="background-color:#dcf1fa;font-size:12px;">';
 			$html3_body.='<td colspan="4" style="'.$style_td_totals.'border:1px solid black;"><strong>'.getLang2($lang,'total').'</strong></td>';
 			$html3_body.='<td style="'.@$text_align.';'.@$padding.':5px;border:1px solid black;"><strong>'.@$elem_total_approved_amount_vat_included_display.'</strong></td>';
 			$html3_body.='<td dir="ltr" style="'.@$text_align.';'.@$padding.':5px;border:1px solid black;"><strong>-'.@$elem_total_paid_amount_vat_included_display.'</strong></td>';
 			$html3_body.='</tr>';
-			$html3_body.='<tr style="font-size:10px;text-align:center;"><td colspan="4" rowspan="2">'.@$table_ap_down_text.'</td><td style="background-color:#dcf1fa;font-size:12px;border:1px solid black;" colspan="2"><strong>'.getLang2($lang,'pending_payment').'&nbsp;'.@$elem_pending_payment_display.'</strong></td></tr>';
-			$html3_body.='<tr style="font-size:10px;text-align:center;background-color:#f5f5dc;"><td colspan="2" style="border:1px solid black;"><strong>'.getLang2($lang,'total_to_be_paid_vat_excluded').'<br/>'.@$elem_pending_payment_vat_excluded_display.'&nbsp;('.@$elem_percent_paid_from_orders_vat_excluded_display.')</strong></td></tr>';
+			$html3_body.='<tr style="font-size:10px;text-align:center;"><td colspan="4">'.@$table_ap_down_text.'</td><td style="background-color:#dcf1fa;font-size:12px;border:1px solid black;" colspan="2"><strong>'.getLang2($lang,'pending_payment').'&nbsp;'.@$elem_pending_payment_display.'</strong></td></tr>';
 			$html3_body.='</table>';
 			$html3_body.='</td></tr></table>';
-			
-			$html3_body.='<table style="margin-top:15px;font-weight:bold;">';
-			$html3_body.='<tr><td colspan="3"></td></tr>';
+
+			$vat_incl_header_e  = ($lang == 'HE') ? "כולל מע''מ"    : 'VAT included';
+			$to_pay_label_e     = ($lang == 'HE') ? 'לתשלום'        : 'To be paid';
+			$paid_label_e       = ($lang == 'HE') ? 'שולם'          : 'Paid';
+			$remaining_label_e  = ($lang == 'HE') ? 'שאר לשלם'      : 'Remaining to pay';
+
+			$html3_body.='<table><tr><td height="10">&nbsp;</td></tr></table>';
+			$html3_body.='<table style="font-weight:bold;" cellpadding="5">';
 			$html3_body.='<tr style="font-size:10px;">';
-			$html3_body.='<td width="44%"></td>';
-			$html3_body.='<td style="text-align:center;border:1px solid black;background-color:#f5f5dc;" width="25%">'.getLang2($lang,'paid_vat_excluded').'</td>';
-			$html3_body.='<td style="text-align:center;border:1px solid black;background-color:#f5f5dc;" width="25%">'.@$elem_total_paid_amount_vat_excluded_display.'</td>';
+			$html3_body.='<td width="50%"></td>';
+			$html3_body.='<td colspan="3" style="text-align:center;border:1px solid black;background-color:#dcf1fa;" width="50%"><strong>'.$vat_incl_header_e.'</strong></td>';
 			$html3_body.='</tr>';
 			$html3_body.='<tr style="font-size:10px;">';
-			$html3_body.='<td width="44%"></td>';
-			$html3_body.='<td style="text-align:center;border:1px solid black;background-color:#f5f5dc;" width="25%">'.getLang2($lang,'percent_paid').'</td>';
-			$html3_body.='<td style="text-align:center;border:1px solid black;background-color:#f5f5dc;" width="25%">'.@$elem_percent_paid_display.'</td>';
+			$html3_body.='<td width="50%"></td>';
+			$html3_body.='<td style="text-align:center;border:1px solid black;background-color:#dcf1fa;" width="17%"><strong>'.$to_pay_label_e.'</strong></td>';
+			$html3_body.='<td style="text-align:center;border:1px solid black;background-color:#dcf1fa;" width="17%"><strong>'.@$elem_pending_payment_display.'</strong></td>';
+			$html3_body.='<td style="border:1px solid black;background-color:#dcf1fa;" width="16%"></td>';
+			$html3_body.='</tr>';
+			$html3_body.='<tr style="font-size:10px;">';
+			$html3_body.='<td width="50%"></td>';
+			$html3_body.='<td style="text-align:center;border:1px solid black;background-color:#f5f5dc;" width="17%"><strong>'.$paid_label_e.'</strong></td>';
+			$html3_body.='<td style="text-align:center;border:1px solid black;background-color:#f5f5dc;" width="17%"><strong>'.@$elem_total_paid_amount_vat_included_display.'</strong></td>';
+			$html3_body.='<td style="text-align:center;border:1px solid black;background-color:#f5f5dc;" width="16%"><strong>'.@$elem_percent_paid_display.'</strong></td>';
+			$html3_body.='</tr>';
+			$html3_body.='<tr style="font-size:10px;">';
+			$html3_body.='<td width="50%"></td>';
+			$html3_body.='<td style="text-align:center;border:1px solid black;background-color:#f5f5dc;" width="17%"><strong>'.$remaining_label_e.'</strong></td>';
+			$html3_body.='<td style="text-align:center;border:1px solid black;background-color:#f5f5dc;" width="17%"><strong>'.@$elem_remaining_to_pay_vat_included_display.'</strong></td>';
+			$html3_body.='<td style="text-align:center;border:1px solid black;background-color:#f5f5dc;" width="16%"><strong>'.@$elem_percent_to_pay_from_orders_vat_included_display.'</strong></td>';
 			$html3_body.='</tr>';
 			$html3_body.='</table>';
 			
