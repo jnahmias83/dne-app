@@ -1825,7 +1825,6 @@ include 'menu_tasks.php';
 														<select id="task_<?=@$meeting_id?>" class="form-control font-weight-bold fontSize12 border-none cursor-pointer alignCenter" style="direction:<?=@$dir?>;width:98%;<?=@$task_color?>;<?=@$task_bgcolor?>;" onchange="setData(<?=@$meeting_id?>,<?=@$iteration?>,'id_task',0,0,'screen');">	
 															<?php
 															foreach($tasks as $task){
-															    if (isset($custom_report) && !empty($custom_report->tasks_list) && !in_array($task->id, explode(',', $custom_report->tasks_list))) continue;
 																if ($task->is_appears_tasks_list != 1 && $task->id != @$task_id) continue;
 															?>
 																<option value="<?=@$task->id?>" <?php if($task->id == @$task_id) echo "selected";?>>
