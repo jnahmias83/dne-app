@@ -4158,6 +4158,7 @@ $(document).on('mouseenter', 'tr[id*="row_"]', function(){
     $(this).find('td[id^="td_subject_"], td[id^="td_area_"], td[id^="td_description_"]').each(function(){
         applyFullMode($(this));
     });
+    $(this).next('.tr-image-row').show();
 });
 
 $(document).on('mouseleave', 'tr[id*="row_"]', function(){
@@ -4166,6 +4167,7 @@ $(document).on('mouseleave', 'tr[id*="row_"]', function(){
     $(this).find('td[id^="td_subject_"], td[id^="td_area_"], td[id^="td_description_"]').each(function(){
         applyShortMode($(this), maxChars);
     });
+    $(this).next('.tr-image-row').hide();
 });
 
 $(document).on('click', 'tr[id*="row_"]', function(){
