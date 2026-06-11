@@ -11,10 +11,10 @@ foreach($global_tasks as $item) {
     $query->bind_param("is",$_POST['id_project'],$item->name_he);
 	$query->execute();
     $query->store_result();
-    $num_task = $query->num_rows;
+    $num_tasks = $query->num_rows;
 	$current_task = fetch_unique($query);
 	
-	if($num_task == 0) {
+	if($num_tasks == 0) {
 		$query = "INSERT INTO dne_tasks (id_project,name,name_he,color,bgcolor) VALUES(?,?,?,?,?)";
 	    $query = $mysqli->prepare($query);
 	    $query->bind_param('issss',$_POST['id_project'],$item->name,$item->name_he,$item->color,$item->bgcolor);  
