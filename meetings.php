@@ -3769,8 +3769,10 @@ $(document).ready(function(){
     });
 	
 	$('[id="continuous_btn"]').on('click', function(){
+		$('#modalTaskFollowupActions').one('hidden.bs.modal', function(){
+			$('#modalContinuousTask').modal('show');
+		});
 		$('#modalTaskFollowupActions').modal('hide');
-	    $('#modalContinuousTask').modal('show');
 	});
 	
 	$('[id="history_btn"]').on('click', function(){
@@ -4051,6 +4053,7 @@ $(document).ready(function(){
 	let modalTaskDescription = $('#modalTaskDescription');
 	let modalTaskFollowupActions = $('#modalTaskFollowupActions');
 	let modalTaskFollowupChangeStatus = $('#modalTaskFollowupChangeStatus');
+	let modalContinuousTask = $('#modalContinuousTask');
 	let modalTaskCreationDate = $('#modalTaskCreationDate');
 	let modalDestinationDate = $('#modalDestinationDate');
 	let modalTaskFollowupDelayTargetDate = $('#modalTaskFollowupDelayTargetDate');
@@ -4059,7 +4062,8 @@ $(document).ready(function(){
 	let modalHistoryTasks = $('#modalHistoryTasks');
 	let modalUpdateTask = $('#modalUpdateTask');
 	
-	const $target = $(event.target);
+	$(document).on('mousedown', function(event){
+		const $target = $(event.target);
 
     if($target.closest('#modalFilterBySupplier').length ||
         $target.closest('#modalFilterByPeriodNewTasks').length ||
@@ -4075,24 +4079,26 @@ $(document).ready(function(){
         $target.closest('#modalTaskTracking').length ||
         $target.closest('#modalSendEmail').length ||
         $target.closest('#modalHistoryTasks').length ||
-        $target.closest('#modalUpdateTask').length){      
+        $target.closest('#modalContinuousTask').length ||
+        $target.closest('#modalUpdateTask').length){
         return;
     }
-	
+
     if(modalFilterBySupplier.is(':visible') ||
         modalFilterByPeriodNewTasks.is(':visible') ||
         modalFilterByPeriodLate.is(':visible') ||
         modalFilterByProgressStatus.is(':visible') ||
         modalFilterByTask.is(':visible') ||
-        modalTaskDescription.is(':visible') || 
-        modalTaskFollowupActions.is(':visible') ||  
+        modalTaskDescription.is(':visible') ||
+        modalTaskFollowupActions.is(':visible') ||
         modalTaskFollowupChangeStatus.is(':visible') ||
         modalTaskCreationDate.is(':visible') ||
         modalDestinationDate.is(':visible') ||
         modalTaskFollowupDelayTargetDate.is(':visible') ||
         modalTaskTracking.is(':visible') ||
-        modalSendEmail.is(':visible') || 
+        modalSendEmail.is(':visible') ||
         modalHistoryTasks.is(':visible') ||
+        modalContinuousTask.is(':visible') ||
         modalUpdateTask.is(':visible')){
 			let url = 'meetings.php?project_id=' + $('#project_id').val();
 			if($('#hidden_iteration').val())
@@ -4102,6 +4108,7 @@ $(document).ready(function(){
 
 			location.href = url;
     }
+	});
 });
 
 const shortRowStyle = 'overflow:hidden; white-space:nowrap; text-overflow:ellipsis; display:block; width:100%; height:22px; line-height:22px; font-size:12px;';
@@ -4149,6 +4156,7 @@ $(document).on('mouseenter', 'tr[id*="row_"]', function(){
     $(this).find('td[id^="td_subject_"], td[id^="td_area_"], td[id^="td_description_"]').each(function(){
         applyFullMode($(this));
     });
+    $(this).next('.tr-image-row').show();
 });
 
 $(document).on('mouseleave', 'tr[id*="row_"]', function(){
@@ -4157,6 +4165,7 @@ $(document).on('mouseleave', 'tr[id*="row_"]', function(){
     $(this).find('td[id^="td_subject_"], td[id^="td_area_"], td[id^="td_description_"]').each(function(){
         applyShortMode($(this), maxChars);
     });
+    $(this).next('.tr-image-row').hide();
 });
 
 $(document).on('click', 'tr[id*="row_"]', function(){

@@ -269,8 +269,9 @@ $('#save_btn').click (function (e){
 			}, 200);
 			$("#progress-popup").data("interval", interval);
 		},          			
-		success: function(data){ 	
-			if(data == 'hebrewchars') 
+		success: function(data){
+			data = $.trim(data);
+			if(data == 'hebrewchars')
 				alert('The project name contains hebrew characters.');
 			else if(data == 'englishchars')
 				alert('The project hebrew name contains english characters.');

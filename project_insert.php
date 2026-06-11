@@ -1,4 +1,5 @@
 <?php
+ob_start();
 include 'functions/functions.php';
 session_start();
 
@@ -6,17 +7,17 @@ $_SESSION['lang'] = @$_POST['project_lang'];
 
 if(empty($_POST['project_name']) || empty($_POST['project_name_he']) || 
    empty($_POST['project_nickname'])){
-	  echo "empty"; 
+	  ob_end_clean(); echo "empty";
 }
 else {
-	if(containsHebrew($_POST['project_name']))
-		echo "hebrewchars";
-	else if(containsEnglishCharacters($_POST['project_name_he']))
-		echo "englishchars";
-	else {
+	if(containsHebrew($_POST['project_name'])) {
+		ob_end_clean(); echo "hebrewchars";
+	} else if(containsEnglishCharacters($_POST['project_name_he'])) {
+		ob_end_clean(); echo "englishchars";
+	} else {
 		if(strlen($_POST['project_nickname']) > 7 || 
 		   strlen($_POST['project_initiator_nickname']) > 7){
-			echo 'uptosevencharacters';
+			ob_end_clean(); echo 'uptosevencharacters';
 		}
 		else {
 			if($_POST['id'] == 0){
@@ -147,7 +148,7 @@ else {
 				$query->bind_param('i',$id_project);  
 				$query->execute();
 			
-				echo $id_project;	
+				ob_end_clean(); echo $id_project;
 		    }
 			else if($_POST['id'] > 0){
 			    $entrepreneur_type = 'E';
@@ -194,7 +195,7 @@ else {
 				                   strtoupper($_POST['project_nickname']),$_POST['is_project_active'],
 								   $_POST['project_lang'],date("Y-m-d"),$_POST['id']);	
 				$query->execute();
-				echo 'updated';
+				ob_end_clean(); echo 'updated';
 			}
 		}
 	}

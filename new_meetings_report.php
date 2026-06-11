@@ -65,7 +65,7 @@ $pdf->setFontSubsetting(true);
 $pdf->SetFont('freesans', '', 12);
 $pdf->setPrintHeader(false);
 
-$html_header = '<table width="90%"><tr><td style="text-align:center;"><img src="images/davidnahmias_stripe.jpg" /><br/><br/></td></tr>';
+$html_header = '<table width="90%"><tr><td style="text-align:center;"><img src="images/davidnahmias_stripe.png" /><br/><br/></td></tr>';
 
 $html1_body = '<tr style="font-size:16px;"><td width="40px;">&nbsp;</td><td style="text-align:center;"><span dir="'.$dir_table.'"><strong><u>'.$project->name_he.'<br/>דו\'ח סטטוס פרוייקט <br/>'.substr(date('Y-m-d'),8,2).'/'.substr(date('Y-m-d'),5,2).'/'.substr(date('Y-m-d'),0,4).'</u></strong></span></td></tr></table>';
 $html1_body.= '<div class="row">';

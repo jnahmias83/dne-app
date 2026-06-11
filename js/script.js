@@ -35,7 +35,8 @@ function duplicateRecord(meeting_id,iteration,from){
 		cache: false,
 		processData: false,
 		contentType: false,			
-		success: function(data){  
+		success: function(data){
+			data = $.trim(data);
 		    let url;
 		    if(from == 'fromMeetings'){
 		      url = 'add_meeting.php?project_id='+$('#project_id').val()+'&iteration='+iteration+'&id='+data;
@@ -54,21 +55,22 @@ function duplicateRecord(meeting_id,iteration,from){
 }
 
 function continuousTask(meeting_id,progress_status,iteration,from){
-	let form_data = new FormData();	
+	let form_data = new FormData();
 	form_data.append('is_continuous_task',1);
 	form_data.append('table_name','dne_meetings');
 	form_data.append('id_project',$('#hidden_project_id').val());
 	form_data.append('id',meeting_id);
 	form_data.append('progress_status',progress_status);
-	
+
 	$.ajax({
 		type: 'POST',
 		url: 'duplicate_record.php',
 		data: form_data,
 		cache: false,
 		processData: false,
-		contentType: false,			
-		success: function(data){  
+		contentType: false,
+		success: function(data){
+			data = $.trim(data);
 		    let url;
 		    if(from == 'fromMeetings') {
 		      url = 'add_meeting.php?project_id='+$('#hidden_project_id').val()+'&iteration='+iteration+'&id='+data;
@@ -77,14 +79,14 @@ function continuousTask(meeting_id,progress_status,iteration,from){
 			  url+= '&iscontinious=1';
 		    }
 			else if(from == 'fromProjectHome') {
-		        url = 'add_meeting.php?project_id='+$('#project_id').val()+'&id='+meeting_id+'&fromProjectHome=1'; 
+		        url = 'add_meeting.php?project_id='+$('#project_id').val()+'&id='+meeting_id+'&fromProjectHome=1';
 	        }
-            else 
-               url = 'add_meeting.php?project_id='+from+'&id='+data+'&iscontinious=1';;  
-			
+            else
+               url = 'add_meeting.php?project_id='+from+'&id='+data+'&iscontinious=1';;
+
 		    location.href = url;
 		},
-	});	
+	});
 }
 
 function setData(meeting_id,iteration,field,isRemark,forShare,screen_type){

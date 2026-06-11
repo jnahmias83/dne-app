@@ -403,4 +403,3 @@ function containsEnglishCharacters($inputString) {
 function isNumeric($input) {
     return ctype_digit($input);
 }
-?>

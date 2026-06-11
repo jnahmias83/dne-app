@@ -62,7 +62,7 @@ $projects_list_array = explode(',',@$_SESSION['projects_list']);
   <link href="css/custom.css" rel="stylesheet" type="text/css" />
   <link rel="stylesheet" type="text/css" href="css/style.css" />
 
-  <script src="js/script.js" type="text/javascript"></script>
+  <script src="js/script.js?v=<?=filemtime(__DIR__.'/../js/script.js')?>" type="text/javascript"></script>
 </head>
 
 <html>
