@@ -768,22 +768,43 @@ include 'menu_tasks.php';
 
 <script>
 $(document).ready(function() {
+  function filterPassOnsToSupplier() {
+	  $('#is_include_pass_on_tasks').prop('checked', true);
+	  $('#or_responsibles').prop('checked', true);
+	  $('input[id="pass_ons"]').prop('checked', false);
+	  $('input[id="all_pass_ons"]').prop('checked', false);
+	  let ids = ($('#responsibles_ids_hidden').val() || '').split(',').filter(Boolean);
+	  ids.forEach(function(id) {
+		  $('input[id="pass_ons"][value="' + id + '"]').prop('checked', true);
+	  });
+  }
+
   $('#is_supplier_report').on('change', function() {
     $('#div_supplier_filter').toggle();
 	$("input[name=and_or_responsibles][value='OR']").prop('checked',true);
+	if ($(this).is(':checked')) {
+	  if ($('#suppliers').val() != 0)
+		filterPassOnsToSupplier();
+	  else
+		$('#is_include_pass_on_tasks').prop('checked', true);
+	} else {
+	  $('#is_include_pass_on_tasks').prop('checked', false);
+	  $('input[id="pass_ons"]').prop('checked', true);
+	  $('input[id="all_pass_ons"]').prop('checked', true);
+	}
   });
-  
+
   $('#suppliers').on('change', function() {
-	  let form_data = new FormData();	
+	  let form_data = new FormData();
 	  form_data.append('id_projects_suppliers',$('#suppliers').val());
-		
+
 	  $.ajax({
 		type: 'POST',
 		url: 'getSupplierDetails.php',
 		data: form_data,
 		cache: false,
 		processData: false,
-		contentType: false,			
+		contentType: false,
 		success: function(data) {
 			let supplier_data = data.split('_');
 			$('#request_name').val(supplier_data[0]);
@@ -792,8 +813,8 @@ $(document).ready(function() {
 			$('#subtitle').val(supplier_data[1]);
 		},
 	  });
-  })	
-  
+  })
+
   if($('#id_supplier').val() > 0) {
 	    $.post('populate_responsibles_list.php',
 	        {id_projects_suppliers:$('#id_supplier').val(),all_responsibles_list:$('#responsibles_ids').val()},
@@ -802,7 +823,7 @@ $(document).ready(function() {
 	        }
         );
   }
-  
+
   $('#is_include_pass_on_tasks').change(function() {
     if ($(this).is(':checked')) {
 	  $('#or_responsibles').prop('checked',true);
@@ -818,18 +839,19 @@ $(document).ready(function() {
 	  $('input[id="all_pass_ons"]').prop('checked', true);
 	}
   });
-  
+
   $('#suppliers').on('change', function (){
 	  if($(this).val() != 0) {
 		  $.post('populate_responsibles_list.php',{id_projects_suppliers:$(this).val(),all_responsibles_list:$('#responsibles_ids').val()},function(data){
-		  $('#responsibles_list').html(data);
-		  setTimeout(function(){
-			  $('#is_include_pass_on_tasks').prop('checked', true).trigger('change');
-		  }, 0);
-	     });
+			  $('#responsibles_list').html(data);
+			  if ($('#is_supplier_report').is(':checked'))
+				  filterPassOnsToSupplier();
+		  });
 	  }
 	  else {
 		 $('#is_include_pass_on_tasks').prop('checked',false);
+		 $('input[id="pass_ons"]').prop('checked', true);
+		 $('input[id="all_pass_ons"]').prop('checked', true);
 	  }
   });
   
