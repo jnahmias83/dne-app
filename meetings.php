@@ -1826,6 +1826,7 @@ include 'menu_tasks.php';
 															<?php
 															foreach($tasks as $task){
 															    if (isset($custom_report) && !empty($custom_report->tasks_list) && !in_array($task->id, explode(',', $custom_report->tasks_list))) continue;
+																if ($task->is_appears_tasks_list != 1 && $task->id != @$task_id) continue;
 															?>
 																<option value="<?=@$task->id?>" <?php if($task->id == @$task_id) echo "selected";?>>
 																	<strong><?php if($lang == 'HE') echo @$task->name_he;else if($lang == 'EN') echo @$task->name?></strong>
