@@ -2945,10 +2945,16 @@ include 'menu_tasks.php';
 					    <div id="modalContent">
 					        <form class="alignCenter">
 						        <div class="marginTop15 fontSize18 alignCenter"><?=(@$lang=='HE') ? 'בדרך ליצור עבורך משימת המשך לפני כן, תציין אם ברצונך לסמן סטטוס משימה כ:' : 'A continuation task will be created. Please select the status to apply to the current task:'?></div>
-							    <div class="marginTop15">
-									<input type="radio" id="done" name="progress_status" value="1" onclick="continuousTask($('#hidden_meeting_id').val(),'בוצע/נמסר',$('#hidden_iteration').val(),'fromMeetings')" />&nbsp;<?=(@$lang=='HE') ? 'בוצע/נמסר' : 'Done/Delivered'?>
-							        <input type="radio" id="archive" name="progress_status" class="marginRight8" value="2" onclick="continuousTask($('#hidden_meeting_id').val(),'ארכיון',$('#hidden_iteration').val(),'fromMeetings')" />&nbsp;<?=(@$lang=='HE') ? 'ארכיון' : 'Archive'?>
-							        <input type="radio" id="no_change" name="progress_status" class="marginRight8" value="3" onclick="continuousTask($('#hidden_meeting_id').val(),'no_change',$('#hidden_iteration').val(),'fromMeetings')" />&nbsp;<?=(@$lang=='HE') ? 'ללא שינוי' : 'No change'?>
+							    <div class="marginTop15 d-flex justify-content-center" style="gap:20px;">
+									<label style="cursor:pointer">
+										<input type="radio" id="done" name="progress_status" value="1" onclick="continuousTask($('#hidden_meeting_id').val(),'בוצע/נמסר',$('#hidden_iteration').val(),'fromMeetings')" />&nbsp;<?=(@$lang=='HE') ? 'בוצע/נמסר' : 'Done/Delivered'?>
+									</label>
+									<label style="cursor:pointer">
+										<input type="radio" id="archive" name="progress_status" value="2" onclick="continuousTask($('#hidden_meeting_id').val(),'ארכיון',$('#hidden_iteration').val(),'fromMeetings')" />&nbsp;<?=(@$lang=='HE') ? 'ארכיון' : 'Archive'?>
+									</label>
+									<label style="cursor:pointer">
+										<input type="radio" id="no_change" name="progress_status" value="3" onclick="continuousTask($('#hidden_meeting_id').val(),'no_change',$('#hidden_iteration').val(),'fromMeetings')" />&nbsp;<?=(@$lang=='HE') ? 'ללא שינוי' : 'No change'?>
+									</label>
 							    </div>
 						    </form>
 					    </div>
