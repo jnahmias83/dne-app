@@ -114,10 +114,11 @@ if($_POST['table_name'] == 'dne_meetings') {
 	    $query->store_result();
         $progress_status = fetch_unique($query);
 	    $id_progress_status = @$progress_status->id;
+		$parent_change_row_style = in_array($progress_status_post, ['בוצע/נמסר','ארכיון']) ? 1 : 0;
 
-		$query = "UPDATE dne_meetings SET id_progress_status = ? WHERE id = ?";
+		$query = "UPDATE dne_meetings SET id_progress_status = ?, is_change_row_style = ? WHERE id = ?";
 		$query = $mysqli->prepare($query);
-		$query->bind_param('ii',$id_progress_status,$_POST['id']);
+		$query->bind_param('iii',$id_progress_status,$parent_change_row_style,$_POST['id']);
 		$query->execute();
 	}
 }

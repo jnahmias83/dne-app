@@ -1188,6 +1188,7 @@ function saveMeetingData(share_doc){
 		processData: false,
 		contentType: false,
 		beforeSend: function(){
+			$('#save_btn').prop('disabled', true);
 			$("#progress-popup").show();
 			let progress = 0;
 			let interval = setInterval(function(){
@@ -1199,6 +1200,9 @@ function saveMeetingData(share_doc){
 			$("#progress-popup").data("interval", interval);
 		},
 		success: function(data){
+			clearInterval($("#progress-popup").data("interval"));
+			$("#progress-popup").hide();
+			$('#save_btn').prop('disabled', false);
 			if(data == 'empty'){
 				checkEmptyFields();
 			} else if (data == 'filesizeexceeded'){
@@ -1208,6 +1212,9 @@ function saveMeetingData(share_doc){
 			}
 		},
 		error: function(){
+			clearInterval($("#progress-popup").data("interval"));
+			$("#progress-popup").hide();
+			$('#save_btn').prop('disabled', false);
 			alert('Error...');
 		}
 	});
@@ -1306,7 +1313,7 @@ function redirectUrl(meeting_id){
 	else {
 		let url4 = 'meetings.php?project_id='+$('#project_id').val();
 		if ($('#id').val() > 0)
-			url4 += '&row=row_'+$('#iteration').val();
+			url4 += '&row=meeting_'+meeting_id;
 		if ($('#is_specific_filter').val())
 			url4 += '&is_specific_filter=1';
 		if ($('#id_rdv').val() > 0)
