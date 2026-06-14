@@ -83,7 +83,7 @@ function continuousTask(meeting_id,progress_status,iteration,from){
 		        url = 'add_meeting.php?project_id='+$('#project_id').val()+'&id='+meeting_id+'&fromProjectHome=1';
 	        }
             else
-               url = 'add_meeting.php?project_id='+from+'&id='+data+'&iscontinious=1';;
+               url = 'add_meeting.php?project_id='+from+'&id='+data+'&iscontinious=1';
 
 		    url += '&lang='+$('#hidden_lang').val();
 		    location.href = url;
