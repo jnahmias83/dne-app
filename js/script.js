@@ -56,6 +56,8 @@ function duplicateRecord(meeting_id,iteration,from){
 }
 
 function continuousTask(meeting_id,progress_status,iteration,from){
+	$('[name="progress_status"]').prop('disabled', true);
+
 	let form_data = new FormData();
 	form_data.append('is_continuous_task',1);
 	form_data.append('table_name','dne_meetings');
@@ -87,6 +89,9 @@ function continuousTask(meeting_id,progress_status,iteration,from){
 
 		    url += '&lang='+$('#hidden_lang').val();
 		    location.href = url;
+		},
+		error: function(){
+			$('[name="progress_status"]').prop('disabled', false);
 		},
 	});
 }

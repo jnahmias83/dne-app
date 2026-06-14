@@ -3785,6 +3785,7 @@ $(document).ready(function(){
 	
 	$('[id="continuous_btn"]').on('click', function(){
 		$('#modalTaskFollowupActions').one('hidden.bs.modal', function(){
+			$('[name="progress_status"]').prop('checked', false).prop('disabled', false);
 			$('#modalContinuousTask').modal('show');
 		});
 		$('#modalTaskFollowupActions').modal('hide');
