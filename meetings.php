@@ -131,7 +131,7 @@ if($id_custom_report > 0){
 			$sql = @$custom_report->sql_str;
 			$is_images = @$custom_report->is_images;
 			$is_colors = @$custom_report->is_colors;
-			$lang = @$custom_report->lang ?: @$project->lang;
+			$lang = @$project->lang;
 			$_SESSION['lang'] = $lang;
 			
 			if($lang == 'HE') 
@@ -167,7 +167,7 @@ if($id_custom_report > 0){
 			$sql = @$_SESSION['filter_sql'];
 			$is_images = @$_SESSION['filter_is_images'];
 			$is_colors = @$_SESSION['filter_is_colors'];
-			$lang = @$_SESSION['filter_lang'] ?: @$project->lang;
+			$lang = @$project->lang;
 			$_SESSION['lang'] = $lang;
 			
 			if($lang == 'HE') 
@@ -360,7 +360,7 @@ else if($id_rdv_report > 0){
 		$sql = @$_SESSION['filter_sql'];
 		$is_images = @$_SESSION['filter_is_images'];
 		$is_colors = @$_SESSION['filter_is_colors'];
-		$lang = @$_SESSION['filter_lang'] ?: @$project->lang;
+		$lang = @$project->lang;
 		$period_new_tasks = @$_SESSION['filter_period_new_tasks'];
 		$columns_list = @$_SESSION['filter_columns_list'];
 		
@@ -461,6 +461,8 @@ if (empty($lang))
 
 if(@$_GET['lang'] != '')
 	$lang = @$_GET['lang'];
+
+$_SESSION['filter_lang'] = $lang;
 
 if(@$lang == 'HE'){
    $dir = 'rtl';
@@ -1134,7 +1136,7 @@ include 'menu_tasks.php';
 										</div>
 									</div> |
 									<div class="btn-group btn-group-toggle width70" data-toggle="buttons">
-										<div class="btn-group btn-group-toggle" data-toggle="buttons">
+										<div class="btn-group btn-group-toggle" data-toggle="buttons" style="direction:ltr">
 											<label class="btn btn-primary fontSize9 borderRadius10 height20 active">
 												<input type="radio" name="options" id="option1" autocomplete="off" checked> FULL
 											</label>
@@ -3448,8 +3450,11 @@ $(document).ready(function(){
 	}
 
 	$("#select_lang").change(function(){
-        setReportData('lang');		
-    });	
+		let lang = $(this).val();
+		let url = new URL(window.location.href);
+		url.searchParams.set('lang', lang);
+		window.location.href = url.toString();
+	});
 	
 	$('[id="table_view_btn"]').on('click', function(){
 	   let id_report = $(this).data('reportid');

@@ -3,7 +3,9 @@ ob_start();
 include 'functions/functions.php';
 session_start();
 
-$_SESSION['lang'] = @$_POST['project_lang'];
+$_SESSION['lang']              = @$_POST['project_lang'];
+$_SESSION['filter_lang']       = @$_POST['project_lang'];
+$_SESSION['filter_project_lang'] = @$_POST['project_lang'];
 
 if(empty($_POST['project_name']) || empty($_POST['project_name_he']) || 
    empty($_POST['project_nickname'])){
