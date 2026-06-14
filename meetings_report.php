@@ -70,7 +70,7 @@ if($id_custom_report > 0) {
 			$sql = @$custom_report->sql_str;
 			$is_images = @$custom_report->is_images;
 			$is_colors = @$custom_report->is_colors;
-			$lang = @$custom_report->lang;
+			$lang = @$custom_report->lang ?: @$project->lang;
 			$_SESSION['lang'] = $lang;
 			$columns_list = @$custom_report->columns_list;
 			$period_new_tasks = @$custom_report->period_new_tasks;
@@ -79,7 +79,7 @@ if($id_custom_report > 0) {
 			$sql = @$_SESSION['filter_sql'];
 			$is_images = @$_SESSION['filter_is_images'];
 			$is_colors = @$_SESSION['filter_is_colors'];
-			$lang = @$_SESSION['filter_lang'];
+			$lang = @$_SESSION['filter_lang'] ?: @$project->lang;
 			$_SESSION['lang'] = $lang;
 			$columns_list = @$_SESSION['filter_columns_list'];
 			$period_new_tasks = @$_SESSION['filter_period_new_tasks'];
@@ -163,7 +163,7 @@ else if($id_rdv_report > 0){
        
 		$is_images = @$query->is_images;
 	    $is_colors = @$query->is_colors;
-	    $lang = @$query->rdv_lang;
+	    $lang = @$query->rdv_lang ?: @$project->lang;
 		$period_new_tasks = @$query->period_new_tasks;
 		$columns_list = @$query->columns_list;
   
@@ -191,14 +191,14 @@ else if($id_rdv_report > 0){
 		$sql = @$_SESSION['filter_sql'];
 		$is_images = @$_SESSION['filter_is_images'];
 		$is_colors = @$_SESSION['filter_is_colors'];
-		$lang = @$_SESSION['filter_lang'];
+		$lang = @$_SESSION['filter_lang'] ?: @$project->lang;
 		$period_new_tasks = @$_SESSION['filter_period_new_tasks'];
 		$columns_list = @$_SESSION['filter_columns_list'];
-		
+
 		$id_responsibles_part = '';
 		if(strpos($sql,"m.id_responsible")!== false) {
 			$sql_array = explode(' AND ',$sql);
-									
+
 			for($i=1;$i<sizeof($sql_array);$i++) {
 				if(strpos($sql_array[$i],'m.id_responsible') !== false) {
 					$id_responsibles_part = $sql_array[$i];
@@ -299,6 +299,9 @@ else if($id_rdv_report > 0){
 
 if(@$_GET['lang'] != '')
 	$lang = @$_GET['lang'];
+
+if(empty($lang))
+	$lang = @$project->lang;
 
 $title = $project->name_he;
 if($lang != 'HE')

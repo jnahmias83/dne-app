@@ -557,7 +557,7 @@ $query->store_result();
 $responsibles = fetch($query);
 
 $query = $mysqli->prepare("SELECT * FROM dne_tasks
-                          WHERE id_project = ?
+                          WHERE id_project = ? AND is_appears_tasks_list = 1
 						  ORDER BY id_display");
 $query->bind_param("i",$project_id);
 $query->execute();
@@ -2643,7 +2643,6 @@ include 'menu_tasks.php';
 							<div class="row marginTop5">
 								<div class="col-12">
 									<?php foreach ($tasks as $item){
-										    if (isset($custom_report) && !empty($custom_report->tasks_list) && !in_array($item->id, explode(',', $custom_report->tasks_list))) continue;
 										    $checked = ($item->id == @$task_filter && strpos(@$_SESSION['filter_tasks_list'], ',') === false) ? 'checked' : '';
 									?>
 											<label class="display-block">
