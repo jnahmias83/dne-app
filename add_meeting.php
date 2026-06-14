@@ -1317,8 +1317,9 @@ function redirectUrl(meeting_id){
 		if ($('#is_specific_filter').val())
 			url4 += '&is_specific_filter=1';
 		if ($('#id_rdv').val() > 0)
-			url4 += '&id_rdv='+$('#id_rdv').val();		
-		location.href = url4;	
+			url4 += '&id_rdv='+$('#id_rdv').val();
+		url4 += '&lang='+$('#lang').val();
+		location.href = url4;
 	}
 }
 
