@@ -2942,16 +2942,13 @@ include 'menu_tasks.php';
             <div class="modal-dialog">
 				<div class="modal-content">  
 					<div class="modal-body">	
-					    <div id="modalContentContinuousTask">
+					    <div id="modalContent">
 					        <form class="alignCenter">
 						        <div class="marginTop15 fontSize18 alignCenter"><?=(@$lang=='HE') ? 'בדרך ליצור עבורך משימת המשך לפני כן, תציין אם ברצונך לסמן סטטוס משימה כ:' : 'A continuation task will be created. Please select the status to apply to the current task:'?></div>
 							    <div class="marginTop15">
-									<input type="radio" id="done" name="continuous_progress_status" value="בוצע/נמסר" />&nbsp;<?=(@$lang=='HE') ? 'בוצע/נמסר' : 'Done/Delivered'?>
-							        <input type="radio" id="archive" name="continuous_progress_status" class="marginRight8" value="ארכיון" />&nbsp;<?=(@$lang=='HE') ? 'ארכיון' : 'Archive'?>
-							        <input type="radio" id="no_change" name="continuous_progress_status" class="marginRight8" value="no_change" />&nbsp;<?=(@$lang=='HE') ? 'ללא שינוי' : 'No change'?>
-							    </div>
-							    <div class="marginTop15">
-							        <button type="button" class="btn btn-primary font-weight-bold" onclick="confirmContinuousTask()"><?=(@$lang=='HE') ? 'המשך' : 'Continue'?></button>
+									<input type="radio" id="done" name="progress_status" value="1" onclick="continuousTask($('#hidden_meeting_id').val(),'בוצע/נמסר',$('#hidden_iteration').val(),'fromMeetings')" />&nbsp;<?=(@$lang=='HE') ? 'בוצע/נמסר' : 'Done/Delivered'?>
+							        <input type="radio" id="archive" name="progress_status" class="marginRight8" value="2" onclick="continuousTask($('#hidden_meeting_id').val(),'ארכיון',$('#hidden_iteration').val(),'fromMeetings')" />&nbsp;<?=(@$lang=='HE') ? 'ארכיון' : 'Archive'?>
+							        <input type="radio" id="no_change" name="progress_status" class="marginRight8" value="3" onclick="continuousTask($('#hidden_meeting_id').val(),'no_change',$('#hidden_iteration').val(),'fromMeetings')" />&nbsp;<?=(@$lang=='HE') ? 'ללא שינוי' : 'No change'?>
 							    </div>
 						    </form>
 					    </div>
@@ -3786,14 +3783,7 @@ $(document).ready(function(){
 	   $('#modalTaskFollowupActions').modal('show');
     });
 	
-	function confirmContinuousTask(){
-		let selected = $('#modalContinuousTask input[name="continuous_progress_status"]:checked').val();
-		if(!selected) return;
-		continuousTask($('#hidden_meeting_id').val(), selected, $('#hidden_iteration').val(), 'fromMeetings');
-	}
-
 	$('[id="continuous_btn"]').on('click', function(){
-		$('#modalContinuousTask input[name="continuous_progress_status"]').prop('checked', false);
 		$('#modalTaskFollowupActions').one('hidden.bs.modal', function(){
 			$('#modalContinuousTask').modal('show');
 		});
