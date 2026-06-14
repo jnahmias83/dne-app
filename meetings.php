@@ -2938,7 +2938,7 @@ include 'menu_tasks.php';
            </div>
 		</div>
 		
-		<div class="modal fade dir-rtl" id="modalContinuousTask" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal fade <?=(@$lang=='HE') ? 'dir-rtl' : ''?>" id="modalContinuousTask" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
 				<div class="modal-content">  
 					<div class="modal-body">	

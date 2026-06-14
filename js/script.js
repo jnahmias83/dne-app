@@ -56,7 +56,6 @@ function duplicateRecord(meeting_id,iteration,from){
 }
 
 function continuousTask(meeting_id,progress_status,iteration,from){
-	alert('DEBUG: progress_status = [' + progress_status + ']');
 	$('[name="progress_status"]').prop('disabled', true);
 
 	let form_data = new FormData();

@@ -2,11 +2,6 @@
 ob_start();
 include 'functions/functions.php';
 session_start();
-file_put_contents(__DIR__.'/debug_duplicate.txt',
-    date('Y-m-d H:i:s')
-    .' is_continuous='.($_POST['is_continuous_task']??'NOT SET')
-    .' progress_status=['.($_POST['progress_status']??'NOT SET').']'
-    ."\n", FILE_APPEND);
 
 $currentDate = date('Y-m-d');
 $is_appears = 1;
