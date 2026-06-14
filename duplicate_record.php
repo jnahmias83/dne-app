@@ -118,10 +118,19 @@ if($_POST['table_name'] == 'dne_meetings') {
 		$parent_change_row_style = in_array($progress_status_post, ['בוצע/נמסר','ארכיון']) ? 1 : 0;
 
 		if($id_progress_status > 0) {
-			$query = "UPDATE dne_meetings SET id_progress_status = ?, is_change_row_style = ? WHERE id = ?";
-			$query = $mysqli->prepare($query);
-			$query->bind_param('iii',$id_progress_status,$parent_change_row_style,$_POST['id']);
-			$query->execute();
+			if($progress_status_post == 'ארכיון') {
+				$query = "UPDATE dne_meetings SET id_progress_status = ?, is_change_row_style = ?,
+				          is_appears = 0, is_priority = 0, status_archived_updated_date = ? WHERE id = ?";
+				$query = $mysqli->prepare($query);
+				$query->bind_param('iisi',$id_progress_status,$parent_change_row_style,$currentDate,$_POST['id']);
+				$query->execute();
+			}
+			else {
+				$query = "UPDATE dne_meetings SET id_progress_status = ?, is_change_row_style = ? WHERE id = ?";
+				$query = $mysqli->prepare($query);
+				$query->bind_param('iii',$id_progress_status,$parent_change_row_style,$_POST['id']);
+				$query->execute();
+			}
 		}
 	}
 }
