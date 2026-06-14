@@ -1,4 +1,4 @@
-function redirectToAddTaskForThisChapter(chapter_id){
+﻿function redirectToAddTaskForThisChapter(chapter_id){
 	let form_data = new FormData();		
 	form_data.append('id_chapter',chapter_id);
 	form_data.append('report_date',$('#report_date').val());
@@ -49,6 +49,7 @@ function duplicateRecord(meeting_id,iteration,from){
             else 
                url = 'add_meeting.php?project_id='+from+'&id='+data;
 			
+		    url += '&lang='+$('#hidden_lang').val();
 		    location.href = url;
 		},
 	});				
@@ -84,6 +85,7 @@ function continuousTask(meeting_id,progress_status,iteration,from){
             else
                url = 'add_meeting.php?project_id='+from+'&id='+data+'&iscontinious=1';;
 
+		    url += '&lang='+$('#hidden_lang').val();
 		    location.href = url;
 		},
 	});
