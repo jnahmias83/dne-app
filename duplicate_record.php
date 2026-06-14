@@ -105,10 +105,10 @@ if($_POST['table_name'] == 'dne_meetings') {
 					   $id_progress_status,$_SESSION['id_user']);
 	$query->execute();
 
-	if(@$_POST['is_continuous_task'] == 1 && @$_POST['progress_status'] != 'no_change') {
+	$progress_status_post = trim($_POST['progress_status'] ?? '');
+	if(@$_POST['is_continuous_task'] == 1 && in_array($progress_status_post, ['בוצע/נמסר', 'ארכיון'])) {
 	    $query = $mysqli->prepare("SELECT * FROM dne_progress_status
 	                              WHERE id_project = ? AND name_he = ?");
-	    $progress_status_post = $_POST['progress_status'] ?? '';
 	    $parent_id_project = (int)$meeting->id_project;
 	    $query->bind_param("is",$parent_id_project,$progress_status_post);
 	    $query->execute();
