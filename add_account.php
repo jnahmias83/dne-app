@@ -156,7 +156,7 @@ include 'menu_budget_reports.php';
 											<p>
 												<strong class="label-font-size">PDF הגשה</strong>
 												<br/>					
-												<input type="file" class="marginTop5" name="pdf_submission" id="pdf_submission" accept=".pdf,application/pdf" />
+												<input type="file" class="marginTop5" name="pdf_submission" id="pdf_submission" accept=".pdf" />
 												<?php if($id > 0) { ?>&nbsp;<a href="uploads/<?=@$account->pdf_submission?>" target="_blank"><?=@$account->pdf_submission?></a><?php } ?>			
 											</p>
 											<p>
@@ -179,7 +179,7 @@ include 'menu_budget_reports.php';
 											<p>
 											   <strong class="label-font-size">PDF אישור</strong>
 											   <br/>					
-											   <input type="file" class="marginTop5" name="pdf_approval" id="pdf_approval" accept=".pdf,application/pdf" />
+											   <input type="file" class="marginTop5" name="pdf_approval" id="pdf_approval" accept=".pdf" />
 											   <?php if($id > 0) { ?>&nbsp;<a href="uploads/<?=@$account->pdf_approval?>" target="_blank"><?=@$account->pdf_approval?></a><?php } ?>			
 											</p>
 											<p>

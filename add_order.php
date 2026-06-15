@@ -135,7 +135,7 @@ include 'menu_budget_reports.php';
 										<div class="col-12">
 											<strong>PDF הזמנה</strong>
 											<br/>					
-											<input type="file" class="marginTop10" name="pdf_order" id="pdf_order" accept="application/pdf,.pdf" />
+											<input type="file" class="marginTop10" name="pdf_order" id="pdf_order" accept=".pdf" />
 											<?php if($id > 0) { ?>&nbsp;<a href="uploads/<?=@$order->pdf_order?>" target="_blank"><?=@$order->pdf_order?></a><?php } ?>			
 										</div>
 									</div>	

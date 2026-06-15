@@ -186,7 +186,7 @@ include 'menu_budget_reports.php';
 											<p>
 											   <strong class="label-font-size">PDF תשלום</strong>
 											   <br/>					
-											   <input type="file" class="marginTop5 width95Percents" name="pdf_payment" id="pdf_payment" accept=".pdf,application/pdf" />
+											   <input type="file" class="marginTop5 width95Percents" name="pdf_payment" id="pdf_payment" accept=".pdf" />
 											   <?php if($id > 0) { ?>&nbsp;<a href="uploads/<?=@$payment->pdf_payment?>" target="_blank"><?=@$payment->pdf_payment?></a><?php } ?>		
 											</p>
 											<p>
@@ -210,7 +210,7 @@ include 'menu_budget_reports.php';
 										   <p>
 											 <strong class="label-font-size">PDF חשבונית</strong>
 											 <br/>					
-											 <input type="file" class="marginTop5 width95Percents" name="pdf_invoice" id="pdf_invoice" accept=".pdf,application/pdf" />
+											 <input type="file" class="marginTop5 width95Percents" name="pdf_invoice" id="pdf_invoice" accept=".pdf" />
 											 <?php if($id > 0) { ?>&nbsp;<a href="uploads/<?=@$payment->pdf_invoice?>" target="_blank"><?=@$payment->pdf_invoice?></a><?php } ?>		
 										   </p>
 										   <p>

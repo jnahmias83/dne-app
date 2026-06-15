@@ -217,7 +217,7 @@ include 'menu_budget_reports.php';
 										<div class="col-12">
 											<strong><?=@$pdf_evaluation_label?></strong>
 											<br/>					
-											<input type="file" class="marginTop5" name="pdf_evaluation" id="pdf_evaluation" accept=".pdf,application/pdf" />
+											<input type="file" class="marginTop5" name="pdf_evaluation" id="pdf_evaluation" accept=".pdf" />
 											<?php if($id > 0) { ?><div><a href="uploads/<?=@$budget_cost_eval->pdf_evaluation?>" target="_blank"><?=@$budget_cost_eval->pdf_evaluation?></a></div><?php } ?>			
 										</div>
 									</div>
