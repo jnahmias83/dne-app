@@ -19,6 +19,7 @@ if($_POST['id_chapter'] == 0 || isEffectivelyEmpty($_POST['subject']) ||
 }
 else {
 	$blank = ' ';
+	$_today = date('Y-m-d');
 	$id_progress_status = @$_POST['id_progress_status'];
 	if($_POST['id_progress_status'] == 0) {
 		$query = "SELECT * FROM dne_progress_status WHERE name = ? 
@@ -132,12 +133,15 @@ else {
 				  track_type,reminder_date,is_agrees,is_reminds,updated_date) 
 				  VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		$query = $mysqli->prepare($query);
+		$_subject = htmlspecialchars($_POST['subject']);
+		$_area    = htmlspecialchars($_POST['area']);
+		$_descr   = htmlspecialchars($_POST['description']);
 		$query->bind_param('iiissssiiissiiisiiisiiiisisiis',
 		                   $_SESSION['id_user'],$_POST['id_project'],
 						   $_POST['id_chapter'],$_POST['id_rdv'],
-						   htmlspecialchars($_POST['subject']),
-						   htmlspecialchars($_POST['area']),
-						   htmlspecialchars($_POST['description']),
+						   $_subject,
+						   $_area,
+						   $_descr,
 						   $_POST['id_task'],$_POST['id_responsible'],
 						   $_POST['id_pass_on'],$task_creation_date,
 						   $_POST['destination_date'],$id_progress_status,
@@ -147,7 +151,7 @@ else {
 						   $image2_width,$image2_height,
 						   $_POST['is_appears_img2'],$_SESSION['id_user'],
 						   $_POST['lang'],$track_type,$reminder_date,
-						   $_POST['is_agrees'],$_POST['is_reminds'],date("Y-m-d"));
+						   $_POST['is_agrees'],$_POST['is_reminds'],$_today);
 		$query->execute();
 		$inserted_meeting = $query->insert_id;
 
@@ -173,7 +177,7 @@ else {
 				  id_progress_status,updated_users) VALUES(?,?,?,?,?,?,?)";
 		$query = $mysqli->prepare($query);
 		$query->bind_param('iisssii',$_SESSION['id_user'],$inserted_meeting,
-		                  date('Y-m-d'),$_POST['action'],
+		                  $_today,$_POST['action'],
 						  $_POST['destination_date'],$id_progress_status,
 						  $_SESSION['id_user']);
 		$query->execute();
@@ -191,7 +195,7 @@ else {
 			$query = "INSERT INTO dne_log_meeting_tracking (id_user,id_meeting,action_date,remark,is_remark_appears_log,
 			          updated_users) VALUES(?,?,?,?,?,?)";
 			$query = $mysqli->prepare($query);
-			$query->bind_param('iissis',$_SESSION['id_user'],$inserted_meeting,date('Y-m-d'),$remark,$is_remark_appears_log,
+			$query->bind_param('iissis',$_SESSION['id_user'],$inserted_meeting,$_today,$remark,$is_remark_appears_log,
 			                   $_SESSION['id_user']);
 			$query->execute();	
 		}
@@ -245,58 +249,58 @@ else {
 		   $query = "UPDATE dne_meetings SET status_updated_date = ?,
 		             status_in_ex_updated_date = ? WHERE id = ?";
 		   $query = $mysqli->prepare($query);
-		   $query->bind_param('ssi',date('Y-m-d'),date('Y-m-d'),$_POST['id']);	
+		   $query->bind_param('ssi',$_today,$_today,$_POST['id']);
 		   $query->execute();
 		}
-		
+
 		else if($ps_name == 'איחור') {
 		   $query = "UPDATE dne_meetings SET status_updated_date = ?,
 		             status_late_updated_date = ? WHERE id = ?";
 		   $query = $mysqli->prepare($query);
-		   $query->bind_param('ssi',date('Y-m-d'),date('Y-m-d'),$_POST['id']);
+		   $query->bind_param('ssi',$_today,$_today,$_POST['id']);
 		   $query->execute();
 		}
-		
+
 	    else if($ps_name == 'בוצע/נמסר') {
-			$task_creation_date = date('Y-m-d');
+			$task_creation_date = $_today;
 			$is_change_row_style = 1;
 			$is_not_priority = 0;
-	
+
 			$query = "UPDATE dne_meetings SET status_updated_date = ?,
-			          status_finished_updated_date = ?,is_priority = ? 
+			          status_finished_updated_date = ?,is_priority = ?
 					  WHERE id = ?";
 		    $query = $mysqli->prepare($query);
-		    $query->bind_param('ssii',date('Y-m-d'),date('Y-m-d'),
-			                   $is_not_priority,$_POST['id']);	
+		    $query->bind_param('ssii',$_today,$_today,
+			                   $is_not_priority,$_POST['id']);
 		    $query->execute();
 	    }
-		
+
 		else if($ps_name == 'בהמתנה') {
 		   $query = "UPDATE dne_meetings SET status_updated_date = ?,
 		             status_hold_updated_date = ? WHERE id = ?";
 		   $query = $mysqli->prepare($query);
-		   $query->bind_param('ssi',date('Y-m-d'),date('Y-m-d'),$_POST['id']);	
+		   $query->bind_param('ssi',$_today,$_today,$_POST['id']);
 		   $query->execute();
 		}
-		
+
 		else if($ps_name == 'ארכיון') {
 			$is_appears = 0;
 			$is_not_priority = 0;
-			
+
 			$query = "UPDATE dne_meetings SET status_updated_date = ?,
-			          status_archived_updated_date = ?,is_priority = ? 
+			          status_archived_updated_date = ?,is_priority = ?
 					  WHERE id = ?";
 		    $query = $mysqli->prepare($query);
-		    $query->bind_param('ssii',date('Y-m-d'),date('Y-m-d'),
-			                   $is_not_priority,$_POST['id']);	
+		    $query->bind_param('ssii',$_today,$_today,
+			                   $is_not_priority,$_POST['id']);
 		    $query->execute();
 		}
-		
+
 		else if($ps_name == 'הנחיה/החלטה') {
 		   $query = "UPDATE dne_meetings SET status_updated_date = ?,
 		             status_decision_updated_date = ? WHERE id = ?";
 		   $query = $mysqli->prepare($query);
-		   $query->bind_param('ssi',date('Y-m-d'),date('Y-m-d'),$_POST['id']);	
+		   $query->bind_param('ssi',$_today,$_today,$_POST['id']);
 		   $query->execute();
 		}
 		
@@ -367,68 +371,71 @@ else {
 						 track_type = ?,reminder_date = ?,
 						 is_agrees = ?,is_reminds = ? WHERE id = ?";
 				$query = $mysqli->prepare($query);
+				$_loop_subject = htmlspecialchars($subject);
+				$_loop_area    = htmlspecialchars($area);
+				$_loop_descr   = htmlspecialchars($description);
 				$query->bind_param('issssiiissiiiiisisiii',
 								   $id_chapter,$ids_rdv,
-								   htmlspecialchars($subject),
-								   htmlspecialchars($area),
-								   htmlspecialchars($description),
+								   $_loop_subject,
+								   $_loop_area,
+								   $_loop_descr,
 								   $id_task,$id_responsible,$id_pass_on,
 								   $task_creation_date,$destination_date,
 								   $id_progress_status,$is_appears,
 								   $is_change_row_style,
-								   $_POST['is_appears_img1'],  
+								   $_POST['is_appears_img1'],
 								   $_POST['is_appears_img2'],
 								   $_POST['lang'],$track_type,$reminder_date,
 								   $_POST['is_agrees'],$_POST['is_reminds'],
-								   $all_ids_to_edit_array[$i]);	
-				$query->execute();				
- 
+								   $all_ids_to_edit_array[$i]);
+				$query->execute();
+
                 $log_destination_date = '';
                 if(@$elem_meeting->destination_date != @$_POST['destination_date'])
 					$log_destination_date = @$_POST['destination_date'];
-				  
+
                 $log_id_progress_status = 0;
                 if(@$elem_meeting->id_progress_status != @$_POST['id_progress_status'])
-					$log_id_progress_status = @$_POST['id_progress_status']; 					
-				
-				$query = "INSERT INTO dne_log_meeting_updates 
+					$log_id_progress_status = @$_POST['id_progress_status'];
+
+				$query = "INSERT INTO dne_log_meeting_updates
 						  (id_user,id_meeting,action_date,action,
 						   destination_date,remark,id_progress_status,
-						   updated_users) 
+						   updated_users)
 						   VALUES(?,?,?,?,?,?,?,?)";
 				$query = $mysqli->prepare($query);
 				$query->bind_param('iissssii',$_SESSION['id_user'],
-								   $all_ids_to_edit_array[$i],date('Y-m-d'),
+								   $all_ids_to_edit_array[$i],$_today,
 								   $_POST['action'],$log_destination_date,
 								   $log_remark,$log_id_progress_status,
 								   $_SESSION['id_user']);
-				$query->execute();	
-				
+				$query->execute();
+
 				if($_POST['is_reminds']){
-					$is_remark_appears_log = 1;	
+					$is_remark_appears_log = 1;
 					$remark = 'תזכורת 3 ימים לפני';
-					
+
 					$query = "INSERT INTO dne_log_meeting_tracking (id_user,id_meeting,action_date,remark,is_remark_appears_log,
 							  updated_users) VALUES(?,?,?,?,?,?)";
 					$query = $mysqli->prepare($query);
-					$query->bind_param('iissis',$_SESSION['id_user'],$all_ids_to_edit_array[$i],date('Y-m-d'),
+					$query->bind_param('iissis',$_SESSION['id_user'],$all_ids_to_edit_array[$i],$_today,
 					                   $remark,$is_remark_appears_log,$_SESSION['id_user']);
-					$query->execute();	
+					$query->execute();
 				}
-				
-				if(($elem_meeting->id_chapter != $_POST['id_chapter']) || 			  
-				  ($elem_meeting->subject != $_POST['subject']) || 
-			      ($elem_meeting->area != $_POST['area']) || 
-				  ($elem_meeting->description != $_POST['description']) || 
-			      ($elem_meeting->id_task != $_POST['id_task']) || 
-				  ($elem_meeting->id_responsible != $_POST['id_responsible']) || 
+
+				if(($elem_meeting->id_chapter != $_POST['id_chapter']) ||
+				  ($elem_meeting->subject != $_POST['subject']) ||
+			      ($elem_meeting->area != $_POST['area']) ||
+				  ($elem_meeting->description != $_POST['description']) ||
+			      ($elem_meeting->id_task != $_POST['id_task']) ||
+				  ($elem_meeting->id_responsible != $_POST['id_responsible']) ||
 			      ($elem_meeting->id_pass_on != $_POST['id_pass_on']))
-		        {			
-					$query = "UPDATE dne_meetings SET updated_date = ? 
+		        {
+					$query = "UPDATE dne_meetings SET updated_date = ?
 					          WHERE id = ?";
 					$query = $mysqli->prepare($query);
-					$query->bind_param('si',date('Y-m-d'),
-					                   $all_ids_to_edit_array[$i]);	
+					$query->bind_param('si',$_today,
+					                   $all_ids_to_edit_array[$i]);
 					$query->execute();
 			    }
 			}
@@ -491,9 +498,8 @@ else {
 					  updated_users) 
 					  VALUES(?,?,?,?,?,?,?,?)";
 			$query = $mysqli->prepare($query);
-			$_action_date = date('Y-m-d');
 			$query->bind_param('iissssii',$_SESSION['id_user'],
-							    $_POST['id'],$_action_date,$_POST['action'],
+							    $_POST['id'],$_today,$_POST['action'],
 								$log_destination_date,$log_remark,
 								$log_id_progress_status,
 								$_SESSION['id_user']);
@@ -506,23 +512,23 @@ else {
 				$query = "INSERT INTO dne_log_meeting_tracking (id_user,id_meeting,action_date,remark,is_remark_appears_log,
 							  updated_users) VALUES(?,?,?,?,?,?)";
 				$query = $mysqli->prepare($query);
-				$query->bind_param('iissis',$_SESSION['id_user'],$_POST['id'],date('Y-m-d'),$remark,$is_remark_appears_log,
+				$query->bind_param('iissis',$_SESSION['id_user'],$_POST['id'],$_today,$remark,$is_remark_appears_log,
 				                   $_SESSION['id_user']);
-				$query->execute();	
-			}			
-			
-			if(($meeting->id_chapter != $_POST['id_chapter']) ||  
-			  ($meeting->subject != $_POST['subject']) || 
-			  ($meeting->area != $_POST['area']) || 
-			  ($meeting->description != $_POST['description']) || 
-			  ($meeting->id_task != $_POST['id_task']) || 
-			  ($meeting->id_responsible != $_POST['id_responsible']) || 
+				$query->execute();
+			}
+
+			if(($meeting->id_chapter != $_POST['id_chapter']) ||
+			  ($meeting->subject != $_POST['subject']) ||
+			  ($meeting->area != $_POST['area']) ||
+			  ($meeting->description != $_POST['description']) ||
+			  ($meeting->id_task != $_POST['id_task']) ||
+			  ($meeting->id_responsible != $_POST['id_responsible']) ||
 			  ($meeting->id_pass_on != $_POST['id_pass_on']))
-		    {			
-				$query = "UPDATE dne_meetings SET updated_date = ? 
+		    {
+				$query = "UPDATE dne_meetings SET updated_date = ?
 				          WHERE id = ?";
 				$query = $mysqli->prepare($query);
-				$query->bind_param('si',date('Y-m-d'),$_POST['id']);	
+				$query->bind_param('si',$_today,$_POST['id']);
 				$query->execute();
 			}
 		}

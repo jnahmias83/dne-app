@@ -395,7 +395,7 @@ include 'menu_tasks.php';
 												   value="<?=date('Y-m-d')?>" />
 										<?php } else { ?>
 											<span class="<?=@$margin_8?> text-size">
-												<?=smartDate(@$task_creation_date)?>
+												<?=substr(@$task_creation_date,8,2).'/'.substr(@$task_creation_date,5,2).'/'.substr(@$task_creation_date,2,2)?>
 											</span>
 										<?php } ?>
 									</div>
@@ -417,7 +417,7 @@ include 'menu_tasks.php';
 																<input type="checkbox" id="rdv_<?=@$item->id?>" name="rdvs[]" value="<?=@$item->id?>" checked />
 															</div>
 															<div>
-																<?=smartDate(@$item->rdv_date).'-'.@$item->rdv_name?>
+																<?=substr(@$item->rdv_date,8,2).'/'.substr(@$item->rdv_date,5,2).'/'.substr(@$item->rdv_date,0,4).'-'.@$item->rdv_name?>
 															</div>
 														</div>
 													<?php } ?>
@@ -680,41 +680,8 @@ include 'menu_tasks.php';
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
-let image1 = '', image2 = '';
+let image1,image2 = '';
 let is_appears_img1,is_appears_img2 = 0;
-let image1_compressing = false, image2_compressing = false;
-
-function compressFile(file, maxDim, quality) {
-    maxDim = maxDim || 1920;
-    quality = quality || 0.85;
-    return new Promise(function(resolve) {
-        let reader = new FileReader();
-        reader.onload = function(e) {
-            let img = new Image();
-            img.onload = function() {
-                let w = img.width, h = img.height;
-                if (w > maxDim || h > maxDim) {
-                    if (w >= h) { h = Math.round(h * maxDim / w); w = maxDim; }
-                    else { w = Math.round(w * maxDim / h); h = maxDim; }
-                }
-                let canvas = document.createElement('canvas');
-                canvas.width = w; canvas.height = h;
-                canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-                let dataURL = canvas.toDataURL('image/jpeg', quality);
-                let byteString = atob(dataURL.split(',')[1]);
-                let ab = new ArrayBuffer(byteString.length);
-                let ia = new Uint8Array(ab);
-                for (let i = 0; i < byteString.length; i++) ia[i] = byteString.charCodeAt(i);
-                let blob = new Blob([ab], {type: 'image/jpeg'});
-                let baseName = file.name.replace(/\.[^/.]+$/, '');
-                let compressedFile = new File([blob], baseName + '.jpg', {type: 'image/jpeg'});
-                resolve({file: compressedFile, dataURL: dataURL});
-            };
-            img.src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-    });
-}
 let div_image1 = $("#div-image1"); 
 let div_image2 = $("#div-image2"); 
 let div_delete_image1 = $("#div-delete-image1"); 
@@ -726,7 +693,7 @@ let image2_container = $('#image2-container');
 let div_rotations_image1 = $('#div-rotations-image1');
 let div_rotations_image2 = $('#div-rotations-image2');
 
-$(document).ready(function(){     
+$(document).ready(function(){    
 	let meeting_id;
 	let iteration;
 	let subject;
@@ -818,79 +785,73 @@ $(document).ready(function(){
 	});
 
 	$(document).on('change','#image1', function (){
-		let file = $('#image1')[0].files[0];
-		let image1_name = file.name;
+		$('#div-image1').show();
+		image1 = $('#image1')[0].files[0];	
+		let image1_name = image1.name;
 
-		let hebrewCharsRegex = /[\u0590-\u05FF]/;
-		if (hebrewCharsRegex.test(image1_name)) {
-			alert('The file name contains Hebrew characters.');
-			$('#image1').val('');
-			$('#is_appears_img1').prop('checked',false);
-			return;
-		}
+		let reader = new FileReader();
 
+		reader.onload = function (e) {
+			preview_image1.attr("src",e.target.result);
+            div_delete_image1.css("display","block");
+			div_image1.css("display","block");
+			image1_container.css("display","block");
+			div_rotations_image1.css("display","block");
+
+			//loadTaskImage('image1',0,e.target.result);
+		};
+		
 		$('#is_appears_img1').prop('checked',true);
 		is_appears_img1 = 1;
-		$('#div-image1').show();
+		
+		reader.readAsDataURL(image1);
 
-		image1_compressing = true;
-		compressFile(file).then(function(result) {
-			image1 = result.file;
-			preview_image1.attr("src", result.dataURL);
-			div_delete_image1.css("display","block");
-			div_image1.css("display","block");
-			image1_container.css("display","block");
-			div_rotations_image1.css("display","block");
-		}).catch(function() {
-			image1 = file;
-			let r = new FileReader();
-			r.onload = function(e) { preview_image1.attr("src", e.target.result); };
-			r.readAsDataURL(file);
-			div_delete_image1.css("display","block");
-			div_image1.css("display","block");
-			image1_container.css("display","block");
-			div_rotations_image1.css("display","block");
-		}).finally(function() {
-			image1_compressing = false;
-		});
+		let hebrewCharsRegex = /[\u0590-\u05FF]/;
+
+		if (hebrewCharsRegex.test(image1_name)) {
+			alert('The file name contains Hebrew characters.');
+
+			$('#image1').val('');
+			$('#is_appears_img1').prop('checked',false);
+		} else {
+			$('#is_appears_img1').prop('checked',true);
+			is_appears_img1 = 1; 
+		}
 	});
 	
 	$(document).on('change','#image2', function (){
-		let file = $('#image2')[0].files[0];
-		let image2_name = file.name;
+		$('#div-image2').show();
+		image2 = $('#image2')[0].files[0];
+		let image2_name = image2.name;
 
-		let hebrewCharsRegex = /[\u0590-\u05FF]/;
-		if (hebrewCharsRegex.test(image2_name)){
-			alert('The file name contains Hebrew characters.');
-			$('#image2').val('');
-			$('#is_appears_img2').prop('checked',false);
-			return;
-		}
+		let reader = new FileReader();
 
+		reader.onload = function (e){
+			preview_image2.attr("src",e.target.result);
+            div_delete_image2.css("display","block");
+			div_image2.css("display","block");
+			image2_container.css("display","block");
+			div_rotations_image2.css("display","block");
+
+			//loadTaskImage('image2',0,e.target.result);
+		};
+		
 		$('#is_appears_img2').prop('checked',true);
 		is_appears_img2 = 1;
-		$('#div-image2').show();
 
-		image2_compressing = true;
-		compressFile(file).then(function(result) {
-			image2 = result.file;
-			preview_image2.attr("src", result.dataURL);
-			div_delete_image2.css("display","block");
-			div_image2.css("display","block");
-			image2_container.css("display","block");
-			div_rotations_image2.css("display","block");
-		}).catch(function() {
-			image2 = file;
-			let r = new FileReader();
-			r.onload = function(e) { preview_image2.attr("src", e.target.result); };
-			r.readAsDataURL(file);
-			div_delete_image2.css("display","block");
-			div_image2.css("display","block");
-			image2_container.css("display","block");
-			div_rotations_image2.css("display","block");
-		}).finally(function() {
-			image2_compressing = false;
-		});
+		reader.readAsDataURL(image2);
+
+		let hebrewCharsRegex = /[\u0590-\u05FF]/;
+
+		if (hebrewCharsRegex.test(image2_name)){
+			alert('The file name contains Hebrew characters.');
+
+			$('#image2').val('');
+			$('#is_appears_img2').prop('checked',false);
+		} else {
+			$('#is_appears_img2').prop('checked',true);
+			is_appears_img2 = 1; 
+		}
 	});
 
 	function loadTaskImage(image,angle,imageSrc){	
@@ -911,7 +872,7 @@ $(document).ready(function(){
 				ctx_image1.drawImage(_image1,-_image1.width/2,-_image1.height/2);
 				ctx_image1.restore();
 
-				let rotated_image1 = canvas_image1.toDataURL('image/jpeg', 0.85);
+				let rotated_image1 = canvas_image1.toDataURL('image/png');
 
 				let form_data = new FormData();
 				
@@ -955,7 +916,7 @@ $(document).ready(function(){
 				ctx_image2.drawImage(_image2,-_image2.width/2,-_image2.height/2);
 				ctx_image2.restore();
 
-				let rotated_image2 = canvas_image2.toDataURL('image/jpeg', 0.85);
+				let rotated_image2 = canvas_image2.toDataURL('image/png');
 
 				let form_data = new FormData();
 				form_data.append('image2', rotated_image2);
@@ -1116,12 +1077,7 @@ function remarkClear(){
 }
 
 function saveMeetingData(share_doc){
-	if (image1_compressing || image2_compressing) {
-		alert('Veuillez patienter, le traitement de l\'image est en cours...');
-		return;
-	}
-
-	let action = 'חדשה';
+	let action = 'חדשה'; 
 	
 	let subject = $('#subject').text().trim();
 	let area = $('#area').text().trim();
@@ -1172,9 +1128,9 @@ function saveMeetingData(share_doc){
 	form_data.append('task_creation_date', task_creation_date);
 	form_data.append('destination_date', $('#destination_date').val());
 	form_data.append('id_progress_status', id_progress_status);
-	form_data.append('image1', image1 || '');
+	form_data.append('image1', image1);
     form_data.append('is_appears_img1', is_appears_img1);
-    form_data.append('image2', image2 || '');
+    form_data.append('image2', image2);
     form_data.append('is_appears_img2', is_appears_img2);
 	form_data.append('lang', $('#lang').val());
 	form_data.append('is_agrees', is_agrees);
@@ -1188,7 +1144,6 @@ function saveMeetingData(share_doc){
 		processData: false,
 		contentType: false,
 		beforeSend: function(){
-			$('#save_btn').prop('disabled', true);
 			$("#progress-popup").show();
 			let progress = 0;
 			let interval = setInterval(function(){
@@ -1200,9 +1155,6 @@ function saveMeetingData(share_doc){
 			$("#progress-popup").data("interval", interval);
 		},
 		success: function(data){
-			clearInterval($("#progress-popup").data("interval"));
-			$("#progress-popup").hide();
-			$('#save_btn').prop('disabled', false);
 			if(data == 'empty'){
 				checkEmptyFields();
 			} else if (data == 'filesizeexceeded'){
@@ -1212,9 +1164,6 @@ function saveMeetingData(share_doc){
 			}
 		},
 		error: function(){
-			clearInterval($("#progress-popup").data("interval"));
-			$("#progress-popup").hide();
-			$('#save_btn').prop('disabled', false);
 			alert('Error...');
 		}
 	});
@@ -1316,9 +1265,8 @@ function redirectUrl(meeting_id){
 		if ($('#is_specific_filter').val())
 			url4 += '&is_specific_filter=1';
 		if ($('#id_rdv').val() > 0)
-			url4 += '&id_rdv='+$('#id_rdv').val();
-		url4 += '&lang='+$('#lang').val();
-		location.href = url4;
+			url4 += '&id_rdv='+$('#id_rdv').val();		
+		location.href = url4;	
 	}
 }
 
@@ -1374,7 +1322,7 @@ function handleSuccess(meeting_id,share_doc,_inserted_meeting_id){
 					url: 'save_image.php',
 					data: {imageData:imageData,meeting_id:inserted_meeting_id},
 					success: function(response){
-						    const imageUrl = '<?= BASE_URL ?>'+response;
+						    const imageUrl = 'https://davidnahmiasengineering.com/Development/'+response;	
 							shareImage(imageUrl,inserted_meeting_id,$('#project_id').val(),_inserted_meeting_id,0);						
 					}, 
 				});
