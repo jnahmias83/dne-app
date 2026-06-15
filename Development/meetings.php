@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 include 'include/header.php';
 include 'functions/functions.php';
 include "functions/PHPMailer/PHPMailer.php";
@@ -131,7 +131,7 @@ if($id_custom_report > 0){
 			$sql = @$custom_report->sql_str;
 			$is_images = @$custom_report->is_images;
 			$is_colors = @$custom_report->is_colors;
-			$lang = @$project->lang;
+			$lang = @$custom_report->lang;
 			$_SESSION['lang'] = $lang;
 			
 			if($lang == 'HE') 
@@ -167,7 +167,7 @@ if($id_custom_report > 0){
 			$sql = @$_SESSION['filter_sql'];
 			$is_images = @$_SESSION['filter_is_images'];
 			$is_colors = @$_SESSION['filter_is_colors'];
-			$lang = @$project->lang;
+			$lang = @$_SESSION['filter_lang'];
 			$_SESSION['lang'] = $lang;
 			
 			if($lang == 'HE') 
@@ -360,7 +360,7 @@ else if($id_rdv_report > 0){
 		$sql = @$_SESSION['filter_sql'];
 		$is_images = @$_SESSION['filter_is_images'];
 		$is_colors = @$_SESSION['filter_is_colors'];
-		$lang = @$project->lang;
+		$lang = @$_SESSION['filter_lang'];
 		$period_new_tasks = @$_SESSION['filter_period_new_tasks'];
 		$columns_list = @$_SESSION['filter_columns_list'];
 		
@@ -451,18 +451,13 @@ else if($id_rdv_report > 0){
     else
 	   $project_name = '<span class="fontSize26 font-weight-bold">Project '.htmlspecialchars($project->name).'</span><br/><span class="fontSize26 color-349feb font-family-david font-weight-bold">'.htmlspecialchars($meeting_name).' Meeting</span>';	
     
-	$title = '<strong><u>'.htmlspecialchars($rdv_name).'</u></strong><br/><u class="fontSize20 font-weight-bold">'.smartDate($rdv_date, $lang).'</u>';
+	$title = '<strong><u>'.htmlspecialchars($rdv_name).'</u></strong><br/><u class="fontSize20 font-weight-bold">'.substr($rdv_date,8,2).'/'.substr($rdv_date,5,2).'/'.substr($rdv_date,0,4).'</u>';
 }
 
 $columns_list_array = explode(',',@$columns_list);
 
-if (empty($lang))
-	$lang = @$project->lang;
-
 if(@$_GET['lang'] != '')
 	$lang = @$_GET['lang'];
-
-$_SESSION['filter_lang'] = $lang;
 
 if(@$lang == 'HE'){
    $dir = 'rtl';
@@ -556,8 +551,8 @@ $query->execute();
 $query->store_result();
 $responsibles = fetch($query);
 
-$query = $mysqli->prepare("SELECT * FROM dne_tasks
-                          WHERE id_project = ? AND is_appears_tasks_list = 1
+$query = $mysqli->prepare("SELECT * FROM dne_tasks 
+                          WHERE id_project = ? 
 						  ORDER BY id_display");
 $query->bind_param("i",$project_id);
 $query->execute();
@@ -1136,7 +1131,7 @@ include 'menu_tasks.php';
 										</div>
 									</div> |
 									<div class="btn-group btn-group-toggle width70" data-toggle="buttons">
-										<div class="btn-group btn-group-toggle" data-toggle="buttons" style="direction:ltr">
+										<div class="btn-group btn-group-toggle" data-toggle="buttons">
 											<label class="btn btn-primary fontSize9 borderRadius10 height20 active">
 												<input type="radio" name="options" id="option1" autocomplete="off" checked> FULL
 											</label>
@@ -1444,32 +1439,32 @@ include 'menu_tasks.php';
 											$id_task_type = @$item->id_task_type;
 											$subject = @$item->subject;
 											$area = @$item->area;
-
+											
 											$task_creation_date = '';
 											if(@$item->task_creation_date != '0000-00-00')
 												$task_creation_date = @$item->task_creation_date;
-
+											
 											$destination_date = '';
 											if(@$item->destination_date != '0000-00-00')
-												$destination_date = @$item->destination_date;
-
+												$destination_date = @$item->destination_date;					
+											
 											$updated_date = @$item->updated_date;
-
+											
 											$is_change_row_style = @$item->is_change_row_style;
-
+											
 											$image1 = @$item->image1;
 											$is_appears_img1 = @$item->is_appears_img1;
 											$image1_width = @$item->image1_width;
 											$image1_height = @$item->image1_height;
-
+											
 											$image2 = @$item->image2;
 											$is_appears_img2 = @$item->is_appears_img2;
 											$image2_width = @$item->image2_width;
 											$image2_height = @$item->image2_height;
-
+											
 											$description_popup = nl2br(@$item->description);
 											$description = @$item->description;
-
+												
 											$id_track_responsible = @$item->id_track_responsible;
 											$query = $mysqli->prepare("SELECT nickname FROM dne_users WHERE id = ?");
 											$query->bind_param('i',$id_track_responsible);	
@@ -1482,7 +1477,8 @@ include 'menu_tasks.php';
 											$num_bgcolor = 'background-color:#cbddec';
 											$num_border_color = 'border:1px solid transparent';
 											
-											// num_bgcolor stays #cbddec regardless of track_type
+											if(@$track_type)
+												$num_bgcolor = 'background-color:'.@$bg_color_inputs->b_bgcolor;
 											
 											if(@$track_type && @$id_track_responsible == @$_SESSION['id_user'])
 												$num_border_color = 'border:2px solid '.@$bg_color_inputs->f_bgcolor;
@@ -1497,8 +1493,7 @@ include 'menu_tasks.php';
 											$query->store_result();
 											$query = fetch_unique($query);
 											
-											$progress_status_he = @$query->name_he;
-											$progress_status = $progress_status_he;
+											$progress_status = @$query->name_he;
 											if(@$lang != 'HE')
 												$progress_status = @$query->name;
 											if(@$is_colors){
@@ -1539,7 +1534,7 @@ include 'menu_tasks.php';
 												if(@$remark != ''){
 													$description .= "<div class='marginTop5 colorGreen display-block".@$dir_log_meeting_updates."'>"
 																	."<span style='direction:".@$dir.";unicode-bidi:embed;'>"
-																	."[".smartDate(@$action_date, $lang)."]"
+																	."[".substr(@$action_date,8,2).'/'.substr(@$action_date,5,2)."]"
 																	."</span> "
 																	." <span style='direction:".@$dir.";unicode-bidi:embed;'>"
 																	.@$item->user_nickname;
@@ -1577,13 +1572,13 @@ include 'menu_tasks.php';
 												$tracking_data = '(';
 											
 											if($reminder_date != '0000-00-00')
-												$tracking_data .= smartDate($reminder_date, $lang);
-
+												$tracking_data .= substr($reminder_date,8,2).'/'.substr($reminder_date,5,2);
+											
 											if(@$track_responsible_name != '')
 												$tracking_data .= ','.@$track_responsible_name;
-
+											
 											if($reminder_date != '0000-00-00' || @$track_responsible_name != '')
-												$tracking_data .= ')';
+												$tracking_data .= ')';	
 
                                             $dir_log_meeting_tracking = 'alignRight';
 												if(@$item->lang == 'EN')
@@ -1594,14 +1589,15 @@ include 'menu_tasks.php';
 												$action_date = @$item->action_date;
 											    
 												if(@$track_type && @$remark != ''){
-													$track_initials = mb_strtoupper(mb_substr(@$item->user_nickname, 0, 2, 'UTF-8'));
-													$description .= "<div id='div-tracking-remarks-'".@$meeting_id."' class='marginTop5 display-block ".@$dir_log_meeting_tracking."' style='line-height:1.8;'>"
-																  . "<span class='badge-circle' style='display:inline-flex;background-color:#333;width:15px;height:15px;font-size:8px;vertical-align:middle;'>".$track_initials."</span>"
-																  . " <span class='colorGrey dir-rtl unicode-bidi-embed' style='vertical-align:middle;'>".@$item->user_nickname."</span>"
-																  . " <span class='colorGrey dir-rtl unicode-bidi-embed' style='vertical-align:middle;'>".smartDate(@$item->action_date, $lang)."</span>"
-																  . " : <span class='colorRed dir-rtl unicode-bidi-embed display-inline-block'>".html_entity_decode(@$item->remark)."</span>"
-																  . "<span class='marginRight5 colorRed dir-rtl unicode-bidi-embed display-inline-block'>".@$tracking_data."</span>"
-																  . "</div>";
+													$description .= "<div id='div-tracking-remarks-'".@$meeting_id."' class='marginTop5 colorRed display-block".@$dir_log_meeting_tracking."'>
+																	<span class='colorGrey dir-rtl unicode-bidi-embed'>["
+																	.substr(@$item->action_date,8,2).'/'.substr(@$item->action_date,5,2)."]</span> 
+																	<span class='colorGrey dir-rtl unicode-bidi-embed'>".@$item->user_nickname." - במעקב</span>";			
+												
+												    $description .= "	: 
+																	<span class='colorRed dir-rtl unicode-bidi-embed display-inline-block'>".html_entity_decode(@$item->remark)."</span>
+																	<span class='marginRight5 colorRed dir-rtl unicode-bidi-embed display-inline-block'>".@$tracking_data."</span>
+																	</div>";
 												}
 											}											
 											
@@ -1701,7 +1697,8 @@ include 'menu_tasks.php';
 											if(@$is_colors && $destination_date < date('Y-m-d')) 
 											   $dest_date_color = 'color:red;';										   
 											
-											if(@$is_colors && $progress_status_he == 'בוצע/נמסר'){
+											if(@$is_colors && $is_change_row_style){
+												if($progress_status == 'בוצע/נמסר'){ 
 												   $subject_bgcolor = 'background-color:#dedede';
 												   $area_bgcolor = 'background-color:#dedede';
 												   $description_bgcolor = 'background-color:#dedede';
@@ -1712,11 +1709,12 @@ include 'menu_tasks.php';
 												   $dest_date_color = 'color:#dedede';
 												   $dest_date_bgcolor = 'background-color:#dedede';
 												   $progress_status_bgcolor = 'background-color:#dedede';
-											}
-											elseif(@$is_colors && $is_change_row_style && $task == 'בקרת איכות'){
+												}
+												else if($task == 'בקרת איכות'){
 												   $subject_bgcolor = 'background-color:#fafd49';
 												   $area_bgcolor = 'background-color:#fafd49';
 												   $description_bgcolor = 'background-color:#fafd49';
+												}
 											}										
           									
 											$end_new_tasks_date = '0000-00-00';
@@ -1787,14 +1785,12 @@ include 'menu_tasks.php';
 											<input type="hidden" id="action_date_remark_<?=@$meeting_id?>" value="<?=@$action_date_remark?>" />
 											<input type="hidden" id="hidden_remark_<?=@$meeting_id?>" value="<?=@$remark?>" />
 											
-											<tr id="row_<?=@$iteration?>" class="meeting_<?=@$meeting_id?>">
+											<tr id="row_<?=@$iteration?>">
 											    <td id="td_cbx_meetings_to_update_<?=@$meeting_id?>" class="alignCenter <?=@$border_cell_table_start?> <?=@$border_cell_cbx?>" style="<?=@$td_count_bgcolor?>">
 												    <input type="checkbox" id="meetings_to_update_cbx_<?=@$meeting_id?>" name="meetings_to_update_cbx[]" class="meetings_to_update_cbx" value="<?=@$meeting_id?>" />	
 												</td>
 												<td id="td_count_<?=@$meeting_id?>" class="alignCenter <?=@$border_cell_number?>" style="<?=@$td_count_bgcolor?>">
-													<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;height:100%;width:100%;">
-														<a id="task_actions_<?=@$meeting_id?>" data-projectid="<?=@$project_id?>" data-lang="<?=@$lang?>" data-meetingid="<?=@$meeting_id?>" data-iteration=<?=@$iteration?> data-userid="<?=@$user_id?>" data-ispriority="<?=@$is_priority?>" data-remark="<?=@$remark?>" data-chapter="<?=@$chapter_name?>" data-name="<?=@$subject?>" data-area="<?=@$area?>" data-recipient="<?=@$responsible_email?>" data-responsibleid="<?=@$responsible_id?>" data-destinationdate="<?=@$destination_date?>" data-progresstatusid="<?=@$progress_status_id?>" data-trackresponsibleid="<?=@$id_track_responsible?>" data-tracktype="<?=@$track_type?>" data-reminderdate="<?=@$reminder_date?>" data-remindertime="<?=@$reminder_time?>" class="text-decoration-none cursor-pointer fontSize12 padding-7x-3y font-weight-bold borderRadius10" style="<?=@$num_bgcolor?>!important;<?=@$num_border_color?>;display:inline-block;"><?=@$count?></a><?php if(@$track_type && @$track_responsible_name != ''): ?><span class="badge-circle" style="background-color:#e53935;width:18px;height:18px;font-size:9px;display:inline-flex;box-shadow:none;" title="<?=htmlspecialchars(@$track_responsible_name)?>"><?=mb_strtoupper(mb_substr(@$track_responsible_name, 0, 2, 'UTF-8'))?></span><?php endif; ?>
-													</div>
+													<a id="task_actions_<?=@$meeting_id?>" data-projectid="<?=@$project_id?>" data-lang="<?=@$lang?>" data-meetingid="<?=@$meeting_id?>" data-iteration=<?=@$iteration?> data-userid="<?=@$user_id?>" data-ispriority="<?=@$is_priority?>" data-remark="<?=@$remark?>" data-chapter="<?=@$chapter_name?>" data-name="<?=@$subject?>" data-area="<?=@$area?>" data-recipient="<?=@$responsible_email?>" data-responsibleid="<?=@$responsible_id?>" data-destinationdate="<?=@$destination_date?>" data-progresstatusid="<?=@$progress_status_id?>" data-trackresponsibleid="<?=@$id_track_responsible?>" data-tracktype="<?=@$track_type?>" data-reminderdate="<?=@$reminder_date?>" data-remindertime="<?=@$reminder_time?>" class="text-decoration-none cursor-pointer fontSize12 padding-7x-3y font-weight-bold borderRadius10" style="<?=@$num_bgcolor?>!important;<?=@$num_border_color?>"><?=@$count?></a>
 												</td>
 												
 												<?php if(in_array('subject',$columns_list_array)){ ?>
@@ -1803,8 +1799,8 @@ include 'menu_tasks.php';
 															<?=html_entity_decode($subject)?>
 														</div>
 													</td>
-												<?php }
-
+												<? } 
+												
 												if(in_array('area',$columns_list_array)){ ?> 
 													<td id="td_area_<?=@$meeting_id?>" class="<?php if(end($columns_list_array) == "area") echo $border_cell_table_end;?>" style="<?=@$text_align?>;<?=@$padding?>:5px;<?=@$area_bgcolor?>;" contenteditable="true" onblur="setData(<?=@$meeting_id?>,<?=@$iteration?>,'area',0,0,'screen');">
 														<div class="height-auto fontSize12 cursor-pointer overflow-y-scroll" id="area_<?=@$meeting_id?>" name="area_<?=@$meeting_id?>" style="direction:<?=@$dir?>;width:100%;<?=@$padding?>:5px;<?=@$area_bgcolor?>;" contenteditable="true">
@@ -1824,15 +1820,14 @@ include 'menu_tasks.php';
 												if(in_array('_task',$columns_list_array)){ ?>
 													<td id="td_task_<?=@$meeting_id?>" class="<?php if(end($columns_list_array) == "_task") echo $border_cell_table_end;?> cursor-pointer" style="<?=@$task_bgcolor?>">
 														<select id="task_<?=@$meeting_id?>" class="form-control font-weight-bold fontSize12 border-none cursor-pointer alignCenter" style="direction:<?=@$dir?>;width:98%;<?=@$task_color?>;<?=@$task_bgcolor?>;" onchange="setData(<?=@$meeting_id?>,<?=@$iteration?>,'id_task',0,0,'screen');">	
-															<?php
+															<?php 
 															foreach($tasks as $task){
-																if ($task->is_appears_tasks_list != 1 && $task->id != @$task_id) continue;
 															?>
 																<option value="<?=@$task->id?>" <?php if($task->id == @$task_id) echo "selected";?>>
 																	<strong><?php if($lang == 'HE') echo @$task->name_he;else if($lang == 'EN') echo @$task->name?></strong>
 																</option>
 																<?php
-															}
+															}	
 															?>         														
 														</select>
 													</td>
@@ -1872,13 +1867,13 @@ include 'menu_tasks.php';
 												
 												if(in_array('task creation',$columns_list_array)){ ?>
 													<td id="td_task_creation_date_<?=@$meeting_id?>" class="<?php if(end($columns_list_array) == "task creation") echo $border_cell_table_end;?> cursor-pointer alignCenter" style="<?=@$task_creation_date_bgcolor?>">
-														<input type="text" id="task_creation_date_<?=@$meeting_id?>" name="task_creation_date_<?=@$meeting_id?>" class="fontSize13 border-none width60 cursor-pointer alignCenter" style="direction:<?=@$dir?>;<?=@$task_creation_date_color?>;<?=@$task_creation_date_bgcolor?>;" value="<?=smartDate(@$task_creation_date, $lang)?>" data-meetingid="<?=@$meeting_id?>" data-iteration=<?=@$iteration?> data-taskcreationdate="<?=@$task_creation_date?>" />
+														<input type="text" id="task_creation_date_<?=@$meeting_id?>" name="task_creation_date_<?=@$meeting_id?>" class="fontSize13 border-none width60 cursor-pointer alignCenter" style="direction:<?=@$dir?>;<?=@$task_creation_date_color?>;<?=@$task_creation_date_bgcolor?>;" value="<?=date('M d', strtotime(@$task_creation_date))?>" data-meetingid="<?=@$meeting_id?>" data-iteration=<?=@$iteration?> data-taskcreationdate="<?=@$task_creation_date?>" />
 													</td>
 												<?php }
 												
 												if(in_array('destination date',$columns_list_array)){ ?>
 													<td id="td_destination_date_<?=@$meeting_id?>" class="<?php if(end($columns_list_array) == "destination date") echo $border_cell_table_end;?> cursor-pointer alignCenter" style="<?=@$text_align?>;<?=@$padding?>:5px;<?=@$dest_date_color?>;<?=@$dest_date_bgcolor?>;">			
-													   <input type="text" id="destination_date_<?=@$meeting_id?>" name="destination_date_<?=@$meeting_id?>" class="fontSize13 border-none width60 cursor-pointer alignCenter" style="direction:<?=@$dir?>;<?=@$dest_date_color?>;<?=@$dest_date_bgcolor?>;" value="<?=smartDate(@$destination_date, $lang)?>" data-meetingid="<?=@$meeting_id?>" data-iteration="<?=@$iteration?>" data-chapter="<?=@$chapter_name?>" data-name="<?=@$subject?>" data-area="<?=@$area?>" data-destinationdate="<?=@$destination_date?>" />
+													   <input type="text" id="destination_date_<?=@$meeting_id?>" name="destination_date_<?=@$meeting_id?>" class="fontSize13 border-none width60 cursor-pointer alignCenter" style="direction:<?=@$dir?>;<?=@$dest_date_color?>;<?=@$dest_date_bgcolor?>;" value="<?=date('M d', strtotime(@$destination_date))?>" data-meetingid="<?=@$meeting_id?>" data-iteration="<?=@$iteration?>" data-chapter="<?=@$chapter_name?>" data-name="<?=@$subject?>" data-area="<?=@$area?>" data-destinationdate="<?=@$destination_date?>" />
 													</td>
 												<?php }
 												
@@ -1909,7 +1904,7 @@ include 'menu_tasks.php';
 										    </tr>
 											<?php
 											if(@$is_images == 1 && (($image1 != '' && $is_appears_img1) || ($image2 != '' && $is_appears_img2)) && strpos($image1,'Snag') === false && strpos($image2,'Snag') === false){ ?>
-											    <tr class="bgColor-f5f6f8 tr-image-row">
+											    <tr class="bgColor-f5f6f8">
 												   <td class="<?=@$border_cell_table_start?> <?=@$border_cell_table_end?>" colspan="<?=@$colspan_image_tr?>">
 													  <img class="<?=@$margin_between_images?> object-fit-fixed" src="<?='uploads/'.$image1?>" width="<?=@$image1_width?>" height="<?=@$image1_height?>" />
 												      <?php if($image2 != '' && $is_appears_img2 && strpos($image2,'Snag') === false) { ?>
@@ -2065,16 +2060,17 @@ include 'menu_tasks.php';
 												$id_task_type = @$item->id_task_type;
 												$subject = @$item->subject;
 												$area = @$item->area;
+												
 												$task_creation_date = '';
 												if(@$item->task_creation_date != '0000-00-00')
 													$task_creation_date = @$item->task_creation_date;
-
+												
 												$destination_date = '';
 												if(@$item->destination_date != '0000-00-00')
-													$destination_date = @$item->destination_date;
-
+													$destination_date = @$item->destination_date;							
+												
 												$updated_date = @$item->updated_date;
-
+												
 												$description = @$item->description;
 												
 												$id_track_responsible = @$item->id_track_responsible;
@@ -2128,7 +2124,7 @@ include 'menu_tasks.php';
 														$description .= "<div class='marginTop5 colorGreen display-block ".@$dir_log_meeting_updates."'>"
 																	    .@$item->user_nickname." "
 																	    ."<span style='direction:".@$dir.";unicode-bidi:embed;'>"
-																		."[".smartDate(@$action_date, $lang)."]"
+																		."[".substr(@$action_date,8,2).'/'.substr(@$action_date,5,2)."]"
 																		."</span> : "
 																		.html_entity_decode(@$remark)
 																		 ."</div>";
@@ -2152,13 +2148,13 @@ include 'menu_tasks.php';
 													$tracking_data = '(';
 											    
 												if($reminder_date != '0000-00-00')
-													$tracking_data .= smartDate($reminder_date, $lang);
-
+													$tracking_data .= substr($reminder_date,8,2).'/'.substr($reminder_date,5,2);
+												
 												if(@$track_responsible_name != '')
 													$tracking_data .= ','.@$track_responsible_name;
-
+												
 												if($reminder_date != '0000-00-00' || @$track_responsible_name != '')
-													$tracking_data .= ')';
+													$tracking_data .= ')';	
 
                                                 $dir_log_meeting_tracking = 'alignRight paddingRight10';
 												if(@$item->lang == 'EN')
@@ -2168,16 +2164,10 @@ include 'menu_tasks.php';
 													$remark = @$item->remark;	
 													$action_date = @$item->action_date;
 											    
-													if(@$track_type && @$remark != ''){
-														$track_initials2 = mb_strtoupper(mb_substr(@$item->user_nickname, 0, 2, 'UTF-8'));
-														$description .= "<div id='div-tracking-remarks-'".@$meeting_id."' class='marginTop5 display-block ".@$dir_log_meeting_tracking."' style='line-height:1.8;'>"
-																	  . "<span class='badge-circle' style='display:inline-flex;background-color:#333;width:15px;height:15px;font-size:8px;vertical-align:middle;'>".$track_initials2."</span>"
-																	  . " <span class='colorGrey dir-rtl unicode-bidi-embed' style='vertical-align:middle;'>".@$item->user_nickname."</span>"
-																	  . " <span class='colorGrey dir-rtl unicode-bidi-embed' style='vertical-align:middle;'>".smartDate(@$item->action_date, $lang)."</span>"
-																	  . " : <span class='colorRed dir-rtl unicode-bidi-embed display-inline-block'>".html_entity_decode(@$item->remark)."</span>"
-																	  . "<span class='marginRight5 colorRed dir-rtl unicode-bidi-embed display-inline-block'>".@$tracking_data."</span>"
-																	  . "</div>";
-													}
+													if(@$track_type && @$remark != '')
+														$description .= "<div id='div-tracking-remarks-'".@$meeting_id."' class='marginTop5 colorRed display-block ".@$dir_log_meeting_tracking."'>
+																		<span class='colorGrey dir-rtl unicode-bidi-embed'>[".substr(@$item->action_date,8,2).'/'.substr(@$item->action_date,5,2)."]</span> <span class='colorGrey dir-rtl unicode-bidi-embed'>".@$item->user_nickname."</span> : <span class='colorRed dir-rtl unicode-bidi-embed display-inline-block'>".html_entity_decode(@$item->remark)."</span><span class='marginRight5 colorRed dir-rtl unicode-bidi-embed display-inline-block'>".@$tracking_data."</span>
+																		</div>";
 												}																	
 												
 												if(@$image1_width > 0 && @$image1_height > 0) {
@@ -2266,8 +2256,7 @@ include 'menu_tasks.php';
 												$query->execute();
 												$query->store_result();
 												$query = fetch_unique($query);
-												$progress_status_he = @$query->name_he;
-												$progress_status = $progress_status_he;
+												$progress_status = @$query->name_he;
 												if($lang != 'HE')
 												   $progress_status = @$query->name;
 												if(@$is_colors) {
@@ -2287,7 +2276,8 @@ include 'menu_tasks.php';
 												if($is_colors && $destination_date < date('Y-m-d'))  
 												   $dest_date_color = 'color:red;';
 		
-												if($is_colors && $progress_status_he == 'בוצע/נמסר') {
+												if($is_colors && $is_change_row_style) {
+													if($progress_status == 'בוצע/נמסר') {
 													  $subject_bgcolor = 'background-color:#dedede';
 												  	  $area_bgcolor = 'background-color:#dedede';
 													  $description_bgcolor = 'background-color:#dedede';
@@ -2298,17 +2288,18 @@ include 'menu_tasks.php';
 													  $dest_date_color = 'color:#dedede';
 													  $dest_date_bgcolor = 'background-color:#dedede';
 													  $progress_status_bgcolor = 'background-color:#dedede';
-												}
-												elseif($is_colors && $is_change_row_style && $task == 'בקרת איכות') {
-													$subject_bgcolor = 'background-color:#fafd49';
-													$area_bgcolor = 'background-color:#fafd49';
-													$description_bgcolor = 'background-color:#fafd49';
-													$task_bgcolor = 'background-color:#fafd49';
-													$responsible_bgcolor = 'background-color:#fafd49';
-													$pass_on_bgcolor = 'background-color:#fafd49';
-													$task_creation_date_bgcolor = 'background-color:#fafd49';
-													$dest_date_bgcolor = 'background-color:#fafd49';
-													$progress_status_bgcolor = 'background-color:#fafd49';
+													}
+													else if($task == 'בקרת איכות') {
+														$subject_bgcolor = 'background-color:#fafd49';
+														$area_bgcolor = 'background-color:#fafd49';
+														$description_bgcolor = 'background-color:#fafd49';
+														$task_bgcolor = 'background-color:#fafd49';
+														$responsible_bgcolor = 'background-color:#fafd49';
+														$pass_on_bgcolor = 'background-color:#fafd49';
+														$task_creation_date_bgcolor = 'background-color:#fafd49';	
+														$dest_date_bgcolor = 'background-color:#fafd49';
+														$progress_status_bgcolor = 'background-color:#fafd49';
+													}
 												}
 			
 												$end_new_tasks_date = $end_updated_date = $task_creation_date;
@@ -2367,8 +2358,8 @@ include 'menu_tasks.php';
 														<td style="<?=@$text_align?>;<?=@$padding?>:5px;<?=@$subject_bgcolor?>;">
 															<?=html_entity_decode(@$subject)?>
 														</td>
-													<?php }
-
+													<? } 
+													
 													if(in_array('area',$columns_list_array)) { ?> 
 														<td style="<?=@$text_align?>;<?=@$padding?>:5px;<?=@$area_bgcolor?>;">
 															<?=html_entity_decode(@$area)?> 
@@ -2399,15 +2390,15 @@ include 'menu_tasks.php';
 													
 													if(in_array('task creation',$columns_list_array)) { ?>
 														<td class="alignCenter" style="<?=@$task_creation_date_bgcolor?>;">
-															<?=smartDate(@$task_creation_date, $lang)?>
+															<?=date('M d', strtotime(@$task_creation_date))?>
 														</td>
 													<?php }
-
+													
 													if(in_array('destination date',$columns_list_array)) { ?>
-														<td class="alignCenter" style="<?=@$dest_date_color?>;<?=@$dest_date_bgcolor?>;">
-															<?=smartDate(@$destination_date, $lang)?>
+														<td class="alignCenter" style="<?=@$dest_date_color?>;<?=@$dest_date_bgcolor?>;">		
+															<?=date('M d', strtotime(@$destination_date))?>
 													<?php }
-
+													
 													if(in_array('progress status',$columns_list_array)) { ?>
 														<td style="<?=@$text_align?>;<?=@$padding?>:5px;<?=@$progress_status_color?>;<?=@$progress_status_bgcolor?>;">
 															<?=@$progress_status?>
@@ -2416,7 +2407,7 @@ include 'menu_tasks.php';
 													
 								                </tr>
 												<?php if(strpos($image1,'Snag') === false && strpos($image2,'Snag') === false) { ?>
-												       <tr class="bgColor-f5f6f8 tr-image-row">
+												       <tr class="bgColor-f5f6f8">
 													       <td colspan="<?=sizeof(@$columns_list_array)?>">
 														       <img class="<?=@$margin_between_images?> object-fit-fixed" src="<?='uploads/'.$image1?>" width="<?=@$image1_width?>" height="<?=@$image1_height?>" />
 															   <?php if($image2 != '' && $is_appears_img2 && strpos($image2,'Snag') === false) { ?>
@@ -2640,7 +2631,7 @@ include 'menu_tasks.php';
 					    <div id="modalContent">
 							<div class="row marginTop5">
 								<div class="col-12">
-									<?php foreach ($tasks as $item){
+									<?php foreach ($tasks as $item){ 										
 										    $checked = ($item->id == @$task_filter && strpos(@$_SESSION['filter_tasks_list'], ',') === false) ? 'checked' : '';
 									?>
 											<label class="display-block">
@@ -2904,7 +2895,7 @@ include 'menu_tasks.php';
 										</div>			
 										<div class="width20Percents">	    
 										    <a id="tracking_btn" class="btn colorBlack width130" style="box-shadow:none;">
-												<i id="target-icon-popup" class="fas fa-bullseye" style="font-size:26px;color:#888;"></i>
+												<img id='target-icon-popup' src="images/grey-target-icon.png" alt="target icon" width="30" height="30" />
 												<br/>
 												<strong class="fontSize14">מעקב</strong>
 									        </a>
@@ -2938,24 +2929,18 @@ include 'menu_tasks.php';
            </div>
 		</div>
 		
-		<div class="modal fade <?=(@$lang=='HE') ? 'dir-rtl' : ''?>" id="modalContinuousTask" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal fade dir-rtl" id="modalContinuousTask" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
 				<div class="modal-content">  
 					<div class="modal-body">	
 					    <div id="modalContent">
 					        <form class="alignCenter">
-						        <div class="marginTop15 fontSize18 alignCenter"><?=(@$lang=='HE') ? 'בדרך ליצור עבורך משימת המשך לפני כן, תציין אם ברצונך לסמן סטטוס משימה כ:' : 'A continuation task will be created. Please select the status to apply to the current task:'?></div>
-							    <div class="marginTop15 d-flex justify-content-center" style="gap:20px;">
-									<label style="cursor:pointer">
-										<input type="radio" id="done" name="progress_status" value="1" onclick="continuousTask($('#hidden_meeting_id').val(),'בוצע/נמסר',$('#hidden_iteration').val(),'fromMeetings')" />&nbsp;<?=(@$lang=='HE') ? 'בוצע/נמסר' : 'Done/Delivered'?>
-									</label>
-									<label style="cursor:pointer">
-										<input type="radio" id="archive" name="progress_status" value="2" onclick="continuousTask($('#hidden_meeting_id').val(),'ארכיון',$('#hidden_iteration').val(),'fromMeetings')" />&nbsp;<?=(@$lang=='HE') ? 'ארכיון' : 'Archive'?>
-									</label>
-									<label style="cursor:pointer">
-										<input type="radio" id="no_change" name="progress_status" value="3" onclick="continuousTask($('#hidden_meeting_id').val(),'no_change',$('#hidden_iteration').val(),'fromMeetings')" />&nbsp;<?=(@$lang=='HE') ? 'ללא שינוי' : 'No change'?>
-									</label>
-							    </div>
+						        <div class="marginTop15 fontSize18 alignCenter">בדרך ליצור עבורך משימת המשך לפני כן, תציין אם ברצונך לסמן סטטוס משימה כ:</div>
+							    <div class="marginTop15">
+									<input type="radio" id="done" name="progress_status" value="1" onclick="continuousTask($('#hidden_meeting_id').val(),'בוצע/נמסר',$('#hidden_iteration').val(),'fromMeetings')" />&nbsp;בוצע/נמסר
+							        <input type="radio" id="archive" name="progress_status" class="marginRight8" value="2" onclick="continuousTask($('#hidden_meeting_id').val(),'ארכיון',$('#hidden_iteration').val(),'fromMeetings')" />&nbsp;ארכיון
+							        <input type="radio" id="no_change" name="progress_status" class="marginRight8" value="3" onclick="continuousTask($('#hidden_meeting_id').val(),'no_change',$('#hidden_iteration').val(),'fromMeetings')" />&nbsp;ללא שינוי
+							    </div> 
 						    </form>
 					    </div>
 					</div>
@@ -3242,14 +3227,10 @@ else {
 }
 	
 $(document).ready(function(){
-	localStorage.setItem('dne_last_url', window.location.href);
 	let container = $('.container');
 
 	if($('#row').val() != ''){
-		const rowVal = $('#row').val();
-		const element = rowVal.startsWith('meeting_')
-			? document.querySelector('tr.' + rowVal)
-			: document.getElementById(rowVal);
+		const element = document.getElementById($('#row').val());
 
 		if(element){
 			const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
@@ -3363,16 +3344,11 @@ $(document).ready(function(){
 	
 	$('#modalTaskFollowupActions').on('hidden.bs.modal', function (){
 		localStorage.removeItem('is_modal_task_actions_opened');
-		let $row = $('#meetings_table tr.meeting_' + meeting_id);
-		if ($row.length) $row[0].scrollIntoView({block: 'center'});
-    });
-
-	if(localStorage.getItem("is_modal_task_actions_opened") === "true" &&
-	   localStorage.getItem("project_id") == "<?=$project_id?>"){
+    });		
+	
+	if(localStorage.getItem("is_modal_task_actions_opened") === "true"){
 	   project_id = localStorage.getItem("project_id");
 	   meeting_id = localStorage.getItem("meeting_id");
-	   if(!/^\d+$/.test(meeting_id)){ localStorage.removeItem('is_modal_task_actions_opened'); }
-	   else {
 	   iteration = localStorage.getItem("iteration");
 	   chapter = localStorage.getItem("chapter");
 	   subject = localStorage.getItem("subject");
@@ -3380,15 +3356,15 @@ $(document).ready(function(){
 	   recipient = localStorage.getItem("recipient");
 	   responsible_id = localStorage.getItem("responsible_id");
 	   remark = localStorage.getItem("remark");
-	   track_type = parseInt($('#track_type_' + meeting_id).val()) || 0;
+	   track_type = localStorage.getItem("track_type");
 	   is_priority = 1;
-
+	   
 	   if(localStorage.getItem("is_priority") == 1 || localStorage.getItem("is_five_priorities"))
 	      is_priority = 0;
-
+	  
 	   let form_data = new FormData();
        form_data.append('id_meeting',meeting_id);
-
+	   
 	   $.ajax({
 			type: 'POST',
 			url: 'task_details.php',
@@ -3397,27 +3373,18 @@ $(document).ready(function(){
 			processData: false,
 			contentType: false,
 			success: function(data){
-				if(data.indexOf('|~|') === -1){
-					localStorage.removeItem('is_modal_task_actions_opened');
-					localStorage.removeItem('meeting_id');
-					return;
-				}
 				let task_details = data.split('|~|');
-				let content = fillContentTaskDetails(meeting_id,'',task_details,true);
+				let content = fillContentTaskDetails(meeting_id,'',task_details,true);		
 				$('#div_content_task_details').html(content);
-				setBellBcgColor(parseInt(task_details[22]) || 0);
-				setEmergencyTaskCSS(is_priority);
-				$('#modalContent').append("<input type='hidden' id='hidden_meeting_id' value='"+meeting_id+"'><input type='hidden' id='hidden_iteration' value='"+iteration+"'><input type='hidden' id='hidden_project_id' value='"+project_id+"'><input type='hidden' id='hidden_user_id' value='"+user_id+"'><input type='hidden' id='hidden_chapter' value='"+chapter+"'><input type='hidden' id='hidden_name' value='"+subject+"'><input type='hidden' id='hidden_area' value='"+area+"'><input type='hidden' id='hidden_recipient' value='"+recipient+"'><input type='hidden' id='hidden_responsible_id' value='"+responsible_id+"'><input type='hidden' id='hidden_is_priority' value='"+is_priority+"'><input type='hidden' id='hidden_remark' value='"+remark+"'><input type='hidden' id='hidden_track_responsible_id' value='"+track_responsible_id+"'><input type='hidden' id='hidden_track_type' value='"+track_type+"'><input type='hidden' id='hidden_reminder_date' value='"+reminder_date+"'><input type='hidden' id='hidden_reminder_time' value='"+reminder_time+"'>");
-				$('#modalTaskFollowupActions').modal('show');
-				setTimeout(function(){
-				    let $row = $('#meetings_table tr.meeting_' + meeting_id);
-				    if ($row.length) $row[0].scrollIntoView({block: 'center'});
-				}, 400);
 			},
 	   });
-	   } // end else (valid meeting_id)
+	    
+	   setBellBcgColor(track_type);
+	   setEmergencyTaskCSS(is_priority);
+	   $('#modalContent').append("<input type='hidden' id='hidden_meeting_id' value='"+meeting_id+"'><input type='hidden' id='hidden_iteration' value='"+iteration+"'><input type='hidden' id='hidden_project_id' value='"+project_id+"'><input type='hidden' id='hidden_user_id' value='"+user_id+"'><input type='hidden' id='hidden_chapter' value='"+chapter+"'><input type='hidden' id='hidden_name' value='"+subject+"'><input type='hidden' id='hidden_area' value='"+area+"'><input type='hidden' id='hidden_recipient' value='"+recipient+"'><input type='hidden' id='hidden_responsible_id' value='"+responsible_id+"'><input type='hidden' id='hidden_is_priority' value='"+is_priority+"'><input type='hidden' id='hidden_remark' value='"+remark+"'><input type='hidden' id='hidden_track_responsible_id' value='"+track_responsible_id+"'><input type='hidden' id='hidden_track_type' value='"+track_type+"'><input type='hidden' id='hidden_reminder_date' value='"+reminder_date+"'><input type='hidden' id='hidden_reminder_time' value='"+reminder_time+"'>"); 
+	   $('#modalTaskFollowupActions').modal('show');
 	}
-
+	
 	if(localStorage.getItem("is_modal_tasks_hystory_opened")){
 		meeting_id = localStorage.getItem("meeting_id");
 		iteration = localStorage.getItem("iteration");
@@ -3447,30 +3414,10 @@ $(document).ready(function(){
 		setlocalStorage($('#hidden_meeting_id').val(),$('#iteration').val());
 		window.location.reload();
     });
-
-	// Save scroll position as user scrolls (throttled, per project)
-	let scrollSaveTimer;
-	window.addEventListener('scroll', function(){
-		clearTimeout(scrollSaveTimer);
-		scrollSaveTimer = setTimeout(function(){
-			if(!$('#modalTaskFollowupActions').hasClass('show'))
-				localStorage.setItem('scroll_Y_<?=$project_id?>', Math.round(window.scrollY));
-		}, 200);
-	});
-
-	// Restore scroll on load only if no popup was restored for this project
-	if(!(localStorage.getItem("is_modal_task_actions_opened") === "true" &&
-	     localStorage.getItem("project_id") == "<?=$project_id?>")){
-		let savedY = localStorage.getItem('scroll_Y_<?=$project_id?>');
-		if(savedY) setTimeout(function(){ window.scrollTo({top: parseInt(savedY)}); }, 250);
-	}
-
+	
 	$("#select_lang").change(function(){
-		let lang = $(this).val();
-		let url = new URL(window.location.href);
-		url.searchParams.set('lang', lang);
-		window.location.href = url.toString();
-	});
+        setReportData('lang');		
+    });	
 	
 	$('[id="table_view_btn"]').on('click', function(){
 	   let id_report = $(this).data('reportid');
@@ -3486,33 +3433,17 @@ $(document).ready(function(){
 	   setReportData('colors');	
 	});
 	
-	const trackingKey = 'track_off_' + reportId;
-
-	function applyTrackingState(isOn) {
-		if(isOn) {
+	$('#toggle_switch_track').on('click', function(){
+		if(click_set_track_count %2 == 0) {
 			$('#target-icon').attr('src','images/red-target-icon.png');
 			$('[id^="div-tracking-remarks-"]').css('display','block');
-			$('#toggle_switch_track').prop('checked', true);
-			localStorage.removeItem(trackingKey);
-		} else {
+		}
+		else {
 			$('#target-icon').attr('src','images/grey-target-icon.png');
 			$('[id^="div-tracking-remarks-"]').css('display','none');
-			$('#toggle_switch_track').prop('checked', false);
-			localStorage.setItem(trackingKey, '1');
 		}
-	}
-
-	$('#toggle_switch_track').on('click', function(){
-		applyTrackingState(this.checked);
+		click_set_track_count++;
 	});
-
-	$('#track_btn').on('click', function(){
-		let newState = !$('#toggle_switch_track').prop('checked');
-		applyTrackingState(newState);
-	});
-
-	if(localStorage.getItem(trackingKey) === '1')
-		applyTrackingState(false);
 
 	if(localStorage.getItem('full_short_' + reportId) === 'short') {
 		setTimeout(function(){
@@ -3767,12 +3698,13 @@ $(document).ready(function(){
 			processData: false,
 			contentType: false,
 			success: function(data){
-				let task_details = data.split('|~|');
+				let task_details = data.split('|~|');	
 				let content = fillContentTaskDetails(meeting_id,'',task_details,true);
 				$('#div_content_task_details').html(content);
-				setBellBcgColor(parseInt(task_details[22]) || 0);
 			},
 	    });
+	   
+	    setBellBcgColor(track_type);
 	    setEmergencyTaskCSS(is_priority);
 	   
 	    $.ajax({
@@ -3800,11 +3732,8 @@ $(document).ready(function(){
     });
 	
 	$('[id="continuous_btn"]').on('click', function(){
-		$('#modalTaskFollowupActions').one('hidden.bs.modal', function(){
-			$('[name="progress_status"]').prop('checked', false).prop('disabled', false);
-			$('#modalContinuousTask').modal('show');
-		});
 		$('#modalTaskFollowupActions').modal('hide');
+	    $('#modalContinuousTask').modal('show');
 	});
 	
 	$('[id="history_btn"]').on('click', function(){
@@ -3885,7 +3814,7 @@ $(document).ready(function(){
 	    else 
 		  $('#div_reminder_date').hide();
 	 
-	    $('#modalTaskTracking .modal-title').html("<i class='fas fa-bullseye' style='font-size:22px;color:#888;'></i>&nbsp;&nbsp;מעקב אקטיבי&nbsp;&nbsp;<i class='fas fa-bullseye' style='font-size:22px;color:#888;'></i>");
+	    $('.modal-title').html("<img src='images/target-icon.png' alt='status icon' width='30' height='30'>&nbsp;&nbsp;מעקב אקטיבי&nbsp;&nbsp;<img src='images/target-icon.png' alt='status icon' width='30' height='30'>");
 		$('.subtitle').html(chapter+"<br/>"+subject+"&nbsp;|&nbsp;"+area).css('line-height','1.1em');
 	  
 	    $('#div_reminder_date').css('display','block');
@@ -3908,19 +3837,17 @@ $(document).ready(function(){
 	    if($('#hidden_reminder_time').val() == 6) 
 		  $('#reminder_after_selected_date').prop('checked',true);
 	   
-        let savedResp = parseInt($('#hidden_track_responsible_id').val()) || 0;
-	    $('#users option').each(function() {
-	        if(savedResp === 0){
-	            if($(this).val() == $('#hidden_user_id').val())
-	                $(this).prop('selected', true);
-	        } else {
-	            if($(this).val() == savedResp)
-	                $(this).prop('selected', true);
-	        }
+        $('#users option').each(function() {			
+		    if($('#hidden_track_responsible_id').val() == 0){
+				if($(this).val() == $('#hidden_user_id').val()) 
+					$(this).prop('selected', true);
+		    }		    	
+		   
+		    if($('#hidden_track_responsible_id').val() && ($(this).val() == $('#hidden_track_responsible_id').val()))
+				$(this).prop('selected', true);  
 	    });
-	    $('#users').css('background-color', savedResp === 0 ? '#fffacd' : '');
-
-	    let form_data = new FormData();
+	   
+	    let form_data = new FormData();  
 		form_data.append('id_meeting',meeting_id);
 		form_data.append('isTracking',1);
 		
@@ -3941,7 +3868,6 @@ $(document).ready(function(){
     });
 	
 	$('[id="users"]').on('change', function() {
-		$(this).css('background-color', '');
 		setData($('#hidden_meeting_id').val(),$('#hidden_iteration').val(),'track_responsible_id',0,0,'popup');
 	});
 	
@@ -4028,7 +3954,7 @@ $(document).ready(function(){
 						url: 'save_image.php',
 						data: {imageData:imageData,meeting_id:meeting_id},
 						success: function(response) {
-							const imageUrl = '<?= BASE_URL ?>'+response;
+							const imageUrl = 'https://davidnahmiasengineering.com/Development/'+response;	
 							shareImage(imageUrl,meeting_id,project_id,iteration,is_all_ids_to_edit); 							
 						}, 
 				   });
@@ -4085,7 +4011,6 @@ $(document).ready(function(){
 	let modalTaskDescription = $('#modalTaskDescription');
 	let modalTaskFollowupActions = $('#modalTaskFollowupActions');
 	let modalTaskFollowupChangeStatus = $('#modalTaskFollowupChangeStatus');
-	let modalContinuousTask = $('#modalContinuousTask');
 	let modalTaskCreationDate = $('#modalTaskCreationDate');
 	let modalDestinationDate = $('#modalDestinationDate');
 	let modalTaskFollowupDelayTargetDate = $('#modalTaskFollowupDelayTargetDate');
@@ -4094,8 +4019,7 @@ $(document).ready(function(){
 	let modalHistoryTasks = $('#modalHistoryTasks');
 	let modalUpdateTask = $('#modalUpdateTask');
 	
-	$(document).on('mousedown', function(event){
-		const $target = $(event.target);
+	const $target = $(event.target);
 
     if($target.closest('#modalFilterBySupplier').length ||
         $target.closest('#modalFilterByPeriodNewTasks').length ||
@@ -4111,26 +4035,24 @@ $(document).ready(function(){
         $target.closest('#modalTaskTracking').length ||
         $target.closest('#modalSendEmail').length ||
         $target.closest('#modalHistoryTasks').length ||
-        $target.closest('#modalContinuousTask').length ||
-        $target.closest('#modalUpdateTask').length){
+        $target.closest('#modalUpdateTask').length){      
         return;
     }
-
+	
     if(modalFilterBySupplier.is(':visible') ||
         modalFilterByPeriodNewTasks.is(':visible') ||
         modalFilterByPeriodLate.is(':visible') ||
         modalFilterByProgressStatus.is(':visible') ||
         modalFilterByTask.is(':visible') ||
-        modalTaskDescription.is(':visible') ||
-        modalTaskFollowupActions.is(':visible') ||
+        modalTaskDescription.is(':visible') || 
+        modalTaskFollowupActions.is(':visible') ||  
         modalTaskFollowupChangeStatus.is(':visible') ||
         modalTaskCreationDate.is(':visible') ||
         modalDestinationDate.is(':visible') ||
         modalTaskFollowupDelayTargetDate.is(':visible') ||
         modalTaskTracking.is(':visible') ||
-        modalSendEmail.is(':visible') ||
+        modalSendEmail.is(':visible') || 
         modalHistoryTasks.is(':visible') ||
-        modalContinuousTask.is(':visible') ||
         modalUpdateTask.is(':visible')){
 			let url = 'meetings.php?project_id=' + $('#project_id').val();
 			if($('#hidden_iteration').val())
@@ -4140,37 +4062,29 @@ $(document).ready(function(){
 
 			location.href = url;
     }
-	});
 });
-
-const shortRowStyle = 'overflow:hidden; white-space:nowrap; text-overflow:ellipsis; display:block; width:100%; height:22px; line-height:22px; font-size:12px;';
-const fullRowStyle  = 'overflow:auto; white-space:normal; height:auto; line-height:normal; display:block; font-size:12px;';
-
-function applyShortMode($td, maxChars){
-    // Save original HTML once (preserves <br>/<div> line breaks)
-    if($td.data('fullHtml') === undefined)
-        $td.data('fullHtml', $td.html());
-    const plainText = $td.text().trim();
-    const shortText = plainText.length > maxChars ? plainText.substring(0, maxChars) + ' …' : plainText;
-    $td.html('<div style="' + shortRowStyle + '">' + shortText + '</div>');
-}
-
-function applyFullMode($td){
-    const fullHtml = $td.data('fullHtml');
-    if(fullHtml !== undefined)
-        $td.html(fullHtml);  // restore original HTML with line breaks
-}
 
 $(document).on('change', 'input[name="options"]', function (){
     localStorage.setItem('full_short_' + reportId, this.id === 'option2' ? 'short' : 'full');
     const isShort = this.id === 'option2';
     const maxChars = 100;
+    const maxWidth = '120px';   
     $('td[id^="td_subject_"], td[id^="td_area_"], td[id^="td_description_"]').each(function (){
-        if(isShort) applyShortMode($(this), maxChars);
-        else        applyFullMode($(this));
-    });
+        const $td = $(this);
+        const fullText = $td.data('fullText') || $td.text();
+        $td.data('fullText', fullText);
 
-    $('.tr-image-row').toggle(!isShort);
+        if (isShort){
+            let shortText = fullText.length > maxChars ? fullText.substring(0, maxChars) + ' …' : fullText;
+
+            $td.html('<div style="overflow:hidden; white-space:nowrap; text-overflow:ellipsis; ' +
+                     'max-width:' + maxWidth + '; height:22px; line-height:22px; display:inline-block;">' +
+                     shortText + '</div>');
+        } else {
+            $td.html('<div style="overflow:auto; white-space:normal; height:auto; line-height:normal; display:block;">' +
+                     fullText + '</div>');
+        }
+    });
 
     $('select[id^="task_"], select[id^="responsible_"], select[id^="pass_on_"], select[id^="_progress_status_"]').css({
         'display': 'inline-block',
@@ -4182,23 +4096,6 @@ $(document).on('change', 'input[name="options"]', function (){
         'visibility': 'visible',
         'height': ''
     });
-});
-
-$(document).on('mouseenter', 'tr[id*="row_"]', function(){
-    if(!$('#option2').is(':checked')) return;
-    $(this).find('td[id^="td_subject_"], td[id^="td_area_"], td[id^="td_description_"]').each(function(){
-        applyFullMode($(this));
-    });
-    $(this).next('.tr-image-row').show();
-});
-
-$(document).on('mouseleave', 'tr[id*="row_"]', function(){
-    if(!$('#option2').is(':checked')) return;
-    const maxChars = 100;
-    $(this).find('td[id^="td_subject_"], td[id^="td_area_"], td[id^="td_description_"]').each(function(){
-        applyShortMode($(this), maxChars);
-    });
-    $(this).next('.tr-image-row').hide();
 });
 
 $(document).on('click', 'tr[id*="row_"]', function(){
@@ -4487,8 +4384,7 @@ function setFilter(id_report,id,search_text,filter_type){
 		destination_date_end = formatedEndDate;	       
     }
 
-	let is_appears_cond = (filter_type == 'search_filter' && search_text.trim() != '') ? 'is_appears IN(0,1)' : 'is_appears = 1';
-	let sql = 'SELECT c.name AS name,m.id AS id,m.is_priority AS is_priority,m.id_user AS id_user,m.id_task_type AS id_task_type,m.id_chapter AS id_chapter,m.subject AS subject,m.ids_rdv AS ids_rdv,m.area,m.description,m.id_task,m.id_responsible,m.id_pass_on,m.task_creation_date,m.destination_date,m.id_progress_status,m.updated_date AS updated_date,m.image1 AS image1,m.is_appears_img1 AS is_appears_img1,m.image1_width AS image1_width,m.image1_height AS image1_height,m.image2 AS image2,m.image2_width AS image2_width,m.image2_height AS image2_height,m.is_appears_img2 AS is_appears_img2,m.is_change_row_style AS is_change_row_style,m.id_track_responsible AS id_track_responsible,m.track_type AS track_type,m.reminder_time AS reminder_time,m.reminder_date AS reminder_date FROM dne_meetings m LEFT JOIN dne_chapters c ON m.id_chapter = c.id LEFT JOIN dne_tasks t ON m.id_task = t.id WHERE m.id_project ='+$('#project_id').val()+ ' AND m.' + is_appears_cond + ' ';
+	let sql = 'SELECT c.name AS name,m.id AS id,m.is_priority AS is_priority,m.id_user AS id_user,m.id_task_type AS id_task_type,m.id_chapter AS id_chapter,m.subject AS subject,m.ids_rdv AS ids_rdv,m.area,m.description,m.id_task,m.id_responsible,m.id_pass_on,m.task_creation_date,m.destination_date,m.id_progress_status,m.updated_date AS updated_date,m.image1 AS image1,m.is_appears_img1 AS is_appears_img1,m.image1_width AS image1_width,m.image1_height AS image1_height,m.image2 AS image2,m.image2_width AS image2_width,m.image2_height AS image2_height,m.is_appears_img2 AS is_appears_img2,m.is_change_row_style AS is_change_row_style,m.id_track_responsible AS id_track_responsible,m.track_type AS track_type,m.reminder_time AS reminder_time,m.reminder_date AS reminder_date FROM dne_meetings m LEFT JOIN dne_chapters c ON m.id_chapter = c.id LEFT JOIN dne_tasks t ON m.id_task = t.id WHERE m.id_project ='+$('#project_id').val()+ ' AND m.is_appears = 1 ';
 
 	let params = [];
 
@@ -4530,7 +4426,7 @@ function setFilter(id_report,id,search_text,filter_type){
 			params.push('m.id_responsible IN('+responsibles+')');
 	}
        
-	if(progress_status != '' && filter_type != 'search_filter')
+	if(progress_status != '')
 	  params.push('m.id_progress_status IN('+progress_status+')');
 
 	let creation_date = '';
@@ -4752,37 +4648,4 @@ td[id^="td_area_"] > div {
 .btn-group-toggle input[type="radio"] {
     display: none;
 }
-
-span.sf-hl {
-    font-weight: bold;
-    display: contents;
-}
 </style>
-
-<script>
-$(function() {
-    let term = $('#search_filter').val();
-    if (!term) return;
-
-    let esc = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    let re = new RegExp('(' + esc + ')', 'gi');
-
-    function highlightEl(el) {
-        let html = el.innerHTML;
-        let result = html.replace(/(<[^>]+>|[^<]+)/g, function(part) {
-            if (part.charAt(0) === '<') return part;
-            re.lastIndex = 0;
-            return part.replace(re, '<span class="sf-hl">$1</span>');
-        });
-        re.lastIndex = 0;
-        if (result !== html) {
-            let ce = el.getAttribute('contenteditable');
-            el.removeAttribute('contenteditable');
-            el.innerHTML = result;
-            if (ce !== null) el.setAttribute('contenteditable', ce);
-        }
-    }
-
-    document.querySelectorAll('[id^="subject_"],[id^="area_"],[id^="description_"]').forEach(highlightEl);
-});
-</script>
