@@ -1226,12 +1226,12 @@ function checkEmptyFields(){
     else
         $('#chapter').css('border-color', 'initial');
     
-    if ($('#subject').val().length == 0)
+    if ($('#subject').text().trim().length == 0)
         $('#subject').css('border-color', 'red');
     else
         $('#subject').css('border-color', 'initial');
-    
-    if ($('#area').val().length == 0)
+
+    if ($('#area').text().trim().length == 0)
         $('#area').css('border-color', 'red');
     else
         $('#area').css('border-color', 'initial');
