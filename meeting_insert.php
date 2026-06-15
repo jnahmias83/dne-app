@@ -74,8 +74,8 @@ else {
 	}*/
 	
 	$log_remark = '';
-	if($_POST['remark'] != '')
-		$log_remark = htmlspecialchars($_POST['remark']);
+	if(@$_POST['remark'] != '')
+		$log_remark = htmlspecialchars(@$_POST['remark']);
 	
 	if($_POST['id'] == 0){ 
 	    if($_POST['id_progress_status'] != 0){
@@ -458,12 +458,15 @@ else {
 					  is_appears_img2 = ?,lang = ?,track_type = ?,reminder_date = ?,
 					  is_agrees = ?,is_reminds = ? WHERE id = ?";
 			$query = $mysqli->prepare($query);
+			$_subject = htmlspecialchars($_POST['subject']);
+			$_area    = htmlspecialchars($_POST['area']);
+			$_descr   = htmlspecialchars($_POST['description']);
 			$query->bind_param('issssiiissiiiiisisiii',
 			                   $_POST['id_chapter'],
 							   $_POST['ids_rdv_checked'],
-							   htmlspecialchars($_POST['subject']),
-							   htmlspecialchars($_POST['area']),
-							   htmlspecialchars($_POST['description']),
+							   $_subject,
+							   $_area,
+							   $_descr,
 							   $_POST['id_task'],$_POST['id_responsible'],
 							   $_POST['id_pass_on'],$task_creation_date,
 							   $_POST['destination_date'],
@@ -488,8 +491,9 @@ else {
 					  updated_users) 
 					  VALUES(?,?,?,?,?,?,?,?)";
 			$query = $mysqli->prepare($query);
+			$_action_date = date('Y-m-d');
 			$query->bind_param('iissssii',$_SESSION['id_user'],
-							    $_POST['id'],date('Y-m-d'),$_POST['action'],
+							    $_POST['id'],$_action_date,$_POST['action'],
 								$log_destination_date,$log_remark,
 								$log_id_progress_status,
 								$_SESSION['id_user']);
@@ -581,7 +585,7 @@ else {
 				$where_part_sql_array[$i] = $new_task_in;             						   
 			}
 			
-			if($item->and_or_responsibles == "AND"){
+			if(@$item->and_or_responsibles == "AND"){
 				if(strpos($where_part_sql_array[$i],'id_responsible') !== false) {
 					$position_responsible_in = strpos($where_part_sql_array[$i], "IN(");
 					$where_responsible_in_length = strlen($where_part_sql_array[$i]) - $position_responsible_in;

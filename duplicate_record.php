@@ -105,19 +105,32 @@ if($_POST['table_name'] == 'dne_meetings') {
 					   $id_progress_status,$_SESSION['id_user']);
 	$query->execute();
 
-	if(@$_POST['is_continuous_task'] == 1 && @$_POST['progress_status'] != 'no_change') {
+	$progress_status_post = trim($_POST['progress_status'] ?? '');
+	if(@$_POST['is_continuous_task'] == 1 && in_array($progress_status_post, ['בוצע/נמסר', 'ארכיון'])) {
 	    $query = $mysqli->prepare("SELECT * FROM dne_progress_status
 	                              WHERE id_project = ? AND name_he = ?");
-	    $progress_status_post = $_POST['progress_status'] ?? '';
-	    $query->bind_param("is",$_POST['id_project'],$progress_status_post);
+	    $parent_id_project = (int)$meeting->id_project;
+	    $query->bind_param("is",$parent_id_project,$progress_status_post);
 	    $query->execute();
 	    $query->store_result();
         $progress_status = fetch_unique($query);
 	    $id_progress_status = @$progress_status->id;
+		$parent_change_row_style = in_array($progress_status_post, ['בוצע/נמסר','ארכיון']) ? 1 : 0;
 
-		$query = "UPDATE dne_meetings SET id_progress_status = ? WHERE id = ?";
-		$query = $mysqli->prepare($query);
-		$query->bind_param('ii',$id_progress_status,$_POST['id']);
-		$query->execute();
+		if($id_progress_status > 0) {
+			if($progress_status_post == 'ארכיון') {
+				$query = "UPDATE dne_meetings SET id_progress_status = ?, is_change_row_style = ?,
+				          is_appears = 0, is_priority = 0, status_archived_updated_date = ? WHERE id = ?";
+				$query = $mysqli->prepare($query);
+				$query->bind_param('iisi',$id_progress_status,$parent_change_row_style,$currentDate,$_POST['id']);
+				$query->execute();
+			}
+			else {
+				$query = "UPDATE dne_meetings SET id_progress_status = ?, is_change_row_style = ? WHERE id = ?";
+				$query = $mysqli->prepare($query);
+				$query->bind_param('iii',$id_progress_status,$parent_change_row_style,$_POST['id']);
+				$query->execute();
+			}
+		}
 	}
 }

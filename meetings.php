@@ -131,7 +131,7 @@ if($id_custom_report > 0){
 			$sql = @$custom_report->sql_str;
 			$is_images = @$custom_report->is_images;
 			$is_colors = @$custom_report->is_colors;
-			$lang = @$custom_report->lang ?: @$project->lang;
+			$lang = @$project->lang;
 			$_SESSION['lang'] = $lang;
 			
 			if($lang == 'HE') 
@@ -167,7 +167,7 @@ if($id_custom_report > 0){
 			$sql = @$_SESSION['filter_sql'];
 			$is_images = @$_SESSION['filter_is_images'];
 			$is_colors = @$_SESSION['filter_is_colors'];
-			$lang = @$_SESSION['filter_lang'] ?: @$project->lang;
+			$lang = @$project->lang;
 			$_SESSION['lang'] = $lang;
 			
 			if($lang == 'HE') 
@@ -360,7 +360,7 @@ else if($id_rdv_report > 0){
 		$sql = @$_SESSION['filter_sql'];
 		$is_images = @$_SESSION['filter_is_images'];
 		$is_colors = @$_SESSION['filter_is_colors'];
-		$lang = @$_SESSION['filter_lang'] ?: @$project->lang;
+		$lang = @$project->lang;
 		$period_new_tasks = @$_SESSION['filter_period_new_tasks'];
 		$columns_list = @$_SESSION['filter_columns_list'];
 		
@@ -461,6 +461,8 @@ if (empty($lang))
 
 if(@$_GET['lang'] != '')
 	$lang = @$_GET['lang'];
+
+$_SESSION['filter_lang'] = $lang;
 
 if(@$lang == 'HE'){
    $dir = 'rtl';
@@ -1134,7 +1136,7 @@ include 'menu_tasks.php';
 										</div>
 									</div> |
 									<div class="btn-group btn-group-toggle width70" data-toggle="buttons">
-										<div class="btn-group btn-group-toggle" data-toggle="buttons">
+										<div class="btn-group btn-group-toggle" data-toggle="buttons" style="direction:ltr">
 											<label class="btn btn-primary fontSize9 borderRadius10 height20 active">
 												<input type="radio" name="options" id="option1" autocomplete="off" checked> FULL
 											</label>
@@ -1495,7 +1497,8 @@ include 'menu_tasks.php';
 											$query->store_result();
 											$query = fetch_unique($query);
 											
-											$progress_status = @$query->name_he;
+											$progress_status_he = @$query->name_he;
+											$progress_status = $progress_status_he;
 											if(@$lang != 'HE')
 												$progress_status = @$query->name;
 											if(@$is_colors){
@@ -1698,8 +1701,7 @@ include 'menu_tasks.php';
 											if(@$is_colors && $destination_date < date('Y-m-d')) 
 											   $dest_date_color = 'color:red;';										   
 											
-											if(@$is_colors && $is_change_row_style){
-												if($progress_status == 'בוצע/נמסר'){ 
+											if(@$is_colors && $progress_status_he == 'בוצע/נמסר'){
 												   $subject_bgcolor = 'background-color:#dedede';
 												   $area_bgcolor = 'background-color:#dedede';
 												   $description_bgcolor = 'background-color:#dedede';
@@ -1710,12 +1712,11 @@ include 'menu_tasks.php';
 												   $dest_date_color = 'color:#dedede';
 												   $dest_date_bgcolor = 'background-color:#dedede';
 												   $progress_status_bgcolor = 'background-color:#dedede';
-												}
-												else if($task == 'בקרת איכות'){
+											}
+											elseif(@$is_colors && $is_change_row_style && $task == 'בקרת איכות'){
 												   $subject_bgcolor = 'background-color:#fafd49';
 												   $area_bgcolor = 'background-color:#fafd49';
 												   $description_bgcolor = 'background-color:#fafd49';
-												}
 											}										
           									
 											$end_new_tasks_date = '0000-00-00';
@@ -1786,7 +1787,7 @@ include 'menu_tasks.php';
 											<input type="hidden" id="action_date_remark_<?=@$meeting_id?>" value="<?=@$action_date_remark?>" />
 											<input type="hidden" id="hidden_remark_<?=@$meeting_id?>" value="<?=@$remark?>" />
 											
-											<tr id="row_<?=@$iteration?>">
+											<tr id="row_<?=@$iteration?>" class="meeting_<?=@$meeting_id?>">
 											    <td id="td_cbx_meetings_to_update_<?=@$meeting_id?>" class="alignCenter <?=@$border_cell_table_start?> <?=@$border_cell_cbx?>" style="<?=@$td_count_bgcolor?>">
 												    <input type="checkbox" id="meetings_to_update_cbx_<?=@$meeting_id?>" name="meetings_to_update_cbx[]" class="meetings_to_update_cbx" value="<?=@$meeting_id?>" />	
 												</td>
@@ -2265,7 +2266,8 @@ include 'menu_tasks.php';
 												$query->execute();
 												$query->store_result();
 												$query = fetch_unique($query);
-												$progress_status = @$query->name_he;
+												$progress_status_he = @$query->name_he;
+												$progress_status = $progress_status_he;
 												if($lang != 'HE')
 												   $progress_status = @$query->name;
 												if(@$is_colors) {
@@ -2285,8 +2287,7 @@ include 'menu_tasks.php';
 												if($is_colors && $destination_date < date('Y-m-d'))  
 												   $dest_date_color = 'color:red;';
 		
-												if($is_colors && $is_change_row_style) {
-													if($progress_status == 'בוצע/נמסר') {
+												if($is_colors && $progress_status_he == 'בוצע/נמסר') {
 													  $subject_bgcolor = 'background-color:#dedede';
 												  	  $area_bgcolor = 'background-color:#dedede';
 													  $description_bgcolor = 'background-color:#dedede';
@@ -2297,18 +2298,17 @@ include 'menu_tasks.php';
 													  $dest_date_color = 'color:#dedede';
 													  $dest_date_bgcolor = 'background-color:#dedede';
 													  $progress_status_bgcolor = 'background-color:#dedede';
-													}
-													else if($task == 'בקרת איכות') {
-														$subject_bgcolor = 'background-color:#fafd49';
-														$area_bgcolor = 'background-color:#fafd49';
-														$description_bgcolor = 'background-color:#fafd49';
-														$task_bgcolor = 'background-color:#fafd49';
-														$responsible_bgcolor = 'background-color:#fafd49';
-														$pass_on_bgcolor = 'background-color:#fafd49';
-														$task_creation_date_bgcolor = 'background-color:#fafd49';	
-														$dest_date_bgcolor = 'background-color:#fafd49';
-														$progress_status_bgcolor = 'background-color:#fafd49';
-													}
+												}
+												elseif($is_colors && $is_change_row_style && $task == 'בקרת איכות') {
+													$subject_bgcolor = 'background-color:#fafd49';
+													$area_bgcolor = 'background-color:#fafd49';
+													$description_bgcolor = 'background-color:#fafd49';
+													$task_bgcolor = 'background-color:#fafd49';
+													$responsible_bgcolor = 'background-color:#fafd49';
+													$pass_on_bgcolor = 'background-color:#fafd49';
+													$task_creation_date_bgcolor = 'background-color:#fafd49';
+													$dest_date_bgcolor = 'background-color:#fafd49';
+													$progress_status_bgcolor = 'background-color:#fafd49';
 												}
 			
 												$end_new_tasks_date = $end_updated_date = $task_creation_date;
@@ -2938,18 +2938,24 @@ include 'menu_tasks.php';
            </div>
 		</div>
 		
-		<div class="modal fade dir-rtl" id="modalContinuousTask" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal fade <?=(@$lang=='HE') ? 'dir-rtl' : ''?>" id="modalContinuousTask" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
 				<div class="modal-content">  
 					<div class="modal-body">	
 					    <div id="modalContent">
 					        <form class="alignCenter">
-						        <div class="marginTop15 fontSize18 alignCenter">בדרך ליצור עבורך משימת המשך לפני כן, תציין אם ברצונך לסמן סטטוס משימה כ:</div>
-							    <div class="marginTop15">
-									<input type="radio" id="done" name="progress_status" value="1" onclick="continuousTask($('#hidden_meeting_id').val(),'בוצע/נמסר',$('#hidden_iteration').val(),'fromMeetings')" />&nbsp;בוצע/נמסר
-							        <input type="radio" id="archive" name="progress_status" class="marginRight8" value="2" onclick="continuousTask($('#hidden_meeting_id').val(),'ארכיון',$('#hidden_iteration').val(),'fromMeetings')" />&nbsp;ארכיון
-							        <input type="radio" id="no_change" name="progress_status" class="marginRight8" value="3" onclick="continuousTask($('#hidden_meeting_id').val(),'no_change',$('#hidden_iteration').val(),'fromMeetings')" />&nbsp;ללא שינוי
-							    </div> 
+						        <div class="marginTop15 fontSize18 alignCenter"><?=(@$lang=='HE') ? 'בדרך ליצור עבורך משימת המשך לפני כן, תציין אם ברצונך לסמן סטטוס משימה כ:' : 'A continuation task will be created. Please select the status to apply to the current task:'?></div>
+							    <div class="marginTop15 d-flex justify-content-center" style="gap:20px;">
+									<label style="cursor:pointer">
+										<input type="radio" id="done" name="progress_status" value="1" onclick="continuousTask($('#hidden_meeting_id').val(),'בוצע/נמסר',$('#hidden_iteration').val(),'fromMeetings')" />&nbsp;<?=(@$lang=='HE') ? 'בוצע/נמסר' : 'Done/Delivered'?>
+									</label>
+									<label style="cursor:pointer">
+										<input type="radio" id="archive" name="progress_status" value="2" onclick="continuousTask($('#hidden_meeting_id').val(),'ארכיון',$('#hidden_iteration').val(),'fromMeetings')" />&nbsp;<?=(@$lang=='HE') ? 'ארכיון' : 'Archive'?>
+									</label>
+									<label style="cursor:pointer">
+										<input type="radio" id="no_change" name="progress_status" value="3" onclick="continuousTask($('#hidden_meeting_id').val(),'no_change',$('#hidden_iteration').val(),'fromMeetings')" />&nbsp;<?=(@$lang=='HE') ? 'ללא שינוי' : 'No change'?>
+									</label>
+							    </div>
 						    </form>
 					    </div>
 					</div>
@@ -3238,7 +3244,10 @@ $(document).ready(function(){
 	let container = $('.container');
 
 	if($('#row').val() != ''){
-		const element = document.getElementById($('#row').val());
+		const rowVal = $('#row').val();
+		const element = rowVal.startsWith('meeting_')
+			? document.querySelector('tr.' + rowVal)
+			: document.getElementById(rowVal);
 
 		if(element){
 			const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
@@ -3360,6 +3369,8 @@ $(document).ready(function(){
 	   localStorage.getItem("project_id") == "<?=$project_id?>"){
 	   project_id = localStorage.getItem("project_id");
 	   meeting_id = localStorage.getItem("meeting_id");
+	   if(!/^\d+$/.test(meeting_id)){ localStorage.removeItem('is_modal_task_actions_opened'); }
+	   else {
 	   iteration = localStorage.getItem("iteration");
 	   chapter = localStorage.getItem("chapter");
 	   subject = localStorage.getItem("subject");
@@ -3384,21 +3395,27 @@ $(document).ready(function(){
 			processData: false,
 			contentType: false,
 			success: function(data){
+				if(data.indexOf('|~|') === -1){
+					localStorage.removeItem('is_modal_task_actions_opened');
+					localStorage.removeItem('meeting_id');
+					return;
+				}
 				let task_details = data.split('|~|');
 				let content = fillContentTaskDetails(meeting_id,'',task_details,true);
 				$('#div_content_task_details').html(content);
 				setBellBcgColor(parseInt(task_details[22]) || 0);
+				setEmergencyTaskCSS(is_priority);
+				$('#modalContent').append("<input type='hidden' id='hidden_meeting_id' value='"+meeting_id+"'><input type='hidden' id='hidden_iteration' value='"+iteration+"'><input type='hidden' id='hidden_project_id' value='"+project_id+"'><input type='hidden' id='hidden_user_id' value='"+user_id+"'><input type='hidden' id='hidden_chapter' value='"+chapter+"'><input type='hidden' id='hidden_name' value='"+subject+"'><input type='hidden' id='hidden_area' value='"+area+"'><input type='hidden' id='hidden_recipient' value='"+recipient+"'><input type='hidden' id='hidden_responsible_id' value='"+responsible_id+"'><input type='hidden' id='hidden_is_priority' value='"+is_priority+"'><input type='hidden' id='hidden_remark' value='"+remark+"'><input type='hidden' id='hidden_track_responsible_id' value='"+track_responsible_id+"'><input type='hidden' id='hidden_track_type' value='"+track_type+"'><input type='hidden' id='hidden_reminder_date' value='"+reminder_date+"'><input type='hidden' id='hidden_reminder_time' value='"+reminder_time+"'>");
+				$('#modalTaskFollowupActions').modal('show');
+				setTimeout(function(){
+				    let $row = $('#meetings_table tr.meeting_' + meeting_id);
+				    if ($row.length) $row[0].scrollIntoView({block: 'center'});
+				}, 400);
 			},
 	   });
-	   setEmergencyTaskCSS(is_priority);
-	   $('#modalContent').append("<input type='hidden' id='hidden_meeting_id' value='"+meeting_id+"'><input type='hidden' id='hidden_iteration' value='"+iteration+"'><input type='hidden' id='hidden_project_id' value='"+project_id+"'><input type='hidden' id='hidden_user_id' value='"+user_id+"'><input type='hidden' id='hidden_chapter' value='"+chapter+"'><input type='hidden' id='hidden_name' value='"+subject+"'><input type='hidden' id='hidden_area' value='"+area+"'><input type='hidden' id='hidden_recipient' value='"+recipient+"'><input type='hidden' id='hidden_responsible_id' value='"+responsible_id+"'><input type='hidden' id='hidden_is_priority' value='"+is_priority+"'><input type='hidden' id='hidden_remark' value='"+remark+"'><input type='hidden' id='hidden_track_responsible_id' value='"+track_responsible_id+"'><input type='hidden' id='hidden_track_type' value='"+track_type+"'><input type='hidden' id='hidden_reminder_date' value='"+reminder_date+"'><input type='hidden' id='hidden_reminder_time' value='"+reminder_time+"'>");
-	   $('#modalTaskFollowupActions').modal('show');
-	   setTimeout(function(){
-	       let $row = $('#meetings_table tr.meeting_' + meeting_id);
-	       if ($row.length) $row[0].scrollIntoView({block: 'center'});
-	   }, 400);
+	   } // end else (valid meeting_id)
 	}
-	
+
 	if(localStorage.getItem("is_modal_tasks_hystory_opened")){
 		meeting_id = localStorage.getItem("meeting_id");
 		iteration = localStorage.getItem("iteration");
@@ -3447,8 +3464,11 @@ $(document).ready(function(){
 	}
 
 	$("#select_lang").change(function(){
-        setReportData('lang');		
-    });	
+		let lang = $(this).val();
+		let url = new URL(window.location.href);
+		url.searchParams.set('lang', lang);
+		window.location.href = url.toString();
+	});
 	
 	$('[id="table_view_btn"]').on('click', function(){
 	   let id_report = $(this).data('reportid');
@@ -3771,6 +3791,7 @@ $(document).ready(function(){
 	
 	$('[id="continuous_btn"]').on('click', function(){
 		$('#modalTaskFollowupActions').one('hidden.bs.modal', function(){
+			$('[name="progress_status"]').prop('checked', false).prop('disabled', false);
 			$('#modalContinuousTask').modal('show');
 		});
 		$('#modalTaskFollowupActions').modal('hide');
