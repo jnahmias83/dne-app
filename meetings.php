@@ -4755,6 +4755,7 @@ td[id^="td_area_"] > div {
 
 span.sf-hl {
     font-weight: bold;
+    font-style: italic;
     display: contents;
 }
 </style>
