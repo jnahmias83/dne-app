@@ -1591,7 +1591,7 @@ include 'menu_tasks.php';
 																  . "<span class='badge-circle' style='display:inline-flex;background-color:#333;width:15px;height:15px;font-size:8px;vertical-align:middle;'>".$track_initials."</span>"
 																  . " <span class='colorGrey dir-rtl unicode-bidi-embed' style='vertical-align:middle;'>".smartDate(@$item->action_date, $lang)."</span>"
 																  . " : <span class='colorRed dir-rtl unicode-bidi-embed display-inline-block'>".html_entity_decode(@$item->remark)."</span>"
-																  . "<span class='marginRight5 colorRed dir-rtl unicode-bidi-embed display-inline-block'>".@$tracking_data."</span>"
+																  . "<span class='".(@$lang == 'EN' ? 'marginLeft5' : 'marginRight5')." colorRed dir-rtl unicode-bidi-embed display-inline-block'>".@$tracking_data."</span>"
 																  . "</div>";
 												}
 											}											
@@ -2158,7 +2158,7 @@ include 'menu_tasks.php';
 																	  . "<span class='badge-circle' style='display:inline-flex;background-color:#333;width:15px;height:15px;font-size:8px;vertical-align:middle;'>".$track_initials2."</span>"
 																	  . " <span class='colorGrey dir-rtl unicode-bidi-embed' style='vertical-align:middle;'>".smartDate(@$item->action_date, $lang)."</span>"
 																	  . " : <span class='colorRed dir-rtl unicode-bidi-embed display-inline-block'>".html_entity_decode(@$item->remark)."</span>"
-																	  . "<span class='marginRight5 colorRed dir-rtl unicode-bidi-embed display-inline-block'>".@$tracking_data."</span>"
+																	  . "<span class='".(@$lang == 'EN' ? 'marginLeft5' : 'marginRight5')." colorRed dir-rtl unicode-bidi-embed display-inline-block'>".@$tracking_data."</span>"
 																	  . "</div>";
 													}
 												}																	
