@@ -1579,25 +1579,21 @@ include 'menu_tasks.php';
 											if($reminder_date != '0000-00-00')
 												$tracking_data .= smartDate($reminder_date, $lang);
 
-											if(@$track_responsible_name != '')
-												$tracking_data .= ','.@$track_responsible_name;
-
 											if($reminder_date != '0000-00-00' || @$track_responsible_name != '')
 												$tracking_data .= ')';
 
                                             $dir_log_meeting_tracking = 'alignRight';
 												if(@$item->lang == 'EN')
-													$dir_log_meeting_tracking = 'alignLeft';											
+													$dir_log_meeting_tracking = 'alignLeft';
 
                                             foreach($log_meeting_tracking as $item){
-												$remark = @$item->remark;	
+												$remark = @$item->remark;
 												$action_date = @$item->action_date;
-											    
+
 												if(@$track_type && @$remark != ''){
 													$track_initials = mb_strtoupper(mb_substr(@$item->user_nickname, 0, 2, 'UTF-8'));
 													$description .= "<div id='div-tracking-remarks-'".@$meeting_id."' class='marginTop5 display-block ".@$dir_log_meeting_tracking."' style='line-height:1.8;'>"
 																  . "<span class='badge-circle' style='display:inline-flex;background-color:#333;width:15px;height:15px;font-size:8px;vertical-align:middle;'>".$track_initials."</span>"
-																  . " <span class='colorGrey dir-rtl unicode-bidi-embed' style='vertical-align:middle;'>".@$item->user_nickname."</span>"
 																  . " <span class='colorGrey dir-rtl unicode-bidi-embed' style='vertical-align:middle;'>".smartDate(@$item->action_date, $lang)."</span>"
 																  . " : <span class='colorRed dir-rtl unicode-bidi-embed display-inline-block'>".html_entity_decode(@$item->remark)."</span>"
 																  . "<span class='marginRight5 colorRed dir-rtl unicode-bidi-embed display-inline-block'>".@$tracking_data."</span>"
@@ -2154,9 +2150,6 @@ include 'menu_tasks.php';
 												if($reminder_date != '0000-00-00')
 													$tracking_data .= smartDate($reminder_date, $lang);
 
-												if(@$track_responsible_name != '')
-													$tracking_data .= ','.@$track_responsible_name;
-
 												if($reminder_date != '0000-00-00' || @$track_responsible_name != '')
 													$tracking_data .= ')';
 
@@ -2172,7 +2165,6 @@ include 'menu_tasks.php';
 														$track_initials2 = mb_strtoupper(mb_substr(@$item->user_nickname, 0, 2, 'UTF-8'));
 														$description .= "<div id='div-tracking-remarks-'".@$meeting_id."' class='marginTop5 display-block ".@$dir_log_meeting_tracking."' style='line-height:1.8;'>"
 																	  . "<span class='badge-circle' style='display:inline-flex;background-color:#333;width:15px;height:15px;font-size:8px;vertical-align:middle;'>".$track_initials2."</span>"
-																	  . " <span class='colorGrey dir-rtl unicode-bidi-embed' style='vertical-align:middle;'>".@$item->user_nickname."</span>"
 																	  . " <span class='colorGrey dir-rtl unicode-bidi-embed' style='vertical-align:middle;'>".smartDate(@$item->action_date, $lang)."</span>"
 																	  . " : <span class='colorRed dir-rtl unicode-bidi-embed display-inline-block'>".html_entity_decode(@$item->remark)."</span>"
 																	  . "<span class='marginRight5 colorRed dir-rtl unicode-bidi-embed display-inline-block'>".@$tracking_data."</span>"
