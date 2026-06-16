@@ -1551,10 +1551,10 @@ include 'menu_tasks.php';
 																		."</span>";
 													}
 													
-													$description .=  " : "	
-																	."<span style='direction:".@$dir.";unicode-bidi:embed;'>"
+													$description .=  " : "
+																	."<span style='direction:".@$dir.";unicode-bidi:embed;white-space:nowrap;'>"
 																	.html_entity_decode(@$remark)
-																	."</span>"	
+																	."</span>"
 																	."</div>";
 												}
 											}
@@ -1589,9 +1589,9 @@ include 'menu_tasks.php';
 													$track_initials = mb_strtoupper(mb_substr(@$item->user_nickname, 0, 2, 'UTF-8'));
 													$description .= "<div id='div-tracking-remarks-'".@$meeting_id."' class='marginTop5 display-block ".@$dir_log_meeting_tracking."' style='line-height:1.8;'>"
 																  . "<span class='badge-circle' style='display:inline-flex;background-color:#333;width:15px;height:15px;font-size:8px;vertical-align:middle;'>".$track_initials."</span>"
-																  . " <span class='colorGrey dir-rtl unicode-bidi-embed' style='vertical-align:middle;'>".smartDate(@$item->action_date, $lang)."</span>"
-																  . " : <span class='colorRed dir-rtl unicode-bidi-embed display-inline-block'>".html_entity_decode(@$item->remark)."</span>"
-																  . "<span class='".(@$lang == 'EN' ? 'marginLeft5' : 'marginRight5')." colorRed dir-rtl unicode-bidi-embed display-inline-block'>".@$tracking_data."</span>"
+																  . " <span class='colorGrey dir-rtl unicode-bidi-embed' style='vertical-align:top;'>".smartDate(@$item->action_date, $lang)."</span>"
+																  . " : <span class='colorRed dir-rtl unicode-bidi-embed'>".html_entity_decode(@$item->remark)."</span>"
+																  . (@$tracking_data != '' ? " <span class='colorRed dir-rtl unicode-bidi-embed'>".@$tracking_data."</span>" : "")
 																  . "</div>";
 												}
 											}											
@@ -2156,9 +2156,9 @@ include 'menu_tasks.php';
 														$track_initials2 = mb_strtoupper(mb_substr(@$item->user_nickname, 0, 2, 'UTF-8'));
 														$description .= "<div id='div-tracking-remarks-'".@$meeting_id."' class='marginTop5 display-block ".@$dir_log_meeting_tracking."' style='line-height:1.8;'>"
 																	  . "<span class='badge-circle' style='display:inline-flex;background-color:#333;width:15px;height:15px;font-size:8px;vertical-align:middle;'>".$track_initials2."</span>"
-																	  . " <span class='colorGrey dir-rtl unicode-bidi-embed' style='vertical-align:middle;'>".smartDate(@$item->action_date, $lang)."</span>"
-																	  . " : <span class='colorRed dir-rtl unicode-bidi-embed display-inline-block'>".html_entity_decode(@$item->remark)."</span>"
-																	  . "<span class='".(@$lang == 'EN' ? 'marginLeft5' : 'marginRight5')." colorRed dir-rtl unicode-bidi-embed display-inline-block'>".@$tracking_data."</span>"
+																	  . " <span class='colorGrey dir-rtl unicode-bidi-embed' style='vertical-align:top;'>".smartDate(@$item->action_date, $lang)."</span>"
+																	  . " : <span class='colorRed dir-rtl unicode-bidi-embed'>".html_entity_decode(@$item->remark)."</span>"
+																	  . (@$tracking_data != '' ? " <span class='colorRed dir-rtl unicode-bidi-embed'>".@$tracking_data."</span>" : "")
 																	  . "</div>";
 													}
 												}																	
