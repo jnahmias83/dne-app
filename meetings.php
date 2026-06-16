@@ -1573,14 +1573,9 @@ include 'menu_tasks.php';
 											$query->store_result();	
 											$log_meeting_tracking = fetch($query);
 
-											if($reminder_date != '0000-00-00' || @$track_responsible_name != '')
-												$tracking_data = '(';
-											
+											$tracking_data = '';
 											if($reminder_date != '0000-00-00')
-												$tracking_data .= smartDate($reminder_date, $lang);
-
-											if($reminder_date != '0000-00-00' || @$track_responsible_name != '')
-												$tracking_data .= ')';
+												$tracking_data = '('.smartDate($reminder_date, $lang).')';
 
                                             $dir_log_meeting_tracking = 'alignRight';
 												if(@$item->lang == 'EN')
@@ -2144,14 +2139,10 @@ include 'menu_tasks.php';
 												$query->store_result();	
 												$log_meeting_tracking = fetch($query);	
 												
-												if($reminder_date != '0000-00-00' || @$track_responsible_name != '')
-													$tracking_data = '(';
+												$tracking_data = '';
 											    
 												if($reminder_date != '0000-00-00')
-													$tracking_data .= smartDate($reminder_date, $lang);
-
-												if($reminder_date != '0000-00-00' || @$track_responsible_name != '')
-													$tracking_data .= ')';
+													$tracking_data = '('.smartDate($reminder_date, $lang).')';
 
                                                 $dir_log_meeting_tracking = 'alignRight paddingRight10';
 												if(@$item->lang == 'EN')
