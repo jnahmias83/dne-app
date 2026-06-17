@@ -822,6 +822,7 @@ include 'menu_tasks.php';
 				<input type="hidden" id="destination_date_end" name="destination_date_end" value="<?=@$destination_date_end?>" />
 				<input type="hidden" id="columns_list" name="columns_list" value="<?=@$columns_list?>" />
 				<input type="hidden" id="lang" name="lang" value="<?=@$lang?>" />
+				<input type="hidden" id="project_lang" value="<?=!empty(@$project->lang)?@$project->lang:'HE'?>" />
 				<input type="hidden" id="is_images" name="is_images" value="<?=@$is_images?>" />
 				<input type="hidden" id="is_colors" name="is_colors" value="<?=@$is_colors?>" />
 				<input type="hidden" id="sql" name="sql" value="<?=@$sql?>" />
@@ -3872,11 +3873,11 @@ $(document).ready(function(){
         form_data.append('id_meeting',meeting_id);
 		form_data.append('id_project',project_id);
 		form_data.append('is_updates',1);
-		form_data.append('lang',$('#lang').val());
-		
-		if($('#lang').val() == "HE")
+		form_data.append('lang',$('#project_lang').val());
+
+		if($('#project_lang').val() == "HE")
 			$('.modal-title').html("<img src='images/status-icon.png' alt='status icon' width='20' height='20'>&nbsp;&nbsp;עדכון&nbsp;&nbsp;<img src='images/status-icon.png' alt='status icon' width='20' height='20'>");
-        else 
+        else
 		    $('.modal-title').html("Update");
         
         $('.subtitle').html(chapter+"<br/>"+subject+"&nbsp;|&nbsp;"+area).css('line-height','1.1em');		
