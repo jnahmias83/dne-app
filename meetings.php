@@ -2976,7 +2976,8 @@ include 'menu_tasks.php';
             </div>
 		</div>
 		
-		<div class="modal fade" id="modalUpdateTask" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<?php $_pl = @$project->lang; $_pd = ($_pl=='HE') ? 'rtl' : 'ltr'; ?>
+		<div class="modal fade <?=($_pl=='HE') ? 'dir-rtl' : ''?>" id="modalUpdateTask" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
 				<div class="modal-content">  
 					<div class="modal-header">
@@ -2986,14 +2987,14 @@ include 'menu_tasks.php';
 					<div class="modal-body">
                         <form action="" method="post">
                             <div class='marginTop5 subtitle color-349feb fontSize18 font-weight-bold alignCenter'></div>
-							<div class="row marginTop10" style="direction:<?=@$dir?>">
-								<div class="col-12 fontSize13 alignCenter">	
-									<strong><?=@$progress_status_popup_label?>:</strong>
-									<select id="progress_status_update" class="<?=@$margin_all_label?>" style="direction:<?=@$dir?>">
-										<option value="0">--<?=@$status_label?>--</option>
-										<?php 
-											foreach($progress_status_s as $item){ 
-												if(@$lang == "HE"){
+							<div class="row marginTop10" style="direction:<?=$_pd?>">
+								<div class="col-12 fontSize13 alignCenter">
+									<strong><?=($_pl=='HE') ? 'סטטוס חדש' : 'New Status'?>:</strong>
+									<select id="progress_status_update" class="<?=($_pl=='HE') ? 'marginRight5' : 'marginLeft5'?>" style="direction:<?=$_pd?>">
+										<option value="0">--<?=($_pl=='HE') ? 'סטטוס' : 'Status'?>--</option>
+										<?php
+											foreach($progress_status_s as $item){
+												if($_pl == "HE"){
 													if(@$item->name_he == ' ')
 														$progress_status_name_for_update = '(ללא)';
 													else 
@@ -3018,17 +3019,17 @@ include 'menu_tasks.php';
 								</div>
 							</div>
                             <hr class="colorGrey mb-1 mt-1"/>							
-							<div id="task_active_remarks_progress_status_update" style="direction:<?=@$dir?>"></div>					   		
-							<div class="marginTop10 <?=@$padding_10?> <?=@$align?> height-auto bgColorWhite fontSize13 cursor-pointer border-black overflow-y-scroll" style="direction:<?=@$dir?>">
-								<div name="remark_changes_status_update" id="remark_changes_status_update" contenteditable="true" class="editable green cursor-pointer" data-placeholder="<?=@$new_update_label?>"></div>
+							<div id="task_active_remarks_progress_status_update" style="direction:<?=$_pd?>"></div>
+							<div class="marginTop10 <?=($_pl=='HE') ? 'paddingRight10' : 'paddingLeft10'?> <?=($_pl=='HE') ? 'alignRight' : 'alignLeft'?> height-auto bgColorWhite fontSize13 cursor-pointer border-black overflow-y-scroll" style="direction:<?=$_pd?>">
+								<div name="remark_changes_status_update" id="remark_changes_status_update" contenteditable="true" class="editable green cursor-pointer" data-placeholder="<?=($_pl=='HE') ? 'ניתן להוסיף כאן הערה' : 'You can add a comment here'?>"></div>
 							</div>
-                            <div class="marginTop5 fontSize13 font-weight-bold alignCenter" style="direction:<?=@$dir?>"><?=@$target_date_popup_label?></div>							
-							<div class="marginTop5 fontSize13 alignCenter" style="direction:<?=@$dir?>">
+                            <div class="marginTop5 fontSize13 font-weight-bold alignCenter" style="direction:<?=$_pd?>"><?=($_pl=='HE') ? 'תאריך יעד' : 'Target Date'?></div>
+							<div class="marginTop5 fontSize13 alignCenter" style="direction:<?=$_pd?>">
 								<input type="date" id="new_destination_date_update" class="alignCenter" />
 							</div>
-							<div class="marginTop15 marginBottom10 alignCenter" style="direction:<?=@$dir?>">
-							   	<input type="button" id="save_update_task_btn" class="btn btn-primary text-white font-weight-bold <?=@$margin_btns_popup?>" value="<?=@$save_remarks_label?>" style="padding:.375rem .75rem!important;" />
-							    <input type="button" class="btn bg-dark text-white font-weight-bold" value="<?=@$cancel_label?>" style="padding:.375rem .75rem!important;" onclick="hidePopup('modalUpdateTask',$('#hidden_iteration').val(),$('#hidden_meeting_id').val(),'fromMeetings')" />
+							<div class="marginTop15 marginBottom10 alignCenter" style="direction:<?=$_pd?>">
+							   	<input type="button" id="save_update_task_btn" class="btn btn-primary text-white font-weight-bold <?=($_pl=='HE') ? 'marginLeft10' : 'marginRight10'?>" value="<?=($_pl=='HE') ? 'שמור' : 'Save'?>" style="padding:.375rem .75rem!important;" />
+							    <input type="button" class="btn bg-dark text-white font-weight-bold" value="<?=($_pl=='HE') ? 'בטל' : 'Cancel'?>" style="padding:.375rem .75rem!important;" onclick="hidePopup('modalUpdateTask',$('#hidden_iteration').val(),$('#hidden_meeting_id').val(),'fromMeetings')" />
 							</div>
 						</form>
 					</div>
