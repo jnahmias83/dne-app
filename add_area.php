@@ -17,7 +17,9 @@ $query->execute();
 $query->store_result();
 $project = fetch_unique($query);   
 
-if($_SESSION['lang'] == 'EN') {
+$page_lang = !empty($project->lang) ? $project->lang : @$_SESSION['lang'];
+
+if($page_lang == 'EN') {
   $dir = 'dir-ltr';
   $add_area_label = 'Add area to the project';
   $name_label = "Name";
@@ -26,7 +28,7 @@ if($_SESSION['lang'] == 'EN') {
   $alert_mandatory_fields = 'Please fill all the mandatory fields.';
 }
 
-if($_SESSION['lang'] == 'FR') {
+if($page_lang == 'FR') {
    $dir = 'dir-ltr';
    $add_area_label = 'Ajouter une région au projet';
    $name_label = "Nom";
@@ -35,7 +37,7 @@ if($_SESSION['lang'] == 'FR') {
    $alert_mandatory_fields = 'Merci de remplir tous les champs obligatoirs.';
 }
 
-if($_SESSION['lang'] == 'HE') {
+if($page_lang == 'HE' || $page_lang == '') {
    $dir = 'dir-rtl';
    $add_area_label = 'הוסף איזור לפרוייקט';
    $name_label = "שם";

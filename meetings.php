@@ -131,8 +131,12 @@ if($id_custom_report > 0){
 			$sql = @$custom_report->sql_str;
 			$is_images = @$custom_report->is_images;
 			$is_colors = @$custom_report->is_colors;
-			$lang = @$project->lang;
+			$cr_lang = @$custom_report->lang;
+			if ($cr_lang === 'EN' || $cr_lang === '1') $lang = 'EN';
+			elseif ($cr_lang === 'HE' || $cr_lang === '0') $lang = 'HE';
+			else $lang = !empty(@$project->lang) ? @$project->lang : 'HE';
 			$_SESSION['lang'] = $lang;
+			$_SESSION['project_lang'] = @$project->lang;
 			
 			if($lang == 'HE') 
 			   $project_name = '<span class="fontSize26 font-weight-bold font-family-david">פרוייקט '.htmlspecialchars($project->name_he).'</span>';
@@ -167,8 +171,12 @@ if($id_custom_report > 0){
 			$sql = @$_SESSION['filter_sql'];
 			$is_images = @$_SESSION['filter_is_images'];
 			$is_colors = @$_SESSION['filter_is_colors'];
-			$lang = @$project->lang;
+			$cr_lang = @$custom_report->lang;
+			if ($cr_lang === 'EN' || $cr_lang === '1') $lang = 'EN';
+			elseif ($cr_lang === 'HE' || $cr_lang === '0') $lang = 'HE';
+			else $lang = !empty(@$project->lang) ? @$project->lang : 'HE';
 			$_SESSION['lang'] = $lang;
+			$_SESSION['project_lang'] = @$project->lang;
 			
 			if($lang == 'HE') 
 			    $project_name = '<span class="fontSize26 font-weight-bold font-family-david">פרוייקט '.htmlspecialchars($project->name_he).'</span>';
@@ -360,7 +368,7 @@ else if($id_rdv_report > 0){
 		$sql = @$_SESSION['filter_sql'];
 		$is_images = @$_SESSION['filter_is_images'];
 		$is_colors = @$_SESSION['filter_is_colors'];
-		$lang = @$project->lang;
+		$lang = !empty($rdv_lang) ? $rdv_lang : @$project->lang;
 		$period_new_tasks = @$_SESSION['filter_period_new_tasks'];
 		$columns_list = @$_SESSION['filter_columns_list'];
 		
@@ -445,7 +453,8 @@ else if($id_rdv_report > 0){
     $report_type = 'resumeRdv_'.$id_rdv_report;
 	
 	$_SESSION['lang'] = $lang;
-	
+	$_SESSION['project_lang'] = @$project->lang;
+
 	if($lang == 'HE')
 	   $project_name = '<span class="fontSize26 font-weight-bold font-family-david">פרוייקט '.htmlspecialchars($project->name_he).'</span><br/><span class="fontSize26 color-349feb font-family-david font-weight-bold">ישיבת '.htmlspecialchars($meeting_name_he).'</span>';
     else
@@ -459,7 +468,7 @@ $columns_list_array = explode(',',@$columns_list);
 if (empty($lang))
 	$lang = @$project->lang;
 
-if(@$_GET['lang'] != '')
+if(@$_GET['lang'] != '' && $id_custom_report <= 0 && $id_rdv_report <= 0)
 	$lang = @$_GET['lang'];
 
 $_SESSION['filter_lang'] = $lang;
@@ -1343,10 +1352,19 @@ include 'menu_tasks.php';
 											}
 								
 											if(!empty($parts)){
+												if ((in_array('t.name_he', $parts) || in_array('t.name', $parts))
+													&& strpos($sql, 'dne_tasks t') === false)
+													$sql = preg_replace('/\bWHERE\b/', 'LEFT JOIN dne_tasks t ON m.id_task = t.id WHERE', $sql, 1);
+												if ((in_array('ps.name_he', $parts) || in_array('ps.name', $parts))
+													&& strpos($sql, 'dne_progress_status ps') === false)
+													$sql = preg_replace('/\bWHERE\b/', 'LEFT JOIN dne_progress_status ps ON m.id_progress_status = ps.id WHERE', $sql, 1);
+												if (in_array('r.name', $parts)
+													&& strpos($sql, 'dne_responsibles r') === false)
+													$sql = preg_replace('/\bWHERE\b/', 'LEFT JOIN dne_responsibles r ON m.id_responsible = r.id WHERE', $sql, 1);
 												$sql .= $order_part.implode(',',$parts);
 											}
-										}								
-										
+										}
+
 										$query = $mysqli->prepare($sql);
 										$query->execute();
 										$query->store_result();
@@ -1367,9 +1385,11 @@ include 'menu_tasks.php';
 												m.image2 AS image2,m.is_appears_img2 AS is_appears_img2,m.image2_width AS image2_width,m.image2_height AS image2_height,
 												m.updated_date AS updated_date,m.id_track_responsible AS id_track_responsible,m.track_type AS track_type, 
 												m.reminder_time AS reminder_time
-												FROM dne_meetings m 
+												FROM dne_meetings m
 												LEFT JOIN dne_tasks t ON m.id_task = t.id
-												WHERE m.id_project = ? 
+												LEFT JOIN dne_progress_status ps ON m.id_progress_status = ps.id
+												LEFT JOIN dne_responsibles r ON m.id_responsible = r.id
+												WHERE m.id_project = ?
 												AND m.id_chapter = ? 
 												AND m.is_appears = ? 
 												AND FIND_IN_SET(?, m.ids_rdv) > 0
@@ -1784,7 +1804,7 @@ include 'menu_tasks.php';
 												</td>
 												<td id="td_count_<?=@$meeting_id?>" class="alignCenter <?=@$border_cell_number?>" style="<?=@$td_count_bgcolor?>">
 													<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;height:100%;width:100%;">
-														<a id="task_actions_<?=@$meeting_id?>" data-projectid="<?=@$project_id?>" data-lang="<?=@$lang?>" data-meetingid="<?=@$meeting_id?>" data-iteration=<?=@$iteration?> data-userid="<?=@$user_id?>" data-ispriority="<?=@$is_priority?>" data-remark="<?=@$remark?>" data-chapter="<?=@$chapter_name?>" data-name="<?=@$subject?>" data-area="<?=@$area?>" data-recipient="<?=@$responsible_email?>" data-responsibleid="<?=@$responsible_id?>" data-destinationdate="<?=@$destination_date?>" data-progresstatusid="<?=@$progress_status_id?>" data-trackresponsibleid="<?=@$id_track_responsible?>" data-tracktype="<?=@$track_type?>" data-reminderdate="<?=@$reminder_date?>" data-remindertime="<?=@$reminder_time?>" class="text-decoration-none cursor-pointer fontSize12 padding-7x-3y font-weight-bold borderRadius10" style="<?=@$num_bgcolor?>!important;<?=@$num_border_color?>;display:inline-block;"><?=@$count?></a><?php if(@$track_type && @$track_responsible_name != ''): ?><span class="badge-circle" style="background-color:#e53935;width:18px;height:18px;font-size:9px;display:inline-flex;box-shadow:none;" title="<?=htmlspecialchars(@$track_responsible_name)?>"><?=mb_strtoupper(mb_substr(@$track_responsible_name, 0, 2, 'UTF-8'))?></span><?php endif; ?>
+														<a id="task_actions_<?=@$meeting_id?>" data-projectid="<?=@$project_id?>" data-lang="<?=@$project->lang?>" data-meetingid="<?=@$meeting_id?>" data-iteration=<?=@$iteration?> data-userid="<?=@$user_id?>" data-ispriority="<?=@$is_priority?>" data-remark="<?=@$remark?>" data-chapter="<?=@$chapter_name?>" data-name="<?=@$subject?>" data-area="<?=@$area?>" data-recipient="<?=@$responsible_email?>" data-responsibleid="<?=@$responsible_id?>" data-destinationdate="<?=@$destination_date?>" data-progresstatusid="<?=@$progress_status_id?>" data-trackresponsibleid="<?=@$id_track_responsible?>" data-tracktype="<?=@$track_type?>" data-reminderdate="<?=@$reminder_date?>" data-remindertime="<?=@$reminder_time?>" class="text-decoration-none cursor-pointer fontSize12 padding-7x-3y font-weight-bold borderRadius10" style="<?=@$num_bgcolor?>!important;<?=@$num_border_color?>;display:inline-block;"><?=@$count?></a><?php if(@$track_type && @$track_responsible_name != ''): ?><span class="badge-circle" style="background-color:#e53935;width:18px;height:18px;font-size:9px;display:inline-flex;box-shadow:none;" title="<?=htmlspecialchars(@$track_responsible_name)?>"><?=mb_strtoupper(mb_substr(@$track_responsible_name, 0, 2, 'UTF-8'))?></span><?php endif; ?>
 													</div>
 												</td>
 												
@@ -2921,22 +2941,22 @@ include 'menu_tasks.php';
            </div>
 		</div>
 		
-		<div class="modal fade <?=(@$lang=='HE') ? 'dir-rtl' : ''?>" id="modalContinuousTask" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal fade <?=(@$project->lang=='HE') ? 'dir-rtl' : ''?>" id="modalContinuousTask" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
 				<div class="modal-content">  
 					<div class="modal-body">	
 					    <div id="modalContent">
 					        <form class="alignCenter">
-						        <div class="marginTop15 fontSize18 alignCenter"><?=(@$lang=='HE') ? 'בדרך ליצור עבורך משימת המשך לפני כן, תציין אם ברצונך לסמן סטטוס משימה כ:' : 'A continuation task will be created. Please select the status to apply to the current task:'?></div>
+						        <div class="marginTop15 fontSize18 alignCenter"><?=(@$project->lang=='HE') ? 'בדרך ליצור עבורך משימת המשך לפני כן, תציין אם ברצונך לסמן סטטוס משימה כ:' : 'A continuation task will be created. Please select the status to apply to the current task:'?></div>
 							    <div class="marginTop15 d-flex justify-content-center" style="gap:20px;">
 									<label style="cursor:pointer">
-										<input type="radio" id="done" name="progress_status" value="1" onclick="continuousTask($('#hidden_meeting_id').val(),'בוצע/נמסר',$('#hidden_iteration').val(),'fromMeetings')" />&nbsp;<?=(@$lang=='HE') ? 'בוצע/נמסר' : 'Done/Delivered'?>
+										<input type="radio" id="done" name="progress_status" value="1" onclick="continuousTask($('#hidden_meeting_id').val(),'בוצע/נמסר',$('#hidden_iteration').val(),'fromMeetings')" />&nbsp;<?=(@$project->lang=='HE') ? 'בוצע/נמסר' : 'Done/Delivered'?>
 									</label>
 									<label style="cursor:pointer">
-										<input type="radio" id="archive" name="progress_status" value="2" onclick="continuousTask($('#hidden_meeting_id').val(),'ארכיון',$('#hidden_iteration').val(),'fromMeetings')" />&nbsp;<?=(@$lang=='HE') ? 'ארכיון' : 'Archive'?>
+										<input type="radio" id="archive" name="progress_status" value="2" onclick="continuousTask($('#hidden_meeting_id').val(),'ארכיון',$('#hidden_iteration').val(),'fromMeetings')" />&nbsp;<?=(@$project->lang=='HE') ? 'ארכיון' : 'Archive'?>
 									</label>
 									<label style="cursor:pointer">
-										<input type="radio" id="no_change" name="progress_status" value="3" onclick="continuousTask($('#hidden_meeting_id').val(),'no_change',$('#hidden_iteration').val(),'fromMeetings')" />&nbsp;<?=(@$lang=='HE') ? 'ללא שינוי' : 'No change'?>
+										<input type="radio" id="no_change" name="progress_status" value="3" onclick="continuousTask($('#hidden_meeting_id').val(),'no_change',$('#hidden_iteration').val(),'fromMeetings')" />&nbsp;<?=(@$project->lang=='HE') ? 'ללא שינוי' : 'No change'?>
 									</label>
 							    </div>
 						    </form>
@@ -3236,13 +3256,15 @@ $(document).ready(function(){
 
 		if(element){
 			const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+			const targetY = elementPosition - 100;
 
 			window.scrollTo({
-				top: elementPosition - 100,
+				top: targetY,
 				behavior: 'instant'
 			});
 
 			element.classList.add('row-darken');
+			localStorage.setItem('scroll_Y_<?=$project_id?>', Math.round(targetY));
 		}
 	}
 	else {   
@@ -3344,10 +3366,18 @@ $(document).ready(function(){
 		}
     });
 	
+	$('#modalTaskFollowupActions').on('shown.bs.modal', function(){
+		_taskModalFullyShown = true;
+	});
+
 	$('#modalTaskFollowupActions').on('hidden.bs.modal', function (){
+		_taskModalFullyShown = false;
 		localStorage.removeItem('is_modal_task_actions_opened');
-		let $row = $('#meetings_table tr.meeting_' + meeting_id);
-		if ($row.length) $row[0].scrollIntoView({block: 'center'});
+		if(!_suppressScrollOnHide){
+			let $row = $('#meetings_table tr.meeting_' + meeting_id);
+			if ($row.length) $row[0].scrollIntoView({block: 'center'});
+		}
+		_suppressScrollOnHide = false;
     });
 
 	if(localStorage.getItem("is_modal_task_actions_opened") === "true" &&
@@ -3452,6 +3482,24 @@ $(document).ready(function(){
 		let lang = $(this).val();
 		let url = new URL(window.location.href);
 		url.searchParams.set('lang', lang);
+		let meetingClass = null;
+
+		let $tr = $('tr.row-darken');
+		if ($tr.length) {
+			meetingClass = $tr.attr('class').split(' ').find(c => c.startsWith('meeting_'));
+		}
+
+		if (!meetingClass) {
+			$('tr[class*="meeting_"]').each(function() {
+				const rect = this.getBoundingClientRect();
+				if (rect.top >= 0 && rect.top < window.innerHeight) {
+					meetingClass = $(this).attr('class').split(' ').find(c => c.startsWith('meeting_'));
+					return false;
+				}
+			});
+		}
+
+		if (meetingClass) url.searchParams.set('row', meetingClass);
 		window.location.href = url.toString();
 	});
 	
@@ -4067,6 +4115,8 @@ $(document).ready(function(){
     let modalFilterByTask = $('#modalFilterByTask');
 	let modalTaskDescription = $('#modalTaskDescription');
 	let modalTaskFollowupActions = $('#modalTaskFollowupActions');
+	var _taskModalFullyShown = false;
+	var _suppressScrollOnHide = false;
 	let modalTaskFollowupChangeStatus = $('#modalTaskFollowupChangeStatus');
 	let modalContinuousTask = $('#modalContinuousTask');
 	let modalTaskCreationDate = $('#modalTaskCreationDate');
@@ -4086,7 +4136,7 @@ $(document).ready(function(){
         $target.closest('#modalFilterByProgressStatus').length ||
         $target.closest('#modalFilterByTask').length ||
         $target.closest('#modalTaskDescription').length ||
-        $target.closest('#modalTaskFollowupActions').length ||
+        $target.closest('#modalTaskFollowupActions .modal-content').length ||
         $target.closest('#modalTaskFollowupChangeStatus').length ||
         $target.closest('#modalTaskCreationDate').length ||
         $target.closest('#modalDestinationDate').length ||
@@ -4095,7 +4145,34 @@ $(document).ready(function(){
         $target.closest('#modalSendEmail').length ||
         $target.closest('#modalHistoryTasks').length ||
         $target.closest('#modalContinuousTask').length ||
-        $target.closest('#modalUpdateTask').length){
+        $target.closest('#modalUpdateTask .modal-content').length){
+        return;
+    }
+
+    if(modalTaskFollowupActions.is(':visible')){
+        if(!_suppressScrollOnHide)
+            _suppressScrollOnHide = (localStorage.getItem('is_modal_task_actions_opened') === 'true');
+        localStorage.removeItem('is_modal_task_actions_opened');
+        const _mEl = document.getElementById('modalTaskFollowupActions');
+        const _mInst = bootstrap.Modal.getInstance(_mEl);
+        if(_mInst) {
+            if(_mInst._isTransitioning) _mInst._isTransitioning = false;
+            _mInst.hide();
+        } else {
+            $('#modalTaskFollowupActions').modal('hide');
+        }
+        return;
+    }
+
+    if(modalUpdateTask.is(':visible')){
+        const _mElU = document.getElementById('modalUpdateTask');
+        const _mInstU = bootstrap.Modal.getInstance(_mElU);
+        if(_mInstU) {
+            if(_mInstU._isTransitioning) _mInstU._isTransitioning = false;
+            _mInstU.hide();
+        } else {
+            $('#modalUpdateTask').modal('hide');
+        }
         return;
     }
 
@@ -4105,7 +4182,6 @@ $(document).ready(function(){
         modalFilterByProgressStatus.is(':visible') ||
         modalFilterByTask.is(':visible') ||
         modalTaskDescription.is(':visible') ||
-        modalTaskFollowupActions.is(':visible') ||
         modalTaskFollowupChangeStatus.is(':visible') ||
         modalTaskCreationDate.is(':visible') ||
         modalDestinationDate.is(':visible') ||
@@ -4113,14 +4189,14 @@ $(document).ready(function(){
         modalTaskTracking.is(':visible') ||
         modalSendEmail.is(':visible') ||
         modalHistoryTasks.is(':visible') ||
-        modalContinuousTask.is(':visible') ||
-        modalUpdateTask.is(':visible')){
+        modalContinuousTask.is(':visible')){
 			let url = 'meetings.php?project_id=' + $('#project_id').val();
 			if($('#hidden_iteration').val())
 				url += '&row=row_' + $('#hidden_iteration').val();
 			if($('#is_specific_filter').val())
 				url += '&is_specific_filter=1';
-
+			const _navLang = new URLSearchParams(window.location.search).get('lang');
+			if(_navLang) url += '&lang=' + _navLang;
 			location.href = url;
     }
 	});
@@ -4630,7 +4706,6 @@ $('#to_add_meeting_btn').click (function (e){
 		 
 		  if($('#id_rdv_report').val() > 0)
 			 url+= '&id_rdv='+$('#id_rdv_report').val();
-		  url+= '&lang='+$('#lang').val();
 		  location.href = url;
 		},
 	});        
@@ -4741,6 +4816,8 @@ span.sf-hl {
     font-style: italic;
     display: contents;
 }
+.modal.fade .modal-dialog { transition-duration: .15s !important; }
+.modal-backdrop.fade { transition-duration: .1s !important; }
 </style>
 
 <script>

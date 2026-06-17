@@ -174,7 +174,9 @@ asort($responsibles_array);
 asort($pass_ons_array);
 asort($progress_status_array);
 
-if($_SESSION['lang'] == 'EN'){
+$page_lang = !empty($project->lang) ? $project->lang : @$_SESSION['lang'];
+
+if($page_lang == 'EN'){
   $dir = 'dir-ltr';	
   
   $title_label = 'New/update report';
@@ -240,7 +242,7 @@ if($_SESSION['lang'] == 'EN'){
   $text_align = 'text-align-left';
 }
 
-if($_SESSION['lang'] == "" || $_SESSION['lang'] == 'HE'){
+if($page_lang == "" || $page_lang == 'HE'){
   $dir = 'dir-rtl';
   
   $title_label = "יצירת/עדכון דו''ח";
@@ -550,9 +552,9 @@ include 'menu_tasks.php';
 							<div class="col-12">					
 								<strong><?=@$language_label?> ?</strong>
 								&nbsp;
-								<input type="radio" id="lang_he" name="lang" value="HE" <?php if(($id == 0 && @$project->lang != 'EN') || ($id > 0 && !$is_specific_filter && @$custom_report->lang == 'HE') || ($id > 0 && !$is_specific_filter && @$_SESSION['filter_lang'] == '' && @$custom_report->lang == 0) || ($is_specific_filter && @$_SESSION['filter_lang'] == 'HE') || ($is_specific_filter && empty(@$_SESSION['filter_lang']) && @$project->lang != 'EN')) echo "checked";?> />&nbsp; <?=@$hebrew_label?>
+								<input type="radio" id="lang_he" name="lang" value="HE" <?php if(($id == 0 && @$project->lang != 'EN') || ($id > 0 && !$is_specific_filter && @$custom_report->lang == 'HE') || ($id > 0 && !$is_specific_filter && @$_SESSION['filter_lang'] == '' && @$custom_report->lang == 0) || ($id > 0 && $is_specific_filter && (@$custom_report->lang == 'HE' || @$custom_report->lang == 0))) echo "checked";?> />&nbsp; <?=@$hebrew_label?>
 								&nbsp;
-								<input type="radio" id="lang_en" name="lang" value="EN" <?php if(($id == 0 && @$project->lang == 'EN') || ($id > 0 && !$is_specific_filter && @$custom_report->lang == 'EN') || ($id > 0 && !$is_specific_filter && @$_SESSION['filter_lang'] == '' && @$custom_report->lang == 1) || ($is_specific_filter && @$_SESSION['filter_lang'] == 'EN') || ($is_specific_filter && empty(@$_SESSION['filter_lang']) && @$project->lang == 'EN')) echo "checked";?> />&nbsp; <?=@$english_label?>
+								<input type="radio" id="lang_en" name="lang" value="EN" <?php if(($id == 0 && @$project->lang == 'EN') || ($id > 0 && !$is_specific_filter && @$custom_report->lang == 'EN') || ($id > 0 && !$is_specific_filter && @$_SESSION['filter_lang'] == '' && @$custom_report->lang == 1) || ($id > 0 && $is_specific_filter && (@$custom_report->lang == 'EN' || @$custom_report->lang == 1))) echo "checked";?> />&nbsp; <?=@$english_label?>
 							</div>
 						</div>
 						

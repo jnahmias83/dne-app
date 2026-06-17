@@ -15,7 +15,9 @@ $query->execute();
 $query->store_result();
 $meeting_type = fetch_unique($query);
 
-if($_SESSION['lang'] == 'EN') {
+$page_lang = !empty($_SESSION['project_lang']) ? $_SESSION['project_lang'] : @$_SESSION['lang'];
+
+if($page_lang == 'EN') {
   $dir = 'dir-ltr';
   $add_meeting_type_label = 'Add meeting type';
   $name_label = "Name";
@@ -29,7 +31,7 @@ if($_SESSION['lang'] == 'EN') {
   $alert_mandatory_fields = 'Please fill all the mandatory fields.';
 }
 
-if($_SESSION['lang'] == 'HE') {
+if($page_lang == 'HE' || $page_lang == '') {
    $dir = 'dir-rtl';
    $add_meeting_type_label = 'הוסף סוג פגישה';
    $name_label = "שם";
@@ -37,7 +39,7 @@ if($_SESSION['lang'] == 'HE') {
    $title_label = "כותרת 1";
    $title_he_label = "כותרת 1 בעברית";
    $subtitle_label = "כותרת 2";
-   $subtitle_he_label = "כותרת 2 בעברית"; 
+   $subtitle_he_label = "כותרת 2 בעברית";
    $title_save_btn = 'שמור';
    $title_cancel_btn = 'ביטול';
    $alert_mandatory_fields = 'נא למלה את כל השדות החובות.';
