@@ -5,7 +5,7 @@ include 'functions/functions.php';
 $id = @$_GET['id'];
 
 $iteration = @$_GET['iteration'];
-$lang = 'HE';
+$lang = !empty($_SESSION['project_lang']) ? $_SESSION['project_lang'] : 'HE';
 
 if(@$_GET['lang'] != '')
 	$lang = @$_GET['lang'];

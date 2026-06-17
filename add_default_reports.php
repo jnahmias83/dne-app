@@ -42,6 +42,7 @@ include 'menu_tasks.php';
 ?>
 		<form method="post" action="" enctype="multipart/form-data" class="form-inline">
 			<input type="hidden" id="project_id" value="<?=@$project_id?>" />
+			<input type="hidden" id="project_lang" value="<?=@$project->lang?>" />
 			
 			<div class="container">
 				<div class="row alignCenter marginTop25">
@@ -81,6 +82,7 @@ function addReport(report_name) {
 	let form_data = new FormData();	
 	form_data.append('report_type',report_name);
 	form_data.append('id_project',$('#project_id').val());
+	form_data.append('lang',$('#project_lang').val());
 	
 	$.ajax({
 		type: 'POST',

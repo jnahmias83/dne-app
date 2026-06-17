@@ -12,7 +12,7 @@ if($_POST['report_type'] == 'generalTasksReport') {
 	$and_or_responsibles = 'AND';
 	$is_images = 1;
 	$is_colors = 1;
-	$lang = "HE";
+	$lang = !empty($_POST['lang']) ? $_POST['lang'] : 'HE';
 	$columns_list = 'subject,area,description,_task,responsible,pass on,task creation,destination date,progress status';
 		
 	$chapters_array = array();
@@ -155,7 +155,7 @@ else if($_POST['report_type'] == 'myTasksReport') {
 	$and_or_responsibles = 'AND';
 	$is_images = 1;
 	$is_colors = 1;
-	$lang = "HE";
+	$lang = !empty($_POST['lang']) ? $_POST['lang'] : 'HE';
 	$columns_list = 'subject,area,description,_task,responsible,pass on,task creation,destination date,progress status';
 		
 	$chapters_array = array();
