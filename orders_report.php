@@ -131,7 +131,7 @@ foreach($orders as $item){
 	
 	$html.='</td>';
 	$html.='<td width="250px;" style="'.$style_td.'border:1px solid black;'.@$border_bottom.'">&nbsp;'.$item->description.'</td>';
-	$html.='<td width="100px;" style="'.@$text_align.';'.@$padding.':12px;border:1px solid black;'.@$border_bottom.'">'.@$sum_order_display.'&nbsp;&#x20aa;</td>';
+	$html.='<td width="100px;" style="direction:ltr;'.@$text_align.';'.@$padding.':12px;border:1px solid black;'.@$border_bottom.'">'.@$sum_order_display.'&nbsp;&#x20aa;</td>';
     $html.='</tr>';
 	
 	$total_sum_orders += $item->sum_order;

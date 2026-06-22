@@ -49,7 +49,7 @@ foreach($not_approved_accounts as $item) {
 	$html.='<td width="30px;" style="text-align:center;border:1px solid black;">'.$count.'</td>';
 	$html.='<td width="100px;" style="text-align:right;padding-right:12px;border:1px solid black;">'.@$item->p_nickame.'</td>';
 	$html.='<td width="160px;" style="text-align:right;padding-right:12px;border:1px solid black;">&nbsp;'.@$item->s_name_he.'</td>';	
-    $html.='<td width="160px;" style="text-align:right;padding-right:12px;border:1px solid black;">'.$submitted_account.'</td>';
+    $html.='<td width="160px;" style="direction:ltr;text-align:right;padding-right:12px;border:1px solid black;">'.$submitted_account.'</td>';
     $html.='</tr>';
 }
 

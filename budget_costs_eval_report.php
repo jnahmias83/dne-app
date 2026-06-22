@@ -135,7 +135,7 @@ foreach($budget_costs_eval as $item) {
 	$html.='<td width="160px;" style="'.@$text_align.';'.@$padding.':12px;border:1px solid black;">'.$item->name.'</td>';
 	$html.='<td width="100px;" style="'.$style_td.'border:1px solid black;">'.@$item->sfow_name.'</td>';
 	$html.='<td width="200px;" style="'.$style_td.'border:1px solid black;">'.@$item->description.'</td>';
-	$html.='<td width="120px;" style="'.@$text_align.';'.@$padding.':12px;border:1px solid black;">'.@$evaluation_cost_display.'</td>';
+	$html.='<td width="120px;" style="direction:ltr;'.@$text_align.';'.@$padding.':12px;border:1px solid black;">'.@$evaluation_cost_display.'</td>';
 	$html.='<td width="80px;" style="text-align:center;border:1px solid black;">&nbsp;'.$evaluation_date.'</td>';
     $html.='</tr>';
 }

@@ -136,9 +136,9 @@ include 'menu_budget_reports.php';
 											<td class="td_account_elem"><a id="s_name_<?=@$item->id_projects_suppliers?>" href="accounts_payments.php?ps_id=<?=@$item->ps_id?>&from=accounts&lang_screen=<?=@$lang_screen?>"></a></td>			
 											<td class="alignCenter"><?=$submit_date?></td>							
 											<td class="td_account_elem"><?=@$item->description?></td>
-											<td class="td_account_elem"><?php if(@$item->pdf_submission != '') { ?><a href="uploads/<?=@$item->pdf_submission?>" title="View PDF" target="_blank"><?=@$submitted_account?></a><?php } else { echo @$submitted_account; }?></td>
-											<td class="td_account_elem"><?=$approval_date?></td> 
-											<td class="td_account_elem"><?php if(@$item->pdf_approval != '') { ?><a href="uploads/<?=@$item->pdf_approval?>" title="View PDF" target="_blank"><?=@$approved_amount?></a><?php } else { echo @$approved_amount; }?></td>
+											<td class="td_account_elem" dir="ltr"><?php if(@$item->pdf_submission != '') { ?><a href="uploads/<?=@$item->pdf_submission?>" title="View PDF" target="_blank"><?=@$submitted_account?></a><?php } else { echo @$submitted_account; }?></td>
+											<td class="td_account_elem"><?=$approval_date?></td>
+											<td class="td_account_elem" dir="ltr"><?php if(@$item->pdf_approval != '') { ?><a href="uploads/<?=@$item->pdf_approval?>" title="View PDF" target="_blank"><?=@$approved_amount?></a><?php } else { echo @$approved_amount; }?></td>
 											<td class="alignCenter"><?=number_format(@$item->vat,0,'.',',')?>%</td>
 											<td class="alignCenter cursor-pointer"><img src="images/edit-button.svg" title="Edite" onclick="location.href='add_account.php?id=<?=@$item->id?>&project_id=<?=@$project_id?>&lang_screen=<?=@$lang_screen?>'" /></td>									
 											<td class="alignCenter cursor-pointer"><img src="images/delete.svg" title="Remove" onclick="return removeAccount(<?=@$item->id?>);" /></td>	

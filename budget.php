@@ -217,11 +217,11 @@ include 'menu_budget_reports.php';
 								    <td class="alignCenter border-black"><?=@$count?></td>
 								    <td class="td_budget_elem border-black"><a id="s_name_<?=@$item->id_projects_suppliers?>" href="accounts_payments.php?ps_id=<?=@$item->id_projects_suppliers?>&from=budget&lang_screen=<?=@$lang_screen?>"></a></td>
 								    <td class="td_budget_elem border-black"><a id="sfow_name_<?=@$item->id_projects_suppliers?>"></a></td>	
-								    <td width="110px;" class="td_budget_elem border-black"><?=@$total_sum_order_elem_display?></td>
-									<td width="110px;" class="td_budget_elem border-black"><?=@$sum_paid_amount_display?></td>
-									<td width="110px;" class="td_budget_elem border-black"><?=@$balance_display?></td>
+								    <td width="110px;" class="td_budget_elem border-black" dir="ltr"><?=@$total_sum_order_elem_display?></td>
+									<td width="110px;" class="td_budget_elem border-black" dir="ltr"><?=@$sum_paid_amount_display?></td>
+									<td width="110px;" class="td_budget_elem border-black" dir="ltr"><?=@$balance_display?></td>
 									<td width="20px" class="bgColorWhite">&nbsp;</td>
-									<td width="120px;" class="alignCenter border-black"><?=@$account_to_be_paid_display?></td>							
+									<td width="120px;" class="alignCenter border-black" dir="ltr"><?=@$account_to_be_paid_display?></td>							
 								</tr>
 								<?php
 							}
@@ -241,20 +241,20 @@ include 'menu_budget_reports.php';
 							
 							<tr class="height30 fontSize14 bgColorBeige font-weight-bold">
 								<td id="th_total_vat_excluded" class="border-black" colspan="3"></td>
-								<td class="td_budget_elem border-black"><?=number_format($total_sum_order,0,'.',',')?>&#8362;</td>
-								<td class="td_budget_elem border-black"><?=number_format($total_sum_paid,0,'.',',')?>&#8362;</td>
-								<td class="td_budget_elem border-black"><?=number_format($total_balance,0,'.',',')?>&#8362;</td>
+								<td class="td_budget_elem border-black" dir="ltr"><?=number_format($total_sum_order,0,'.',',')?>&#8362;</td>
+								<td class="td_budget_elem border-black" dir="ltr"><?=number_format($total_sum_paid,0,'.',',')?>&#8362;</td>
+								<td class="td_budget_elem border-black" dir="ltr"><?=number_format($total_balance,0,'.',',')?>&#8362;</td>
 								<td width="20px" class="bgColorWhite">&nbsp;</td>
 								<td id="th_total_to_be_paid" class="alignCenter bgColorSkyblue border-black"><strong></strong></td>
 							</tr>
-							
+
 							<tr class="height30 fontSize14 bgColorSkyblue font-weight-bold">
 								<td id="th_total_vat_included" class="border-black" colspan="3"></td>
-								<td class="td_budget_elem border-black"><?=number_format($total_sum_order_vat_included,0,'.',',')?>&#8362;</td>
-								<td class="td_budget_elem border-black"><?=number_format($total_sum_paid_vat_included,0,'.',',')?>&#8362;</td>
-								<td class="td_budget_elem border-black"><?=number_format($total_balance_vat_included,0,'.',',')?>&#8362;</td>
+								<td class="td_budget_elem border-black" dir="ltr"><?=number_format($total_sum_order_vat_included,0,'.',',')?>&#8362;</td>
+								<td class="td_budget_elem border-black" dir="ltr"><?=number_format($total_sum_paid_vat_included,0,'.',',')?>&#8362;</td>
+								<td class="td_budget_elem border-black" dir="ltr"><?=number_format($total_balance_vat_included,0,'.',',')?>&#8362;</td>
 								<td class="bgColorWhite" width="20px">&nbsp;</td>
-								<td class="alignCenter bgColorSkyblue border-black"><?=number_format($total_to_pay,0,'.',',')?>&#8362;</td>
+								<td class="alignCenter bgColorSkyblue border-black" dir="ltr"><?=number_format($total_to_pay,0,'.',',')?>&#8362;</td>
 							</tr>
 						</table>            				
 					</div>
