@@ -202,7 +202,7 @@ $(document).ready(function(){
           $('#th_bank').html('Bank');
           $('#th_account_name').html('Account Name');	
           $('.td_payment_wire_elem').css({"text-align":"left","padding-left":"5px"});
-          $('#total_amount_to_pay_span').html('Total amount to pay');
+          $('#total_amount_to_pay_span').html('Total VAT included');
 		  $('#add_budget_report_span').html('Join budget report');	
 		  $('#add_budget_report').css({"margin-right":"10px"});
 		  $('#add_sup_balances_reports_span').html('Join suppliers reports');
@@ -229,7 +229,7 @@ $(document).ready(function(){
            $('#th_bank').html('בנק');	
            $('#th_account_name').html('שם חשבון'); 
            $('.td_payment_wire_elem').css({"text-align":"right","padding-right":"5px"}); 
-		   $('#total_amount_to_pay_span').html("סה''כ לתשלום");
+		   $('#total_amount_to_pay_span').html("סה''כ כולל מע''מ");
 		   $('#add_budget_report').css({"margin-left":"4px"});
 		   $('#add_budget_report_span').html("צרף דו''ח תקציב");
 		   $('#add_budget_report').css({"margin-left":"10px"});
