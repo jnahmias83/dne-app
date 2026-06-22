@@ -292,8 +292,8 @@ include 'menu_budget_reports.php';
 												<td class="th_accounts_payments_item border-black"><?=@$account_payment_date?></td>
 												<td class="th_accounts_payments_item border-black"><a id="a_account_payment_type_<?=@$item->ap_id?>"><?=@$item->account_payment_type?></a></td>
 												<td class="th_accounts_payments_item border-black"><?=@$description?></td>
-												<td class="th_accounts_payments_item border-black alignCenter"><?php if(@$item->account_payment_type == 'account') { if(@$item->pdf_approval != '') { ?><a href="uploads/<?=@$item->pdf_approval?>" title="View PDF" target="_blank"><?=@$approved_amount_display?></a><?php } else { echo @$approved_amount_display; }} ?></td>
-												<td class="th_accounts_payments_item border-black"><?php if(@$item->account_payment_type == 'payment'){ if(@$item->pdf_payment != '') { ?><a href="uploads/<?=@$item->pdf_payment?>"  title="View PDF" target="_blank">-<span class="colorRed"><?=@$paid_amount_vat_included_display?></span></a><?php } else { echo "-<span class='colorRed'>".@$paid_amount_vat_included_display.'</span>'; }} ?></td>
+												<td class="th_accounts_payments_item border-black alignCenter" dir="ltr"><?php if(@$item->account_payment_type == 'account') { if(@$item->pdf_approval != '') { ?><a href="uploads/<?=@$item->pdf_approval?>" title="View PDF" target="_blank"><?=@$approved_amount_display?></a><?php } else { echo @$approved_amount_display; }} ?></td>
+												<td class="th_accounts_payments_item border-black" dir="ltr"><?php if(@$item->account_payment_type == 'payment'){ if(@$item->pdf_payment != '') { ?><a href="uploads/<?=@$item->pdf_payment?>"  title="View PDF" target="_blank"><span dir="ltr" class="colorRed">-<?=@$paid_amount_vat_included_display?></span></a><?php } else { echo "<span dir='ltr' class='colorRed'>-".@$paid_amount_vat_included_display.'</span>'; }} ?></td>
 												<?php if($accounts_payments_num_rows > 0) { ?> <td class="alignCenter"><img src="images/delete.svg" class="cursor-pointer" title="Remove" onclick="return removeAccountPayment('<?=@$item->account_payment_type?>',<?=@$record_id?>);" /></td>	<?php } ?>
 											</tr>
 								<?php }}	
@@ -382,12 +382,12 @@ include 'menu_budget_reports.php';
 								
 								<tr class="height30">
 									<td class="border-black bgColorSkyblue" id="th_total_accounts_payments" colspan="4"></td>
-									<td class="th_accounts_payments_item border-black bgColorSkyblue"><strong><?=@$total_approved_amount_vat_included_display?></strong></td>
-									<td class="th_accounts_payments_item border-black bgColorSkyblue" colspan="2"><strong><?='-'.@$total_paid_amount_vat_included_display?></strong></td>
+									<td class="th_accounts_payments_item border-black bgColorSkyblue" dir="ltr"><strong><?=@$total_approved_amount_vat_included_display?></strong></td>
+									<td class="th_accounts_payments_item border-black bgColorSkyblue" colspan="2" dir="ltr"><strong><?='-'.@$total_paid_amount_vat_included_display?></strong></td>
 								</tr>
 								<tr class="height30">
 									<td class="bgColorWhite" colspan="4"></td>
-									<td <?php if($accounts_payments_num_rows > 0) { echo 'colspan=3';} else echo 'colspan=2';?> class="border-black" id="pending_payment_cell"><span id="span_pending_payment"></span>&nbsp;<?=@$pending_payment_display?></td>
+									<td <?php if($accounts_payments_num_rows > 0) { echo 'colspan=3';} else echo 'colspan=2';?> class="border-black" id="pending_payment_cell" dir="ltr"><span id="span_pending_payment"></span>&nbsp;<?=@$pending_payment_display?></td>
 								</tr>
 							</table>
 								
@@ -397,17 +397,17 @@ include 'menu_budget_reports.php';
 								</tr>
 								<tr>
 									<td id="td_to_pay_label" class="bgColorSkyblue border-black alignCenter padding-4x-4y"></td>
-									<td class="bgColorSkyblue border-black alignCenter padding-4x-4y"><?=@$pending_payment_display?></td>
+									<td class="bgColorSkyblue border-black alignCenter padding-4x-4y" dir="ltr"><?=@$pending_payment_display?></td>
 									<td class="bgColorSkyblue border-black alignCenter padding-4x-4y"></td>
 								</tr>
 								<tr>
 									<td id="td_paid_label" class="bgColorBeige border-black alignCenter padding-4x-4y"></td>
-									<td class="bgColorBeige border-black alignCenter padding-4x-4y"><?=@$total_paid_amount_vat_included_display?></td>
+									<td class="bgColorBeige border-black alignCenter padding-4x-4y" dir="ltr"><?=@$total_paid_amount_vat_included_display?></td>
 									<td id="td_paid_pct" class="bgColorBeige border-black alignCenter padding-4x-4y"></td>
 								</tr>
 								<tr>
 									<td id="td_remaining_label" class="bgColorBeige border-black alignCenter padding-4x-4y"></td>
-									<td class="bgColorBeige border-black alignCenter padding-4x-4y"><?=@$remaining_to_pay_vat_included_display?></td>
+									<td class="bgColorBeige border-black alignCenter padding-4x-4y" dir="ltr"><?=@$remaining_to_pay_vat_included_display?></td>
 									<td id="td_remaining_pct" class="bgColorBeige border-black alignCenter padding-4x-4y"></td>
 								</tr>
 							</table>
@@ -451,7 +451,7 @@ include 'menu_budget_reports.php';
 												<td class="alignCenter border-black"><a href="add_account.php?id=<?=@$item->id?>&project_id=<?=@$supplier->p_id?>&ps_id=<?=@$ps_id?>&from=accounts_payments&lang_screen=<?=@$lang_screen?>"><?=@$count?></a></td>
 												<td class="th_not_approved_accounts_item border-black"><?=@$item->description?></td>
 												<td class="th_not_approved_accounts_item border-black"><?=@$submit_date?></td>
-												<td class="th_not_approved_accounts_item border-black"><?php if(@$item->pdf_submission != '') { ?><a href="uploads/<?=@$item->pdf_submission?>" title="View PDF" target="_blank"><?=@$submitted_account_display?></a><?php } else { echo @$submitted_account_display; } ?></td>
+												<td class="th_not_approved_accounts_item border-black" dir="ltr"><?php if(@$item->pdf_submission != '') { ?><a href="uploads/<?=@$item->pdf_submission?>" title="View PDF" target="_blank"><?=@$submitted_account_display?></a><?php } else { echo @$submitted_account_display; } ?></td>
 												<td class="alignCenter"><img src="images/delete.svg" class="cursor-pointer" title="Remove" onclick="return removeAccount(<?=@$item->id?>)" /></td>
 											</tr>
 										<?php } ?>

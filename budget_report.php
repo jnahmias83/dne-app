@@ -287,9 +287,9 @@ foreach($orders as $item){
 	}
 	
 	$html1_body.='</td>';
-	$html1_body.='<td width="90px;" style="'.@$text_align.';'.@$padding.':12px;border:1px solid black;'.@$border_bottom.'">'.@$total_sum_order_elem_display.'</td>';
-	$html1_body.='<td width="90px;" style="'.@$text_align.';'.@$padding.':12px;border:1px solid black;'.@$border_bottom.'">'.@$sum_paid_amount_display.'</td>';
-	$html1_body.='<td width="90px;" style="'.@$text_align.';'.@$padding.':12px;border:1px solid black;'.@$border_bottom.'">'.@$balance_display.'</td>';
+	$html1_body.='<td width="90px;" style="direction:ltr;'.@$text_align.';'.@$padding.':12px;border:1px solid black;'.@$border_bottom.'">'.@$total_sum_order_elem_display.'</td>';
+	$html1_body.='<td width="90px;" style="direction:ltr;'.@$text_align.';'.@$padding.':12px;border:1px solid black;'.@$border_bottom.'">'.@$sum_paid_amount_display.'</td>';
+	$html1_body.='<td width="90px;" style="direction:ltr;'.@$text_align.';'.@$padding.':12px;border:1px solid black;'.@$border_bottom.'">'.@$balance_display.'</td>';
 	$html1_body.='<td style="background-color:white;border-left:1px solid black;border-right:1px solid black;">&nbsp;</td>';
 	$html1_body.='<td width="110px;" style="text-align:center;border:1px solid black;'.@$border_bottom.'">'.$account_to_be_paid_display.'</td>';
     $html1_body.='</tr>';
@@ -313,18 +313,18 @@ $html1_body.='</tr>';
 
 $html1_body.='<tr height="35px;" style="font-size:12px;font-weight:bold;background-color:#f5f5dc;">';
 $html1_body.='<td colspan="3" style="'.$style_td_totals.'border:1px solid black;">'.getLang2($lang,'total_ht').'</td>';
-$html1_body.='<td style="'.@$text_align.';'.@$padding.':12px;border:1px solid black;">'.number_format($total_sum_order,0,'.',',').'&nbsp;&#x20aa;</td>';
-$html1_body.='<td style="'.@$text_align.';'.@$padding.':12px;border:1px solid black;">'.number_format($total_sum_paid,0,'.',',').'&nbsp;&#x20aa;</td>';
-$html1_body.='<td style="'.@$text_align.';'.@$padding.':12px;border:1px solid black;">'.number_format($total_balance,0,'.',',').'&nbsp;&#x20aa;</td>';
+$html1_body.='<td style="direction:ltr;'.@$text_align.';'.@$padding.':12px;border:1px solid black;">'.number_format($total_sum_order,0,'.',',').'&nbsp;&#x20aa;</td>';
+$html1_body.='<td style="direction:ltr;'.@$text_align.';'.@$padding.':12px;border:1px solid black;">'.number_format($total_sum_paid,0,'.',',').'&nbsp;&#x20aa;</td>';
+$html1_body.='<td style="direction:ltr;'.@$text_align.';'.@$padding.':12px;border:1px solid black;">'.number_format($total_balance,0,'.',',').'&nbsp;&#x20aa;</td>';
 $html1_body.='<td style="background-color:white;border-left:1px solid black;border-right:1px solid black;">&nbsp;</td>';
 $html1_body.='<td style="text-align:center;background-color:#dcf1fa;border:1px solid black;">'.getLang2($lang,'total_to_be_paid').'</td>';
 $html1_body.='</tr>';
 
 $html1_body.='<tr height="24px;" style="font-size:12px;font-weight:bold;background-color:#dcf1fa;">';
 $html1_body.='<td colspan="3" style="'.$style_td_totals.'border:1px solid black;">'.getLang2($lang,'total_ttc').'</td>';
-$html1_body.='<td style="'.@$text_align.';'.@$padding.':12px;border:1px solid black;">'.number_format($total_sum_order_vat_included,0,'.',',').'&nbsp;&#x20aa;</td>';
-$html1_body.='<td style="'.@$text_align.';'.@$padding.':12px;border:1px solid black;">'.number_format($total_sum_paid_vat_included,0,'.',',').'&nbsp;&#x20aa;</td>';
-$html1_body.='<td style="'.@$text_align.';'.@$padding.':12px;border:1px solid black;">'.number_format($total_balance_vat_included,0,'.',',').'&nbsp;&#x20aa;</td>';
+$html1_body.='<td style="direction:ltr;'.@$text_align.';'.@$padding.':12px;border:1px solid black;">'.number_format($total_sum_order_vat_included,0,'.',',').'&nbsp;&#x20aa;</td>';
+$html1_body.='<td style="direction:ltr;'.@$text_align.';'.@$padding.':12px;border:1px solid black;">'.number_format($total_sum_paid_vat_included,0,'.',',').'&nbsp;&#x20aa;</td>';
+$html1_body.='<td style="direction:ltr;'.@$text_align.';'.@$padding.':12px;border:1px solid black;">'.number_format($total_balance_vat_included,0,'.',',').'&nbsp;&#x20aa;</td>';
 $html1_body.='<td style="background-color:white;border-left:1px solid black;border-right:1px solid black;">&nbsp;</td>';
 $html1_body.='<td style="text-align:center;background-color:#dcf1fa;border:1px solid black;">'.$total_to_pay_display.'</td>';
 $html1_body.='</tr>';
@@ -566,7 +566,7 @@ if($asr == 1){
 				$html2_body.='<td style="text-align:right;padding-right:5px;border:1px solid black;'.@$elem_border_bottom.'">';
 						
 				if($item->account_payment_type == 'payment') 
-					$html2_body.= '-<span style="color:red;">'.@$paid_amount_vat_included_display.'</span>';
+					$html2_body.= '<span dir="ltr" style="color:red;">-'.@$paid_amount_vat_included_display.'</span>';
 				    $html2_body.='</td>';
 					$html2_body.='</tr>';
 			}

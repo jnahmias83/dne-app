@@ -258,7 +258,7 @@ foreach($orders as $item){
 	$html.='<td style="text-align:center;border:1px solid black;'.@$border_bottom.'">&nbsp;'.@$count.'</td>';
 	$html.='<td style="'.@$text_align.';'.@$padding.':12px;border:1px solid black;'.@$border_bottom.'">&nbsp;'.@$signature_date.'</td>';
 	$html.='<td style="'.@$text_align.';'.@$padding.'12px;border:1px solid black;'.@$border_bottom.'">&nbsp;'.@$item->description.'</td>';
-	$html.='<td style="'.@$text_align.';'.@$padding.':5px;border:1px solid black;'.@$border_bottom.'">&nbsp;'.@$sum_orders_display.'</td>';
+	$html.='<td style="direction:ltr;'.@$text_align.';'.@$padding.':5px;border:1px solid black;'.@$border_bottom.'">&nbsp;'.@$sum_orders_display.'</td>';
 	$html.='</tr>';
 }
 
@@ -284,7 +284,7 @@ else {
 
 $html.='<tr style="background-color:#f5f5dc;font-size:12px;">';
 $html.='<td colspan="3" style="'.$style_td_totals.'border:1px solid black;"><strong>'.getLang2($lang,'accounts_payments_total_orders').'</strong></td>';
-$html.='<td style="border:1px solid black;"><strong>'.@$total_sum_orders_display.'</strong></td>';
+$html.='<td style="direction:ltr;border:1px solid black;"><strong>'.@$total_sum_orders_display.'</strong></td>';
 $html.='</tr>';
 $html.='<tr style="font-size:10px;"><td colspan="3">'.@$table_orders_down_text.'</td></tr>';
 $html.='</table></td></tr></table>';
@@ -355,13 +355,13 @@ foreach($accounts_payments as $item) {
 		$html.='<td style="'.@$text_align.';'.@$padding.':12px;border:1px solid black;'.@$border_bottom.'">&nbsp;'.@$account_payment_date.'</td>';
 		$html.='<td style="text-align:center;border:1px solid black;'.@$border_bottom.'">&nbsp;'.@$account_payment_type.'</td>';
 		$html.='<td style="'.@$text_align.';'.@$padding.':12px;border:1px solid black;'.@$border_bottom.'">&nbsp;'.@$description.'</td>';
-		$html.='<td style="'.@$text_align.';'.@$padding.':5px;border:1px solid black;'.@$border_bottom.'">&nbsp;'; 
-		if($item->account_payment_type == 'account') 
+		$html.='<td style="direction:ltr;'.@$text_align.';'.@$padding.':5px;border:1px solid black;'.@$border_bottom.'">&nbsp;';
+		if($item->account_payment_type == 'account')
 			$html.= @$approved_amount_display;
 		$html.= '</td>';
 		$html.='<td dir="ltr" style="'.@$text_align.';'.@$padding.':5px;border:1px solid black;'.@$border_bottom.'">';
 		if($item->account_payment_type == 'payment') 
-		   $html.=  '-<span style="color:red;">'.@$paid_amount_vat_included_display.'</span>';
+		   $html.=  '<span dir="ltr" style="color:red;">-'.@$paid_amount_vat_included_display.'</span>';
 		$html.='</td>';
 		$html.='</tr>';
 }}
@@ -454,10 +454,10 @@ if($accounts_payments_num_rows > 0){
 	
 $html.='<tr style="background-color:#dcf1fa;font-size:12px;">';
 $html.='<td colspan="4" style="'.$style_td_totals.'border:1px solid black;"><strong>'.getLang2($lang,'total').'</strong></td>';
-$html.='<td style="'.@$text_align.';'.@$padding.':5px;border:1px solid black;"><strong>'.@$total_approved_amount_vat_included_display.'</strong></td>';
+$html.='<td style="direction:ltr;'.@$text_align.';'.@$padding.':5px;border:1px solid black;"><strong>'.@$total_approved_amount_vat_included_display.'</strong></td>';
 $html.='<td dir="ltr" style="'.@$text_align.';'.@$padding.':5px;border:1px solid black;"><strong>-'.@$total_paid_amount_vat_included_display.'</strong></td>';
 $html.='</tr>';
-$html.='<tr style="font-size:10px;text-align:center;"><td colspan="4">'.@$table_ap_down_text.'</td><td style="background-color:#dcf1fa;font-size:12px;border:1px solid black;" colspan="2"><strong>'.getLang2($lang,'pending_payment').'&nbsp;'.@$pending_payment_display.'</strong></td></tr>';
+$html.='<tr style="font-size:10px;text-align:center;"><td colspan="4">'.@$table_ap_down_text.'</td><td style="direction:ltr;background-color:#dcf1fa;font-size:12px;border:1px solid black;" colspan="2"><strong>'.getLang2($lang,'pending_payment').'&nbsp;'.@$pending_payment_display.'</strong></td></tr>';
 $html.='</table>';
 $html.='</td></tr></table>';
 
@@ -475,19 +475,19 @@ $html.='</tr>';
 $html.='<tr style="font-size:10px;">';
 $html.='<td width="50%"></td>';
 $html.='<td style="text-align:center;border:1px solid black;background-color:#dcf1fa;" width="17%"><strong>'.$to_pay_label.'</strong></td>';
-$html.='<td style="text-align:center;border:1px solid black;background-color:#dcf1fa;" width="17%"><strong>'.@$pending_payment_display.'</strong></td>';
+$html.='<td style="direction:ltr;text-align:center;border:1px solid black;background-color:#dcf1fa;" width="17%"><strong>'.@$pending_payment_display.'</strong></td>';
 $html.='<td style="border:1px solid black;background-color:#dcf1fa;" width="16%"></td>';
 $html.='</tr>';
 $html.='<tr style="font-size:10px;">';
 $html.='<td width="50%"></td>';
 $html.='<td style="text-align:center;border:1px solid black;background-color:#f5f5dc;" width="17%"><strong>'.$paid_label.'</strong></td>';
-$html.='<td style="text-align:center;border:1px solid black;background-color:#f5f5dc;" width="17%"><strong>'.@$total_paid_amount_vat_included_display.'</strong></td>';
+$html.='<td style="direction:ltr;text-align:center;border:1px solid black;background-color:#f5f5dc;" width="17%"><strong>'.@$total_paid_amount_vat_included_display.'</strong></td>';
 $html.='<td style="text-align:center;border:1px solid black;background-color:#f5f5dc;" width="16%"><strong>'.@$percent_paid_display.'</strong></td>';
 $html.='</tr>';
 $html.='<tr style="font-size:10px;">';
 $html.='<td width="50%"></td>';
 $html.='<td style="text-align:center;border:1px solid black;background-color:#f5f5dc;" width="17%"><strong>'.$remaining_label.'</strong></td>';
-$html.='<td style="text-align:center;border:1px solid black;background-color:#f5f5dc;" width="17%"><strong>'.@$remaining_to_pay_vat_included_display.'</strong></td>';
+$html.='<td style="direction:ltr;text-align:center;border:1px solid black;background-color:#f5f5dc;" width="17%"><strong>'.@$remaining_to_pay_vat_included_display.'</strong></td>';
 $html.='<td style="text-align:center;border:1px solid black;background-color:#f5f5dc;" width="16%"><strong>'.@$percent_to_pay_from_orders_vat_included_display.'</strong></td>';
 $html.='</tr>';
 $html.='</table>';
