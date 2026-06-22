@@ -190,10 +190,10 @@ foreach($payments as $item) {
 
 	$html.='<td width="150px;" style="'.$style_td.'border:1px solid black;">'.$item->description.'</td>';	
 	$html.='<td width="70px;" style="'.@$text_align.';'.@$padding.':12px;border:1px solid black;">&nbsp;'.$payment_date.'</td>';
-	$html.='<td width="100px;" style="'.@$text_align.';'.@$padding.':12px;border:1px solid black;">'.$paid_amount_vat_included.'</td>';
+	$html.='<td width="100px;" style="direction:ltr;'.@$text_align.';'.@$padding.':12px;border:1px solid black;">'.$paid_amount_vat_included.'</td>';
     $html.='<td width="70px;" style="'.@$text_align.';'.@$padding.':12px;border:1px solid black;">&nbsp;'.$invoice_date.'</td>';
 	$html.='<td width="60px;" style="text-align:center;border:1px solid black;">&nbsp;'.$item->vat.'%</td>';
-	$html.='<td width="100px;" style="'.@$text_align.';'.@$padding.':12px;border:1px solid black;">'.$paid_amount_vat_excluded.'</td>';
+	$html.='<td width="100px;" style="direction:ltr;'.@$text_align.';'.@$padding.':12px;border:1px solid black;">'.$paid_amount_vat_excluded.'</td>';
 	$html.='</tr>';
 }
 

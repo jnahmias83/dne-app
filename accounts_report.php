@@ -192,9 +192,9 @@ foreach($accounts as $item) {
 
 	$html.='<td width="150px;" style="'.$style_td.'border:1px solid black;">'.$item->description.'</td>';	
     $html.='<td width="70px;" style="'.@$text_align.';'.@$padding.':12px;border:1px solid black;">&nbsp;'.$submit_date.'</td>';
-	$html.='<td width="100px;" style="'.@$text_align.';'.@$padding.':12px;border:1px solid black;">'.$submitted_account.'</td>';
-	$html.='<td width="70px;" style="'.@$text_align.';'.@$padding.':12px;border:1px solid black;">&nbsp;'.$approval_date.'</td>';   
-    $html.='<td width="100px;" style="'.@$text_align.';'.@$padding.':12px;border:1px solid black;">&nbsp;'.$approved_amount.'</td>';	
+	$html.='<td width="100px;" style="direction:ltr;'.@$text_align.';'.@$padding.':12px;border:1px solid black;">'.$submitted_account.'</td>';
+	$html.='<td width="70px;" style="'.@$text_align.';'.@$padding.':12px;border:1px solid black;">&nbsp;'.$approval_date.'</td>';
+    $html.='<td width="100px;" style="direction:ltr;'.@$text_align.';'.@$padding.':12px;border:1px solid black;">&nbsp;'.$approved_amount.'</td>';	
 	$html.='<td width="50px;" style="'.@$text_align.';'.@$padding.':12px;border:1px solid black;">'.number_format($item->vat,0,'.',',').'&nbsp;%</td>';
 	$html.='</tr>';
 }

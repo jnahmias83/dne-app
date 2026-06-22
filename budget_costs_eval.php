@@ -93,7 +93,7 @@ include 'menu_budget_reports.php';
 									<td class="alignLeft paddingLeft5 paddingLeft5"><?=@$item->name?></td>
 									<td class="alignLeft paddingLeft5"><?=@$item->sfow_name?></td>
 									<td class="alignLeft paddingLeft5"><?=@$item->description?></td>											
-									<td class="alignLeft paddingLeft5"><?php if(@$item->pdf_evaluation != '') { ?><a href="uploads/<?=@$item->pdf_evaluation?>" title="View PDF" target="_blank"><?=@$evaluation_cost_display?></a><?php } else echo @$evaluation_cost_display?></td>
+									<td class="alignLeft paddingLeft5" dir="ltr"><?php if(@$item->pdf_evaluation != '') { ?><a href="uploads/<?=@$item->pdf_evaluation?>" title="View PDF" target="_blank"><?=@$evaluation_cost_display?></a><?php } else echo @$evaluation_cost_display?></td>
 									<td class="alignLeft paddingLeft5"><?=@$evaluation_date?></td>
 									<td class="alignCenter"><img src="images/edit-button.svg" class="padding10 cursor-pointer" title="Edite" onclick="location.href='add_cost_eval.php?id=<?=@$item->id?>&project_id=<?=@$project_id?>&lang_screen=<?=@$lang_screen?>'" /></td>									
 									<td class="alignCenter"><img src="images/delete.svg" class="cursor-pointer" title="מחק" onclick="return removeCostEval(<?=@$item->id?>);" /></td>

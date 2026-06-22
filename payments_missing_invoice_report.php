@@ -178,7 +178,7 @@ foreach($payments_missing_invoice as $item) {
 	
 	$html.='</td>';
 	$html.='<td width="70px;" style="'.@$text_align.';'.@$padding.':12px;border:1px solid black;">&nbsp;'.@$payment_date.'</td>';
-	$html.='<td width="100px;" style="'.@$text_align.';'.@$padding.':12px;border:1px solid black;">'.@$paid_amount_vat_included.'</td>';
+	$html.='<td width="100px;" style="direction:ltr;'.@$text_align.';'.@$padding.':12px;border:1px solid black;">'.@$paid_amount_vat_included.'</td>';
 	$html.='<td width="200px;" style="'.@$text_align.';'.@$padding.':12px;border:1px solid black;">'.@$item->s_email_office.'</td>';
 	$html.='<td width="100px;" style="'.@$text_align.';'.@$padding.':12px;border:1px solid black;">'.@$item->s_mobile.'</td>';
 	$html.='</tr>';
