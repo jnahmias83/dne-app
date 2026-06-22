@@ -265,7 +265,7 @@ if($abr == 1){
 	$html2_body.= '<table dir="'.$dir_table.'" style="'.$style_table.'"><tr><td width="2%">&nbsp;</td><td><table cellpadding="4">';
 	$html2_body.='<tr height="35px;" style="font-size:12px;font-weight:bold;">';
 	$html2_body.='<th colspan="3" style="text-align:center;background-color:silver;border:1px solid black;" width="270px;">'.getLang2($lang,'supplier').'</th>';
-	$html2_body.='<th colspan="3" style="text-align:center;background-color:#f5f5dc;border:1px solid black;" width="270px;">'.getLang2($lang,'ht').'</th>';
+	$html2_body.='<th colspan="3" style="text-align:center;background-color:#dcf1fa;border:1px solid black;" width="270px;">'.getLang2($lang,'ht').'</th>';
 	$html2_body.='<th width="20px" style="background-color:white;border-left:1px solid black;border-right:1px solid black;">&nbsp;</th>';
 	$html2_body.='<th width="110px;" style="text-align:center;border:1px solid black;background-color:#dcf1fa;">'.getLang2($lang,'ttc').'</th>';
 	$html2_body.='</tr>';
@@ -392,7 +392,7 @@ if($abr == 1){
 	$html2_body.='<th colspan="2"></th>';
 	$html2_body.='</tr>';
 	
-	$html2_body.='<tr height="35px;" style="font-size:12px;font-weight:bold;background-color:#f5f5dc;;">';
+	$html2_body.='<tr height="35px;" style="font-size:12px;font-weight:bold;background-color:#dcf1fa;;">';
 	$html2_body.='<td colspan="3" style="'.$style_td_totals.'border:1px solid black;">'.getLang2($lang,'total_ht').'</td>';
 	$html2_body.='<td style="direction:ltr;'.@$text_align.';'.@$padding.':12px;border:1px solid black;">'.number_format($total_sum_order,0,'.',',').'&nbsp;&#x20aa;</td>';
 	$html2_body.='<td style="direction:ltr;'.@$text_align.';'.@$padding.':12px;border:1px solid black;">'.number_format($total_sum_paid,0,'.',',').'&nbsp;&#x20aa;</td>';
@@ -573,7 +573,7 @@ if($asbr == 1){
 			else 
 			   $elem_total_sum_orders = '';	
 			
-			$html3_body.='<tr style="background-color:#f5f5dc;font-size:12px;">';
+			$html3_body.='<tr style="background-color:#dcf1fa;font-size:12px;">';
 			$html3_body.='<td colspan="3" style="'.$style_td_totals.'border:1px solid black;"><strong>'.getLang2($lang,'accounts_payments_total_orders').'</strong></td>';
 			$html3_body.='<td style="text-align:right;padding-right:5px;border:1px solid black;"><strong>'.@$elem_total_sum_orders_display.'</strong></td>';
 			$html3_body.='</tr>';
@@ -725,11 +725,11 @@ if($asbr == 1){
 			}
 	
 			$html3_body.='<tr style="background-color:#dcf1fa;font-size:12px;">';
-			$html3_body.='<td colspan="4" style="'.$style_td_totals.'border:1px solid black;"><strong>'.getLang2($lang,'total').'</strong></td>';
+			$html3_body.='<td colspan="4" style="'.$style_td_totals.'border:1px solid black;"><strong>'.($lang=='HE' ? "סה''כ כולל מע''מ" : 'Total VAT included').'</strong></td>';
 			$html3_body.='<td style="'.@$text_align.';'.@$padding.':5px;border:1px solid black;"><strong>'.@$elem_total_approved_amount_vat_included_display.'</strong></td>';
 			$html3_body.='<td dir="ltr" style="'.@$text_align.';'.@$padding.':5px;border:1px solid black;"><strong>-'.@$elem_total_paid_amount_vat_included_display.'</strong></td>';
 			$html3_body.='</tr>';
-			$html3_body.='<tr style="font-size:10px;text-align:center;"><td colspan="4">'.@$table_ap_down_text.'</td><td style="background-color:#dcf1fa;font-size:12px;border:1px solid black;" colspan="2"><strong>'.getLang2($lang,'pending_payment').'&nbsp;'.@$elem_pending_payment_display.'</strong></td></tr>';
+			$html3_body.='<tr style="font-size:10px;text-align:center;"><td colspan="4">'.@$table_ap_down_text.'</td><td style="border:1px solid black;background-color:#dcf1fa;direction:ltr;text-align:center;" colspan="2"><div style="font-size:8px;">&nbsp;</div><strong style="font-size:12px;">'.getLang2($lang,'pending_payment').'&nbsp;'.@$elem_pending_payment_display.'</strong></td></tr>';
 			$html3_body.='</table>';
 			$html3_body.='</td></tr></table>';
 
@@ -752,15 +752,15 @@ if($asbr == 1){
 			$html3_body.='</tr>';
 			$html3_body.='<tr style="font-size:10px;">';
 			$html3_body.='<td width="50%"></td>';
-			$html3_body.='<td style="text-align:center;border:1px solid black;background-color:#f5f5dc;" width="17%"><strong>'.$paid_label_e.'</strong></td>';
-			$html3_body.='<td style="text-align:center;border:1px solid black;background-color:#f5f5dc;" width="17%"><strong>'.@$elem_total_paid_amount_vat_included_display.'</strong></td>';
-			$html3_body.='<td style="text-align:center;border:1px solid black;background-color:#f5f5dc;" width="16%"><strong>'.@$elem_percent_paid_display.'</strong></td>';
+			$html3_body.='<td style="text-align:center;border:1px solid black;background-color:#dcf1fa;" width="17%"><strong>'.$paid_label_e.'</strong></td>';
+			$html3_body.='<td style="text-align:center;border:1px solid black;background-color:#dcf1fa;" width="17%"><strong>'.@$elem_total_paid_amount_vat_included_display.'</strong></td>';
+			$html3_body.='<td style="text-align:center;border:1px solid black;background-color:#dcf1fa;" width="16%"><strong>'.@$elem_percent_paid_display.'</strong></td>';
 			$html3_body.='</tr>';
 			$html3_body.='<tr style="font-size:10px;">';
 			$html3_body.='<td width="50%"></td>';
-			$html3_body.='<td style="text-align:center;border:1px solid black;background-color:#f5f5dc;" width="17%"><strong>'.$remaining_label_e.'</strong></td>';
-			$html3_body.='<td style="text-align:center;border:1px solid black;background-color:#f5f5dc;" width="17%"><strong>'.@$elem_remaining_to_pay_vat_included_display.'</strong></td>';
-			$html3_body.='<td style="text-align:center;border:1px solid black;background-color:#f5f5dc;" width="16%"><strong>'.@$elem_percent_to_pay_from_orders_vat_included_display.'</strong></td>';
+			$html3_body.='<td style="text-align:center;border:1px solid black;background-color:#dcf1fa;" width="17%"><strong>'.$remaining_label_e.'</strong></td>';
+			$html3_body.='<td style="text-align:center;border:1px solid black;background-color:#dcf1fa;" width="17%"><strong>'.@$elem_remaining_to_pay_vat_included_display.'</strong></td>';
+			$html3_body.='<td style="text-align:center;border:1px solid black;background-color:#dcf1fa;" width="16%"><strong>'.@$elem_percent_to_pay_from_orders_vat_included_display.'</strong></td>';
 			$html3_body.='</tr>';
 			$html3_body.='</table>';
 			

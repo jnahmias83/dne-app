@@ -401,14 +401,14 @@ include 'menu_budget_reports.php';
 									<td class="bgColorSkyblue border-black alignCenter padding-4x-4y"></td>
 								</tr>
 								<tr>
-									<td id="td_paid_label" class="bgColorBeige border-black alignCenter padding-4x-4y"></td>
-									<td class="bgColorBeige border-black alignCenter padding-4x-4y" dir="ltr"><?=@$total_paid_amount_vat_included_display?></td>
-									<td id="td_paid_pct" class="bgColorBeige border-black alignCenter padding-4x-4y"></td>
+									<td id="td_paid_label" class="bgColorSkyblue border-black alignCenter padding-4x-4y"></td>
+									<td class="bgColorSkyblue border-black alignCenter padding-4x-4y" dir="ltr"><?=@$total_paid_amount_vat_included_display?></td>
+									<td id="td_paid_pct" class="bgColorSkyblue border-black alignCenter padding-4x-4y"></td>
 								</tr>
 								<tr>
-									<td id="td_remaining_label" class="bgColorBeige border-black alignCenter padding-4x-4y"></td>
-									<td class="bgColorBeige border-black alignCenter padding-4x-4y" dir="ltr"><?=@$remaining_to_pay_vat_included_display?></td>
-									<td id="td_remaining_pct" class="bgColorBeige border-black alignCenter padding-4x-4y"></td>
+									<td id="td_remaining_label" class="bgColorSkyblue border-black alignCenter padding-4x-4y"></td>
+									<td class="bgColorSkyblue border-black alignCenter padding-4x-4y" dir="ltr"><?=@$remaining_to_pay_vat_included_display?></td>
+									<td id="td_remaining_pct" class="bgColorSkyblue border-black alignCenter padding-4x-4y"></td>
 								</tr>
 							</table>
 						</div>
@@ -483,7 +483,7 @@ $(document).ready(function() {
 		  $('#orders_list').css({"direction":"ltr","width":"100%"});
 		  $('#accounts_payments_list').css({"direction":"ltr","width":"100%"});
 		  $('#not_approved_accounts_list').css({"direction":"ltr","width":"100%"});
-		  $('#th_total_accounts_payments').html('<strong>Total</strong>');
+		  $('#th_total_accounts_payments').html('<strong>Total VAT included</strong>');
 		  $('#th_total_orders').css({"text-align":"right",'padding-right':'5px'});
 		  $('#th_total_accounts_payments').css({"text-align":"right",'padding-right':'5px'});
 		  $('.th_accounts_payments_item').css({"text-align":"left",'padding-left':'5px'});
@@ -568,7 +568,7 @@ $(document).ready(function() {
 		  $('#div_title_not_approved_accounts_list').css({"text-align":"right","font-size":"22px"});
 		  $('#th_submitted_account').html('חשבון שהוגש');
 		  $('#th_submit_date').html('תאריך ההגשה');
-		  $('#th_total_accounts_payments').html("<strong>סה''כ</strong>");
+		  $('#th_total_accounts_payments').html("<strong>סה''כ כולל מע''מ</strong>");
 		  $('.th_not_approved_accounts_item').css({"text-align":"right",'padding-right':'5px'});
 		  $('#table_summary').css({"direction":"rtl","float":"left"});
 		  $('#td_summary_header').html("<strong>כולל מע''מ</strong>");
