@@ -1816,9 +1816,10 @@ include 'menu_tasks.php';
 											}
 											else if(@$period_new_tasks == 'two_years'){
 												$end_new_tasks_date = date('Y-m-d',strtotime($task_creation_date . '+2 years'));
-                                                $end_updated_date = date('Y-m-d',strtotime($updated_date . '+2 years'));												
+                                                $end_updated_date = date('Y-m-d',strtotime($updated_date . '+2 years'));
 											}
-											
+											if(empty($task_creation_date)) $end_new_tasks_date = '0000-00-00';
+
 											$td_count_bgcolor = 'background-color:white';										
 											if(@$is_colors && @$progress_status != 'בוצע/נמסר' && @$task != 'בקרת איכות'){
 												if(strlen(@$period_new_tasks) > 1 && (date('Y-m-d') <= $end_new_tasks_date)){			
@@ -2398,9 +2399,10 @@ include 'menu_tasks.php';
 												}
 												else if(@$period_new_tasks == 'two_years'){
 													$end_new_tasks_date = date('Y-m-d',strtotime($task_creation_date . '+2 years'));
-													$end_updated_date = date('Y-m-d',strtotime($updated_date . '+2 years'));												
+													$end_updated_date = date('Y-m-d',strtotime($updated_date . '+2 years'));
 												}
-											
+												if(empty($task_creation_date)) $end_new_tasks_date = '0000-00-00';
+
 												if($is_colors && @$progress_status != 'בוצע/נמסר' && @$task != 'בקרת איכות') {
 													if(strlen(@$period_new_tasks) > 1 && (date('Y-m-d') <= $end_new_tasks_date)){			
 														$subject_bgcolor = 'background-color:'.$global_bgcolor_new_task->bgcolor;
