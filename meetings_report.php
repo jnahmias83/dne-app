@@ -313,6 +313,9 @@ if($_SESSION['pdf_title2'] != '')
 
 $title .= '<br/>'.substr($_SESSION['pdf_date'],6,2).'/'.substr($_SESSION['pdf_date'],4,2).'/'.substr($_SESSION['pdf_date'],0,4);  
 	$columns_list_array = explode(',',$columns_list);
+	if(empty(array_filter($columns_list_array))){
+		$columns_list_array = ['subject','area','description','_task','responsible','pass on','task creation','destination date','progress status'];
+	}
 
 $align_txt = 'alignLeft';
 $padding_txt = 'paddingLeft10';
