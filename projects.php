@@ -2096,7 +2096,8 @@ $(document).ready(function(){
 		localStorage.removeItem('is_modal_task_actions_opened');
 	});
 	
-	if(localStorage.getItem("is_modal_tasks_hystory_opened")){
+	if(localStorage.getItem("is_modal_tasks_hystory_opened") === "true"){
+		localStorage.removeItem('is_modal_tasks_hystory_opened');
 		meeting_id = localStorage.getItem("meeting_id");
 		project_id = localStorage.getItem("project_id");
 		
@@ -2120,7 +2121,6 @@ $(document).ready(function(){
 	   $('#modalContent').append("<input type='hidden' id='hidden_meeting_id' value='"+meeting_id+"'><input type='hidden' id='hidden_project_id' value='"+project_id+"'>");
 	   $('#modalTaskFollowupActions').modal('hide');
 	   $('#modalHistoryTasks').modal('show');
-	   localStorage.removeItem('is_modal_tasks_hystory_opened');
 	};
 
 	$('[id="continuous_btn"]').on('click', function(){
@@ -2782,6 +2782,7 @@ function setListParam(list){
 
 $(window).on('load', function(){
     if(localStorage.getItem("is_modal_task_actions_opened") === "true"){
+		localStorage.removeItem('is_modal_task_actions_opened');
 		let project_id = localStorage.getItem("project_id");
 		let meeting_id = localStorage.getItem("meeting_id");
 		let iteration = localStorage.getItem("iteration");
