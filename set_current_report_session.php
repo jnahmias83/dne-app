@@ -34,16 +34,17 @@ $_SESSION['filter_lang'] = '';
 $_SESSION['filter_period_new_tasks'] = 'empty';
 $_SESSION['filter_columns_list'] = '';
 
+$_SESSION['meetings_forced_lang'] = '';
+
 if(@$_POST['rdv_override'] && @$_POST['id_custom_report']){
+	$v_is_images = (int)$_POST['is_images'];
+	$v_is_colors = (int)$_POST['is_colors'];
+	$v_lang      = (string)$_POST['lang'];
+	$v_period    = (string)$_POST['period_new_tasks'];
+	$v_columns   = (string)$_POST['columns_list'];
+	$v_cr_id     = (int)$_POST['id_custom_report'];
 	$q = $mysqli->prepare("UPDATE dne_custom_reports SET is_images=?, is_colors=?, lang=?, period_new_tasks=?, columns_list=? WHERE id=?");
-	$q->bind_param('iisssi',
-		$_POST['is_images'],
-		$_POST['is_colors'],
-		$_POST['lang'],
-		$_POST['period_new_tasks'],
-		$_POST['columns_list'],
-		$_POST['id_custom_report']
-	);
+	$q->bind_param('iisssi', $v_is_images, $v_is_colors, $v_lang, $v_period, $v_columns, $v_cr_id);
 	$q->execute();
 }
 ?>

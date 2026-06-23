@@ -4507,13 +4507,15 @@ function setCurrentReportSession(custom_report_id){
 		contentType: false,
 		success: function(data){
 			if(isRdvContext){
-				const rdvId = $('#report_type').val();
-				const crId  = 'general_' + custom_report_id;
-				['full_short','is_data_sorted','sort_select_1','sort_select_2','sort_select_3']
-					.forEach(function(k){
-						const val = localStorage.getItem(k + '_' + rdvId);
-						if(val !== null) localStorage.setItem(k + '_' + crId, val);
-					});
+				const crId = 'general_' + custom_report_id;
+				localStorage.setItem('full_short_' + crId, $('#option2').is(':checked') ? 'short' : 'full');
+				const isSorted = $('#div_sort').is(':visible');
+				localStorage.setItem('is_data_sorted_' + crId, isSorted ? 'true' : 'false');
+				if(isSorted){
+					localStorage.setItem('sort_select_1_' + crId, $('#sort_select_1').val());
+					localStorage.setItem('sort_select_2_' + crId, $('#sort_select_2').val());
+					localStorage.setItem('sort_select_3_' + crId, $('#sort_select_3').val());
+				}
 			}
 			location.href = 'meetings.php?project_id='+$('#project_id').val();
 		}
