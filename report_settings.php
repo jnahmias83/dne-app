@@ -12,6 +12,9 @@ $supplier_filter = @$_GET['supplier_filter'];
 $all_ids_to_print = @$_GET['all_ids_to_print'];
 $is_specific_filter = @$_GET['is_specific_filter'];
 $lang = @$_GET['lang'];
+$sort_select_1 = @$_GET['sort_select_1'];
+$sort_select_2 = @$_GET['sort_select_2'];
+$sort_select_3 = @$_GET['sort_select_3'];
 
 $query = $mysqli->prepare("SELECT * FROM dne_projects WHERE id = ?");
 $query->bind_param("i",$project_id );
@@ -107,6 +110,9 @@ include 'menu_tasks.php';
 			<input type="hidden" id="period_new_task_filter" name="period_new_task_filter" value="<?=@$period_new_task_filter?>" />
 			<input type="hidden" id="is_specific_filter" name="is_specific_filter" value="<?=@$is_specific_filter?>" />
 			<input type="hidden" id="lang" name="lang" value="<?=@$lang?>" />
+			<input type="hidden" id="sort_select_1" name="sort_select_1" value="<?=htmlspecialchars(@$sort_select_1)?>" />
+			<input type="hidden" id="sort_select_2" name="sort_select_2" value="<?=htmlspecialchars(@$sort_select_2)?>" />
+			<input type="hidden" id="sort_select_3" name="sort_select_3" value="<?=htmlspecialchars(@$sort_select_3)?>" />
 			
 			<div class="container">
                 <div class="row alignCenter marginTop25">
@@ -246,6 +252,9 @@ function toTasksReport(){
                           +'&all_ids_to_print='+$('#all_ids_to_print').val()
                           +'&pdf_direction='+pdf_direction
 						  +'&lang='+$('#lang').val()
+				  +'&sort_select_1='+$('#sort_select_1').val()
+				  +'&sort_select_2='+$('#sort_select_2').val()
+				  +'&sort_select_3='+$('#sort_select_3').val()
             window.open(baseUrl+params+'&mode=I','_blank');
 			
 			setTimeout(function (){
