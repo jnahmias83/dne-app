@@ -453,7 +453,7 @@ $(document).ready(function() {
 	let reminder_date;
     let reminder_time;
 	
-    if(localStorage.getItem("is_modal_task_actions_opened")){
+    if(localStorage.getItem("is_modal_task_actions_opened") === "true"){
 	   project_id = localStorage.getItem("project_id");
 	   meeting_id = localStorage.getItem("meeting_id");
 	   iteration = localStorage.getItem("iteration");

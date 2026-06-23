@@ -3800,7 +3800,7 @@ $(document).ready(function(){
 					setlocalStorage(meeting_id,iteration);
 				}	
 				
-				localStorage.setItem('is_modal_task_actions_opened',false)
+				localStorage.removeItem('is_modal_task_actions_opened')
 			},
 	    });
     })
