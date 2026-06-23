@@ -57,6 +57,61 @@ if($_POST['is_specific_filter']){
 	else if($_POST['field'] == 'highlight'){
 		$_SESSION['filter_period_new_tasks'] = @$_POST['period_new_tasks'];
 	}
+
+	if($_POST['id_custom_report']){
+		if($_POST['field'] == 'lang'){
+			$q = $mysqli->prepare("UPDATE dne_custom_reports SET lang = ? WHERE id = ?");
+			$q->bind_param('si',$_POST['lang'],$_POST['id_custom_report']);
+			$q->execute();
+		}
+		else if($_POST['field'] == 'picture'){
+			$q = $mysqli->prepare("UPDATE dne_custom_reports SET is_images = ? WHERE id = ?");
+			$q->bind_param('ii',$_POST['is_images'],$_POST['id_custom_report']);
+			$q->execute();
+		}
+		else if($_POST['field'] == 'colors'){
+			$q = $mysqli->prepare("UPDATE dne_custom_reports SET is_colors = ? WHERE id = ?");
+			$q->bind_param('ii',$_POST['is_colors'],$_POST['id_custom_report']);
+			$q->execute();
+		}
+		else if($_POST['field'] == 'table_view'){
+			$q = $mysqli->prepare("UPDATE dne_custom_reports SET period_new_tasks = ?,columns_list = ? WHERE id = ?");
+			$q->bind_param('ssi',$_POST['period_new_tasks'],$_POST['columns_list'],$_POST['id_custom_report']);
+			$q->execute();
+		}
+		else if($_POST['field'] == 'highlight'){
+			$q = $mysqli->prepare("UPDATE dne_custom_reports SET period_new_tasks = ? WHERE id = ?");
+			$q->bind_param('si',$_POST['period_new_tasks'],$_POST['id_custom_report']);
+			$q->execute();
+		}
+	}
+	if($_POST['id_rdv_report']){
+		if($_POST['field'] == 'lang'){
+			$q = $mysqli->prepare("UPDATE dne_rdv SET rdv_lang = ? WHERE id = ?");
+			$q->bind_param('si',$_POST['lang'],$_POST['id_rdv_report']);
+			$q->execute();
+		}
+		else if($_POST['field'] == 'picture'){
+			$q = $mysqli->prepare("UPDATE dne_rdv SET is_images = ? WHERE id = ?");
+			$q->bind_param('ii',$_POST['is_images'],$_POST['id_rdv_report']);
+			$q->execute();
+		}
+		else if($_POST['field'] == 'colors'){
+			$q = $mysqli->prepare("UPDATE dne_rdv SET is_colors = ? WHERE id = ?");
+			$q->bind_param('ii',$_POST['is_colors'],$_POST['id_rdv_report']);
+			$q->execute();
+		}
+		else if($_POST['field'] == 'table_view'){
+			$q = $mysqli->prepare("UPDATE dne_rdv SET period_new_tasks = ?,columns_list = ? WHERE id = ?");
+			$q->bind_param('ssi',$_POST['period_new_tasks'],$_POST['columns_list'],$_POST['id_rdv_report']);
+			$q->execute();
+		}
+		else if($_POST['field'] == 'highlight'){
+			$q = $mysqli->prepare("UPDATE dne_rdv SET period_new_tasks = ? WHERE id = ?");
+			$q->bind_param('si',$_POST['period_new_tasks'],$_POST['id_rdv_report']);
+			$q->execute();
+		}
+	}
 }
 else {
 	if($_POST['id_custom_report']){
