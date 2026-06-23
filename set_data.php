@@ -126,156 +126,18 @@ else if($_POST['field'] == "id_task"){
 }
 
 else if($_POST['field'] == "id_responsible"){
-	$query = "UPDATE dne_meetings SET id_responsible = ? 
+	$query = "UPDATE dne_meetings SET id_responsible = ?
 	          WHERE id".@$where_ids;
 	$query = $mysqli->prepare($query);
-	$query->bind_param('i',$_POST['id_responsible']);	
+	$query->bind_param('i',$_POST['id_responsible']);
 	$query->execute();
-	
-	foreach($custom_reports as $item){ 
-		$position_where = strpos($item->sql_str,"WHERE");
-		$where_length = strlen($item->sql_str)-$position_where;
-		$where_part_sql = substr($item->sql_str,$position_where,$where_length); 
-		$where_part_sql_array = explode(' AND ',$where_part_sql);
-		
-		for($i=0;$i < sizeof($where_part_sql_array);$i++){		
-			if(strpos($where_part_sql_array[$i],'m.id_responsible IN') !== false){
-				preg_match('/m\.id_responsible\s+IN\s*\(([^)]+)\)/',$where_part_sql_array[$i],$matches);
-
-				if(!empty($matches[1])){
-					$responsible_ids_array = explode(',', $matches[1]);
-					
-					if(!in_array($_POST['id_responsible'], $responsible_ids_array))
-						$responsible_ids_array[] = $_POST['id_responsible'];
-		
-					$new_responsible_in = 'm.id_responsible IN('.implode(',',$responsible_ids_array).')';
-
-					$where_part_sql_array[$i] = preg_replace('/m\.id_responsible\s+IN\s*\(([^)]+)\)/',$new_responsible_in,$where_part_sql_array[$i]
-					);
-	            }
-            }
-		}
-		
-		$new_sql_str = 'SELECT c.name AS name,m.id AS id,
-						m.id_user AS id_user,
-						m.id_task_type AS id_task_type,
-						m.id_chapter AS id_chapter,m.subject AS subject,
-						m.ids_rdv AS ids_rdv,m.area,m.description,
-						m.id_task,m.id_responsible,m.id_pass_on,
-						m.task_creation_date,m.destination_date,
-						m.id_progress_status,
-						m.updated_date AS updated_date,
-						m.image1 AS image1,
-						m.is_appears_img1 AS is_appears_img1,
-						m.image1_width AS image1_width,
-						m.image1_height AS image1_height,
-						m.image2 AS image2,
-						m.is_appears_img2 AS is_appears_img2,
-						m.image2_width AS image2_width,
-						m.image2_height AS image2_height,						
-						m.is_change_row_style AS is_change_row_style,
-                        m.track_type AS track_type,
-                        m.id_track_responsible AS id_track_responsible,
-                        m.reminder_time AS reminder_time,
-						m.reminder_date AS reminder_date,
-                        m.is_agrees AS is_agrees,m.is_reminds AS is_reminds								
-						FROM dne_meetings m 
-						LEFT JOIN dne_chapters c ON m.id_chapter = c.id 
-						LEFT JOIN dne_tasks t ON m.id_task = t.id 
-						LEFT JOIN dne_progress_status ps ON m.id_progress_status = ps.id					
-						LEFT JOIN dne_responsibles r ON m.id_responsible = r.id '.
-						implode(' AND ',$where_part_sql_array);																				
-		
-		$responsibles_list = @$item->responsibles_list;
-		if(strpos($responsibles_list,$_POST['id_responsible']) == false){
-			if($responsibles_list == "")
-				$responsibles_list = $_POST['id_responsible'];
-			else 
-				$responsibles_list .= ','.$_POST['id_responsible'];
-		}
-		
-		$query = "UPDATE dne_custom_reports SET responsibles_list = ?,
-		          sql_str = ? WHERE id = ?";
-		$query = $mysqli->prepare($query);
-		$query->bind_param('ssi',$responsibles_list,$new_sql_str,$item->id);	
-		$query->execute();		
-	}
 }
 
 else if($_POST['field'] == "id_pass_on"){
 	$query = "UPDATE dne_meetings SET id_pass_on = ? WHERE id".@$where_ids;
 	$query = $mysqli->prepare($query);
-	$query->bind_param('i',$_POST['id_pass_on']);	
+	$query->bind_param('i',$_POST['id_pass_on']);
 	$query->execute();
-	
-	foreach($custom_reports as $item){
-		if(@$item->id_supplier == 0){
-			$position_where = strpos($item->sql_str,"WHERE");
-			$where_length = strlen($item->sql_str)-$position_where;
-			$where_part_sql = substr($item->sql_str,$position_where,$where_length); 
-			$where_part_sql_array = explode(' AND ',$where_part_sql);
-		
-			for($i=0;$i < sizeof($where_part_sql_array);$i++){	
-				if(strpos($where_part_sql_array[$i],'m.id_pass_on IN') !== false){
-					preg_match('/m\.id_pass_on\s+IN\s*\(([^)]+)\)/', $where_part_sql_array[$i], $matches);
-
-					if(!empty($matches[1])){
-						$pass_on_ids_array = explode(',', $matches[1]);
-
-						if(!in_array($_POST['id_pass_on'],$pass_on_ids_array)) 
-							$pass_on_ids_array[] = $_POST['id_pass_on'];
-			
-						$new_pass_on_in = 'm.id_pass_on IN('.implode(',',$pass_on_ids_array).')';
-						$where_part_sql_array[$i] = preg_replace('/m\.id_pass_on\s+IN\s*\(([^)]+)\)/',$new_pass_on_in,$where_part_sql_array[$i]);
-					}
-				}
-			}
-		
-			$new_sql_str = 'SELECT c.name AS name,m.id AS id,
-							m.id_user AS id_user,
-							m.id_task_type AS id_task_type,
-							m.id_chapter AS id_chapter,m.subject AS subject,
-							m.ids_rdv AS ids_rdv,m.area,m.description,
-							m.id_task,m.id_responsible,m.id_pass_on,
-							m.task_creation_date,m.destination_date,
-							m.id_progress_status,
-							m.updated_date AS updated_date,
-							m.image1 AS image1,
-							m.is_appears_img1 AS is_appears_img1,
-							m.image1_width AS image1_width,
-							m.image1_height AS image1_height,
-							m.image2 AS image2,
-							m.is_appears_img2 AS is_appears_img2,
-							m.image2_width AS image2_width,
-							m.image2_height AS image2_height,
-							m.is_change_row_style AS is_change_row_style,
-							m.track_type AS track_type,
-							m.id_track_responsible AS id_track_responsible,
-							m.reminder_time AS reminder_time,
-							m.reminder_date AS reminder_date,
-							m.is_agrees AS is_agrees,m.is_reminds AS is_reminds									
-							FROM dne_meetings m 
-							LEFT JOIN dne_chapters c ON m.id_chapter = c.id 
-							LEFT JOIN dne_tasks t ON m.id_task = t.id 
-							LEFT JOIN dne_progress_status ps ON m.id_progress_status = ps.id					
-							LEFT JOIN dne_responsibles r ON m.id_responsible = r.id '.
-							implode(' AND ',$where_part_sql_array);
-
-			$pass_ons_list = @$item->pass_ons_list;
-			if(strpos($pass_ons_list,$_POST['id_pass_on']) == false){
-				if($pass_ons_list == "")
-					$pass_ons_list = $_POST['id_pass_on'];
-			else 
-			   $pass_ons_list .= ','.$_POST['id_pass_on'];
-			}
-
-			$query = "UPDATE dne_custom_reports SET pass_ons_list = ?,
-					  sql_str = ? WHERE id = ?";
-			$query = $mysqli->prepare($query);
-			$query->bind_param('ssi',$pass_ons_list,$new_sql_str,$item->id);	
-			$query->execute();	
-		}
-	}
 }
 
 else if($_POST['field'] == "task_creation_date"){

@@ -1154,6 +1154,21 @@ include 'menu_tasks.php';
 											</select>
 										</div>
 									</div> |
+									<div class="alignCenter">
+										<strong class="fontSize10"><?= $lang == 'HE' ? 'להדגיש' : 'Highlight' ?></strong>
+										<br/>
+										<select id="period_new_tasks_toolbar" class="height26" style="width:auto;" dir="<?= $lang == 'HE' ? 'rtl' : 'ltr' ?>">
+											<option value="0"          <?= @$period_new_tasks == 0            ? 'selected' : '' ?>><?= $lang == 'HE' ? 'לא'       : 'Off'      ?></option>
+											<option value="today"      <?= @$period_new_tasks == 'today'      ? 'selected' : '' ?>><?= $lang == 'HE' ? 'היום'     : 'Today'    ?></option>
+											<option value="three_days" <?= @$period_new_tasks == 'three_days' ? 'selected' : '' ?>><?= $lang == 'HE' ? '3 ימים'   : '3 days'   ?></option>
+											<option value="one_week"   <?= @$period_new_tasks == 'one_week'   ? 'selected' : '' ?>><?= $lang == 'HE' ? 'שבוע'     : '1 week'   ?></option>
+											<option value="two_weeks"  <?= @$period_new_tasks == 'two_weeks'  ? 'selected' : '' ?>><?= $lang == 'HE' ? 'שבועיים'  : '2 weeks'  ?></option>
+											<option value="one_month"  <?= @$period_new_tasks == 'one_month'  ? 'selected' : '' ?>><?= $lang == 'HE' ? 'חודש'     : '1 month'  ?></option>
+											<option value="two_months" <?= @$period_new_tasks == 'two_months' ? 'selected' : '' ?>><?= $lang == 'HE' ? 'חדשיים'   : '2 months' ?></option>
+											<option value="one_year"   <?= @$period_new_tasks == 'one_year'   ? 'selected' : '' ?>><?= $lang == 'HE' ? 'שנה'      : '1 year'   ?></option>
+											<option value="two_years"  <?= @$period_new_tasks == 'two_years'  ? 'selected' : '' ?>><?= $lang == 'HE' ? 'שנתיים'   : '2 years'  ?></option>
+										</select>
+									</div> |
 									<div class="btn-group btn-group-toggle width70" data-toggle="buttons">
 										<div class="btn-group btn-group-toggle" data-toggle="buttons" style="direction:ltr">
 											<label class="btn btn-primary fontSize9 borderRadius10 height20 active">
@@ -2707,27 +2722,7 @@ include 'menu_tasks.php';
 					<div class="modal-body">	
 					    <div id="modalContent">	        
 							<form>
-                                <div class="row <?=@$dir?> marginTop10">
-									<div class="col-12">					
-										<strong>להדגיש משימות חדשות בצבע ?</strong>
-									</div>
-								</div>
-								<div class="row <?=@$dir?> marginTop10">
-									<div class="col-12">
-										<select id="period_new_tasks_popup" class="width120 height26">
-											<option value="0" <?php if(@$period_new_tasks == 0) echo 'selected'?>>לא להדגיש</option>
-											<option value="today" <?php if(@$period_new_tasks == 'today') echo 'selected'?>>היום</option>
-											<option value="three_days" <?php if(@$period_new_tasks == 'three_days') echo 'selected'?>>3 ימים</option>
-											<option value="one_week" <?php if(@$period_new_tasks == 'one_week') echo 'selected'?>>שבוע</option>
-											<option value="two_weeks" <?php if(@$period_new_tasks == 'two_weeks') echo 'selected'?>>שבועיים</option>
-											<option value="one_month" <?php if(@$period_new_tasks == 'one_month') echo 'selected'?>>חודש</option>
-											<option value="two_months" <?php if(@$period_new_tasks == 'two_months') echo 'selected'?>>חדשיים</option>
-											<option value="one_year" <?php if(@$period_new_tasks == 'one_year') echo 'selected'?>>שנה</option>
-											<option value="two_years" <?php if(@$period_new_tasks == 'two_years') echo 'selected'?>>שנתיים</option>
-										</select>
-									</div>
-								</div>
-								<div class="row marginTop5 <?=@$dir?>">
+                                <div class="row marginTop5 <?=@$dir?>">
 									<div class="col-12">															
 							           <strong>בחירת שדות</strong>
 								    </div>
@@ -3554,7 +3549,11 @@ $(document).ready(function(){
 	});
 	
 	$("#toggle_switch_colors").on("change", function(){
-	   setReportData('colors');	
+	   setReportData('colors');
+	});
+
+	$('#period_new_tasks_toolbar').on('change', function(){
+	   setReportData('highlight');
 	});
 	
 	const trackingKey = 'track_off_' + reportId;
@@ -4448,7 +4447,11 @@ function setReportData(field){
 		let is_colors = $("#toggle_switch_colors").is(":checked") ? 1 : 0;
 		form_data.append('is_colors',is_colors);
 	}
-	
+
+	if(field == 'highlight'){
+		form_data.append('period_new_tasks', $('#period_new_tasks_toolbar').val());
+	}
+
 	if(field == 'table_view'){
 		let columns_list = '';
 		$('#columns_list:checked').each(function(i){
@@ -4456,7 +4459,7 @@ function setReportData(field){
 		});
 		columns_list = columns_list.substring(0,columns_list.length - 1);
 		
-		form_data.append('period_new_tasks',$('#period_new_tasks_popup').val());
+		form_data.append('period_new_tasks',$('#period_new_tasks_toolbar').val());
 	    form_data.append('columns_list',columns_list);
 	}
 	

@@ -549,24 +549,6 @@ else {
 		$where_part_sql = substr($item->sql_str,$position_where,$where_length); 
 		$where_part_sql_array = explode(' AND ',$where_part_sql);
 		
-		$allow = true;
-		if($item->id_supplier > 0){
-			$query = "SELECT * FROM dne_responsibles WHERE id_projects_suppliers = ?";
-			$query = $mysqli->prepare($query);
-			$query->bind_param('i',$item->id_supplier);   
-			$query->execute();
-			$query->store_result();
-			$project_responsibles = fetch($query);
-			$project_responsibles_array = array();
-            					
-		    foreach($project_responsibles as $item){
-				array_push($project_responsibles_array,$item->id);
-			}
-
-            if(!in_array($_POST['id_responsible'],$project_responsibles_array))
-				$allow = false;			
-		}
-		
 		for($i=0;$i < sizeof($where_part_sql_array);$i++){
 			if(strpos($where_part_sql_array[$i],'id_chapter')!= false){
 				$position_chapter_in = strpos($where_part_sql_array[$i],"IN(");
@@ -591,57 +573,6 @@ else {
 				$where_part_sql_array[$i] = $new_task_in;             						   
 			}
 			
-			if(@$item->and_or_responsibles == "AND"){
-				if(strpos($where_part_sql_array[$i],'id_responsible') !== false) {
-					$position_responsible_in = strpos($where_part_sql_array[$i], "IN(");
-					$where_responsible_in_length = strlen($where_part_sql_array[$i]) - $position_responsible_in;
-					$where_part_responsible_in = substr($where_part_sql_array[$i], $position_responsible_in, $where_responsible_in_length);
-					$responsible_ids = substr($where_part_responsible_in, 3, -1); 
-
-					if($allow && strpos($responsible_ids, $_POST['id_responsible']) == false) 
-					   $responsible_ids .= ','.$_POST['id_responsible'];	
-					$where_part_sql_array[$i] = 'm.id_responsible IN('.$responsible_ids .')';
-				}
-				if(strpos($where_part_sql_array[$i],'id_pass_on') !== false) {
-					$position_pass_on_in = strpos($where_part_sql_array[$i], "IN(");
-					$where_pass_on_in_length = strlen($where_part_sql_array[$i]) - $position_pass_on_in;
-					$where_part_pass_on_in = substr($where_part_sql_array[$i], $position_pass_on_in, $where_pass_on_in_length);
-					$pass_on_ids = substr($where_part_pass_on_in, 3, -1); 
-					
-					if($allow && strpos($pass_on_ids, $_POST['id_pass_on']) == false) 
-						$pass_on_ids .= ',' . $_POST['id_pass_on'];
-					$where_part_sql_array[$i] = 'm.id_pass_on IN('.$pass_on_ids .')';
-				}
-			}
-            else {
-				if(strpos($where_part_sql_array[$i],'id_responsible IN') !== false || strpos($where_part_sql_array[$i],'id_pass_on IN') !== false) {
-					$responsible_ids = '';				
-					if($allow && strpos($where_part_sql_array[$i],'id_responsible IN') !== false) {
-						$position_responsible_in = strpos($where_part_sql_array[$i], "id_responsible IN(") + strlen("id_responsible IN(");
-						$responsible_ids_part = substr($where_part_sql_array[$i], $position_responsible_in);
-						$responsible_ids = substr($responsible_ids_part, 0, strpos($responsible_ids_part, ')'));
-					}
-
-					$pass_on_ids = '';
-					if($allow && strpos($where_part_sql_array[$i],'id_pass_on IN') !== false) {
-						$position_pass_on_in = strpos($where_part_sql_array[$i], "id_pass_on IN(") + strlen("id_pass_on IN(");
-						$pass_on_ids_part = substr($where_part_sql_array[$i], $position_pass_on_in);
-						$pass_on_ids = substr($pass_on_ids_part, 0, strpos($pass_on_ids_part, ')'));
-					}
-
-					$all_ids = array_filter(array_merge(
-						explode(',', $responsible_ids),
-						explode(',', $pass_on_ids)
-					));
-
-					if(!in_array($_POST['id_responsible'], $all_ids)) {
-						$all_ids[] = $_POST['id_responsible'];
-					}
-
-					$unique_ids = implode(',',array_unique($all_ids));
-					$where_part_sql_array[$i] = '(m.id_responsible IN('.$unique_ids .') OR m.id_pass_on IN('.$unique_ids.'))';
-				}
-			}				
 		}
 		
 		$new_sql_str = 'SELECT c.name AS name,m.id AS id,
@@ -688,30 +619,11 @@ else {
 				$tasks_list .= ','.$_POST['id_task'];
 		}
 		
-		$responsibles_list = @$item->responsibles_list;
-		if(strpos($responsibles_list,$_POST['id_responsible']) == false){
-			if($responsibles_list == "")
-				$responsibles_list = $_POST['id_responsible'];
-			else 
-				$responsibles_list .= ','.$_POST['id_responsible'];
-		}
-		
-		$pass_ons_list = @$item->pass_ons_list;
-		if(strpos($pass_ons_list,$_POST['id_pass_on']) == false){
-			if($pass_ons_list == "")
-				$pass_ons_list = $_POST['id_pass_on'];
-			else 
-			   $pass_ons_list .= ','.$_POST['id_pass_on'];
-		}
-		
 		$query = "UPDATE dne_custom_reports SET chapters_list = ?,
-				  tasks_list = ?,responsibles_list = ?,pass_ons_list = ?,
-				  sql_str = ? WHERE id = ?";
+				  tasks_list = ?,sql_str = ? WHERE id = ?";
 		$query = $mysqli->prepare($query);
-		$query->bind_param('sssssi',$chapters_list,$tasks_list,
-						   $responsibles_list,$pass_ons_list,
-						   $new_sql_str,$item->id);	
-		$query->execute();		
+		$query->bind_param('sssi',$chapters_list,$tasks_list,$new_sql_str,$item->id);
+		$query->execute();
 	}
 }
 ?>
