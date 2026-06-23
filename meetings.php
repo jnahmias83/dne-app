@@ -4488,7 +4488,7 @@ function setCurrentReportSession(custom_report_id){
     form_data.append('id_project',$('#project_id').val());
     form_data.append('id_custom_report',custom_report_id);
 
-	const isRdvContext = $('#is_specific_filter').val() == '1' && $('#id_rdv_report').val();
+	const isRdvContext = parseInt($('#id_rdv_report').val()) > 0;
 	if(isRdvContext){
 		form_data.append('rdv_override', '1');
 		form_data.append('is_images',       $('#toggle_switch_images').is(':checked') ? 1 : 0);
