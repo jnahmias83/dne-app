@@ -1821,7 +1821,19 @@ include 'menu_tasks.php';
 												$end_new_tasks_date = date('Y-m-d',strtotime($task_creation_date . '+2 years'));
                                                 $end_updated_date = date('Y-m-d',strtotime($updated_date . '+2 years'));
 											}
-											if(empty($task_creation_date)) $end_new_tasks_date = '0000-00-00';
+											if(empty($task_creation_date)){
+												$hl = (!empty($updated_date) && $updated_date != '0000-00-00') ? $updated_date : '';
+												if(empty($hl)) $end_new_tasks_date = '0000-00-00';
+												elseif(@$period_new_tasks == 'today')       $end_new_tasks_date = $hl;
+												elseif(@$period_new_tasks == 'three_days')  $end_new_tasks_date = date('Y-m-d',strtotime($hl.'+3 days'));
+												elseif(@$period_new_tasks == 'one_week')    $end_new_tasks_date = date('Y-m-d',strtotime($hl.'+7 days'));
+												elseif(@$period_new_tasks == 'two_weeks')   $end_new_tasks_date = date('Y-m-d',strtotime($hl.'+14 days'));
+												elseif(@$period_new_tasks == 'one_month')   $end_new_tasks_date = date('Y-m-d',strtotime($hl.'+1 month'));
+												elseif(@$period_new_tasks == 'two_months')  $end_new_tasks_date = date('Y-m-d',strtotime($hl.'+2 months'));
+												elseif(@$period_new_tasks == 'one_year')    $end_new_tasks_date = date('Y-m-d',strtotime($hl.'+1 year'));
+												elseif(@$period_new_tasks == 'two_years')   $end_new_tasks_date = date('Y-m-d',strtotime($hl.'+2 years'));
+												else $end_new_tasks_date = '0000-00-00';
+											}
 
 											$td_count_bgcolor = 'background-color:white';										
 											if(@$is_colors && @$progress_status != 'בוצע/נמסר' && @$task != 'בקרת איכות'){
@@ -2404,7 +2416,19 @@ include 'menu_tasks.php';
 													$end_new_tasks_date = date('Y-m-d',strtotime($task_creation_date . '+2 years'));
 													$end_updated_date = date('Y-m-d',strtotime($updated_date . '+2 years'));
 												}
-												if(empty($task_creation_date)) $end_new_tasks_date = '0000-00-00';
+												if(empty($task_creation_date)){
+													$hl = (!empty($updated_date) && $updated_date != '0000-00-00') ? $updated_date : '';
+													if(empty($hl)) $end_new_tasks_date = '0000-00-00';
+													elseif(@$period_new_tasks == 'today')       $end_new_tasks_date = $hl;
+													elseif(@$period_new_tasks == 'three_days')  $end_new_tasks_date = date('Y-m-d',strtotime($hl.'+3 days'));
+													elseif(@$period_new_tasks == 'one_week')    $end_new_tasks_date = date('Y-m-d',strtotime($hl.'+7 days'));
+													elseif(@$period_new_tasks == 'two_weeks')   $end_new_tasks_date = date('Y-m-d',strtotime($hl.'+14 days'));
+													elseif(@$period_new_tasks == 'one_month')   $end_new_tasks_date = date('Y-m-d',strtotime($hl.'+1 month'));
+													elseif(@$period_new_tasks == 'two_months')  $end_new_tasks_date = date('Y-m-d',strtotime($hl.'+2 months'));
+													elseif(@$period_new_tasks == 'one_year')    $end_new_tasks_date = date('Y-m-d',strtotime($hl.'+1 year'));
+													elseif(@$period_new_tasks == 'two_years')   $end_new_tasks_date = date('Y-m-d',strtotime($hl.'+2 years'));
+													else $end_new_tasks_date = '0000-00-00';
+												}
 
 												if($is_colors && @$progress_status != 'בוצע/נמסר' && @$task != 'בקרת איכות') {
 													if(strlen(@$period_new_tasks) > 1 && (date('Y-m-d') <= $end_new_tasks_date)){			
