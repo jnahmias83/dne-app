@@ -1294,10 +1294,13 @@ function redirectUrl(meeting_id){
 				let url1 = 'meetings.php?project_id=' + $('#project_id').val();
 				if ($('#is_specific_filter').val())
 					url1 += '&is_specific_filter=1';
-				
+
 				if ($('#id_rdv').val() > 0)
 					url1 += '&id_rdv=' + $('#id_rdv').val();
-				
+
+				if ($('#lang').val())
+					url1 += '&lang=' + $('#lang').val();
+
 				location.href = url1;
 			},
 		});
@@ -1397,15 +1400,15 @@ $('#cancel_btn').click(function(){
 	   let url1 = 'meetings.php?project_id='+$('#project_id').val();
 	   if($('#is_specific_filter').val())
 		   url1+= '&is_specific_filter=1';
-	   
 	   if($('#id_rdv').val() > 0)
 		   url1+= '&id_rdv='+$('#id_rdv').val();
-	 
-	   location.href = url1;   
+	   if($('#lang').val())
+		   url1+= '&lang='+$('#lang').val();
+	   location.href = url1;
     }
 	else if(($('#fromProjectsList').val() == 1)){
 		let url2 = 'projects.php';
-		location.href = url2;	
+		location.href = url2;
 	}
 	else {
 		let url3 = 'meetings.php?project_id='+$('#project_id').val();
@@ -1415,7 +1418,9 @@ $('#cancel_btn').click(function(){
 		   url3+= '&is_specific_filter=1';
 		if($('#id_rdv').val() > 0)
 		  url3+= '&id_rdv='+$('#id_rdv').val();
-		location.href = url3;	
+		if($('#lang').val())
+		  url3+= '&lang='+$('#lang').val();
+		location.href = url3;
 	}
 })
 </script>
