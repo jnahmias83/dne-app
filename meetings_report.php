@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once('tcpdf_min/config/tcpdf_config.php');
 require_once('tcpdf_min/tcpdf.php');
 session_start();
@@ -1036,6 +1036,7 @@ foreach($chapters as $item){
 				$end_new_tasks_date = date('Y-m-d',strtotime($task_creation_date . '+2 years'));
 				$end_updated_date = date('Y-m-d',strtotime($updated_date . '+2 years'));												
 			}
+			if(empty($task_creation_date)) $end_new_tasks_date = '0000-00-00';
 											
 			if(@$is_colors && @$progress_status != 'בוצע/נמסר' && @$task != 'בקרת איכות'){
 				if(strlen(@$period_new_tasks) > 1 && (date('Y-m-d') <= $end_new_tasks_date)){			
@@ -1513,6 +1514,7 @@ foreach($chapters as $item) {
 				$end_new_tasks_date = date('Y-m-d',strtotime($task_creation_date . '+2 years'));
 				$end_updated_date = date('Y-m-d',strtotime($updated_date . '+2 years'));												
 			}
+			if(empty($task_creation_date)) $end_new_tasks_date = '0000-00-00';
 											
 			if(@$is_colors && @$progress_status != 'בוצע/נמסר' && @$task != 'בקרת איכות') {
 				if(strlen(@$period_new_tasks) > 1 && (date('Y-m-d') <= $end_new_tasks_date)){			

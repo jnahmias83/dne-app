@@ -43,8 +43,13 @@ if(@$_POST['rdv_override'] && @$_POST['id_custom_report']){
 	$v_period    = (string)$_POST['period_new_tasks'];
 	$v_columns   = (string)$_POST['columns_list'];
 	$v_cr_id     = (int)$_POST['id_custom_report'];
-	$q = $mysqli->prepare("UPDATE dne_custom_reports SET is_images=?, is_colors=?, lang=?, period_new_tasks=?, columns_list=? WHERE id=?");
-	$q->bind_param('iisssi', $v_is_images, $v_is_colors, $v_lang, $v_period, $v_columns, $v_cr_id);
+	if($v_columns !== ''){
+		$q = $mysqli->prepare("UPDATE dne_custom_reports SET is_images=?, is_colors=?, lang=?, period_new_tasks=?, columns_list=? WHERE id=?");
+		$q->bind_param('iisssi', $v_is_images, $v_is_colors, $v_lang, $v_period, $v_columns, $v_cr_id);
+	} else {
+		$q = $mysqli->prepare("UPDATE dne_custom_reports SET is_images=?, is_colors=?, lang=?, period_new_tasks=? WHERE id=?");
+		$q->bind_param('iissi', $v_is_images, $v_is_colors, $v_lang, $v_period, $v_cr_id);
+	}
 	$q->execute();
 }
 ?>
