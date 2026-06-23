@@ -2,8 +2,6 @@
 session_start();
 include 'functions/functions.php';
 
-print_r($_POST);
-
 $zero = 0;
 $query = "UPDATE dne_log_current_report SET id_custom_report = ?,
           id_rdv_report = ? WHERE id_project = ?";
@@ -35,4 +33,17 @@ $_SESSION['filter_is_colors'] = '';
 $_SESSION['filter_lang'] = '';
 $_SESSION['filter_period_new_tasks'] = 'empty';
 $_SESSION['filter_columns_list'] = '';
+
+if(@$_POST['rdv_override'] && @$_POST['id_custom_report']){
+	$q = $mysqli->prepare("UPDATE dne_custom_reports SET is_images=?, is_colors=?, lang=?, period_new_tasks=?, columns_list=? WHERE id=?");
+	$q->bind_param('iisssi',
+		$_POST['is_images'],
+		$_POST['is_colors'],
+		$_POST['lang'],
+		$_POST['period_new_tasks'],
+		$_POST['columns_list'],
+		$_POST['id_custom_report']
+	);
+	$q->execute();
+}
 ?>

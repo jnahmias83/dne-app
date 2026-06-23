@@ -4488,6 +4488,16 @@ function setCurrentReportSession(custom_report_id){
     form_data.append('id_project',$('#project_id').val());
     form_data.append('id_custom_report',custom_report_id);
 
+	const isRdvContext = $('#is_specific_filter').val() == '1' && $('#id_rdv_report').val();
+	if(isRdvContext){
+		form_data.append('rdv_override', '1');
+		form_data.append('is_images',       $('#toggle_switch_images').is(':checked') ? 1 : 0);
+		form_data.append('is_colors',       $('#toggle_switch_colors').is(':checked') ? 1 : 0);
+		form_data.append('lang',            $('#select_lang').val());
+		form_data.append('period_new_tasks',$('#period_new_tasks_toolbar').val());
+		form_data.append('columns_list',    $('#columns_list').val());
+	}
+
 	$.ajax({
 		type: 'POST',
 		url: 'set_current_report_session.php',
@@ -4495,7 +4505,16 @@ function setCurrentReportSession(custom_report_id){
 		cache: false,
 		processData: false,
 		contentType: false,
-		success: function(data){  
+		success: function(data){
+			if(isRdvContext){
+				const rdvId = $('#report_type').val();
+				const crId  = 'general_' + custom_report_id;
+				['full_short','is_data_sorted','sort_select_1','sort_select_2','sort_select_3']
+					.forEach(function(k){
+						const val = localStorage.getItem(k + '_' + rdvId);
+						if(val !== null) localStorage.setItem(k + '_' + crId, val);
+					});
+			}
 			location.href = 'meetings.php?project_id='+$('#project_id').val();
 		}
 	});
