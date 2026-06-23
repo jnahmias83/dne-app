@@ -2094,9 +2094,19 @@ $(document).ready(function(){
 
 	$('#modalTaskFollowupActions').on('hidden.bs.modal', function (){
 		localStorage.removeItem('is_modal_task_actions_opened');
+		const mid = localStorage.getItem('meeting_id');
+		if(mid){
+			$('tr.task-row-highlight').removeClass('task-row-highlight');
+			const $row = $('.task_name[data-meetingid="'+mid+'"]').closest('tr');
+			if($row.length){
+				$row.addClass('task-row-highlight');
+				setTimeout(function(){ $row[0].scrollIntoView({block:'center'}); }, 300);
+			}
+		}
 	});
 	
-	if(localStorage.getItem("is_modal_tasks_hystory_opened")){
+	if(localStorage.getItem("is_modal_tasks_hystory_opened") === "true"){
+		localStorage.removeItem('is_modal_tasks_hystory_opened');
 		meeting_id = localStorage.getItem("meeting_id");
 		project_id = localStorage.getItem("project_id");
 		
@@ -2120,7 +2130,6 @@ $(document).ready(function(){
 	   $('#modalContent').append("<input type='hidden' id='hidden_meeting_id' value='"+meeting_id+"'><input type='hidden' id='hidden_project_id' value='"+project_id+"'>");
 	   $('#modalTaskFollowupActions').modal('hide');
 	   $('#modalHistoryTasks').modal('show');
-	   localStorage.removeItem('is_modal_tasks_hystory_opened');
 	};
 
 	$('[id="continuous_btn"]').on('click', function(){
@@ -2782,6 +2791,7 @@ function setListParam(list){
 
 $(window).on('load', function(){
     if(localStorage.getItem("is_modal_task_actions_opened") === "true"){
+		localStorage.removeItem('is_modal_task_actions_opened');
 		let project_id = localStorage.getItem("project_id");
 		let meeting_id = localStorage.getItem("meeting_id");
 		let iteration = localStorage.getItem("iteration");
@@ -2957,8 +2967,13 @@ $(document).on('click', '.drag-task,.delete-task', function(event){
     }
 
     .modalTaskFollowupActions .modal-content {
-        max-height: 80vh !important;    
-        overflow-y: auto !important;     
+        max-height: 80vh !important;
+        overflow-y: auto !important;
     }
+}
+
+tr.task-row-highlight td {
+    background-color: #d0e8ff !important;
+    transition: background-color 0.3s;
 }
 </style>
