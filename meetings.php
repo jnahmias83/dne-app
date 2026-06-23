@@ -464,6 +464,9 @@ else if($id_rdv_report > 0){
 }
 
 $columns_list_array = explode(',',@$columns_list);
+if(empty(array_filter($columns_list_array))){
+	$columns_list_array = ['subject','area','description','_task','responsible','pass on','task creation','destination date','progress status'];
+}
 
 if (empty($lang))
 	$lang = @$project->lang;
