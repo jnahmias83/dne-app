@@ -1298,9 +1298,6 @@ function redirectUrl(meeting_id){
 				if ($('#id_rdv').val() > 0)
 					url1 += '&id_rdv=' + $('#id_rdv').val();
 
-				if ($('#lang').val())
-					url1 += '&lang=' + $('#lang').val();
-
 				location.href = url1;
 			},
 		});
@@ -1402,8 +1399,6 @@ $('#cancel_btn').click(function(){
 		   url1+= '&is_specific_filter=1';
 	   if($('#id_rdv').val() > 0)
 		   url1+= '&id_rdv='+$('#id_rdv').val();
-	   if($('#lang').val())
-		   url1+= '&lang='+$('#lang').val();
 	   location.href = url1;
     }
 	else if(($('#fromProjectsList').val() == 1)){
@@ -1418,8 +1413,6 @@ $('#cancel_btn').click(function(){
 		   url3+= '&is_specific_filter=1';
 		if($('#id_rdv').val() > 0)
 		  url3+= '&id_rdv='+$('#id_rdv').val();
-		if($('#lang').val())
-		  url3+= '&lang='+$('#lang').val();
 		location.href = url3;
 	}
 })

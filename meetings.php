@@ -468,12 +468,12 @@ $columns_list_array = explode(',',@$columns_list);
 if (empty($lang))
 	$lang = @$project->lang;
 
-// Choix explicite de l'utilisateur via le dropdown → sauvegarder en session
-if (!empty(@$_GET['lang'])) {
+// Sauvegarder en session UNIQUEMENT quand l'utilisateur change le dropdown (lang_origin=user)
+if (!empty(@$_GET['lang']) && @$_GET['lang_origin'] === 'user') {
     $_SESSION['meetings_forced_lang'] = $_GET['lang'];
 }
 
-// La langue forcée (dropdown) prend le dessus sur la langue du rapport/rdv
+// La langue choisie par l'utilisateur prend le dessus sur la langue du rapport/rdv
 if (!empty($_SESSION['meetings_forced_lang'])) {
     $lang = $_SESSION['meetings_forced_lang'];
 } elseif (empty($lang)) {
@@ -1842,7 +1842,7 @@ include 'menu_tasks.php';
 												</td>
 												<td id="td_count_<?=@$meeting_id?>" class="alignCenter <?=@$border_cell_number?>" style="<?=@$td_count_bgcolor?>">
 													<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;height:100%;width:100%;">
-														<a id="task_actions_<?=@$meeting_id?>" data-projectid="<?=@$project_id?>" data-lang="<?=@$lang?>" data-meetingid="<?=@$meeting_id?>" data-iteration=<?=@$iteration?> data-userid="<?=@$user_id?>" data-ispriority="<?=@$is_priority?>" data-remark="<?=@$remark?>" data-chapter="<?=@$chapter_name?>" data-name="<?=@$subject?>" data-area="<?=@$area?>" data-recipient="<?=@$responsible_email?>" data-responsibleid="<?=@$responsible_id?>" data-destinationdate="<?=@$destination_date?>" data-progresstatusid="<?=@$progress_status_id?>" data-trackresponsibleid="<?=@$id_track_responsible?>" data-tracktype="<?=@$track_type?>" data-reminderdate="<?=@$reminder_date?>" data-remindertime="<?=@$reminder_time?>" class="text-decoration-none cursor-pointer fontSize12 padding-7x-3y font-weight-bold borderRadius10" style="<?=@$num_bgcolor?>!important;<?=@$num_border_color?>;display:inline-block;"><?=@$count?></a><?php if(@$track_type && @$track_responsible_name != ''): ?><span class="badge-circle" style="background-color:#e53935;width:18px;height:18px;font-size:9px;display:inline-flex;box-shadow:none;" title="<?=htmlspecialchars(@$track_responsible_name)?>"><?=mb_strtoupper(mb_substr(@$track_responsible_name, 0, 2, 'UTF-8'))?></span><?php endif; ?>
+														<a id="task_actions_<?=@$meeting_id?>" data-projectid="<?=@$project_id?>" data-lang="<?=@$project->lang?>" data-meetingid="<?=@$meeting_id?>" data-iteration=<?=@$iteration?> data-userid="<?=@$user_id?>" data-ispriority="<?=@$is_priority?>" data-remark="<?=@$remark?>" data-chapter="<?=@$chapter_name?>" data-name="<?=@$subject?>" data-area="<?=@$area?>" data-recipient="<?=@$responsible_email?>" data-responsibleid="<?=@$responsible_id?>" data-destinationdate="<?=@$destination_date?>" data-progresstatusid="<?=@$progress_status_id?>" data-trackresponsibleid="<?=@$id_track_responsible?>" data-tracktype="<?=@$track_type?>" data-reminderdate="<?=@$reminder_date?>" data-remindertime="<?=@$reminder_time?>" class="text-decoration-none cursor-pointer fontSize12 padding-7x-3y font-weight-bold borderRadius10" style="<?=@$num_bgcolor?>!important;<?=@$num_border_color?>;display:inline-block;"><?=@$count?></a><?php if(@$track_type && @$track_responsible_name != ''): ?><span class="badge-circle" style="background-color:#e53935;width:18px;height:18px;font-size:9px;display:inline-flex;box-shadow:none;" title="<?=htmlspecialchars(@$track_responsible_name)?>"><?=mb_strtoupper(mb_substr(@$track_responsible_name, 0, 2, 'UTF-8'))?></span><?php endif; ?>
 													</div>
 												</td>
 												
@@ -3521,6 +3521,7 @@ $(document).ready(function(){
 		let lang = $(this).val();
 		let url = new URL(window.location.href);
 		url.searchParams.set('lang', lang);
+		url.searchParams.set('lang_origin', 'user');
 		let meetingClass = null;
 
 		let $tr = $('tr.row-darken');
