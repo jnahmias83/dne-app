@@ -2417,15 +2417,21 @@ $(document).ready(function(){
 	}
 	let max_num_tasks = localStorage.getItem('max_num_tasks');
 	let max_limit = max_num_tasks !== null ? parseInt(max_num_tasks) : 0;
-	if(total_today_items > 0 && total_today_items > max_limit){
-		max_limit = max_num_tasks_options.find(o => o >= total_today_items) || max_num_tasks_options[max_num_tasks_options.length - 1];
-		$('#max_num_tasks').val(max_limit);
+	const max_available = max_num_tasks_options[max_num_tasks_options.length - 1];
+	if(max_limit > max_available){
+		max_limit = max_available;
 		localStorage.setItem('max_num_tasks', String(max_limit));
+	}
+	if(total_today_items > 0 && total_today_items > max_limit){
+		max_limit = max_num_tasks_options.find(o => o >= total_today_items) || max_available;
+		localStorage.setItem('max_num_tasks', String(max_limit));
+	}
+	if(max_limit > 0){
+		$('#max_num_tasks').val(max_limit);
+		$('.task_name[data-istodotoday="1"]').closest('tr').slice(max_limit).hide();
 	} else if(max_num_tasks !== null){
 		$('#max_num_tasks').val(max_num_tasks);
 	}
-	if(max_limit > 0)
-		$('.task_name[data-istodotoday="1"]').closest('tr').slice(max_limit).hide();
 	
 	let target = '';
 	let bgcolor = '';
