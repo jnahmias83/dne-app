@@ -2903,6 +2903,7 @@ function clearToDoToday(){
 		processData: false,
 		contentType: false,
 		success: function(data){
+			localStorage.removeItem('last_execution');
 			localStorage.setItem('time_tasks_appear',$('#time_tasks_appear').val());
 			localStorage.setItem('max_num_tasks',$('#max_num_tasks').val());
 			window.location.reload();
