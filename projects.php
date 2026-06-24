@@ -2405,13 +2405,19 @@ $(document).ready(function(){
 	if(time_tasks_appear !== null) 
 		$('#time_tasks_appear').val(time_tasks_appear);
 	
-	const max_num_tasks = localStorage.getItem('max_num_tasks');
-	if(max_num_tasks !== null){
+	const max_num_tasks_options = [5,10,15,20,25,30];
+	const total_today_items = $('.task_name[data-istodotoday="1"]').length;
+	let max_num_tasks = localStorage.getItem('max_num_tasks');
+	let max_limit = max_num_tasks !== null ? parseInt(max_num_tasks) : 0;
+	if(total_today_items > 0 && total_today_items > max_limit){
+		max_limit = max_num_tasks_options.find(o => o >= total_today_items) || max_num_tasks_options[max_num_tasks_options.length - 1];
+		$('#max_num_tasks').val(max_limit);
+		localStorage.setItem('max_num_tasks', String(max_limit));
+	} else if(max_num_tasks !== null){
 		$('#max_num_tasks').val(max_num_tasks);
-		const limit = parseInt(max_num_tasks);
-		if(limit > 0)
-			$('.task_name[data-istodotoday="1"]').closest('tr').slice(limit).hide();
 	}
+	if(max_limit > 0)
+		$('.task_name[data-istodotoday="1"]').closest('tr').slice(max_limit).hide();
 	
 	let target = '';
 	let bgcolor = '';
