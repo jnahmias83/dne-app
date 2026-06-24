@@ -2308,11 +2308,12 @@ $(document).ready(function(){
 			processData: false,
 			contentType: false,
 			success: function(data) {
+				data = data.trim();
 				if(data == 'exists')
 					alert("המשימה כבר נמצאת ברשימת To Do Today");
 				else if(data == 'maxnumtasksreached')
 					alert('הגעת למקסימום המשימות');
-				else if(data == 'enabledtodotoday') 
+				else if(data == 'enabledtodotoday')
 					alert("אינך אחראי למעקב הזה או/גם תאריך התזכורת לא עבר");
 				else {
 					localStorage.setItem('time_tasks_appear',$('#time_tasks_appear').val());
@@ -2337,11 +2338,12 @@ $(document).ready(function(){
 			processData: false,
 			contentType: false,
 			success: function(data) {
+				localStorage.setItem('last_execution', today);
 				localStorage.setItem('time_tasks_appear',$('#time_tasks_appear').val());
 				localStorage.setItem('max_num_tasks',$('#max_num_tasks').val());
 				window.location.reload();
-			}, 
-		});	
+			},
+		});
     });
 	
 	$('#div_time_tasks_appear').hide();
@@ -2362,7 +2364,6 @@ $(document).ready(function(){
 			success: function(data){
 				localStorage.setItem('time_tasks_appear',$('#time_tasks_appear').val());
 				localStorage.setItem('max_num_tasks',$('#max_num_tasks').val());
-				localStorage.setItem("last_execution", today);
 				window.location.reload();
 			},
 		});
@@ -2373,6 +2374,7 @@ $(document).ready(function(){
 
     if(last_execution !== today){
         refreshTodoToday();
+        localStorage.setItem("last_execution",today);
     }
 	
 	$('#max_num_tasks').on('change', function(){		
@@ -2404,8 +2406,12 @@ $(document).ready(function(){
 		$('#time_tasks_appear').val(time_tasks_appear);
 	
 	const max_num_tasks = localStorage.getItem('max_num_tasks');
-	if(max_num_tasks !== null) 
+	if(max_num_tasks !== null){
 		$('#max_num_tasks').val(max_num_tasks);
+		const limit = parseInt(max_num_tasks);
+		if(limit > 0)
+			$('.task_name[data-istodotoday="1"]').closest('tr').slice(limit).hide();
+	}
 	
 	let target = '';
 	let bgcolor = '';
@@ -2789,7 +2795,11 @@ $(document).ready(function(){
 				setData(current_meeting_id,'','update_task',0,0,'for_closing')
 			}
        });
-	}); 	
+	});
+
+	$(document).on('click', '.drag-task,.delete-task', function(event){
+		event.stopPropagation();
+	});
 });
 
 function setFilterParam(filter){ 
@@ -2885,9 +2895,6 @@ function toTasksList(id_project){
 	});
 }
 
-$(document).on('click', '.drag-task,.delete-task', function(event){
-    event.stopPropagation(); 
-});
 </script>
 
 <style>
