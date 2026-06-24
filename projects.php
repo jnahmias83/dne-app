@@ -2362,9 +2362,10 @@ $(document).ready(function(){
 			success: function(data){
 				localStorage.setItem('time_tasks_appear',$('#time_tasks_appear').val());
 				localStorage.setItem('max_num_tasks',$('#max_num_tasks').val());
+				localStorage.setItem("last_execution", today);
 				window.location.reload();
-			}, 
-		});	
+			},
+		});
 	}
 
     const today = new Date().toISOString().split('T')[0];
@@ -2372,7 +2373,6 @@ $(document).ready(function(){
 
     if(last_execution !== today){
         refreshTodoToday();
-        localStorage.setItem("last_execution",today);
     }
 	
 	$('#max_num_tasks').on('change', function(){		
