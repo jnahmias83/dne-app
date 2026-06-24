@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 include 'include/header.php';
 include 'functions/functions.php';
 
@@ -528,8 +528,8 @@ foreach($all_what_news as $wn){
 								<tr class="task-row fontSize13">	
 									<td>	
 										<a id="task_name_<?=@$ut->id?>" class="text-decoration-none w-100">
-											<div class="flex flex-wrap justify-content-center align-items-center task_name width100Percents cursor-pointer" data-projectnickname="<?=@$ut->p_nickname?>" data-meetingid="<?=@$ut->id?>" data-projectid="<?=@$ut->p_id?>" data-userid="<?=@$user_id?>" data-lang="<?=@$ut->p_lang?>" data-chapter="<?=@$ut->chapter_name?>" data-name="<?=@$ut->subject?>" data-area="<?=@$ut->area?>" data-recipient="<?=@$responsible_email?>" data-responsibleid="<?=@$ut->id_responsible?>" data-destinationdate="<?=@$ut->destination_date?>" data-progresstatusid="<?=@$ut->id_progress_status?>" data-ispriority="<?=@$ut->is_priority?>" data-trackresponsibleid="<?=@$id_track_responsible?>" data-tracktype="<?=@$track_type?>" data-reminderdate="<?=@$reminder_date?>" data-remindertime="<?=@$reminder_time?>" data-istodotoday="0">
-												<div class="width15Percents">
+											<div class="flex flex-wrap justify-content-center align-items-center task_name width100Percents cursor-pointer" data-projectnickname="<?=@$ut->p_nickname?>" data-meetingid="<?=@$ut->id?>" data-projectid="<?=@$ut->p_id?>" data-userid="<?=@$user_id?>" data-chapter="<?=@$ut->chapter_name?>" data-name="<?=@$ut->subject?>" data-area="<?=@$ut->area?>" data-recipient="<?=@$responsible_email?>" data-responsibleid="<?=@$ut->id_responsible?>" data-destinationdate="<?=@$ut->destination_date?>" data-progresstatusid="<?=@$ut->id_progress_status?>" data-ispriority="<?=@$ut->is_priority?>" data-trackresponsibleid="<?=@$id_track_responsible?>" data-tracktype="<?=@$track_type?>" data-reminderdate="<?=@$reminder_date?>" data-remindertime="<?=@$reminder_time?>" data-istodotoday="0">
+												<div class="width15Percents">		
 													<a class="drag-task cursor-pointer alignCenter text-decoration-none" data-id="<?=@$ut->id?>" data-listfrom="user_tasks">
 														<i class="fa-solid fa-thumbtack"></i>
 													</a>
@@ -642,7 +642,7 @@ foreach($all_what_news as $wn){
 								<tr class="task-row fontSize13">	
 									<td>
 										<a id="task_name_<?=@$at->id?>" class="text-decoration-none w-100">
-											<div class="flex flex-wrap justify-content-center align-items-center task_name cursor-pointer" data-projectnickname="<?=@$at->p_nickname?>" data-meetingid="<?=@$at->id?>" data-projectid="<?=@$at->p_id?>" data-userid="<?=@$user_id?>" data-lang="<?=@$at->p_lang?>" data-chapter="<?=@$at->chapter_name?>" data-name="<?=@$at->subject?>" data-area="<?=@$at->area?>" data-recipient="<?=@$responsible_email?>" data-responsibleid="<?=@$at->id_responsible?>" data-destinationdate="<?=@$at->destination_date?>" data-progresstatusid="<?=@$at->id_progress_status?>" data-ispriority="<?=@$at->is_priority?>" data-trackresponsibleid="<?=@$id_track_responsible?>" data-tracktype="<?=@$track_type?>" data-reminderdate="<?=@$reminder_date?>" data-remindertime="<?=@$reminder_time?>" data-istodotoday="0">
+											<div class="flex flex-wrap justify-content-center align-items-center task_name cursor-pointer" data-projectnickname="<?=@$at->p_nickname?>" data-meetingid="<?=@$at->id?>" data-projectid="<?=@$at->p_id?>" data-userid="<?=@$user_id?>" data-chapter="<?=@$at->chapter_name?>" data-name="<?=@$at->subject?>" data-area="<?=@$at->area?>" data-recipient="<?=@$responsible_email?>" data-responsibleid="<?=@$at->id_responsible?>" data-destinationdate="<?=@$at->destination_date?>" data-progresstatusid="<?=@$at->id_progress_status?>" data-ispriority="<?=@$at->is_priority?>" data-trackresponsibleid="<?=@$id_track_responsible?>" data-tracktype="<?=@$track_type?>" data-reminderdate="<?=@$reminder_date?>" data-remindertime="<?=@$reminder_time?>" data-istodotoday="0">
 												<div class="width15Percents">		
 													<a class="drag-task cursor-pointer alignCenter text-decoration-none" data-id="<?=@$at->id?>" data-listfrom="active_tracking">
 														<i class="fa-solid fa-thumbtack"></i>
@@ -793,21 +793,21 @@ foreach($all_what_news as $wn){
 									$tracking_data = '(';
 											
 								if($reminder_date != '0000-00-00')
-									$tracking_data .= smartDate($reminder_date);
-
+									$tracking_data .= substr($reminder_date,8,2).'/'.substr($reminder_date,5,2);
+								
 								if($reminder_date != '0000-00-00' && $track_responsible_name != '')
 									$tracking_data .= ',';
-
+								
 								if(@$track_responsible_name != '')
 									$tracking_data .= @$track_responsible_name;
-
+								
 								if($reminder_date != '0000-00-00' || @$track_responsible_name != '')
 									$tracking_data .= ')';
 								?>
-								<tr class="task-row fontSize13">
-									<td>
+								<tr class="task-row fontSize13">	
+									<td>										
 										<a id="task_name_<?=@$wn->id?>" class="text-decoration-none w-100 d-block">		
-											<div class="marginTop5 marginBottom5 flex flex-wrap justify-content-center align-items-center task_name width100Percents cursor-pointer" data-projectnickname="<?=@$wn->p_nickname?>" data-meetingid="<?=@$wn->id?>" data-projectid="<?=@$wn->p_id?>" data-userid="<?=@$user_id?>" data-lang="<?=@$wn->p_lang?>" data-chapter="<?=@$wn->chapter_name?>" data-name="<?=@$wn->subject?>" data-area="<?=@$wn->area?>" data-recipient="<?=@$responsible_email?>" data-responsibleid="<?=@$wn->id_responsible?>" data-destinationdate="<?=@$wn->destination_date?>" data-progresstatusid="<?=@$wn->id_progress_status?>" data-ispriority="<?=@$wn->is_priority?>" data-trackresponsibleid="<?=@$id_track_responsible?>" data-tracktype="<?=@$track_type?>" data-reminderdate="<?=@$reminder_date?>" data-remindertime="<?=@$reminder_time?>" data-istodotoday="0">
+											<div class="marginTop5 marginBottom5 flex flex-wrap justify-content-center align-items-center task_name width100Percents cursor-pointer" data-projectnickname="<?=@$wn->p_nickname?>" data-meetingid="<?=@$wn->id?>" data-projectid="<?=@$wn->p_id?>" data-userid="<?=@$user_id?>" data-chapter="<?=@$wn->chapter_name?>" data-name="<?=@$wn->subject?>" data-area="<?=@$wn->area?>" data-recipient="<?=@$responsible_email?>" data-responsibleid="<?=@$wn->id_responsible?>" data-destinationdate="<?=@$wn->destination_date?>" data-progresstatusid="<?=@$wn->id_progress_status?>" data-ispriority="<?=@$wn->is_priority?>" data-trackresponsibleid="<?=@$id_track_responsible?>" data-tracktype="<?=@$track_type?>" data-reminderdate="<?=@$reminder_date?>" data-remindertime="<?=@$reminder_time?>" data-istodotoday="0">
 												<div class="width15Percents">	
 													<span class="marginRight5 colorWhite bgColor-1a5276 border-black borderRadius10 padding-4x-4y fw-bold fontSize9">
 													  <?=@$wn->p_nickname?>
@@ -847,7 +847,8 @@ foreach($all_what_news as $wn){
 																	</span>
 																	<span class="color-19bf42 dir-rtl font-weight-bold unicode-bidi-embed">
 																		<?php 
-																		echo smartDate(@$wn->lmu_action_date)?>
+																		$action_date = new DateTime(@$wn->lmu_action_date);
+																		echo $action_date->format("d M")?>
 																	</span>		
 																	<?php if(strlen($progress_status_name) > 2){ ?>
 																		&nbsp;-
@@ -859,7 +860,8 @@ foreach($all_what_news as $wn){
 																	    if($destination_date != '0000-00-00'){ ?>
 																		  &nbsp;-
 																			<span class="dir-rtl unicode-bidi-embed color-19bf42 font-weight-bold">
-																				<?php echo '(יעד - '.smartDate($destination_date).')'?>
+																				<?php $destination_date = new DateTime(@$destination_date);
+																					echo '(יעד - '.$destination_date->format("d M").')'?>
 																			</span> 
 																	<?php } ?>															
 																</div>
@@ -875,7 +877,9 @@ foreach($all_what_news as $wn){
 																	<?=@$wn->user_nickname?>
 																</span>		
 																<span class="colorRed dir-rtl font-weight-bold unicode-bidi-embed">
-																	<?php echo smartDate(@$wn->lmt_action_date)?> :
+																	<?php 
+																	$action_date = new DateTime(@$wn->lmt_action_date);
+																	echo $action_date->format("d M")?> :
 																</span>												
 																<span class="colorRed dir-rtl unicode-bidi-embed display-inline-block font-weight-bold">
 																	<?=html_entity_decode(@$remark)?>
@@ -1124,7 +1128,7 @@ foreach($all_what_news as $wn){
 														<td>
 														    <input type="hidden" id="p_nickname_<?=@$ut->id?>" value="<?=@$pr->nickname?>">
 															<a id="task_name_<?=@$ut->id?>" class="text-decoration-none w-100 d-block">
-																<div class="marginTop5 marginBottom5 flex flex-wrap justify-content-center align-items-center task_name width100Percents cursor-pointer" data-projectnickname="<?=@$ut->p_nickname?>" data-meetingid="<?=@$ut->id?>" data-projectid="<?=@$pr->id?>" data-userid="<?=@$user_id?>" data-lang="<?=@$ut->p_lang?>" data-chapter="<?=@$ut->chapter_name?>" data-name="<?=@$ut->subject?>" data-area="<?=@$ut->area?>" data-recipient="<?=@$responsible_email?>" data-responsibleid="<?=@$ut->id_responsible?>" data-destinationdate="<?=@$ut->destination_date?>" data-progresstatusid="<?=@$ut->id_progress_status?>" data-ispriority="<?=@$ut->is_priority?>" data-trackresponsibleid="<?=@$id_track_responsible?>" data-tracktype="<?=@$track_type?>" data-reminderdate="<?=@$reminder_date?>" data-remindertime="<?=@$reminder_time?>" data-istodotoday="0">
+																<div class="marginTop5 marginBottom5 flex flex-wrap justify-content-center align-items-center task_name width100Percents cursor-pointer" data-projectnickname="<?=@$ut->p_nickname?>" data-meetingid="<?=@$ut->id?>" data-projectid="<?=@$pr->id?>" data-userid="<?=@$user_id?>" data-chapter="<?=@$ut->chapter_name?>" data-name="<?=@$ut->subject?>" data-area="<?=@$ut->area?>" data-recipient="<?=@$responsible_email?>" data-responsibleid="<?=@$ut->id_responsible?>" data-destinationdate="<?=@$ut->destination_date?>" data-progresstatusid="<?=@$ut->id_progress_status?>" data-ispriority="<?=@$ut->is_priority?>" data-trackresponsibleid="<?=@$id_track_responsible?>" data-tracktype="<?=@$track_type?>" data-reminderdate="<?=@$reminder_date?>" data-remindertime="<?=@$reminder_time?>" data-istodotoday="0">
 																	<div class="width10Percents">
 																		<a class="drag-task cursor-pointer alignCenter text-decoration-none" data-id="<?=@$ut->id?>" data-listfrom="user_tasks">
 																			<i class="paddingTop10 fa-solid fa-thumbtack"></i>
@@ -1240,7 +1244,7 @@ foreach($all_what_news as $wn){
 														$tracking_data = '(';
 											
 													if($reminder_date != '0000-00-00')
-														$tracking_data .= smartDate($reminder_date);
+														$tracking_data .= substr($reminder_date,8,2).'/'.substr($reminder_date,5,2);
 													
 													if($reminder_date != '0000-00-00' && $track_responsible_name != '')
 														$tracking_data .= ',';
@@ -1288,7 +1292,7 @@ foreach($all_what_news as $wn){
 																					<?php foreach($log_meeting_tracking as $item){ ?>
 																						<div class="marginTop5 fontSize9 text-end">
 																							<span class="colorGrey dir-rtl unicode-bidi-embed">
-																								[<?=smartDate(@$item->action_date)?>]
+																								[<?=substr(@$item->action_date,8,2).'/'.substr(@$item->action_date,5,2) ?>]
 																							</span>
                                                                                             <span class="colorGrey dir-rtl unicode-bidi-embed">
 																								<?=@$item->user_nickname ?>
@@ -1395,7 +1399,7 @@ foreach($all_what_news as $wn){
 														$tracking_data = '(';
 											
 													if($reminder_date != '0000-00-00')
-														$tracking_data .= smartDate($reminder_date);
+														$tracking_data .= substr($reminder_date,8,2).'/'.substr($reminder_date,5,2);
 													
 													if($reminder_date != '0000-00-00' && $track_responsible_name != '')
 														$tracking_data .= ',';
@@ -1416,7 +1420,7 @@ foreach($all_what_news as $wn){
 														$tracking_data = '(';
 											
 													if($reminder_date != '0000-00-00')
-														$tracking_data .= smartDate($reminder_date);
+														$tracking_data .= substr($reminder_date,8,2).'/'.substr($reminder_date,5,2);
 													
 													if($reminder_date != '0000-00-00' && $track_responsible_name != '')
 														$tracking_data .= ',';
@@ -1431,7 +1435,7 @@ foreach($all_what_news as $wn){
 														<td>
 															<input type="hidden" id="p_nickname_<?=@$wn->id?>" value="<?=@$pr->nickname?>">
 															<a id="task_name_<?=@$wn->id?>" class="text-decoration-none w-100 d-block">		
-																<div class="marginTop5 marginBottom5 flex flex-wrap justify-content-center align-items-center task_name width100Percents cursor-pointer" data-projectnickname="<?=@$wn->p_nickname?>" data-meetingid="<?=@$wn->id?>" data-projectid="<?=@$wn->p_id?>" data-userid="<?=@$user_id?>" data-lang="<?=@$wn->p_lang?>" data-chapter="<?=@$wn->chapter_name?>" data-name="<?=@$wn->subject?>" data-area="<?=@$wn->area?>" data-recipient="<?=@$responsible_email?>" data-responsibleid="<?=@$wn->id_responsible?>" data-destinationdate="<?=@$wn->destination_date?>" data-progresstatusid="<?=@$wn->id_progress_status?>" data-ispriority="<?=@$wn->is_priority?>" data-trackresponsibleid="<?=@$id_track_responsible?>" data-tracktype="<?=@$track_type?>" data-reminderdate="<?=@$reminder_date?>" data-remindertime="<?=@$reminder_time?>" data-istodotoday="0">		
+																<div class="marginTop5 marginBottom5 flex flex-wrap justify-content-center align-items-center task_name width100Percents cursor-pointer" data-projectnickname="<?=@$wn->p_nickname?>" data-meetingid="<?=@$wn->id?>" data-projectid="<?=@$wn->p_id?>" data-userid="<?=@$user_id?>" data-chapter="<?=@$wn->chapter_name?>" data-name="<?=@$wn->subject?>" data-area="<?=@$wn->area?>" data-recipient="<?=@$responsible_email?>" data-responsibleid="<?=@$wn->id_responsible?>" data-destinationdate="<?=@$wn->destination_date?>" data-progresstatusid="<?=@$wn->id_progress_status?>" data-ispriority="<?=@$wn->is_priority?>" data-trackresponsibleid="<?=@$id_track_responsible?>" data-tracktype="<?=@$track_type?>" data-reminderdate="<?=@$reminder_date?>" data-remindertime="<?=@$reminder_time?>" data-istodotoday="0">		
 																	<div class="width100Percents">
 																		<div class="marginRight5 flex flex-wrap justify-content-center align-items-center" style="line-height:0.1">
 																			<div class="width65Percents align-items-center">
@@ -1459,7 +1463,7 @@ foreach($all_what_news as $wn){
 																			<div class="marginRight5 marginTop5 flex flex-wrap justify-content-center">
 																				<div class="width100Percents">
 																					<span class="dir-rtl colorGrey unicode-bidi-embed">
-																						[<?=smartDate(@$wn->lmu_action_date)?>]
+																						[<?=substr(@$wn->lmu_action_date,8,2).'/'.substr(@$wn->lmu_action_date,5,2)?>]
 																					</span> 
 																					<span class="colorGrey dir-rtl unicode-bidi-embed">
 																						<?=@$wn->user_nickname?>
@@ -1477,7 +1481,7 @@ foreach($all_what_news as $wn){
 																				<div class="marginTop5 flex flex-wrap justify-content-center">
 																					<div class="width100Percents">
 																						<span class="dir-rtl colorGrey unicode-bidi-embed">
-																							[<?=smartDate(@$wn->lmt_action_date)?>]
+																							[<?=substr(@$wn->lmt_action_date,8,2).'/'.substr(@$wn->lmt_action_date,5,2)?>]
 																						</span> 
 																						<span class="colorGrey dir-rtl unicode-bidi-embed">
 																							<?=@$wn->user_nickname?>
@@ -1650,7 +1654,7 @@ foreach($all_what_news as $wn){
 																<?php if(@$list_from == 'reminders'){ ?>
 																	<div class="marginTop10">
 																		<i class="fa-solid fa-bell colorRed"></i>
-																		<strong><?=smartDate(@$tdt->reminder_date)?></strong>
+																		<strong><?=substr(@$tdt->reminder_date,8,2).'/'.substr(@$tdt->reminder_date,5,2)?></strong>
 																	</div>
 																<?php } ?>
 															</div>
@@ -1807,7 +1811,7 @@ foreach($all_what_news as $wn){
 										</div>		
 										<div class="width20Percents">
 										    <a id="tracking_btn" class="btn text-dark bg-white width130">
-												<i id="target-icon-popup" class="fas fa-bullseye" style="font-size:26px;color:#888;"></i>
+												<img id='target-icon-popup' src="images/grey-target-icon.png" alt="target icon" width="30" height="30" />
 												<br/>
 												<strong class="fontSize14">מעקב</strong>
 									        </a>
@@ -2094,19 +2098,9 @@ $(document).ready(function(){
 
 	$('#modalTaskFollowupActions').on('hidden.bs.modal', function (){
 		localStorage.removeItem('is_modal_task_actions_opened');
-		const mid = localStorage.getItem('meeting_id');
-		if(mid){
-			$('tr.task-row-highlight').removeClass('task-row-highlight');
-			const $row = $('.task_name[data-meetingid="'+mid+'"]').closest('tr');
-			if($row.length){
-				$row.addClass('task-row-highlight');
-				setTimeout(function(){ $row[0].scrollIntoView({block:'center'}); }, 300);
-			}
-		}
 	});
 	
-	if(localStorage.getItem("is_modal_tasks_hystory_opened") === "true"){
-		localStorage.removeItem('is_modal_tasks_hystory_opened');
+	if(localStorage.getItem("is_modal_tasks_hystory_opened")){
 		meeting_id = localStorage.getItem("meeting_id");
 		project_id = localStorage.getItem("project_id");
 		
@@ -2130,19 +2124,8 @@ $(document).ready(function(){
 	   $('#modalContent').append("<input type='hidden' id='hidden_meeting_id' value='"+meeting_id+"'><input type='hidden' id='hidden_project_id' value='"+project_id+"'>");
 	   $('#modalTaskFollowupActions').modal('hide');
 	   $('#modalHistoryTasks').modal('show');
+	   localStorage.removeItem('is_modal_tasks_hystory_opened');
 	};
-
-	if(localStorage.getItem('highlight_after_reload') === 'true'){
-		localStorage.removeItem('highlight_after_reload');
-		const mid = localStorage.getItem('meeting_id');
-		if(mid){
-			const $rowReload = $('.task_name[data-meetingid="'+mid+'"]').closest('tr');
-			if($rowReload.length){
-				$rowReload.addClass('task-row-highlight');
-				setTimeout(function(){ $rowReload[0].scrollIntoView({block:'center'}); }, 300);
-			}
-		}
-	}
 
 	$('[id="continuous_btn"]').on('click', function(){
 		$('#modalTaskFollowupActions').modal('hide');
@@ -2453,7 +2436,7 @@ $(document).ready(function(){
 	    else 
 		  $('#div_reminder_date').hide();
 	 
-	    $('#modalTaskTracking .modal-title').html("<i class='fas fa-bullseye' style='font-size:22px;color:#888;'></i>&nbsp;&nbsp;מעקב אקטיבי&nbsp;&nbsp;<i class='fas fa-bullseye' style='font-size:22px;color:#888;'></i>");
+	    $('.modal-title').html("<img id='target-icon-popup' src='images/target-icon.png' alt='target icon' width='30' height='30' />&nbsp;&nbsp;מעקב אקטיבי&nbsp;&nbsp;<img id='target-icon-popup' src=images/target-icon.png alt=target icon width=30 height=30 />");
 		$('.subtitle').html(chapter+"<br/>"+subject+"&nbsp;|&nbsp;"+area).css('line-height','1.1em');
 	    $('#div_reminder_date').css('display','block');
 	 
@@ -2562,7 +2545,7 @@ $(document).ready(function(){
 						url: 'save_image.php',
 						data: {imageData:imageData,meeting_id:meeting_id},
 						success: function(response){
-							const imageUrl = '<?= BASE_URL ?>'+response;
+							const imageUrl = 'https://davidnahmiasengineering.com/Development/'+response;	
 							shareImage(imageUrl,meeting_id,project_id,'',0);
 						}, 
 				   });
@@ -2628,20 +2611,19 @@ $(document).ready(function(){
 	let modalUpdateTask = $('#modalUpdateTask');
 	
 	$(window).click(function(event){
-	    if ($(event.target).is(modalTaskFollowupActions) ||
+	    if ($(event.target).is(modalTaskFollowupActions) || 
 			$(event.target).is(modalTaskTracking) ||
 			$(event.target).is(modalSendEmail) ||
 			$(event.target).is(modalHistoryTasks) ||
-			$(event.target).is(modalUpdateTask)){
-		      localStorage.setItem('highlight_after_reload', 'true');
+			$(event.target).is(modalUpdateTask)){ 
 		      window.location.reload();
 	    }
     });
 	
-	$(document).on('click','.task_name', function (){
-		project_id = $(this).data('projectid');
-		project_nickname = $(this).data('projectnickname');
-        lang = $(this).data('lang') || 'HE';
+	$(document).on('click','.task_name', function (){ 
+		project_id = $(this).data('projectid'); 
+		project_nickname = $(this).data('projectnickname'); 
+        lang = 'HE'; 	
 		meeting_id = $(this).data('meetingid');  
 		chapter = $(this).data('chapter');
 		subject = $(this).data('name');
@@ -2699,11 +2681,7 @@ $(document).ready(function(){
 			},
 		});	
 		
-		$('#modalContent').append("<input type='hidden' id='hidden_project_nickname' value='"+project_nickname+"'><input type='hidden' id='hidden_lang' value='"+lang+"'><input type='hidden' id='hidden_meeting_id' value='"+meeting_id+"'><input type='hidden' id='hidden_project_id' value='"+project_id+"'><input type='hidden' id='hidden_user_id' value='"+user_id+"'><input type='hidden' id='hidden_chapter' value='"+chapter+"'><input type='hidden' id='hidden_name' value='"+subject+"'><input type='hidden' id='hidden_area' value='"+area+"'><input type='hidden' id='hidden_recipient' value='"+recipient+"'><input type='hidden' id='hidden_responsible_id' value='"+responsible_id+"'><input type='hidden' id='hidden_destination_date' value='"+destination_date+"'><input type='hidden' id='hidden_progress_status_id' name='hidden_progress_status_id' value='"+progress_status_id+"'><input type='hidden' id='hidden_is_priority' value='"+is_priority+"'><input type='hidden' id='hidden_remark' value='"+remark+"'><input type='hidden' id='hidden_track_responsible_id' value='"+track_responsible_id+"'><input type='hidden' id='hidden_track_type' value='"+track_type+"'><input type='hidden' id='hidden_reminder_date' value='"+reminder_date+"'><input type='hidden' id='hidden_reminder_time' value='"+reminder_time+"'><input type='hidden' id='hidden_is_to_do_today' value='"+is_to_do_today+"'>");
-		localStorage.setItem('meeting_id', meeting_id);
-		$('tr.task-row-highlight').removeClass('task-row-highlight');
-		const $highlightRow = $('.task_name[data-meetingid="'+meeting_id+'"]').closest('tr');
-		if($highlightRow.length){ $highlightRow.addClass('task-row-highlight'); }
+		$('#modalContent').append("<input type='hidden' id='hidden_project_nickname' value='"+project_nickname+"'><input type='hidden' id='hidden_lang' value='"+lang+"'><input type='hidden' id='hidden_meeting_id' value='"+meeting_id+"'><input type='hidden' id='hidden_project_id' value='"+project_id+"'><input type='hidden' id='hidden_user_id' value='"+user_id+"'><input type='hidden' id='hidden_chapter' value='"+chapter+"'><input type='hidden' id='hidden_name' value='"+subject+"'><input type='hidden' id='hidden_area' value='"+area+"'><input type='hidden' id='hidden_recipient' value='"+recipient+"'><input type='hidden' id='hidden_responsible_id' value='"+responsible_id+"'><input type='hidden' id='hidden_destination_date' value='"+destination_date+"'><input type='hidden' id='hidden_progress_status_id' name='hidden_progress_status_id' value='"+progress_status_id+"'><input type='hidden' id='hidden_is_priority' value='"+is_priority+"'><input type='hidden' id='hidden_remark' value='"+remark+"'><input type='hidden' id='hidden_track_responsible_id' value='"+track_responsible_id+"'><input type='hidden' id='hidden_track_type' value='"+track_type+"'><input type='hidden' id='hidden_reminder_date' value='"+reminder_date+"'><input type='hidden' id='hidden_reminder_time' value='"+reminder_time+"'><input type='hidden' id='hidden_is_to_do_today' value='"+is_to_do_today+"'>"); 
 		$('#modalTaskFollowupActions').modal('show');
 	});
 	
@@ -2807,8 +2785,7 @@ function setListParam(list){
 }
 
 $(window).on('load', function(){
-    if(localStorage.getItem("is_modal_task_actions_opened") === "true"){
-		localStorage.removeItem('is_modal_task_actions_opened');
+    if(localStorage.getItem("is_modal_task_actions_opened")){ 
 		let project_id = localStorage.getItem("project_id");
 		let meeting_id = localStorage.getItem("meeting_id");
 		let iteration = localStorage.getItem("iteration");
@@ -2984,13 +2961,8 @@ $(document).on('click', '.drag-task,.delete-task', function(event){
     }
 
     .modalTaskFollowupActions .modal-content {
-        max-height: 80vh !important;
-        overflow-y: auto !important;
+        max-height: 80vh !important;    
+        overflow-y: auto !important;     
     }
-}
-
-tr.task-row-highlight td {
-    background-color: #d0e8ff !important;
-    transition: background-color 0.3s;
 }
 </style>

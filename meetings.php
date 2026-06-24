@@ -4770,7 +4770,7 @@ function toReportSettings(){
 	
 	all_ids_to_print = all_ids_to_print.substring(0,all_ids_to_print.length - 1);
 
-	location.href='report_settings.php?project_id='+$('#project_id').val()+'&report_type='+$('#report_type').val()+'&task_filter='+$('#task_filter').val()+'&progress_status_filter='+$('#progress_status_filter').val()+'&supplier_filter='+$('#get_supplier_filter').val()+'&period_new_task_filter='+$('#period_new_task_filter').val()+'&is_specific_filter='+$('#is_specific_filter').val()+'&all_ids_to_print='+all_ids_to_print+'&lang='+$('#lang').val();
+	location.href='report_settings.php?project_id='+$('#project_id').val()+'&report_type='+$('#report_type').val()+'&task_filter='+$('#task_filter').val()+'&progress_status_filter='+$('#progress_status_filter').val()+'&supplier_filter='+$('#get_supplier_filter').val()+'&period_new_task_filter='+$('#period_new_task_filter').val()+'&is_specific_filter='+$('#is_specific_filter').val()+'&all_ids_to_print='+all_ids_to_print+'&lang='+$('#lang').val()+'&sort_select_1='+$('#sort_select_1').val()+'&sort_select_2='+$('#sort_select_2').val()+'&sort_select_3='+$('#sort_select_3').val();
 }
 
 function toAddRdv(from){

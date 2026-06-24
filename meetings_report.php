@@ -10,6 +10,9 @@ $project_id = @$_GET['project_id'];
 $is_specific_filter = @$_GET['is_specific_filter'];
 $all_ids_to_print = @$_GET['all_ids_to_print'];
 $pdf_direction = @$_GET['pdf_direction'];
+$sort_select_1 = @$_GET['sort_select_1'];
+$sort_select_2 = @$_GET['sort_select_2'];
+$sort_select_3 = @$_GET['sort_select_3'];
 $all_ids_to_print_array = explode(',',$all_ids_to_print);
 
 $query = $mysqli->prepare("SELECT * FROM dne_projects WHERE id = ?");
@@ -313,6 +316,26 @@ if($_SESSION['pdf_title2'] != '')
 
 $title .= '<br/>'.substr($_SESSION['pdf_date'],6,2).'/'.substr($_SESSION['pdf_date'],4,2).'/'.substr($_SESSION['pdf_date'],0,4);  
 	$columns_list_array = explode(',',$columns_list);
+	if(empty(array_filter($columns_list_array))){
+		$columns_list_array = ['subject','area','description','_task','responsible','pass on','task creation','destination date','progress status'];
+	}
+
+// Build dynamic ORDER BY based on sort params passed from meetings.php
+$_order_parts = [];
+foreach ([$sort_select_1, $sort_select_2, $sort_select_3] as $_col) {
+	if (empty($_col) || $_col === '0') continue;
+	switch ($_col) {
+		case 'subject':            $_order_parts[] = "TRIM(REPLACE(m.subject,'&nbsp;',''))"; break;
+		case 'area':               $_order_parts[] = "TRIM(REPLACE(m.area,'&nbsp;',''))"; break;
+		case 'description':        $_order_parts[] = "m.description"; break;
+		case 'responsible':        $_order_parts[] = "r.name"; break;
+		case 'task':               $_order_parts[] = (@$lang == 'HE') ? "t.name_he" : "t.name"; break;
+		case 'task_creation_date': $_order_parts[] = "m.task_creation_date"; break;
+		case 'destination_date':   $_order_parts[] = "m.destination_date"; break;
+		case 'status':             $_order_parts[] = (@$lang == 'HE') ? "ps.name_he" : "ps.name"; break;
+	}
+}
+$_order_by = !empty($_order_parts) ? ' ORDER BY '.implode(',',$_order_parts) : ' ORDER BY t.id_display,m.subject,m.id_area,m.destination_date DESC';
 
 $align_txt = 'alignLeft';
 $padding_txt = 'paddingLeft10';
@@ -678,8 +701,8 @@ foreach($chapters as $item){
 					$counter_with_image++;
 			}
 		
-	        $query = $mysqli->prepare($sql.' ORDER BY t.id_display,m.subject,m.id_area,m.destination_date DESC');
-			$query->execute(); 
+	        $query = $mysqli->prepare($sql.$_order_by);
+			$query->execute();
 			$query->store_result();
 			$meetings = fetch($query);
 		}
@@ -728,13 +751,14 @@ foreach($chapters as $item){
 								  m.is_appears_img2 AS is_appears_img2
 								  FROM dne_meetings m 
 								  LEFT JOIN dne_tasks t ON m.id_task = t.id
+								  LEFT JOIN dne_progress_status ps ON m.id_progress_status = ps.id
+								  LEFT JOIN dne_responsibles r ON m.id_responsible = r.id
 								  WHERE m.id_project = ? 
 								  AND m.id_chapter = ? 
 								  AND m.is_appears = ? 
 								  AND FIND_IN_SET(?,ids_rdv) > 0
 								  AND m.id_progress_status <> ?
-								  ORDER BY t.id_display,m.subject,m.id_area,
-								  m.destination_date DESC");
+								  ".$_order_by);
 		$query->bind_param("iiiii",$project_id,$chapter_id,$is_appears,
 		                   $id_rdv_report,$ps_archive_id);
 		$query->execute(); 
@@ -762,7 +786,7 @@ foreach($chapters as $item){
 			$progress_status_id = @$item->id_progress_status;
 			$is_change_row_style = @$item->is_change_row_style;
 			
-			$task_creation_date = @$item->task_creation_date;
+			$task_creation_date = (@$item->task_creation_date != '0000-00-00') ? @$item->task_creation_date : '';
 			$task_creation_date_display = smartDate(@$task_creation_date, $lang);
 			
 			$destination_date = @$item->destination_date;
@@ -1198,8 +1222,8 @@ foreach($chapters as $item) {
 					$counter_with_image++;
 			}					
 			
-	        $query = $mysqli->prepare($sql." ORDER BY t.id_display,m.subject,m.id_area,m.destination_date DESC");
-			$query->execute(); 
+	        $query = $mysqli->prepare($sql.$_order_by);
+			$query->execute();
 			$query->store_result();
 		    $meetings_with_image = fetch($query);
 		}
@@ -1249,13 +1273,14 @@ foreach($chapters as $item) {
 								  FROM dne_meetings m
 								  LEFT JOIN dne_chapters c ON m.id_chapter = c.id
 								  LEFT JOIN dne_tasks t ON m.id_task = t.id
+								  LEFT JOIN dne_progress_status ps ON m.id_progress_status = ps.id
+								  LEFT JOIN dne_responsibles r ON m.id_responsible = r.id
 								  WHERE m.id_project = ? 
 								  AND m.id_chapter = ? 
 								  AND m.is_appears = ? 
 								  AND FIND_IN_SET(?,ids_rdv) > 0
 								  AND m.id_progress_status <> ?
-								  ORDER BY t.id_display,m.subject,
-								  m.id_area,m.destination_date DESC");
+								  ".$_order_by);
 		$query->bind_param("iiiii",$project_id,$chapter_id,$is_appears,$id_rdv_report,$ps_archive_id);
 		$query->execute(); 
 		$query->store_result();
@@ -1281,7 +1306,7 @@ foreach($chapters as $item) {
 			$progress_status_id = @$item->id_progress_status;
 			$is_change_row_style = @$item->is_change_row_style;
 			
-			$task_creation_date = @$item->task_creation_date;
+			$task_creation_date = (@$item->task_creation_date != '0000-00-00') ? @$item->task_creation_date : '';
 			$task_creation_date_display = smartDate(@$task_creation_date, $lang);
 			
 			$destination_date = @$item->destination_date;
