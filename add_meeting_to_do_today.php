@@ -5,7 +5,7 @@ session_start();
 $is_active_tracking = 1; 
 $empty_date = '0000-00-00';
 
-if($_POST['toAddRememberTracking'] == 1){
+if(isset($_POST['toAddRememberTracking']) && $_POST['toAddRememberTracking'] == 1){
 	$query = $mysqli->prepare("SELECT id,reminder_date FROM dne_meetings 
 							   WHERE id_track_responsible = ? 
 							   AND track_type = ?
@@ -45,12 +45,18 @@ else {
 	if($query->num_rows > 0) 
 		echo 'exists';
 	else {
-		$query = $mysqli->prepare("SELECT id FROM dne_to_do_today WHERE id_user = ? ");
+		$query = $mysqli->prepare("SELECT tdt.id FROM dne_to_do_today tdt
+			LEFT JOIN dne_meetings m ON tdt.id_meeting = m.id
+			LEFT JOIN dne_progress_status ps ON m.id_progress_status = ps.id
+			WHERE tdt.id_user = ?
+			AND ps.name_he <> 'ארכיון'
+			AND ps.name_he <> 'בוצע/נמסר'
+			AND ps.name_he <> 'בהמתנה'");
 		$query->bind_param("i",$_SESSION['id_user']);
 		$query->execute();
 		$query->store_result();
-		
-		if($query->num_rows == $_POST['max_num_tasks']) 
+
+		if($query->num_rows >= $_POST['max_num_tasks'])
 			echo 'maxnumtasksreached';
 		else {
 			$query = "INSERT INTO dne_to_do_today (id_user,id_meeting,list_from,pin_date) VALUES(?,?,?,?)";

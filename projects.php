@@ -392,8 +392,8 @@ $query = $mysqli->prepare("SELECT tdt.list_from AS list_from,
 						   AND ps.name_he <> ?
 						   AND ps.name_he <> ?
 						   AND tdt.id_user = ?
-						   AND (m.id_track_responsible = ? OR m.id_track_responsible = ?)
-						   AND (DATE(reminder_date) <= CURDATE() OR reminder_date = ?)
+						   AND (tdt.is_reminder = 0 OR m.id_track_responsible = ? OR m.id_track_responsible = ?)
+						   AND (tdt.is_reminder = 0 OR DATE(reminder_date) <= CURDATE() OR reminder_date = ?)
 						   ORDER BY tdt.is_reminder DESC,tdt.pin_date");
 $query->bind_param('sssiiis',$ps1,$ps2,$ps3,$_SESSION['id_user'],$zero_int,$_SESSION['id_user'],$empty_date);			   
 $query->execute(); 
@@ -2308,11 +2308,12 @@ $(document).ready(function(){
 			processData: false,
 			contentType: false,
 			success: function(data) {
+				data = data.trim();
 				if(data == 'exists')
-					alert("משימה זו כבר נוספה לרשימת To Do Today");
+					alert("המשימה כבר נמצאת ברשימת To Do Today");
 				else if(data == 'maxnumtasksreached')
 					alert('הגעת למקסימום המשימות');
-				else if(data == 'enabledtodotoday') 
+				else if(data == 'enabledtodotoday')
 					alert("אינך אחראי למעקב הזה או/גם תאריך התזכורת לא עבר");
 				else {
 					localStorage.setItem('time_tasks_appear',$('#time_tasks_appear').val());
@@ -2337,11 +2338,12 @@ $(document).ready(function(){
 			processData: false,
 			contentType: false,
 			success: function(data) {
+				localStorage.setItem('last_execution', today);
 				localStorage.setItem('time_tasks_appear',$('#time_tasks_appear').val());
 				localStorage.setItem('max_num_tasks',$('#max_num_tasks').val());
 				window.location.reload();
-			}, 
-		});	
+			},
+		});
     });
 	
 	$('#div_time_tasks_appear').hide();
@@ -2363,8 +2365,8 @@ $(document).ready(function(){
 				localStorage.setItem('time_tasks_appear',$('#time_tasks_appear').val());
 				localStorage.setItem('max_num_tasks',$('#max_num_tasks').val());
 				window.location.reload();
-			}, 
-		});	
+			},
+		});
 	}
 
     const today = new Date().toISOString().split('T')[0];
@@ -2404,8 +2406,12 @@ $(document).ready(function(){
 		$('#time_tasks_appear').val(time_tasks_appear);
 	
 	const max_num_tasks = localStorage.getItem('max_num_tasks');
-	if(max_num_tasks !== null) 
+	if(max_num_tasks !== null){
 		$('#max_num_tasks').val(max_num_tasks);
+		const limit = parseInt(max_num_tasks);
+		if(limit > 0)
+			$('.task_name[data-istodotoday="1"]').closest('tr').slice(limit).hide();
+	}
 	
 	let target = '';
 	let bgcolor = '';
@@ -2789,7 +2795,11 @@ $(document).ready(function(){
 				setData(current_meeting_id,'','update_task',0,0,'for_closing')
 			}
        });
-	}); 	
+	});
+
+	$(document).on('click', '.drag-task,.delete-task', function(event){
+		event.stopPropagation();
+	});
 });
 
 function setFilterParam(filter){ 
@@ -2885,9 +2895,6 @@ function toTasksList(id_project){
 	});
 }
 
-$(document).on('click', '.drag-task,.delete-task', function(event){
-    event.stopPropagation(); 
-});
 </script>
 
 <style>
