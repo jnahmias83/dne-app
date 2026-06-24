@@ -2405,8 +2405,16 @@ $(document).ready(function(){
 	if(time_tasks_appear !== null) 
 		$('#time_tasks_appear').val(time_tasks_appear);
 	
-	const max_num_tasks_options = [5,10,15,20,25,30];
 	const total_today_items = $('.task_name[data-istodotoday="1"]').length;
+	const max_num_tasks_options = [5,10,15,20,25,30];
+	$('#max_num_tasks option').each(function(){ if(parseInt($(this).val()) > 30) $(this).remove(); });
+	if(total_today_items > 30){
+		const ceil = Math.ceil(total_today_items / 5) * 5;
+		for(let v = 35; v <= ceil; v += 5){
+			max_num_tasks_options.push(v);
+			$('#max_num_tasks').append('<option value="'+v+'">'+v+'</option>');
+		}
+	}
 	let max_num_tasks = localStorage.getItem('max_num_tasks');
 	let max_limit = max_num_tasks !== null ? parseInt(max_num_tasks) : 0;
 	if(total_today_items > 0 && total_today_items > max_limit){
