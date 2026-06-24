@@ -2822,8 +2822,12 @@ include 'menu_tasks.php';
 		
 		<div class="modal fade dir-rtl" id="modalTaskCreationDate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
-				<div class="modal-content"> 
-					<div class="modal-body">	
+				<div class="modal-content">
+					<div class="modal-header">
+						<div class="modal-title"></div>
+						<button type="button" class="btn-close btn-close-white-small" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
 					    <div id="modalContent">
 					        <form class="marginTop15 alignCenter">
 							   <input type="date" name="popup_task_creation_date" id="popup_task_creation_date" class="fontSize13 font-weight-bold alignCenter" onchange="setData($('#hidden_meeting_id').val(),$('#hidden_iteration').val(),'task_creation_date',0,0,'screen');" />
@@ -2836,8 +2840,12 @@ include 'menu_tasks.php';
 		
 		<div class="modal fade dir-rtl" id="modalDestinationDate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
-				<div class="modal-content"> 
-					<div class="modal-body">	
+				<div class="modal-content">
+					<div class="modal-header">
+						<div class="modal-title"></div>
+						<button type="button" class="btn-close btn-close-white-small" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
 					    <div id="modalContent">
 					        <form class="marginTop15 alignCenter">
 							   <input type="date" name="popup_destination_date_input" id="popup_destination_date_input" class="fontSize13 font-weight-bold alignCenter" data-meetingid="<?=@$meeting_id?>" data-iteration=<?=@$iteration?> />
@@ -2914,7 +2922,11 @@ include 'menu_tasks.php';
 		<div class="modal fade dir-rtl" id="modalTaskFollowupActions" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
 				<div class="modal-content">
-					<div class="modal-body">	
+					<div class="modal-header">
+						<div class="modal-title"></div>
+						<button type="button" class="btn-close btn-close-white-small" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
 					   <div id="modalContent">
 					       <div id="div_content_task_details"></div>
 					       <form class="marginTop15 alignCenter">    
@@ -3005,8 +3017,12 @@ include 'menu_tasks.php';
 		
 		<div class="modal fade <?=(!empty(@$project->lang) ? @$project->lang : 'HE')=='HE' ? 'dir-rtl' : ''?>" id="modalContinuousTask" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
-				<div class="modal-content">  
-					<div class="modal-body">	
+				<div class="modal-content">
+					<div class="modal-header">
+						<div class="modal-title"></div>
+						<button type="button" class="btn-close btn-close-white-small" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
 					    <div id="modalContent">
 					        <form class="alignCenter">
 						        <div class="marginTop15 fontSize18 alignCenter"><?=(!empty(@$project->lang)?@$project->lang:'HE')=='HE' ? 'בדרך ליצור עבורך משימת המשך לפני כן, תציין אם ברצונך לסמן סטטוס משימה כ:' : 'A continuation task will be created. Please select the status to apply to the current task:'?></div>
@@ -3030,8 +3046,12 @@ include 'menu_tasks.php';
 		
 		<div class="modal fade dir-rtl" id="modalHistoryTasks" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
-				<div class="modal-content">  
-					<div class="modal-body">	
+				<div class="modal-content">
+					<div class="modal-header">
+						<div class="modal-title"></div>
+						<button type="button" class="btn-close btn-close-white-small" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
 					    <div id="modalHistoryTasksContent"></div>
 					</div>
 				</div>
@@ -3222,6 +3242,7 @@ include 'menu_tasks.php';
             <div class="modal-dialog">
 				<div class="modal-content">
 				    <div class="modal-header">
+					   <button type="button" class="btn-close btn-close-white-small" data-bs-dismiss="modal" aria-label="Close"></button>
 					   <h5 class="modal-title fontSize26"></h5>
 					</div>
 					<div class="modal-body">	
