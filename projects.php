@@ -392,7 +392,7 @@ $query = $mysqli->prepare("SELECT tdt.list_from AS list_from,
 						   AND ps.name_he <> ?
 						   AND ps.name_he <> ?
 						   AND tdt.id_user = ?
-						   AND (m.id_track_responsible = ? OR m.id_track_responsible = ?)
+						   AND (tdt.is_reminder = 0 OR m.id_track_responsible = ? OR m.id_track_responsible = ?)
 						   AND (tdt.is_reminder = 0 OR DATE(reminder_date) <= CURDATE() OR reminder_date = ?)
 						   ORDER BY tdt.is_reminder DESC,tdt.pin_date");
 $query->bind_param('sssiiis',$ps1,$ps2,$ps3,$_SESSION['id_user'],$zero_int,$_SESSION['id_user'],$empty_date);			   
@@ -2309,7 +2309,7 @@ $(document).ready(function(){
 			contentType: false,
 			success: function(data) {
 				if(data == 'exists')
-					alert("משימה זו כבר נוספה לרשימת To Do Today");
+					alert("המשימה כבר נמצאת ברשימת To Do Today");
 				else if(data == 'maxnumtasksreached')
 					alert('הגעת למקסימום המשימות');
 				else if(data == 'enabledtodotoday') 
