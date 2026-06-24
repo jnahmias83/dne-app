@@ -2362,6 +2362,7 @@ $(document).ready(function(){
 			processData: false,
 			contentType: false,
 			success: function(data){
+				localStorage.setItem('last_execution', today);
 				localStorage.setItem('time_tasks_appear',$('#time_tasks_appear').val());
 				localStorage.setItem('max_num_tasks',$('#max_num_tasks').val());
 				window.location.reload();
@@ -2374,7 +2375,6 @@ $(document).ready(function(){
 
     if(last_execution !== today){
         refreshTodoToday();
-        localStorage.setItem("last_execution",today);
     }
 	
 	$('#max_num_tasks').on('change', function(){		
@@ -2660,6 +2660,7 @@ $(document).ready(function(){
 			$(event.target).is(modalHistoryTasks) ||
 			$(event.target).is(modalUpdateTask)){
 		      localStorage.setItem('highlight_after_reload', 'true');
+		      localStorage.setItem('last_execution', today);
 		      window.location.reload();
 	    }
     });
