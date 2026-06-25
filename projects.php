@@ -2111,8 +2111,15 @@ $(document).ready(function(){
 
 	$('#modalTaskFollowupActions').on('hidden.bs.modal', function (){
 		localStorage.removeItem('is_modal_task_actions_opened');
-		const $row = $('tr.task-row-highlight');
-		if($row.length) window.scrollTo({top: Math.max(0, $row.offset().top - 150), behavior:'smooth'});
+		const mid = localStorage.getItem('meeting_id');
+		if(mid){
+			$('tr.task-row-highlight').removeClass('task-row-highlight');
+			const $row = $('.task_name[data-meetingid="'+mid+'"]').closest('tr');
+			if($row.length){
+				$row.addClass('task-row-highlight');
+				window.scrollTo({top: Math.max(0, $row.offset().top - 150), behavior:'smooth'});
+			}
+		}
 	});
 	
 	if(localStorage.getItem("is_modal_tasks_hystory_opened") === "true"){
