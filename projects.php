@@ -2040,7 +2040,7 @@ foreach($all_what_news as $wn){
 				<div class="modal-content">
 				    <div class="modal-header">
 					   <button type="button" class="btn-close btn-close-white-small" data-bs-dismiss="modal" aria-label="Close"></button>
-					   <h5 class="modal-title fontSize26"></h5>
+					   <div class="modal-title colorWhite fontSize26"></div>
 					</div>
 					<div class="modal-body">
 					    <div id="modalContent">
