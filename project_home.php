@@ -168,11 +168,8 @@ $what_news_label = 'מה חדש';
 		<div class="modal fade dir-rtl" id="modalTaskFollowupActions" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog border-black">
 				<div class="modal-content">
-					<div class="modal-header">
-						<div class="modal-title"></div>
-						<button type="button" class="btn-close btn-close-white-small" data-bs-dismiss="modal" aria-label="Close"></button>
-					</div>
-					<div class="modal-body">
+					<div class="modal-body" style="padding:0;overflow:hidden;position:relative;">
+					   <button type="button" data-bs-dismiss="modal" aria-label="Close" style="position:absolute;top:8px;left:8px;z-index:100;background:rgba(0,0,0,0.25);border:none;color:white;font-size:22px;font-weight:bold;cursor:pointer;line-height:1;padding:1px 7px;border-radius:4px;">&times;</button>
 					   <div id="modalContent">
 					       <div id="div_content_task_details"></div>
 					       <form class="marginTop15 alignCenter">    

@@ -1760,10 +1760,10 @@ foreach($all_what_news as $wn){
             <div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<div class="modal-title"></div>
 						<button type="button" class="btn-close btn-close-white-small" data-bs-dismiss="modal" aria-label="Close"></button>
+						<div class="modal-title"></div>
 					</div>
-					<div class="modal-body">
+					<div class="modal-body" style="padding:0;overflow:hidden;">
 					   <div id="modalContent">
 					       <div id="div_content_task_details"></div>
 					       <form class="marginTop15 alignCenter">    
@@ -1851,8 +1851,8 @@ foreach($all_what_news as $wn){
             <div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<div class="modal-title"></div>
 						<button type="button" class="btn-close btn-close-white-small" data-bs-dismiss="modal" aria-label="Close"></button>
+						<div class="modal-title"></div>	
 					</div>
 					<div class="modal-body">
 					   <div id="modalContent">
@@ -1874,8 +1874,8 @@ foreach($all_what_news as $wn){
             <div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<div class="modal-title"></div>
 						<button type="button" class="btn-close btn-close-white-small" data-bs-dismiss="modal" aria-label="Close"></button>
+					    <div class="modal-title"></div>
 					</div>
 					<div class="modal-body">
 					    <div id="modalHistoryTasksContent"></div>
@@ -1886,11 +1886,8 @@ foreach($all_what_news as $wn){
 		
 		<div class="modal fade" id="modalUpdateTask" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
-				<div class="modal-content">  
-					<div class="modal-header">
-					    <button type="button" class="btn-close btn-close-white-small" data-bs-dismiss="modal" aria-label="Close"></button>
-						<div class="modal-title"></div>
-					</div>
+				<div class="modal-content" style="position:relative;">
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="position:absolute;top:8px;left:8px;z-index:1;"></button>
 					<div class="modal-body">
                         <form action="" method="post">
 						    <div class='marginTop5 subtitle color-349feb fontSize18 font-weight-bold alignCenter'></div>
@@ -2043,7 +2040,7 @@ foreach($all_what_news as $wn){
 				<div class="modal-content">
 				    <div class="modal-header">
 					   <button type="button" class="btn-close btn-close-white-small" data-bs-dismiss="modal" aria-label="Close"></button>
-					   <h5 class="modal-title fontSize26"></h5>
+					   <div class="modal-title"></div>
 					</div>
 					<div class="modal-body">	
 					    <div id="modalContent">
@@ -2105,6 +2102,13 @@ $(document).ready(function(){
     let reminder_time;
 	let is_to_do_today;
 
+	$('#modalHistoryTasks').on('hidden.bs.modal', function(){
+		localStorage.removeItem('is_modal_task_actions_opened');
+		localStorage.setItem('meeting_id', $('#hidden_meeting_id').val());
+		localStorage.setItem('highlight_after_reload', 'true');
+		window.location.reload();
+	});
+
 	$('#modalTaskFollowupActions').on('hidden.bs.modal', function (){
 		localStorage.removeItem('is_modal_task_actions_opened');
 		const mid = localStorage.getItem('meeting_id');
@@ -2143,6 +2147,7 @@ $(document).ready(function(){
 	   $('#modalContent').append("<input type='hidden' id='hidden_meeting_id' value='"+meeting_id+"'><input type='hidden' id='hidden_project_id' value='"+project_id+"'>");
 	   $('#modalTaskFollowupActions').modal('hide');
 	   $('#modalHistoryTasks').modal('show');
+	   $('#modalHistoryTasks .modal-title').html("הסטורי-ה");
 	};
 
 	if(localStorage.getItem('highlight_after_reload') === 'true'){
@@ -2160,16 +2165,17 @@ $(document).ready(function(){
 	$('[id="continuous_btn"]').on('click', function(){
 		$('#modalTaskFollowupActions').modal('hide');
 	    $('#modalContinuousTask').modal('show');
+		$('#modalContinuousTask .modal-title').html('המשך');
 	});
 	
-	$('[id="history_btn"]').on('click', function(){	
+	$('[id="history_btn"]').on('click', function(){
 		meeting_id = $('#hidden_meeting_id').val();
-		project_id = $('#hidden_project_id').val();		
-		
+		project_id = $('#hidden_project_id').val();
+
 		let form_data = new FormData();
         form_data.append('id_meeting',meeting_id);
 		form_data.append('id_project',project_id);
-	   
+
 	    $.ajax({
 			type: 'POST',
 			url: 'fill_tasks_followup_history.php',
@@ -2178,12 +2184,13 @@ $(document).ready(function(){
 			processData: false,
 			contentType: false,
 			success: function(data){
-				$('#modalHistoryTasksContent').html(data);	
+				$('#modalHistoryTasksContent').html(data);
 			},
 	    });
-	   
+
 	   $('#modalTaskFollowupActions').modal('hide');
 	   $('#modalHistoryTasks').modal('show');
+	   $('#modalHistoryTasks .modal-title').html("הסטורי-ה");
 	});
 	
 	$('[id="update_btn"]').on('click', function(){
@@ -2198,8 +2205,7 @@ $(document).ready(function(){
 		lang = $('#hidden_lang').val();
 			
 		$('#modalUpdateTask').attr('dir','rtl');
-		$('.modal-title').html("<img src='images/status-icon.png' alt='status icon' width='30' height='30' />&nbsp;&nbsp;עדכון&nbsp;&nbsp;<img src='images/status-icon.png' alt='status icon' width='30' height='30' />");
-		$('.subtitle').html(chapter+"<br/>"+subject+"&nbsp;|&nbsp;"+area).css('line-height','1.1em');	
+		$('.subtitle').html(chapter+"<br/>"+subject+"&nbsp;|&nbsp;"+area).css('line-height','1.1em');
         $('#div_remark_changes_status_update,#div_update_btns').css('direstion','rtl');
 	    $('#progress_status_for_update_label').html('סטטוס חדש:').css({'margin-bottom':'5px','margin-left':'5px'});
 	    $('#div_target_date_title').html('תאריך יעד');			   
@@ -2745,6 +2751,7 @@ $(document).ready(function(){
 		const $highlightRow = $('.task_name[data-meetingid="'+meeting_id+'"]').closest('tr');
 		if($highlightRow.length){ $highlightRow.addClass('task-row-highlight'); }
 		$('#modalTaskFollowupActions').modal('show');
+		setProjectModalTitle(project_id, '#modalTaskFollowupActions', false);
 	});
 	
 	$(document).on('click','#save_update_task_btn', function (){
@@ -2872,6 +2879,7 @@ $(window).on('load', function(){
 				let content = fillContentTaskDetails(meeting_id,'',task_details,true);
 				$('#div_content_task_details').html(content);
 				$('#modalTaskFollowupActions').modal('show');
+				setProjectModalTitle(project_id, '#modalTaskFollowupActions', false);
 			},
 		});
 
@@ -3032,7 +3040,19 @@ function toTasksList(id_project){
 }
 
 tr.task-row-highlight td {
-    background-color: #d0e8ff !important;
-    transition: background-color 0.3s;
+    position: relative;
+}
+tr.task-row-highlight td::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: #99ccff;
+    pointer-events: none;
+    z-index: 0;
+}
+tr.task-row-highlight td > * {
+    position: relative;
+    z-index: 1;
+    background-color: transparent !important;
 }
 </style>
