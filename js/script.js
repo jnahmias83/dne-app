@@ -878,8 +878,11 @@ function sendEmail(id_meeting,iteration,screen_type,from){
 										url+='&is_specific_filter=1';
 								}
 								else {
-								    if(from == 'fromProjects')
+								    if(from == 'fromProjects'){
+								      localStorage.setItem('highlight_after_reload', 'true');
+								      localStorage.setItem('meeting_id', id_meeting);
 								      url = 'projects.php';
+								    }
 								    else if(from == 'fromProjectHome')
 									   url = 'project_home.php?id='+$('#project_id').val();
 								}

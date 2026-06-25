@@ -125,7 +125,7 @@ else {
 	$html_message = "<html><body style='direction:rtl;'><h3>הודעה</h3>".$body_nl2br.
 	                    "<table align='center' dir='rtl' style='margin-top:15px;' width='65%' border='1' cellspacing='1'>
 					      <tr style='background-color:#4d7380;color:white;font-weight:bold;text-align:center;padding:5px;'>
-						      <td colspan='3'><u>".@$meeting->p_name_he."</u></td>
+						      <td colspan='3'>".@$meeting->p_name_he."</td>
 						  </tr>
 						  <tr style='text-align:center;'>
 						      <td style='font-size:14px;border-left:1px solid white;'>משימת ".@$meeting->t_name_he."</td><td><span style='font-size:14px;'>אחראי</span><br/><strong style='font-size:16px;color:red;'>".@$meeting->r_name."</strong></td><td><span style='font-size:14px;'>להעביר ל</span><br/><span style='font-size:16px;'>".@$meeting->po_name."</span></td>
