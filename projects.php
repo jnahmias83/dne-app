@@ -2040,9 +2040,9 @@ foreach($all_what_news as $wn){
 				<div class="modal-content">
 				    <div class="modal-header">
 					   <button type="button" class="btn-close btn-close-white-small" data-bs-dismiss="modal" aria-label="Close"></button>
-					   <div class="modal-title"></div>
+					   <h5 class="modal-title fontSize26"></h5>
 					</div>
-					<div class="modal-body">	
+					<div class="modal-body">
 					    <div id="modalContent">
 					        <form class="marginTop15 alignCenter">
 						        <div class="alignCenter fontSize20">לשלוח ל</div>
