@@ -1248,6 +1248,12 @@ a {
 	text-align: center;
 }
 
+#modalTaskFollowupActions .modal-header {
+    height: auto;
+    padding-top: 8px;
+    padding-bottom: 12px;
+}
+
 .modal-header::after {
     content: "";
     position: absolute;
@@ -1281,9 +1287,15 @@ a {
 	border: none;
 }
 
-.modal-dialog,
-#contentToScreenshot {
+.modal-dialog {
    max-width: 550px;
+}
+
+#contentToScreenshot {
+   position: absolute;
+   left: -9999px;
+   top: 0;
+   width: 550px;
 }
 
 #modalContinuousTask {
@@ -1293,6 +1305,10 @@ a {
 #modalHistoryTasks .modal-dialog {
    top: 5vh;
    max-width: 700px;
+}
+
+#modalHistoryTasks .modal-header {
+    background-color: #4d7380;
 }
 
 .responsive-btn-container {

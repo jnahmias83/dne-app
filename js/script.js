@@ -847,6 +847,7 @@ function sendEmail(id_meeting,iteration,screen_type,from){
 					url: 'save_image.php',
 					data: {imageData:imageData},
 					success: function(response){
+						$('#contentToScreenshot').html('');
 					    let form_data = new FormData();
                         form_data.append('meeting_id',id_meeting);
  					    form_data.append('img_url',response);

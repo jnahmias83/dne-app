@@ -4184,8 +4184,9 @@ $(document).ready(function(){
 						data: {imageData:imageData,meeting_id:meeting_id},
 						success: function(response) {
 							const imageUrl = '<?= BASE_URL ?>'+response;
-							shareImage(imageUrl,meeting_id,project_id,iteration,is_all_ids_to_edit); 							
-						}, 
+							$('#contentToScreenshot').html('');
+							shareImage(imageUrl,meeting_id,project_id,iteration,is_all_ids_to_edit);
+						},
 				   });
                 })	
 			},
