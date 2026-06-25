@@ -2112,7 +2112,7 @@ $(document).ready(function(){
 	$('#modalTaskFollowupActions').on('hidden.bs.modal', function (){
 		localStorage.removeItem('is_modal_task_actions_opened');
 		const $row = $('tr.task-row-highlight');
-		if($row.length) $row[0].scrollIntoView({block:'center'});
+		if($row.length) window.scrollTo({top: Math.max(0, $row.offset().top - 150), behavior:'smooth'});
 	});
 	
 	if(localStorage.getItem("is_modal_tasks_hystory_opened") === "true"){
@@ -2150,7 +2150,7 @@ $(document).ready(function(){
 			const $rowReload = $('.task_name[data-meetingid="'+mid+'"]').closest('tr');
 			if($rowReload.length){
 				$rowReload.addClass('task-row-highlight');
-				setTimeout(function(){ $rowReload[0].scrollIntoView({block:'center'}); }, 600);
+				setTimeout(function(){ window.scrollTo({top: Math.max(0, $rowReload.offset().top - 150), behavior:'smooth'}); }, 600);
 			}
 		}
 	}
