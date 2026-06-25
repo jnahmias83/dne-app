@@ -2111,15 +2111,8 @@ $(document).ready(function(){
 
 	$('#modalTaskFollowupActions').on('hidden.bs.modal', function (){
 		localStorage.removeItem('is_modal_task_actions_opened');
-		const mid = localStorage.getItem('meeting_id');
-		if(mid){
-			$('tr.task-row-highlight').removeClass('task-row-highlight');
-			const $row = $('.task_name[data-meetingid="'+mid+'"]').closest('tr');
-			if($row.length){
-				$row.addClass('task-row-highlight');
-				setTimeout(function(){ $row[0].scrollIntoView({block:'center'}); }, 300);
-			}
-		}
+		const $row = $('tr.task-row-highlight');
+		if($row.length) $row[0].scrollIntoView({block:'center'});
 	});
 	
 	if(localStorage.getItem("is_modal_tasks_hystory_opened") === "true"){
@@ -2157,7 +2150,7 @@ $(document).ready(function(){
 			const $rowReload = $('.task_name[data-meetingid="'+mid+'"]').closest('tr');
 			if($rowReload.length){
 				$rowReload.addClass('task-row-highlight');
-				setTimeout(function(){ $rowReload[0].scrollIntoView({block:'center'}); }, 300);
+				setTimeout(function(){ $rowReload[0].scrollIntoView({block:'center'}); }, 600);
 			}
 		}
 	}
