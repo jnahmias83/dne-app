@@ -2583,7 +2583,7 @@ $(document).ready(function(){
 			contentType: false,
 			success: function(data){
             	let task_details = data.split('|~|');
-				let content = fillContentTaskDetails(meeting_id,'',task_details,false);
+				let content = fillContentTaskDetails(meeting_id,'',task_details,false,true);
 				$('#contentToScreenshot').html(content);
 				
 				const element = document.getElementById('contentToScreenshot');
