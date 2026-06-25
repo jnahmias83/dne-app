@@ -4153,8 +4153,8 @@ $(document).ready(function(){
 				let is_all_ids_to_edit = 0;
 			    
 				if(all_ids_to_edit == "") 
-				   content = fillContentTaskDetails(meeting_id,iteration,task_details,false);
-				else 
+				   content = fillContentTaskDetails(meeting_id,iteration,task_details,true);
+				else
 				   content = fillMultiTasks(meeting_id,task_details,true)
 			    
 				if(all_ids_to_edit.indexOf(",") !== -1)

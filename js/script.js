@@ -460,6 +460,8 @@ function removeAccountPayment(ap_type,record_id){
 
 function fillContentTaskDetails(meeting_id,iteration,task_details,forShare){
 	let content = '<table dir="rtl" width="100%" style="border-collapse:collapse;">';
+	if(forShare && task_details[1])
+		content += '<tr class="alignCenter height26"><td colspan="3" class="bgColorBlue2 colorWhite font-weight-bold alignCenter paddingTop2 paddingBottom5 border-blue2">'+task_details[1]+'</td></tr>';
 	content += '<tr class="alignCenter height26">';
 	let taskBg    = task_details[26] || '#5b8dd9';
 	let taskColor = task_details[28] || '#ffffff';
