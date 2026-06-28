@@ -332,7 +332,9 @@ $query = $mysqli->prepare("SELECT ln.id_log_meeting_updates AS id_log_meeting_up
 						   m.track_type AS track_type,
 						   m.reminder_time AS reminder_time,
 						   m.reminder_date AS reminder_date,
-						   m.id_track_responsible AS id_track_responsible
+						   m.id_track_responsible AS id_track_responsible,
+					   u.nickname AS user_nickname,
+					(SELECT lmu2.remark FROM dne_log_meeting_updates lmu2 WHERE lmu2.id_meeting = m.id AND TRIM(lmu2.remark) <> '' ORDER BY lmu2.id DESC LIMIT 1) AS latest_lmu_remark
                            FROM dne_log_news ln
                            LEFT JOIN dne_log_meeting_updates lmu ON ln.id_log_meeting_updates = lmu.id
                            LEFT JOIN dne_users u ON lmu.id_user = u.id
@@ -566,14 +568,33 @@ foreach($all_what_news as $wn){
 															<span class="color-1A5276"><?=@$area?></span>
 														</div>
 													</div>
-												</div>								
+													<?php if($track_type == 1){
+														$one_ut = 1; $empty_ut = '';
+														$q_ut = $mysqli->prepare("SELECT lmt.action_date,lmt.remark,u.nickname AS user_nickname FROM dne_log_meeting_tracking lmt LEFT JOIN dne_users u ON lmt.id_user = u.id WHERE lmt.id_meeting = ? AND lmt.remark <> ? AND lmt.is_remark_appears_log = ? ORDER BY lmt.id DESC");
+														$q_ut->bind_param('isi',$ut->id,$empty_ut,$one_ut);
+														$tr_ut = fetch($q_ut);
+														if($q_ut->num_rows > 0){ ?>
+														<div class="d-flex flex-column">
+															<?php foreach($tr_ut as $tr_item){
+																$tr_remark = @$tr_item->remark;
+																if(mb_strlen(@$tr_remark,'UTF-8') > 30) $tr_remark = mb_substr($tr_remark,0,30,'UTF-8').'...';
+															?>
+															<div class="marginTop5 fontSize9 text-end" style="line-height:1">
+																<span class="border-black padding-2x-2y fontSize9 borderRadius20 align-items-center justify-content-center colorWhite bgColorBlack" style="display:inline-flex;line-height:1;"><?=@$tr_item->user_nickname?></span>
+																<span class="marginRight5 dir-rtl unicode-bidi-embed"><?=smartDate(@$tr_item->action_date)?> -</span>
+																<span class="colorRed dir-rtl unicode-bidi-embed display-inline-block"><?=html_entity_decode(@$tr_remark)?></span>
+															</div>
+															<?php } ?>
+														</div>
+													<?php } } ?>
+												</div>
 											</div>
-										</a>					
+										</a>
 									</td>
 								</tr>
 						<?php } ?>
-						</table>	
-					</div>									
+						</table>
+					</div>
 				</div>
 
                 <div id="div_active_tracking" class="display-none border-black dir-rtl">									
@@ -745,7 +766,7 @@ foreach($all_what_news as $wn){
 						</div>
 					</div>		
 									
-					<div class="marginTop10 width100Percents overflow-y-scroll scrollbar-colored alignCenter dir-rtl" style="max-height:600px;">
+					<div class="marginTop10 width100Percents overflow-y-scroll scrollbar-colored alignCenter dir-rtl" style="max-height:500px;">
 						<table align="center" class="dir-rtl" cellpadding="4" width="100%">
 							<?php foreach ($all_what_news as $wn){ 
 								$user_id = @$wn->id_user;
@@ -788,10 +809,17 @@ foreach($all_what_news as $wn){
 								$query = fetch_unique($query);					
 								$progress_status_name = @$query->ps_name_he;
 								$destination_date = @$query->lmu_destination_date;
-								
+								$track_responsible_name = '';
+								if($id_track_responsible > 0){
+									$q_tr = $mysqli->prepare("SELECT nickname FROM dne_users WHERE id = ?");
+									$q_tr->bind_param('i',$id_track_responsible);
+									$track_responsible = fetch_unique($q_tr);
+									$track_responsible_name = @$track_responsible->nickname;
+								}
+
 								if($reminder_date != '0000-00-00' || @$track_responsible_name != '')
 									$tracking_data = '(';
-											
+
 								if($reminder_date != '0000-00-00')
 									$tracking_data .= smartDate($reminder_date);
 
@@ -803,6 +831,14 @@ foreach($all_what_news as $wn){
 
 								if($reminder_date != '0000-00-00' || @$track_responsible_name != '')
 									$tracking_data .= ')';
+								$log_meeting_tracking_num_rows_wn = 0; $log_meeting_tracking_wn = new stdClass();
+								if($track_type == 1){
+									$one_wn = 1; $empty_wn = '';
+									$q_wn = $mysqli->prepare("SELECT lmt.action_date,lmt.remark,u.nickname AS user_nickname FROM dne_log_meeting_tracking lmt LEFT JOIN dne_users u ON lmt.id_user = u.id WHERE lmt.id_meeting = ? AND lmt.remark <> ? AND lmt.is_remark_appears_log = ? ORDER BY lmt.id DESC");
+									$q_wn->bind_param('isi',$wn->id,$empty_wn,$one_wn);
+									$log_meeting_tracking_wn = fetch($q_wn);
+									$log_meeting_tracking_num_rows_wn = $q_wn->num_rows;
+								}
 								?>
 								<tr class="task-row fontSize13">
 									<td>
@@ -835,8 +871,8 @@ foreach($all_what_news as $wn){
 															<span class="color-1A5276"><?=@$area?></span>
 														</div>
 													</div>
-													<?php if(@$wn->id_log_meeting_updates != 0){ 
-													        $remark = @$wn->lmu_remark;
+													<?php if(@$wn->id_log_meeting_updates != 0){
+													        $remark = !isEffectivelyEmpty(@$wn->lmu_remark) ? @$wn->lmu_remark : @$wn->latest_lmu_remark;
 															if(mb_strlen(@$remark,'UTF-8') > 50)
 																$remark = mb_substr($remark,0,50,'UTF-8').'...';
 													?>
@@ -855,7 +891,7 @@ foreach($all_what_news as $wn){
 																			<?=@$progress_status_name?>
 																		</span> 
 																	<?php }	
-																	    if(@$remark != '') echo ' : <span class="color-19bf42 dir-rtl unicode-bidi-embed">'.html_entity_decode(@$wn->lmu_remark).'</span>';
+																	    if(@$remark != '') echo ' : <span class="color-19bf42 dir-rtl unicode-bidi-embed">'.html_entity_decode($remark).'</span>';
 																	    if($destination_date != '0000-00-00'){ ?>
 																		  &nbsp;-
 																			<span class="dir-rtl unicode-bidi-embed color-19bf42 font-weight-bold">
@@ -864,26 +900,20 @@ foreach($all_what_news as $wn){
 																	<?php } ?>															
 																</div>
 															</div>
-													<?php } 
-													      if(@$wn->id_log_meeting_tracking != 0){ 
-															$remark = @$wn->remark;
-															if(mb_strlen(@$remark,'UTF-8') > 30)
-																$remark = mb_substr($remark,0,30,'UTF-8').'...';
-														  ?>	
-															<div class="marginTop5 fontSize9 text-end" style="line-height:1">
-																<span class="border-black padding-4x-4y borderRadius20 align-items-center justify-content-center font-weight-bold colorWhite bgColorRed" style="display:inline-flex;line-height:1;">
-																	<?=@$wn->user_nickname?>
-																</span>		
-																<span class="colorRed dir-rtl font-weight-bold unicode-bidi-embed">
-																	<?php echo smartDate(@$wn->lmt_action_date)?> :
-																</span>												
-																<span class="colorRed dir-rtl unicode-bidi-embed display-inline-block font-weight-bold">
-																	<?=html_entity_decode(@$remark)?>
-																</span>
-																<span class="marginRight5 colorRed dir-rtl unicode-bidi-embed display-inline-block font-weight-bold">
-																	<?=@$tracking_data?>
-																</span>
-															</div>
+													<?php }
+													      if($log_meeting_tracking_num_rows_wn > 0){ ?>
+													<div class="d-flex flex-column">
+														<?php foreach($log_meeting_tracking_wn as $tr_item){
+															$tr_remark = @$tr_item->remark;
+															if(mb_strlen(@$tr_remark,'UTF-8') > 30) $tr_remark = mb_substr($tr_remark,0,30,'UTF-8').'...';
+														?>
+														<div class="marginTop5 fontSize9 text-end" style="line-height:1">
+															<span class="border-black padding-2x-2y fontSize9 borderRadius20 align-items-center justify-content-center colorWhite bgColorBlack" style="display:inline-flex;line-height:1;"><?=@$tr_item->user_nickname?></span>
+															<span class="marginRight5 dir-rtl unicode-bidi-embed"><?=smartDate(@$tr_item->action_date)?> -</span>
+															<span class="colorRed dir-rtl unicode-bidi-embed display-inline-block"><?=html_entity_decode(@$tr_remark)?></span>
+														</div>
+														<?php } ?>
+													</div>
 													<?php } ?>
 												</div>
 											</div>
@@ -1008,7 +1038,8 @@ foreach($all_what_news as $wn){
 														   m.reminder_time AS reminder_time,
 														   m.reminder_date AS reminder_date,
 														   m.id_track_responsible AS id_track_responsible,
-														   u.nickname AS user_nickname
+														   u.nickname AS user_nickname,
+														   (SELECT lmu2.remark FROM dne_log_meeting_updates lmu2 WHERE lmu2.id_meeting = m.id AND TRIM(lmu2.remark) <> '' ORDER BY lmu2.id DESC LIMIT 1) AS latest_lmu_remark
 														   FROM dne_log_news ln
 														   LEFT JOIN dne_log_meeting_updates lmu ON ln.id_log_meeting_updates = lmu.id
 														   LEFT JOIN dne_users u ON lmu.id_user = u.id
@@ -1152,14 +1183,33 @@ foreach($all_what_news as $wn){
 																				<span class="color-1A5276"><?=@$area?></span>
 																			</div>
 																		</div>
+																		<?php if($track_type == 1){
+																			$one_pr = 1; $empty_pr = '';
+																			$q_pr = $mysqli->prepare("SELECT lmt.action_date,lmt.remark,u.nickname AS user_nickname FROM dne_log_meeting_tracking lmt LEFT JOIN dne_users u ON lmt.id_user = u.id WHERE lmt.id_meeting = ? AND lmt.remark <> ? AND lmt.is_remark_appears_log = ? ORDER BY lmt.id DESC");
+																			$q_pr->bind_param('isi',$ut->id,$empty_pr,$one_pr);
+																			$tr_pr = fetch($q_pr);
+																			if($q_pr->num_rows > 0){ ?>
+																		<div class="d-flex flex-column">
+																			<?php foreach($tr_pr as $tr_item){
+																				$tr_remark = @$tr_item->remark;
+																				if(mb_strlen(@$tr_remark,'UTF-8') > 30) $tr_remark = mb_substr($tr_remark,0,30,'UTF-8').'...';
+																			?>
+																			<div class="marginTop5 fontSize9 text-end" style="line-height:1">
+																				<span class="border-black padding-2x-2y fontSize9 borderRadius20 align-items-center justify-content-center colorWhite bgColorBlack" style="display:inline-flex;line-height:1;"><?=@$tr_item->user_nickname?></span>
+																				<span class="marginRight5 dir-rtl unicode-bidi-embed"><?=smartDate(@$tr_item->action_date)?> -</span>
+																				<span class="colorRed dir-rtl unicode-bidi-embed display-inline-block"><?=html_entity_decode(@$tr_remark)?></span>
+																			</div>
+																			<?php } ?>
+																		</div>
+																		<?php } } ?>
 																	</div>
 																</div>
 															</a>
 														</td>
 													</tr>
 											<?php } ?>
-											</table>	
-										</div>									
+											</table>
+										</div>
 									</div>
 									
 									<div id="div_active_tracking_<?=@$pr->id?>" class="flex margin-0-x-auto width50Percents border-black display-none dir-rtl">
@@ -1425,9 +1475,17 @@ foreach($all_what_news as $wn){
 														$tracking_data .= @$track_responsible_name;
 													
 													if($reminder_date != '0000-00-00' || @$track_responsible_name != '')
-														$tracking_data .= ')';								
+														$tracking_data .= ')';
+													$log_meeting_tracking_num_rows_wn = 0; $log_meeting_tracking_wn = new stdClass();
+													if($track_type == 1){
+														$one_wn = 1; $empty_wn = '';
+														$q_wn = $mysqli->prepare("SELECT lmt.action_date,lmt.remark,u.nickname AS user_nickname FROM dne_log_meeting_tracking lmt LEFT JOIN dne_users u ON lmt.id_user = u.id WHERE lmt.id_meeting = ? AND lmt.remark <> ? AND lmt.is_remark_appears_log = ? ORDER BY lmt.id DESC");
+														$q_wn->bind_param('isi',$wn->id,$empty_wn,$one_wn);
+														$log_meeting_tracking_wn = fetch($q_wn);
+														$log_meeting_tracking_num_rows_wn = $q_wn->num_rows;
+													}
 													?>
-													<tr class="task-row fontSize13">	
+													<tr class="task-row fontSize13">
 														<td>
 															<input type="hidden" id="p_nickname_<?=@$wn->id?>" value="<?=@$pr->nickname?>">
 															<a id="task_name_<?=@$wn->id?>" class="text-decoration-none w-100 d-block">		
@@ -1455,7 +1513,10 @@ foreach($all_what_news as $wn){
 																			</div>
 																		</div>
 																		
-																		<?php if(@$wn->id_log_meeting_updates != 0){ ?>
+																		<?php if(@$wn->id_log_meeting_updates != 0){
+								    $lmu_remark_s2 = !isEffectivelyEmpty(@$wn->lmu_remark) ? @$wn->lmu_remark : @$wn->latest_lmu_remark;
+								    if(mb_strlen(@$lmu_remark_s2,'UTF-8') > 50) $lmu_remark_s2 = mb_substr($lmu_remark_s2,0,50,'UTF-8').'...';
+								?>
 																			<div class="marginRight5 marginTop5 flex flex-wrap justify-content-center">
 																				<div class="width100Percents">
 																					<span class="dir-rtl colorGrey unicode-bidi-embed">
@@ -1469,29 +1530,24 @@ foreach($all_what_news as $wn){
 																							<?=@$progress_status_name?>
 																						</span> 
 																					<?php }
-																					if(@$wn->lmu_remark != '') echo ' : <span class="colorGreen dir-rtl unicode-bidi-embed">'.html_entity_decode(@$wn->lmu_remark).'</span>'?>
+																					if(@$lmu_remark_s2 != '') echo ' : <span class="colorGreen dir-rtl unicode-bidi-embed">'.html_entity_decode($lmu_remark_s2).'</span>'?>
 																				</div>
 																			</div>
 																		<?php }
-                                                                              if(@$wn->id_log_meeting_tracking != 0){ ?>
-																				<div class="marginTop5 flex flex-wrap justify-content-center">
-																					<div class="width100Percents">
-																						<span class="dir-rtl colorGrey unicode-bidi-embed">
-																							[<?=smartDate(@$wn->lmt_action_date)?>]
-																						</span> 
-																						<span class="colorGrey dir-rtl unicode-bidi-embed">
-																							<?=@$wn->user_nickname?>
-																						</span>
-																						<span class="colorGrey dir-rtl unicode-bidi-embed">																	
-																							- 
-																						</span>																		
-																						<?php if(@$wn->lmt_remark != '') echo ' : <span class="colorRed dir-rtl unicode-bidi-embed">'.html_entity_decode(@$wn->lmt_remark).'</span>'?>
-																					    <span class="marginRight5 colorRed dir-rtl unicode-bidi-embed display-inline-block">
-																							<?=@$tracking_data?>
-																						</span>
+																			if($log_meeting_tracking_num_rows_wn > 0){ ?>
+																				<div class="d-flex flex-column">
+																					<?php foreach($log_meeting_tracking_wn as $tr_item){
+																						$tr_remark = @$tr_item->remark;
+																						if(mb_strlen(@$tr_remark,'UTF-8') > 30) $tr_remark = mb_substr($tr_remark,0,30,'UTF-8').'...';
+																					?>
+																					<div class="marginTop5 fontSize9 text-end" style="line-height:1">
+																						<span class="border-black padding-2x-2y fontSize9 borderRadius20 align-items-center justify-content-center colorWhite bgColorBlack" style="display:inline-flex;line-height:1;"><?=@$tr_item->user_nickname?></span>
+																						<span class="marginRight5 dir-rtl unicode-bidi-embed"><?=smartDate(@$tr_item->action_date)?> -</span>
+																						<span class="colorRed dir-rtl unicode-bidi-embed display-inline-block"><?=html_entity_decode(@$tr_remark)?></span>
 																					</div>
+																					<?php } ?>
 																				</div>
-                                                                        <?php } ?>																				  		
+																				<?php } ?>																				  		
 																	</div>
 																</div>
 															</a>																				
@@ -1627,12 +1683,20 @@ foreach($all_what_news as $wn){
 																		   AND lmt.remark <> ?
 																		   AND lmt.is_remark_appears_log = ?
 																		   ORDER BY lmt.id DESC");
-												$query->bind_param('isi',$tdt->id,$empty_remark,$one);	
-												$query->execute(); 
+												$query->bind_param('isi',$tdt->id,$empty_remark,$one);
+												$query->execute();
 												$query->store_result();
 												$log_meeting_tracking_num_rows = $query->num_rows;
 												$log_meeting_tracking = fetch($query);
-											}		
+											}
+											$log_meeting_tracking_num_rows_ut = 0; $log_meeting_tracking_ut = new stdClass();
+											if(@$list_from == 'user_tasks' && $track_type == 1){
+												$one_tdt = 1; $empty_tdt = '';
+												$q_tdt = $mysqli->prepare("SELECT lmt.action_date,lmt.remark,u.nickname AS user_nickname FROM dne_log_meeting_tracking lmt LEFT JOIN dne_users u ON lmt.id_user = u.id WHERE lmt.id_meeting = ? AND lmt.remark <> ? AND lmt.is_remark_appears_log = ? ORDER BY lmt.id DESC");
+												$q_tdt->bind_param('isi',$tdt->id,$empty_tdt,$one_tdt);
+												$log_meeting_tracking_ut = fetch($q_tdt);
+												$log_meeting_tracking_num_rows_ut = $q_tdt->num_rows;
+											}
 											?>
 											<tr class="task-row fontSize13" style="background-color:<?=@$bgcolor?>">	
 												<td>
@@ -1740,6 +1804,20 @@ foreach($all_what_news as $wn){
 																			<span class="color-1A5276"><?=@$area?></span>
 																		</div>
 																	</div>
+																	<?php if($log_meeting_tracking_num_rows_ut > 0){ ?>
+																	<div class="d-flex flex-column">
+																		<?php foreach($log_meeting_tracking_ut as $tr_item){
+																			$tr_remark = @$tr_item->remark;
+																			if(mb_strlen(@$tr_remark,'UTF-8') > 30) $tr_remark = mb_substr($tr_remark,0,30,'UTF-8').'...';
+																		?>
+																		<div class="marginTop5 fontSize9 text-end" style="line-height:1">
+																			<span class="border-black padding-2x-2y fontSize9 borderRadius20 align-items-center justify-content-center colorWhite bgColorBlack" style="display:inline-flex;line-height:1;"><?=@$tr_item->user_nickname?></span>
+																			<span class="marginRight5 dir-rtl unicode-bidi-embed"><?=smartDate(@$tr_item->action_date)?> -</span>
+																			<span class="colorRed dir-rtl unicode-bidi-embed display-inline-block"><?=html_entity_decode(@$tr_remark)?></span>
+																		</div>
+																		<?php } ?>
+																	</div>
+																	<?php } ?>
 																<?php } ?>
 															</div>
 														</div>
@@ -1886,8 +1964,11 @@ foreach($all_what_news as $wn){
 		
 		<div class="modal fade" id="modalUpdateTask" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
-				<div class="modal-content" style="position:relative;">
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="position:absolute;top:8px;left:8px;z-index:1;"></button>
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="btn-close btn-close-white-small" data-bs-dismiss="modal" aria-label="Close"></button>
+						<div class="modal-title"></div>
+					</div>
 					<div class="modal-body">
                         <form action="" method="post">
 						    <div class='marginTop5 subtitle color-349feb fontSize18 font-weight-bold alignCenter'></div>
@@ -2113,15 +2194,17 @@ $(document).ready(function(){
 		localStorage.removeItem('is_modal_task_actions_opened');
 		const mid = localStorage.getItem('meeting_id');
 		if(mid){
-			$('tr.task-row-highlight').removeClass('task-row-highlight');
-			const $row = $('.task_name[data-meetingid="'+mid+'"]').closest('tr');
-			if($row.length){
-				$row.addClass('task-row-highlight');
-				window.scrollTo({top: Math.max(0, $row.offset().top - 150), behavior:'smooth'});
+			const $rowL = $('#left_new_content .task_name[data-meetingid="'+mid+'"]').closest('tr');
+			const $rowR = $('#right_content .task_name[data-meetingid="'+mid+'"]').closest('tr');
+			const $found = $rowL.length ? $rowL : $rowR;
+			if($found.length){
+				$('tr.task-row-highlight').removeClass('task-row-highlight');
+				$found.addClass('task-row-highlight');
+				$found[0].scrollIntoView({behavior:'smooth', block:'nearest'});
 			}
 		}
 	});
-	
+
 	if(localStorage.getItem("is_modal_tasks_hystory_opened") === "true"){
 		localStorage.removeItem('is_modal_tasks_hystory_opened');
 		meeting_id = localStorage.getItem("meeting_id");
@@ -2157,7 +2240,10 @@ $(document).ready(function(){
 			const $rowReload = $('.task_name[data-meetingid="'+mid+'"]').closest('tr');
 			if($rowReload.length){
 				$rowReload.addClass('task-row-highlight');
-				setTimeout(function(){ window.scrollTo({top: Math.max(0, $rowReload.offset().top - 150), behavior:'smooth'}); }, 600);
+				setTimeout(function(){
+					const $v = $('#left_new_content .task_name[data-meetingid="'+mid+'"]').closest('tr');
+					if($v.length) $v[0].scrollIntoView({behavior:'smooth', block:'nearest'});
+				}, 600);
 			}
 		}
 	}
@@ -2205,6 +2291,7 @@ $(document).ready(function(){
 		lang = $('#hidden_lang').val();
 			
 		$('#modalUpdateTask').attr('dir','rtl');
+		$('#modalUpdateTask .modal-title').html("<img src='images/status-icon.png' alt='status icon' width='20' height='20'>&nbsp;&nbsp;עדכון&nbsp;&nbsp;<img src='images/status-icon.png' alt='status icon' width='20' height='20'>");
 		$('.subtitle').html(chapter+"<br/>"+subject+"&nbsp;|&nbsp;"+area).css('line-height','1.1em');
         $('#div_remark_changes_status_update,#div_update_btns').css('direstion','rtl');
 	    $('#progress_status_for_update_label').html('סטטוס חדש:').css({'margin-bottom':'5px','margin-left':'5px'});
@@ -2734,14 +2821,15 @@ $(document).ready(function(){
 			processData: false,
 			contentType: false,
 			success: function(data){
+				$('.btn-set-to-read').remove();
 				if(data == 1) {
-					let button = 
+					let button =
 						"<button type='button' class='btn-set-to-read vertical-align-top btn btn-primary font-weight-bold marginLeft10 fontSize16' onclick='setToReadTask()'>" +
 							"<i class='fa-solid fa-check colorGreen'></i>&nbsp;תודה על העדכון" +
 						"</button>";
-	   
+
 					$('#link_next_task').after(button);
-				}			
+				}
 			},
 		});	
 		
@@ -2789,8 +2877,12 @@ $(document).ready(function(){
 							index = 0;
 				}
 				
-				let next_meeting_id = meeting_ids_array[index];				
+				let next_meeting_id = meeting_ids_array[index];
 				localStorage.setItem('next_meeting_id',next_meeting_id);
+				if($('#hidden_is_to_do_today').val() == 1)
+					localStorage.setItem('is_to_do_today','1');
+				else
+					localStorage.removeItem('is_to_do_today');
 				setData(current_meeting_id,'','update_task',1,0,'for_closing');
 			}
        });
@@ -2831,8 +2923,12 @@ $(document).ready(function(){
 							index = 0;
 				}
 				
-				let next_meeting_id = meeting_ids_array[index];				
+				let next_meeting_id = meeting_ids_array[index];
 				localStorage.setItem('next_meeting_id',next_meeting_id);
+				if($('#hidden_is_to_do_today').val() == 1)
+					localStorage.setItem('is_to_do_today','1');
+				else
+					localStorage.removeItem('is_to_do_today');
 				setData(current_meeting_id,'','update_task',0,0,'for_closing')
 			}
        });

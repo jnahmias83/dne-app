@@ -3060,8 +3060,11 @@ include 'menu_tasks.php';
 		<?php $_pl = !empty(@$project->lang) ? @$project->lang : 'HE'; $_pd = ($_pl=='HE') ? 'rtl' : 'ltr'; ?>
 		<div class="modal fade <?=($_pl=='HE') ? 'dir-rtl' : ''?>" id="modalUpdateTask" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
-				<div class="modal-content" style="position:relative;">
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="position:absolute;top:8px;left:8px;z-index:1;"></button>
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="btn-close btn-close-white-small" data-bs-dismiss="modal" aria-label="Close"></button>
+						<div class="modal-title"></div>
+					</div>
 					<div class="modal-body"
                         <form action="" method="post">
                             <div class='marginTop5 subtitle color-349feb fontSize18 font-weight-bold alignCenter'></div>

@@ -46,13 +46,15 @@ function duplicateRecord(meeting_id,iteration,from){
 			else if(from == 'fromProjectHome'){
 		        url = 'add_meeting.php?project_id='+$('#project_id').val()+'&id='+meeting_id+'&fromProjectHome=1'; 
 	        }
-            else 
+            else {
+               localStorage.setItem('highlight_after_reload', 'true');
                url = 'add_meeting.php?project_id='+from+'&id='+data;
-			
+            }
+
 		    url += '&lang='+$('#hidden_lang').val();
 		    location.href = url;
 		},
-	});				
+	});
 }
 
 function continuousTask(meeting_id,progress_status,iteration,from){
@@ -84,8 +86,10 @@ function continuousTask(meeting_id,progress_status,iteration,from){
 			else if(from == 'fromProjectHome') {
 		        url = 'add_meeting.php?project_id='+$('#project_id').val()+'&id='+meeting_id+'&fromProjectHome=1';
 	        }
-            else
+            else {
+               localStorage.setItem('highlight_after_reload', 'true');
                url = 'add_meeting.php?project_id='+from+'&id='+data+'&iscontinious=1';
+            }
 
 		    url += '&lang='+$('#hidden_lang').val();
 		    location.href = url;
@@ -263,6 +267,12 @@ function setData(meeting_id,iteration,field,isRemark,forShare,screen_type){
 								let content = fillContentTaskDetails(localStorage.getItem('next_meeting_id'), '', task_details, true);
 								$('#div_content_task_details').html(content);
 								$('#modalUpdateTask').modal('hide');
+								if(localStorage.getItem('is_to_do_today') == '1'){
+									localStorage.removeItem('is_to_do_today');
+									localStorage.setItem('highlight_after_reload','true');
+									location.href = 'projects.php';
+									return;
+								}
 								$('#modalTaskFollowupActions').modal('show');
 								setProjectModalTitle($('#hidden_project_id').val(), '#modalTaskFollowupActions', false);
 								$(this).off('hidden.bs.modal');
@@ -785,8 +795,9 @@ function fillLogTaskTracking(id_meeting,iteration,screen_type){
 				localStorage.setItem('remark', $('#hidden_remark').val());
 				localStorage.setItem('track_type', 1);
 				localStorage.setItem('updated_id','meeting_'+id_meeting);
+				if(iteration === '') localStorage.setItem('highlight_after_reload', 'true');
 			}
-			
+
 			location.href = url;
 		}
 	});
