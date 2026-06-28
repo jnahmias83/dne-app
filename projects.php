@@ -2988,7 +2988,7 @@ $(window).on('load', function(){
 function setToReadTask(){
 	let form_data = new FormData();
 	form_data.append('id_meeting',$('#hidden_meeting_id').val());
-	
+
 	$.ajax({
 		type: 'POST',
 		url: 'set_to_read_task.php',
@@ -2997,8 +2997,9 @@ function setToReadTask(){
 		processData: false,
 		contentType: false,
 		success: function(data){
-			$('#link_next_task').trigger('click');
-		}, 
+			$('#modalTaskFollowupActions').modal('hide');
+			location.href = 'projects.php';
+		},
 	});
 }
 
