@@ -1039,10 +1039,10 @@ async function setProjectModalTitle(project_id, modalSelector, forShare) {
     const d = await getProjectDetails(project_id);
     let html;
     if (!forShare && d.nickname) {
-        const sub = d.name_he ? `<div style="margin-top:4px;">${d.name_he}</div>` : '';
+        const sub = d.name_he ? `<div style="margin-top:4px;margin-bottom:6px;">${d.name_he}</div>` : '';
         html = d.nickname + sub;
     } else {
-        html = d.name_he || '';
+        html = d.name_he ? `<div style="margin-bottom:6px;">${d.name_he}</div>` : '';
     }
     $(modalSelector + ' .modal-title').html(html);
 }
