@@ -873,6 +873,7 @@ foreach($all_what_news as $wn){
 													</div>
 													<?php if(@$wn->id_log_meeting_updates != 0){
 													        $remark = !isEffectivelyEmpty(@$wn->lmu_remark) ? @$wn->lmu_remark : @$wn->latest_lmu_remark;
+															$remark = trim(strip_tags(html_entity_decode($remark)));
 															if(mb_strlen(@$remark,'UTF-8') > 50)
 																$remark = mb_substr($remark,0,50,'UTF-8').'...';
 													?>
@@ -891,7 +892,7 @@ foreach($all_what_news as $wn){
 																			<?=@$progress_status_name?>
 																		</span> 
 																	<?php }	
-																	    if(@$remark != '') echo ' : <span class="color-19bf42 dir-rtl unicode-bidi-embed">'.html_entity_decode($remark).'</span>';
+																	    if(@$remark != '') echo ' : <span class="color-19bf42 dir-rtl unicode-bidi-embed">'.$remark.'</span>';
 																	    if($destination_date != '0000-00-00'){ ?>
 																		  &nbsp;-
 																			<span class="dir-rtl unicode-bidi-embed color-19bf42 font-weight-bold">
@@ -1515,6 +1516,7 @@ foreach($all_what_news as $wn){
 																		
 																		<?php if(@$wn->id_log_meeting_updates != 0){
 								    $lmu_remark_s2 = !isEffectivelyEmpty(@$wn->lmu_remark) ? @$wn->lmu_remark : @$wn->latest_lmu_remark;
+								    $lmu_remark_s2 = trim(strip_tags(html_entity_decode($lmu_remark_s2)));
 								    if(mb_strlen(@$lmu_remark_s2,'UTF-8') > 50) $lmu_remark_s2 = mb_substr($lmu_remark_s2,0,50,'UTF-8').'...';
 								?>
 																			<div class="marginRight5 marginTop5 flex flex-wrap justify-content-center">
@@ -1530,7 +1532,7 @@ foreach($all_what_news as $wn){
 																							<?=@$progress_status_name?>
 																						</span> 
 																					<?php }
-																					if(@$lmu_remark_s2 != '') echo ' : <span class="colorGreen dir-rtl unicode-bidi-embed">'.html_entity_decode($lmu_remark_s2).'</span>'?>
+																					if(@$lmu_remark_s2 != '') echo ' : <span class="colorGreen dir-rtl unicode-bidi-embed">'.$lmu_remark_s2.'</span>'?>
 																				</div>
 																			</div>
 																		<?php }
