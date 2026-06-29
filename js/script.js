@@ -927,16 +927,6 @@ function hidePopup(modal,iteration,meeting_id,from){
 	let form_data = new FormData();
 	form_data.append('meeting_id',meeting_id);
 	
-	if(modal == 'modalTaskTracking') {
-		$.ajax({
-			type: 'POST',
-			url: 'set_inactive_tracking.php',
-			data: form_data,
-			cache: false,
-			processData: false,
-			contentType: false
-	    });
-	}
 	
 	let url;
 	if(iteration != ''){
