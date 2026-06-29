@@ -1248,7 +1248,8 @@ a {
 	text-align: center;
 }
 
-#modalTaskFollowupActions .modal-header {
+#modalTaskFollowupActions .modal-header,
+#modalUpdateTask .modal-header {
     height: auto;
     padding: 14px 16px 8px 16px;
 }
@@ -1265,6 +1266,7 @@ a {
 .modal-title {
     flex: 1;
     text-align: center;
+    padding-bottom: 4px;
 }
 
 .btn-close.btn-close-white-small {
