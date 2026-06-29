@@ -1251,7 +1251,7 @@ a {
 #modalTaskFollowupActions .modal-header,
 #modalUpdateTask .modal-header {
     height: auto;
-    padding: 14px 16px 14px 16px;
+    padding: 14px 16px 8px 16px;
 }
 
 .modal-header::after {

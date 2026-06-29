@@ -605,7 +605,7 @@ foreach($all_what_news as $wn){
 						</div>
 					</div>							
 									
-					<div class="marginTop10 overflow-y-scroll scrollbar-colored alignCenter dir-rtl" style="max-height:600px;">
+					<div class="marginTop10 overflow-y-scroll scrollbar-colored alignCenter dir-rtl" style="max-height:530px;">
 						<table align="center" class="dir-rtl" cellpadding="4" width="100%">
 							<?php foreach ($all_active_tracking as $at){ 
 								$user_id = @$at->id_user;
@@ -766,7 +766,7 @@ foreach($all_what_news as $wn){
 						</div>
 					</div>		
 									
-					<div class="marginTop10 width100Percents overflow-y-scroll scrollbar-colored alignCenter dir-rtl" style="max-height:500px;">
+					<div class="marginTop10 width100Percents overflow-y-scroll scrollbar-colored alignCenter dir-rtl" style="max-height:530px;">
 						<table align="center" class="dir-rtl" cellpadding="4" width="100%">
 							<?php foreach ($all_what_news as $wn){ 
 								$user_id = @$wn->id_user;
@@ -831,7 +831,9 @@ foreach($all_what_news as $wn){
 
 								if($reminder_date != '0000-00-00' || @$track_responsible_name != '')
 									$tracking_data .= ')';
-								$log_meeting_tracking_num_rows_wn = 0; $log_meeting_tracking_wn = new stdClass();
+								$log_meeting_tracking_num_rows_wn = 0; 
+								$log_meeting_tracking_wn = new stdClass();
+								
 								if($track_type == 1){
 									$one_wn = 1; $empty_wn = '';
 									$q_wn = $mysqli->prepare("SELECT lmt.action_date,lmt.remark,u.nickname AS user_nickname FROM dne_log_meeting_tracking lmt LEFT JOIN dne_users u ON lmt.id_user = u.id WHERE lmt.id_meeting = ? AND lmt.remark <> ? AND lmt.is_remark_appears_log = ? ORDER BY lmt.id DESC");
@@ -1229,7 +1231,7 @@ foreach($all_what_news as $wn){
 											</div>
 										</div>
 										
-										<div class="marginTop10 width100Percents overflow-y-scroll scrollbar-colored alignCenter dir-rtl" style="max-height:600px;">
+										<div class="marginTop10 width100Percents overflow-y-scroll scrollbar-colored alignCenter dir-rtl" style="max-height:530px;">
 											<table align="center" class="dir-rtl" cellpadding="4" width="100%">
 												<?php foreach ($active_tracking as $at){ 
 													$user_id = @$at->id_user;
@@ -1410,7 +1412,7 @@ foreach($all_what_news as $wn){
 											</div>
 										</div>
 										
-										<div class="marginTop10 width100Percents overflow-y-scroll scrollbar-colored alignCenter dir-rtl" style="max-height:600px;">
+										<div class="marginTop10 width100Percents overflow-y-scroll scrollbar-colored alignCenter dir-rtl" style="max-height:530px;">
 											<table align="center" class="dir-rtl" cellpadding="4" width="100%">
 												<?php foreach ($what_news as $wn){ 
 													$user_id = @$wn->id_user;																					
@@ -1505,7 +1507,7 @@ foreach($all_what_news as $wn){
 																						</span>
 																				<?php } ?>
 																			</div>
-																		</div>
+				</div>
 																		<div class="marginRight5 marginTop5 flex flex-wrap justify-content-center">
 																			<div class="width100Percents">
 																				<span class="color-1A5276 font-weight-bold"><?=@$subject?></span>
@@ -1515,10 +1517,10 @@ foreach($all_what_news as $wn){
 																		</div>
 																		
 																		<?php if(@$wn->id_log_meeting_updates != 0){
-								    $lmu_remark_s2 = !isEffectivelyEmpty(@$wn->lmu_remark) ? @$wn->lmu_remark : @$wn->latest_lmu_remark;
-								    $lmu_remark_s2 = trim(strip_tags(html_entity_decode($lmu_remark_s2)));
-								    if(mb_strlen(@$lmu_remark_s2,'UTF-8') > 50) $lmu_remark_s2 = mb_substr($lmu_remark_s2,0,50,'UTF-8').'...';
-								?>
+																 	        $lmu_remark_s2 = !isEffectivelyEmpty(@$wn->lmu_remark) ? @$wn->lmu_remark : @$wn->latest_lmu_remark;
+																	        $lmu_remark_s2 = trim(strip_tags(html_entity_decode($lmu_remark_s2)));
+																 	        if(mb_strlen(@$lmu_remark_s2,'UTF-8') > 50) $lmu_remark_s2 = mb_substr($lmu_remark_s2,0,50,'UTF-8').'...';
+								                                         ?>
 																			<div class="marginRight5 marginTop5 flex flex-wrap justify-content-center">
 																				<div class="width100Percents">
 																					<span class="dir-rtl colorGrey unicode-bidi-embed">
@@ -1973,7 +1975,7 @@ foreach($all_what_news as $wn){
 					</div>
 					<div class="modal-body">
                         <form action="" method="post">
-						    <div class='marginTop5 subtitle color-349feb fontSize18 font-weight-bold alignCenter'></div>
+						    <div class='marginTop5 subtitle color-19bf42 fontSize18 font-weight-bold alignCenter'></div>
 						    <div class="row marginTop10">
 							    <div class="col-12 fontSize13 alignCenter">
 									<span id="progress_status_for_update_label"></span>
@@ -2010,105 +2012,76 @@ foreach($all_what_news as $wn){
 					    <div id="modalContent">
 					        <div class="container">
 								<form>
-								    <div class='marginTop5 subtitle color-349feb fontSize18 font-weight-bold alignCenter'></div>
-								    <div class="row marginTop10 alignCenter">
-									    <div class="col-12">
-											<strong class="fontSize13">אחראי מעקב</strong>
+								    <div class='marginTop5 subtitle color-19bf42 fontSize18 font-weight-bold alignCenter'></div>
+								    <div class="row marginTop10" dir="rtl">
+										<!-- Col 1 (droite en RTL) : labels icones -->
+										<div class="col-4 p-2 text-center">
+											<div class="fw-bold fontSize13 marginBottom5">אחראי מעקב</div>
+											<i class="fa fa-user" style="font-size:20px;"></i>
+											<div class="fw-bold fontSize13 marginTop15 marginBottom5">תזכורת מעקב</div>
+											<img src="images/bell-solid.svg" width="20" height="20" />
 										</div>
-									</div>
-									
-									<div class="row marginTop5 alignCenter">
-										<div class="col-12">
-											<select id="users" class="paddingRight8 fontSize13">	
+										<!-- Col 2 (gauche en RTL) : inputs -->
+										<div class="col-8 p-2 text-end">
+											<select id="users" class="paddingRight8 fontSize13 marginBottom10">
 												<option value="0">--בחר משתמש--</option>
-												<?php 
+												<?php
 												foreach($active_users as $item){ ?>
 													<option value="<?=@$item->id?>">
 														<strong><?=@$item->firstname?> <?=@$item->lastname?></strong>
 													</option>
-													<?php } ?>						
+													<?php } ?>
 											</select>
-										</div>
-									</div>
-
-									<div class="row" dir="rtl">
-										<div class="col-12 d-flex justify-content-center">
-											<div class="row mt-2 width85Percents">
-												<div id="div_reminder_date" class="col-4 p-2 text-end">
-													<div class="fw-bold d-flex align-items-center justify-content-end gap-1">
-														<span class="fontSize13">תזכורת מעקב</span>
-														<img src="images/bell-solid.svg" width="15" height="15" />
-													</div>
-													<div class="marginTop5 fontSize12 text-end">
-														<input type="date" class="text-center" id="reminder_date" />
-													</div>
+											<div class="row align-items-center justify-content-start marginTop5" dir="rtl">
+												<div class="col-auto fontSize13 text-end">
+													<div><input type="radio" id="not_reminders" name="set_reminder_date_radio" value="0" onclick="setReminderDate(this.value)"> בלי תזכורת</div>
+													<div><input type="radio" id="reminder_after_three_days" name="set_reminder_date_radio" value="2" onclick="setReminderDate(this.value)"> בעוד 3 ימים</div>
+													<div><input type="radio" id="reminder_after_two_weeks" name="set_reminder_date_radio" value="4" onclick="setReminderDate(this.value)"> בעוד שבועיים</div>
+													<div><input type="radio" id="reminder_after_one_month" name="set_reminder_date_radio" value="5" onclick="setReminderDate(this.value)"> בעוד חודש</div>
 												</div>
-
-												<div id="div_radios" class="col-8 p-2 text-end">
-													<div class="row g-0 fontSize13">
-														<div class="col-6">
-															<div>
-																<input type="radio" id="reminder_tomorrow" name="set_reminder_date_radio" value="1"
-																	   onclick="setReminderDate(this.value)"> מחר
-															</div>
-															<div>
-																<input type="radio" id="reminder_after_three_days" name="set_reminder_date_radio" value="2"
-																	   onclick="setReminderDate(this.value)"> בעוד 3 ימים
-															</div>
-															<div>
-																<input type="radio" id="reminder_after_one_week" name="set_reminder_date_radio" value="3"
-																	   onclick="setReminderDate(this.value)"> בעוד שבוע
-															</div>
-														</div>
-
-														<div class="col-6">
-															<div>
-																<input type="radio" id="reminder_after_two_weeks" name="set_reminder_date_radio" value="4"
-																	   onclick="setReminderDate(this.value)"> בעוד שבועיים
-															</div>
-															<div>
-																<input type="radio" id="reminder_after_one_month" name="set_reminder_date_radio" value="5"
-																	   onclick="setReminderDate(this.value)"> בעוד חודש
-															</div>
-															<div>
-																<input type="radio" id="reminder_after_selected_date" name="set_reminder_date_radio" value="6"
-																	   onclick="setReminderDate(this.value)"> בתאריך...
-															</div>
-															<div>
-																<input type="radio" id="not_reminders" name="set_reminder_date_radio" value="0"
-																	   onclick="setReminderDate(this.value)"> אין צורך
-															</div>
-														</div>
+												<div class="col-auto" id="date_col_wrapper" style="display:none;">
+													<div id="div_reminder_date">
+														<input type="date" class="text-center" id="reminder_date" style="font-size:11px;" />
 													</div>
 												</div>
 											</div>
 										</div>
 									</div>
-									
-									<div id="task_active_remarks_tracking"></div>   
-								    
-								    <div class="row marginTop5">	
-										<div class="col-12 fontSize13">
-											<div class="row">
-												<div class="col-6 alignRight">				
+
+									<div id="task_active_remarks_tracking"></div>
+
+									<div class="row marginTop5" dir="rtl">
+										<div class="col-2" style="padding-top:26px; text-align:right;">
+											<div class="fw-bold fontSize13 marginBottom5">עדכון</div>
+											<img src="images/edit-button.svg" width="20" height="20" />
+										</div>
+										<div class="col-10 ps-1 pe-2">
+											<div class="d-flex justify-content-between marginBottom5">
+												<div>
+													<a class="text-decoration-none cursor-pointer" onclick="$('#new_remark').html('')">Clear</a>
+												</div>
+												<div>
 													<a id="new_remark_tracking_en" class="text-decoration-none cursor-pointer" onclick="$('#new_remark').css({'direction':'ltr','padding-left':'5px','padding-right':'0','text-align':'left'});$(this).css('font-weight','bold');$('#new_remark_tracking_he').css('font-weight','normal');">EN</a>&nbsp;|
 													<a id="new_remark_tracking_he" class="text-decoration-none cursor-pointer" onclick="$('#new_remark').css({'direction':'rtl','padding-right':'5px','padding-left':'0','text-align':'right'});$(this).css('font-weight','bold');$('#new_remark_tracking_en').css('font-weight','normal');">ע</a>
 												</div>
-
-												<div class="col-6 alignLeft">
-													<a class="text-decoration-none" onclick="$('#new_remark').html('')">Clear</a>
-												</div>
 											</div>
-
-											<div class="marginTop5 paddingRight10 alignRight height-auto bgColorWhite cursor-pointer margin-0-x-auto border-black overflow-y-scroll dir-rtl">		
+											<div class="bgColorWhite cursor-pointer border-black overflow-y-scroll dir-rtl w-100" style="padding:4px 8px; min-height:60px;">
 												<div name="new_remark" id="new_remark" contenteditable="true" class="editable red cursor-pointer" data-placeholder="ניתן להוסיף כאן הערה"></div>
 											</div>
-	                                    </div>										
-				                    </div>                               	
+										</div>
+									</div>                               	
 		   
-									<div class="marginTop15 alignCenter">
-										<input type="button" class="btn btn-primary font-weight-bold marginLeft10" value="שמור מעקב" onclick="fillLogTaskTracking($('#hidden_meeting_id').val(),'','for_closing')" />
-									    <input type="button" class="btn bg-dark text-white font-weight-bold" value="בטל מעקב" onclick="hidePopup('modalTaskTracking','',$('#hidden_meeting_id').val(),'fromProjects')" />  
+									<div class="marginTop15 d-flex justify-content-center gap-3">
+										<button type="button" class="btn font-weight-bold px-3" style="background-color:#1a5276; color:white;"
+												onclick="fillLogTaskTracking($('#hidden_meeting_id').val(),'','for_closing',1)">
+											<i class="fas fa-bullseye" style="color:#e74c3c;"></i> שמור מעקב
+										</button>
+										<button type="button" class="btn font-weight-bold px-3 bg-dark text-white"
+												onclick="fillLogTaskTracking($('#hidden_meeting_id').val(),'','for_closing',0)">
+											<i class="fas fa-bullseye" style="color:#95a5a6;"></i> בטל מעקב
+										</button>
+										<input type="button" class="btn bg-dark text-white font-weight-bold px-3" value="בטל"
+											   onclick="hidePopup('modalTaskTracking','',$('#hidden_meeting_id').val(),'fromProjects')" />
 									</div>
 							   </form>
                            </div>
@@ -2582,33 +2555,30 @@ $(document).ready(function(){
 		
 		if(reminder_date != '0000-00-00') {
 		  $('#div_reminder_date').show();
+		  $('#date_col_wrapper').show();
 	      $('#reminder_date').val(reminder_date);
 	    }
-	    else 
+	    else {
 		  $('#div_reminder_date').hide();
-	 
-	    $('#modalTaskTracking .modal-title').html("<i class='fas fa-bullseye' style='font-size:22px;color:#888;'></i>&nbsp;&nbsp;מעקב אקטיבי&nbsp;&nbsp;<i class='fas fa-bullseye' style='font-size:22px;color:#888;'></i>");
+		  $('#date_col_wrapper').hide();
+		}
+
+	    $('#modalTaskTracking .modal-title').html("<i class='fas fa-bullseye' style='font-size:22px;color:#e74c3c;'></i>&nbsp;&nbsp;מעקב אקטיבי&nbsp;&nbsp;<i class='fas fa-bullseye' style='font-size:22px;color:#e74c3c;'></i>");
 		$('.subtitle').html(chapter+"<br/>"+subject+"&nbsp;|&nbsp;"+area).css('line-height','1.1em');
-	    $('#div_reminder_date').css('display','block');
-	 
+
 	    if($('#hidden_reminder_time').val() == 0){
-		  $('#div_reminder_date').css('display','none');
+		  $('#div_reminder_date').hide();
+		  $('#date_col_wrapper').hide();
 		  $('#not_reminders').prop('checked',true);
 	    }
 	   
-	    if($('#hidden_reminder_time').val() == 1)
-		  $('#reminder_tomorrow').prop('checked',true);
-	    if($('#hidden_reminder_time').val() == 2)
-		  $('#reminder_after_three_days').prop('checked',true);
-	    if($('#hidden_reminder_time').val() == 3)
-		  $('#reminder_after_one_week').prop('checked',true);
+		    if($('#hidden_reminder_time').val() == 2)
+	      $('#reminder_after_three_days').prop('checked',true);
 	    if($('#hidden_reminder_time').val() == 4)
-		  $('#reminder_after_two_weeks').prop('checked',true);
+	      $('#reminder_after_two_weeks').prop('checked',true);
 	    if($('#hidden_reminder_time').val() == 5)
-		  $('#reminder_after_one_month').prop('checked',true);
-	    if($('#hidden_reminder_time').val() == 6) 
-		  $('#reminder_after_selected_date').prop('checked',true);   
-			
+	      $('#reminder_after_one_month').prop('checked',true);
+
         $('#users option').each(function(){			
 		    if($('#hidden_track_responsible_id').val() == 0){
 				if($(this).val() == $('#hidden_user_id').val()) 

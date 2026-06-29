@@ -592,17 +592,20 @@ function setReminderDate (reminder_type){
    
     if(reminder_type == 0){
       $('#div_reminder_date').hide();
+      $('#date_col_wrapper').hide();
       $('#reminder_date').val('0000-00-00');
     }
-    else if(reminder_type == 1){  
+    else if(reminder_type == 1){
 	   $('#div_reminder_date').show();
+	   $('#date_col_wrapper').show();
 	   let date_tomorrow = new Date();
        date_tomorrow.setDate(currentDate.getDate() + 1);	   
 	   date_tomorrow = formatDate(date_tomorrow);
 	   $('#reminder_date').val(date_tomorrow);
     }
-    else if(reminder_type == 2){  
+    else if(reminder_type == 2){
 	   $('#div_reminder_date').show();
+	   $('#date_col_wrapper').show();
 	   
 	   let date_after_three_days = new Date();
        date_after_three_days.setDate(currentDate.getDate() + 3);	   
@@ -617,24 +620,27 @@ function setReminderDate (reminder_type){
 	   date_after_one_week = formatDate(date_after_one_week);
 	   $('#reminder_date').val(date_after_one_week);
     }
-	else if(reminder_type == 4){  
+	else if(reminder_type == 4){
 	   $('#div_reminder_date').show();
+	   $('#date_col_wrapper').show();
 	   
 	   let date_after_two_weeks = new Date();
        date_after_two_weeks.setDate(currentDate.getDate() + 14);	   
 	   date_after_two_weeks = formatDate(date_after_two_weeks);
 	   $('#reminder_date').val(date_after_two_weeks);
     }
-	else if(reminder_type == 5){  
+	else if(reminder_type == 5){
 	   $('#div_reminder_date').show();
+	   $('#date_col_wrapper').show();
 	   
 	   let date_after_one_month = new Date();
        date_after_one_month.setMonth(currentDate.getMonth() + 1);	   
 	   date_after_one_month = formatDate(date_after_one_month);
 	   $('#reminder_date').val(date_after_one_month);
     }
-	else if(reminder_type == 6){  
+	else if(reminder_type == 6){
 	   $('#div_reminder_date').show();
+	   $('#date_col_wrapper').show();
     }
 }
 
@@ -744,7 +750,7 @@ function setlocalStorage(id_meeting,iteration){
 		localStorage.setItem('reminder_time',$('#hidden_reminder_time').val());
 }
 
-function fillLogTaskTracking(id_meeting,iteration,screen_type){
+function fillLogTaskTracking(id_meeting,iteration,screen_type,track_type){
 	let selectedValues = $('input[name="log_meeting_tracking[]"]:checked')
 		.map(function() {
 			return $(this).val();
@@ -763,6 +769,7 @@ function fillLogTaskTracking(id_meeting,iteration,screen_type){
 	form_data.append('reminder_date', $('#reminder_date').val());
 	form_data.append('reminder_time', reminder_time);
 	form_data.append('ids_remark_tracking_checked', ids_remark_tracking_checked);
+	form_data.append('track_type', track_type !== undefined ? track_type : 1);
 
 	$.ajax({
 		type: 'POST',
