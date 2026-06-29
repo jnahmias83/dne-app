@@ -2929,10 +2929,16 @@ function setListParam(list){
 $(window).on('load', function(){
     if(localStorage.getItem("is_modal_task_actions_opened") === "true"){
 		localStorage.removeItem('is_modal_task_actions_opened');
-		let project_id = localStorage.getItem("project_id");
-		let meeting_id = localStorage.getItem("meeting_id");
-		let iteration = localStorage.getItem("iteration");
-  
+		let project_id = localStorage.getItem("project_id") || '';
+		let meeting_id = localStorage.getItem("meeting_id") || '';
+		let iteration = localStorage.getItem("iteration") || '';
+		let subject_ls = localStorage.getItem("subject") || '';
+		let area_ls = localStorage.getItem("area") || '';
+		let recipient_ls = localStorage.getItem("recipient") || '';
+		let responsible_id_ls = localStorage.getItem("responsible_id") || '';
+		let is_priority_ls = localStorage.getItem("is_priority") || '';
+		let remark_ls = localStorage.getItem("remark") || '';
+
 		let form_data = new FormData();
 		form_data.append('id_meeting', meeting_id);
 
@@ -2954,7 +2960,7 @@ $(window).on('load', function(){
 
 		setBellBcgColor(localStorage.getItem('track_type'));
 		setEmergencyTaskCSS(is_priority);
-		$('#modalContent').append("<input type='hidden' id='hidden_meeting_id' value='${meeting_id}'><input type='hidden' id='hidden_iteration' value='${iteration}'><input type='hidden' id='hidden_project_id' value='${project_id}'><input type='hidden' id='hidden_user_id' value='${user_id}'><input type='hidden' id='hidden_chapter' value='${chapter}'><input type='hidden' id='hidden_name' value='${subject}'><input type='hidden' id='hidden_area' value='${area}'><input type='hidden' id='hidden_recipient' value='${recipient}'><input type='hidden' id='hidden_responsible_id' value='${responsible_id}'><input type='hidden' id='hidden_is_priority' value='${is_priority}'><input type='hidden' id='hidden_remark' value='${remark}'><input type='hidden' id='hidden_track_responsible_id' value='${track_responsible_id}'><input type='hidden' id='hidden_reminder_date' value='${reminder_date}'><input type='hidden' id='hidden_reminder_time' value='${reminder_time}'>");
+		$('#modalContent').append("<input type='hidden' id='hidden_meeting_id' value='"+meeting_id+"'><input type='hidden' id='hidden_iteration' value='"+iteration+"'><input type='hidden' id='hidden_project_id' value='"+project_id+"'><input type='hidden' id='hidden_user_id' value=''><input type='hidden' id='hidden_chapter' value=''><input type='hidden' id='hidden_name' value='"+subject_ls+"'><input type='hidden' id='hidden_area' value='"+area_ls+"'><input type='hidden' id='hidden_recipient' value='"+recipient_ls+"'><input type='hidden' id='hidden_responsible_id' value='"+responsible_id_ls+"'><input type='hidden' id='hidden_is_priority' value='"+is_priority_ls+"'><input type='hidden' id='hidden_remark' value='"+remark_ls+"'><input type='hidden' id='hidden_track_responsible_id' value=''><input type='hidden' id='hidden_reminder_date' value=''><input type='hidden' id='hidden_reminder_time' value=''>");
     }
 });
 
