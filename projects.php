@@ -2760,10 +2760,11 @@ $(document).ready(function(){
 		remark = $(this).data('remark');
 		track_responsible_id = $(this).data('trackresponsibleid');
 		track_type = $(this).data('tracktype');
+		localStorage.setItem('track_type', track_type);
 		reminder_date = $(this).data('reminderdate');
 		reminder_time = $(this).data('remindertime');
 		is_to_do_today = $(this).data('istodotoday');
-		  
+
 		let form_data = new FormData();
 		form_data.append('id_meeting',meeting_id);
 		form_data.append('wn_meeting_ids',$('#wn_meeting_ids').val());
@@ -2951,7 +2952,7 @@ $(window).on('load', function(){
 			},
 		});
 
-		setBellBcgColor(track_type);
+		setBellBcgColor(localStorage.getItem('track_type'));
 		setEmergencyTaskCSS(is_priority);
 		$('#modalContent').append("<input type='hidden' id='hidden_meeting_id' value='${meeting_id}'><input type='hidden' id='hidden_iteration' value='${iteration}'><input type='hidden' id='hidden_project_id' value='${project_id}'><input type='hidden' id='hidden_user_id' value='${user_id}'><input type='hidden' id='hidden_chapter' value='${chapter}'><input type='hidden' id='hidden_name' value='${subject}'><input type='hidden' id='hidden_area' value='${area}'><input type='hidden' id='hidden_recipient' value='${recipient}'><input type='hidden' id='hidden_responsible_id' value='${responsible_id}'><input type='hidden' id='hidden_is_priority' value='${is_priority}'><input type='hidden' id='hidden_remark' value='${remark}'><input type='hidden' id='hidden_track_responsible_id' value='${track_responsible_id}'><input type='hidden' id='hidden_reminder_date' value='${reminder_date}'><input type='hidden' id='hidden_reminder_time' value='${reminder_time}'>");
     }
