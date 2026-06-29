@@ -800,7 +800,7 @@ function fillLogTaskTracking(id_meeting,iteration,screen_type,track_type){
 				localStorage.setItem('responsible_id', $('#hidden_responsible_id').val());
 				localStorage.setItem('is_priority', $('#hidden_is_priority').val());
 				localStorage.setItem('remark', $('#hidden_remark').val());
-				localStorage.setItem('track_type', 1);
+				localStorage.setItem('track_type', track_type !== undefined ? track_type : 1);
 				localStorage.setItem('updated_id','meeting_'+id_meeting);
 				if(iteration === '') localStorage.setItem('highlight_after_reload', 'true');
 			}
