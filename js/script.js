@@ -954,7 +954,8 @@ function hidePopup(modal,iteration,meeting_id,from){
 		localStorage.setItem('responsible_id',$('#hidden_responsible_id').val());
 		localStorage.setItem('is_priority',$('#hidden_is_priority').val());
 		localStorage.setItem('remark',$('#hidden_remark').val());
-		localStorage.setItem('track_type',0);		
+		if(modal != 'modalTaskTracking')
+			localStorage.setItem('track_type',0);
 	}		
 	
 	location.href = url;	
