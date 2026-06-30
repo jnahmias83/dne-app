@@ -4322,6 +4322,7 @@ $(document).on('change', 'input[name="options"]', function (){
     });
 
     if(isShort) $('tr[id*="row_"]').removeClass('row-expanded');
+    $('tr[id*="row_"] td').css('cursor', isShort ? 'pointer' : '');
     $('.tr-image-row').toggle(!isShort);
 
     $('select[id^="task_"], select[id^="responsible_"], select[id^="pass_on_"], select[id^="_progress_status_"]').css({
