@@ -4321,6 +4321,7 @@ $(document).on('change', 'input[name="options"]', function (){
         else        applyFullMode($(this));
     });
 
+    if(isShort) $('tr[id*="row_"]').removeClass('row-expanded');
     $('.tr-image-row').toggle(!isShort);
 
     $('select[id^="task_"], select[id^="responsible_"], select[id^="pass_on_"], select[id^="_progress_status_"]').css({
@@ -4335,27 +4336,27 @@ $(document).on('change', 'input[name="options"]', function (){
     });
 });
 
-$(document).on('mouseenter', 'tr[id*="row_"]', function(){
-    if(!$('#option2').is(':checked')) return;
-    $(this).find('td[id^="td_subject_"], td[id^="td_area_"], td[id^="td_description_"]').each(function(){
-        applyFullMode($(this));
-    });
-    $(this).next('.tr-image-row').show();
-});
-
-$(document).on('mouseleave', 'tr[id*="row_"]', function(){
-    if(!$('#option2').is(':checked')) return;
-    const maxChars = 100;
-    $(this).find('td[id^="td_subject_"], td[id^="td_area_"], td[id^="td_description_"]').each(function(){
-        applyShortMode($(this), maxChars);
-    });
-    $(this).next('.tr-image-row').hide();
-});
-
 $(document).on('click', 'tr[id*="row_"]', function(){
     const row = $(this);
     $('tr.row-darken').removeClass('row-darken');
     row.addClass('row-darken');
+
+    if(!$('#option2').is(':checked')) return;
+    const isExpanded = row.hasClass('row-expanded');
+    if(isExpanded) {
+        const maxChars = 100;
+        row.find('td[id^="td_subject_"], td[id^="td_area_"], td[id^="td_description_"]').each(function(){
+            applyShortMode($(this), maxChars);
+        });
+        row.next('.tr-image-row').hide();
+        row.removeClass('row-expanded');
+    } else {
+        row.find('td[id^="td_subject_"], td[id^="td_area_"], td[id^="td_description_"]').each(function(){
+            applyFullMode($(this));
+        });
+        row.next('.tr-image-row').show();
+        row.addClass('row-expanded');
+    }
 });
 
 $(document).on('click','#save_update_task_btn', function (){
