@@ -121,7 +121,7 @@ foreach($chapters as $item) {
 							  LEFT JOIN dne_chapters c ON m.id_chapter = c.id
 							  LEFT JOIN dne_tasks t ON m.id_task = t.id
 							  WHERE m.id_project = ? AND m.id_chapter = ? AND m.is_appears = ? AND m.is_pdf_appears = ? AND m.id_rdv = ?
-							  ORDER BY t.id_display,m.subject,m.id_area,m.destination_date DESC");
+							  ORDER BY m.subject,m.id_area,t.name_he");
 	$query->bind_param("iiiii",$project_id,$chapter_id,$is_appears,$is_pdf_appears,$_SESSION['id_rdv']);
 	$query->execute(); 
 	$query->store_result();
@@ -323,7 +323,7 @@ foreach($chapters as $item) {
 							  LEFT JOIN dne_tasks t ON m.id_task = t.id
 							  WHERE m.id_project = ? AND m.id_chapter = ? AND m.is_appears = ? AND m.is_pdf_appears = ? AND is_appears_img1 = 1 AND image1 <> ''
 							  AND m.id_rdv = ?
-							  ORDER BY t.id_display,m.subject,m.id_area,m.destination_date DESC");
+							  ORDER BY m.subject,m.id_area,t.name_he");
 	$query->bind_param("iiiii",$project_id,$chapter_id,$is_appears,$is_pdf_appears,$_SESSION['id_rdv']);
 	$query->execute(); 
 	$query->store_result();

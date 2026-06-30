@@ -382,7 +382,7 @@ else if($_POST['from'] == 'meetings'){
 				AND m.is_appears = ? 
 				AND FIND_IN_SET(?, m.ids_rdv) > 0
 				AND m.id_progress_status <> ?
-			    ORDER BY t.id_display,m.subject,m.id_area,m.destination_date DESC";
+			    ORDER BY m.subject,m.id_area,t.name_he";
 		
 		$query = $mysqli->prepare($sql);
 		$query->bind_param("iiii",$_POST['id_project'],$is_appears,$id_rdv_report,$ps_archive_id);
