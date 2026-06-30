@@ -100,7 +100,7 @@ if($from == 'taskslist')
 					else if($id > 0){
 					?>
 					<div class="col-12">
-						<a id="a_project_title" class="text-decoration-none color-1A5276" href="project_home.php?id=<?=@$id?>">
+						<a id="a_project_title" class="text-decoration-none color-1A5276" href="projects.php">
 							<div class=" fontSize33 font-weight-bold line-height-1em">
 								<?=@$project->nickname?>
 							</div>

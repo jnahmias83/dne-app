@@ -1,6 +1,6 @@
 # deploy-to-prod.ps1
-# Uploads files changed in the last git commit to the PRODUCTION server (root folder).
-# Only run this AFTER testing on the test server and merging dev into main.
+# Uploads files changed since last prod state to the PRODUCTION server (root folder).
+# Only run this AFTER testing on the test server and merging dev into prod.
 
 $winScpPath = "C:\Users\jnahm\AppData\Local\Programs\WinSCP\WinSCP.com"
 $ftpHost    = "davidnahmiasengineering.com"
@@ -16,16 +16,25 @@ $plainPass  = [Runtime.InteropServices.Marshal]::PtrToStringAuto(
 Add-Type -AssemblyName System.Web
 $encodedPass = [System.Web.HttpUtility]::UrlEncode($plainPass)
 
-# Get files changed in the last commit
-$files = & git -C $localBase diff "HEAD~1" --name-only | Sort-Object -Unique
+# Files to upload (modified/added since last prod state)
+$files = & git -C $localBase diff "HEAD~1" --name-only --diff-filter=d | Sort-Object -Unique
 
-if (-not $files) {
-    Write-Host "No files found from last commit. Nothing to upload." -ForegroundColor Yellow
+# Files to delete from server (deleted since last prod state)
+$deletedFiles = & git -C $localBase diff "HEAD~1" --name-only --diff-filter=D | Sort-Object -Unique
+
+if (-not $files -and -not $deletedFiles) {
+    Write-Host "No files found. Nothing to do." -ForegroundColor Yellow
     exit
 }
 
-Write-Host "`nFiles to upload to PRODUCTION server:" -ForegroundColor Cyan
-$files | ForEach-Object { Write-Host "  $_" -ForegroundColor White }
+if ($files) {
+    Write-Host "`nFiles to upload to PRODUCTION server:" -ForegroundColor Cyan
+    $files | ForEach-Object { Write-Host "  $_" -ForegroundColor White }
+}
+if ($deletedFiles) {
+    Write-Host "`nFiles to DELETE from PRODUCTION server:" -ForegroundColor Yellow
+    $deletedFiles | ForEach-Object { Write-Host "  $_" -ForegroundColor Red }
+}
 Write-Host ""
 Write-Host "WARNING: This will overwrite files on the live production server." -ForegroundColor Yellow
 $confirm = Read-Host "Type YES to continue"
@@ -34,33 +43,56 @@ if ($confirm -ne "YES") {
     exit
 }
 
-# Build WinSCP script
-$lines = @(
-    "option batch abort",
-    "option confirm off",
-    "open ftp://${ftpUser}:${encodedPass}@${ftpHost}/",
-    ""
-)
-foreach ($file in $files) {
-    $local  = Join-Path $localBase $file
-    $remote = $remotePath + "/" + $file.Replace("\", "/")
-    $lines += "put -nopermissions -transfer=binary `"$local`" `"$remote`""
+$uploadOk = $true
+
+# --- STEP 1: Uploads (batch abort = fail on upload error) ---
+if ($files) {
+    $lines = @(
+        "option batch abort",
+        "option confirm off",
+        "open ftp://${ftpUser}:${encodedPass}@${ftpHost}/",
+        ""
+    )
+    foreach ($file in $files) {
+        $local  = Join-Path $localBase $file
+        $remote = $remotePath + "/" + $file.Replace("\", "/")
+        $lines += "put -nopermissions -transfer=binary `"$local`" `"$remote`""
+    }
+    $lines += ""; $lines += "exit"
+
+    $tmpScript = [System.IO.Path]::GetTempFileName() + ".winscp"
+    [System.IO.File]::WriteAllText($tmpScript, ($lines -join "`n"), [System.Text.Encoding]::ASCII)
+
+    Write-Host "`nConnecting to $ftpHost ..." -ForegroundColor Cyan
+    & $winScpPath /script=$tmpScript /log=$logFile
+    if ($LASTEXITCODE -ne 0) { $uploadOk = $false }
+    Remove-Item $tmpScript -ErrorAction SilentlyContinue
 }
-$lines += ""
-$lines += "exit"
 
-$tmpScript = [System.IO.Path]::GetTempFileName() + ".winscp"
-[System.IO.File]::WriteAllText($tmpScript, ($lines -join "`n"), [System.Text.Encoding]::ASCII)
+# --- STEP 2: Deletes (batch continue = ignore if file already gone) ---
+if ($deletedFiles) {
+    $lines = @(
+        "option batch continue",
+        "option confirm off",
+        "open ftp://${ftpUser}:${encodedPass}@${ftpHost}/",
+        ""
+    )
+    foreach ($file in $deletedFiles) {
+        $remote = $remotePath + "/" + $file.Replace("\", "/")
+        $lines += "rm `"$remote`""
+    }
+    $lines += ""; $lines += "exit"
 
-Write-Host "`nConnecting to $ftpHost ..." -ForegroundColor Cyan
-& $winScpPath /script=$tmpScript /log=$logFile
-$exitCode = $LASTEXITCODE
+    $tmpScript = [System.IO.Path]::GetTempFileName() + ".winscp"
+    [System.IO.File]::WriteAllText($tmpScript, ($lines -join "`n"), [System.Text.Encoding]::ASCII)
 
-Remove-Item $tmpScript -ErrorAction SilentlyContinue
+    Write-Host "Deleting removed files from PRODUCTION..." -ForegroundColor Cyan
+    & $winScpPath /script=$tmpScript /log=$logFile
+    Remove-Item $tmpScript -ErrorAction SilentlyContinue
+}
 
-if ($exitCode -eq 0) {
-    Write-Host "`nAll files uploaded successfully to PRODUCTION server." -ForegroundColor Green
-    Write-Host "Verify at: https://davidnahmiasengineering.com/" -ForegroundColor Cyan
+if ($uploadOk) {
+    Write-Host "`nAll done. Verify at: https://davidnahmiasengineering.com/" -ForegroundColor Green
 } else {
-    Write-Host "`nOne or more files failed. Check deploy-prod.log for details." -ForegroundColor Red
+    Write-Host "`nUpload failed. Check deploy-prod.log for details." -ForegroundColor Red
 }

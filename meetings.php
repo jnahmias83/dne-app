@@ -2798,7 +2798,7 @@ include 'menu_tasks.php';
 					<div class="modal-body">	
 					    <div id="modalContent">   
 					       <form>
-						       <div class='marginTop5 subtitle color-349feb fontSize18 font-weight-bold alignCenter'></div>
+						       <div class='marginTop5 subtitle color-19bf42 fontSize18 font-weight-bold alignCenter'></div>
 							   <div class="row marginTop10">
 							       <div class="col-1"></div>
 							       <div class="col-10">
@@ -2822,8 +2822,12 @@ include 'menu_tasks.php';
 		
 		<div class="modal fade dir-rtl" id="modalTaskCreationDate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
-				<div class="modal-content"> 
-					<div class="modal-body">	
+				<div class="modal-content">
+					<div class="modal-header" style="direction:ltr;">
+						<div class="modal-title"></div>
+						<button type="button" class="btn-close btn-close-white-small" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
 					    <div id="modalContent">
 					        <form class="marginTop15 alignCenter">
 							   <input type="date" name="popup_task_creation_date" id="popup_task_creation_date" class="fontSize13 font-weight-bold alignCenter" onchange="setData($('#hidden_meeting_id').val(),$('#hidden_iteration').val(),'task_creation_date',0,0,'screen');" />
@@ -2836,8 +2840,11 @@ include 'menu_tasks.php';
 		
 		<div class="modal fade dir-rtl" id="modalDestinationDate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
-				<div class="modal-content"> 
-					<div class="modal-body">	
+				<div class="modal-content">
+					<div class="modal-header" style="direction:ltr;">
+						<button type="button" class="btn-close btn-close-white-small" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
 					    <div id="modalContent">
 					        <form class="marginTop15 alignCenter">
 							   <input type="date" name="popup_destination_date_input" id="popup_destination_date_input" class="fontSize13 font-weight-bold alignCenter" data-meetingid="<?=@$meeting_id?>" data-iteration=<?=@$iteration?> />
@@ -2858,10 +2865,10 @@ include 'menu_tasks.php';
 					<div class="modal-body">	
 					    <div id="modalContent">	        	        
 					        <form>
-							    <div class='marginTop5 subtitle color-349feb fontSize18 font-weight-bold alignCenter'></div>
+							    <div class='marginTop5 subtitle color-19bf42 fontSize18 font-weight-bold alignCenter'></div>
                                 <div id="task_active_remarks_target_date"></div>							
 								<div class="marginTop10 <?=@$padding_10?> <?=@$align?> height-auto bgColorWhite fontSize13 cursor-pointer border-black overflow-y-scroll dir-rtl">
-									<div name="remark_delay_target_date" id="remark_delay_target_date" contenteditable="true" class="editable green cursor-pointer" data-placeholder="ניתן להוסיף כאן הערה"></div>
+									<div name="remark_delay_target_date" id="remark_delay_target_date" contenteditable="true" dir="rtl" class="editable green cursor-pointer" style="text-align:right;" data-placeholder="ניתן להוסיף כאן הערה"></div>
 								</div>
 							    <div class="marginTop15 alignCenter">
 							       	<input type="button" class="btn btn-primary text-white font-weight-bold marginLeft10" value="שמור" style="padding:.375rem .75rem!important;" onclick="setData($('#hidden_meeting_id').val(),$('#hidden_iteration').val(),'destination_date',1,0,'for_closing')" />
@@ -2884,7 +2891,7 @@ include 'menu_tasks.php';
 					<div class="modal-body">	
 					    <div id="modalContent">			                             					   		
 							<form>
-							    <div class='marginTop5 subtitle color-349feb fontSize18 font-weight-bold alignCenter'></div>
+							    <div class='marginTop5 subtitle color-19bf42 fontSize18 font-weight-bold alignCenter'></div>
                                 <div class="margin-top-10-x-auto padding-4x-4y colorWhite bgColorBlack borderRadius10 width100 border-black fontSize13 font-weight-bold alignCenter" id="div_new_progress_status"></div>							
                                 <div class="marginTop10"></div>
 								<hr class="colorGrey" style="margin:1px 0" />
@@ -2914,7 +2921,11 @@ include 'menu_tasks.php';
 		<div class="modal fade dir-rtl" id="modalTaskFollowupActions" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
 				<div class="modal-content">
-					<div class="modal-body">	
+					<div class="modal-header">
+						<button type="button" class="btn-close btn-close-white-small" data-bs-dismiss="modal" aria-label="Close"></button>
+						<div class="modal-title"></div>
+					</div>
+					<div class="modal-body" style="padding:0;overflow:hidden;">
 					   <div id="modalContent">
 					       <div id="div_content_task_details"></div>
 					       <form class="marginTop15 alignCenter">    
@@ -3005,8 +3016,12 @@ include 'menu_tasks.php';
 		
 		<div class="modal fade <?=(!empty(@$project->lang) ? @$project->lang : 'HE')=='HE' ? 'dir-rtl' : ''?>" id="modalContinuousTask" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
-				<div class="modal-content">  
-					<div class="modal-body">	
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="btn-close btn-close-white-small" data-bs-dismiss="modal" aria-label="Close"></button>
+						<div class="modal-title"></div>					
+					</div>
+					<div class="modal-body">
 					    <div id="modalContent">
 					        <form class="alignCenter">
 						        <div class="marginTop15 fontSize18 alignCenter"><?=(!empty(@$project->lang)?@$project->lang:'HE')=='HE' ? 'בדרך ליצור עבורך משימת המשך לפני כן, תציין אם ברצונך לסמן סטטוס משימה כ:' : 'A continuation task will be created. Please select the status to apply to the current task:'?></div>
@@ -3030,8 +3045,12 @@ include 'menu_tasks.php';
 		
 		<div class="modal fade dir-rtl" id="modalHistoryTasks" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
-				<div class="modal-content">  
-					<div class="modal-body">	
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="btn-close btn-close-white-small" data-bs-dismiss="modal" aria-label="Close"></button>
+						<div class="modal-title"></div>
+					</div>
+					<div class="modal-body">
 					    <div id="modalHistoryTasksContent"></div>
 					</div>
 				</div>
@@ -3041,14 +3060,14 @@ include 'menu_tasks.php';
 		<?php $_pl = !empty(@$project->lang) ? @$project->lang : 'HE'; $_pd = ($_pl=='HE') ? 'rtl' : 'ltr'; ?>
 		<div class="modal fade <?=($_pl=='HE') ? 'dir-rtl' : ''?>" id="modalUpdateTask" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
-				<div class="modal-content">  
+				<div class="modal-content">
 					<div class="modal-header">
-						<div class="modal-title"></div>
 						<button type="button" class="btn-close btn-close-white-small" data-bs-dismiss="modal" aria-label="Close"></button>
+						<div class="modal-title"></div>
 					</div>
-					<div class="modal-body">
+					<div class="modal-body"
                         <form action="" method="post">
-                            <div class='marginTop5 subtitle color-349feb fontSize18 font-weight-bold alignCenter'></div>
+                            <div class='marginTop5 subtitle color-19bf42 fontSize18 font-weight-bold alignCenter'></div>
 							<div class="row marginTop10" style="direction:<?=$_pd?>">
 								<div class="col-12 fontSize13 alignCenter">
 									<strong><?=($_pl=='HE') ? 'סטטוס חדש' : 'New Status'?>:</strong>
@@ -3110,107 +3129,74 @@ include 'menu_tasks.php';
 					    <div id="modalContent">
 					        <div class="container">
 								<form>
-								    <div class='marginTop5 subtitle color-349feb fontSize18 font-weight-bold alignCenter'></div>
-									<div class="row marginTop5 alignCenter">
-									    <div class="col-12">
-											<strong class="fontSize13">אחראי מעקב</strong>
-										</div>
-									</div>	
-									
-									<div class="row marginTop5 alignCenter">
-										<div class="col-12">
-											<select id="users" class="paddingRight8 fontSize13">	
-												<option value="0">--בחר משתמש--</option>
-												<?php 
-												foreach($active_users as $item){ ?>
-													<option value="<?=@$item->id?>">
-														<strong><?=@$item->firstname?> <?=@$item->lastname?></strong>
-													</option>
-													<?php } ?>						
-											</select>
-										</div>
+								    <div class='marginTop5 subtitle color-19bf42 fontSize18 font-weight-bold alignCenter'></div>
+								<div class="row marginTop5">
+									<div class="col-4 p-2 text-center">
+										<div class="fw-bold fontSize13 marginBottom5">אחראי מעקב</div>
+										<i class="fa fa-user" style="font-size:20px;"></i>
+										<div class="fw-bold fontSize13 marginTop15 marginBottom5">תזכורת מעקב</div>
+										<img src="images/bell-solid.svg" width="20" height="20" />
 									</div>
-									
-									<div class="row" dir="rtl">
-										<div class="col-12 d-flex justify-content-center">
-											<div class="row mt-2 width85Percents">
-												<div id="div_reminder_date" class="col-4 p-2 text-end">
-													<div class="fw-bold d-flex align-items-center justify-content-end gap-1">
-														<span class="fontSize13">תזכורת מעקב</span>
-														<img src="images/bell-solid.svg" width="15" height="15" />
-													</div>
-													<div class="marginTop5 fontSize12 text-end">
-														<input type="date" class="text-center" id="reminder_date" />
-													</div>
-												</div>
-
-												<div id="div_radios" class="col-8 p-2 text-end">
-													<div class="row g-0 fontSize13">
-														<div class="col-6">
-															<div>
-																<input type="radio" id="reminder_tomorrow" name="set_reminder_date_radio" value="1"
-																	   onclick="setReminderDate(this.value)"> מחר
-															</div>
-															<div>
-																<input type="radio" id="reminder_after_three_days" name="set_reminder_date_radio" value="2"
-																	   onclick="setReminderDate(this.value)"> בעוד 3 ימים
-															</div>
-															<div>
-																<input type="radio" id="reminder_after_one_week" name="set_reminder_date_radio" value="3"
-																	   onclick="setReminderDate(this.value)"> בעוד שבוע
-															</div>
-														</div>
-
-														<div class="col-6">
-															<div>
-																<input type="radio" id="reminder_after_two_weeks" name="set_reminder_date_radio" value="4"
-																	   onclick="setReminderDate(this.value)"> בעוד שבועיים
-															</div>
-															<div>
-																<input type="radio" id="reminder_after_one_month" name="set_reminder_date_radio" value="5"
-																	   onclick="setReminderDate(this.value)"> בעוד חודש
-															</div>
-															<div>
-																<input type="radio" id="reminder_after_selected_date" name="set_reminder_date_radio" value="6"
-																	   onclick="setReminderDate(this.value)"> בתאריך...
-															</div>
-															<div>
-																<input type="radio" id="not_reminders" name="set_reminder_date_radio" value="0"
-																	   onclick="setReminderDate(this.value)"> אין צורך
-															</div>
-														</div>
-													</div>
+									<div class="col-8 p-2 text-end">
+										<select id="users" class="paddingRight8 fontSize13 marginBottom10">
+											<option value="0">--בחר משתמש--</option>
+											<?php foreach($active_users as $item){ ?>
+												<option value="<?=@$item->id?>">
+													<strong><?=@$item->firstname?> <?=@$item->lastname?></strong>
+												</option>
+											<?php } ?>
+										</select>
+										<div class="row align-items-center justify-content-start marginTop5" dir="rtl">
+											<div class="col-auto fontSize13 text-end">
+												<div><input type="radio" id="not_reminders" name="set_reminder_date_radio" value="0" onclick="setReminderDate(this.value)"> בלי תזכורת</div>
+												<div><input type="radio" id="reminder_after_three_days" name="set_reminder_date_radio" value="2" onclick="setReminderDate(this.value)"> בעוד 3 ימים</div>
+												<div><input type="radio" id="reminder_after_two_weeks" name="set_reminder_date_radio" value="4" onclick="setReminderDate(this.value)"> בעוד שבועיים</div>
+												<div><input type="radio" id="reminder_after_one_month" name="set_reminder_date_radio" value="5" onclick="setReminderDate(this.value)"> בעוד חודש</div>
+											</div>
+											<div class="col-auto" id="date_col_wrapper" style="display:none;">
+												<div id="div_reminder_date">
+													<input type="date" class="text-center" id="reminder_date" style="font-size:11px;" />
 												</div>
 											</div>
 										</div>
 									</div>
-									
-									<div id="task_active_remarks_tracking"></div>                                
-					    
-								    <div class="row marginTop5">	
-										<div class="col-12 fontSize13">
-											<div class="row">
-												<div class="col-6 alignRight">				
-													<a id="new_remark_tracking_en" class="text-decoration-none cursor-pointer" onclick="$('#new_remark').css({'direction':'ltr','padding-left':'5px','padding-right':'0','text-align':'left'});$(this).css('font-weight','bold');$('#new_remark_tracking_he').css('font-weight','normal');$('#div_new_remark').css('direction','ltr');">EN</a>&nbsp;|
-													<a id="new_remark_tracking_he" class="text-decoration-none cursor-pointer" onclick="$('#new_remark').css({'direction':'rtl','padding-right':'5px','padding-left':'0','text-align':'right'});$(this).css('font-weight','bold');$('#new_remark_tracking_en').css('font-weight','normal');$('#div_new_remark').css('direction','rtl');">ע</a>
-												</div>
+								</div>
 
-												<div class="col-6 alignLeft">
-													<a class="text-decoration-none" onclick="$('#new_remark').html('')">Clear</a>
-												</div>
-											</div>
+								<div id="task_active_remarks_tracking"></div>
 
-											<div id="div_new_remark" class="marginTop5 paddingRight10 alignRight height-auto bgColorWhite cursor-pointer margin-0-x-auto border-black overflow-y-scroll dir-rtl">		
-												<div name="new_remark" id="new_remark" contenteditable="true" class="editable red cursor-pointer" data-placeholder="ניתן להוסיף כאן הערה"></div>
-											</div>
-	                                    </div>										
-				                    </div>                         
-		   
-									<div class="marginTop15 alignCenter">
-									  <input type="button" class="btn btn-primary font-weight-bold marginLeft10" value="שמור מעקב" style="padding:.375rem .75rem!important;" onclick="fillLogTaskTracking($('#hidden_meeting_id').val(),$('#hidden_iteration').val(),'for_closing')" />
-									  <input type="button" class="btn bg-dark text-white font-weight-bold" value="בטל מעקב" style="padding:.375rem .75rem!important;" onclick="hidePopup('modalTaskTracking',$('#hidden_iteration').val(),$('#hidden_meeting_id').val(),'fromMeetings')" />
+								<div class="row marginTop5" dir="rtl">
+									<div class="col-2" style="padding-top:26px; text-align:right;">
+										<div class="fw-bold fontSize13 marginBottom5">עדכון</div>
+										<img src="images/edit-button.svg" width="20" height="20" />
 									</div>
-							    </form>
+									<div class="col-10 ps-1 pe-2">
+										<div class="d-flex justify-content-between marginBottom5">
+											<div><a class="text-decoration-none cursor-pointer" onclick="$('#new_remark').html('')">Clear</a></div>
+											<div>
+												<a id="new_remark_tracking_en" class="text-decoration-none cursor-pointer" onclick="$('#new_remark').css({'direction':'ltr','padding-left':'5px','padding-right':'0','text-align':'left'});$(this).css('font-weight','bold');$('#new_remark_tracking_he').css('font-weight','normal');">EN</a>&nbsp;|
+												<a id="new_remark_tracking_he" class="text-decoration-none cursor-pointer" onclick="$('#new_remark').css({'direction':'rtl','padding-right':'5px','padding-left':'0','text-align':'right'});$(this).css('font-weight','bold');$('#new_remark_tracking_en').css('font-weight','normal');">ע</a>
+											</div>
+										</div>
+										<div class="bgColorWhite cursor-pointer border-black overflow-y-scroll dir-rtl w-100" style="padding:4px 8px; min-height:60px;">
+											<div name="new_remark" id="new_remark" contenteditable="true" class="editable red cursor-pointer" data-placeholder="ניתן להוסיף כאן הערה"></div>
+										</div>
+									</div>
+								</div>
+
+								<div class="marginTop15 d-flex justify-content-center gap-3">
+									<button type="button" class="btn font-weight-bold px-3" style="background-color:#1a5276; color:white;"
+											onclick="fillLogTaskTracking($('#hidden_meeting_id').val(),$('#hidden_iteration').val(),'for_closing',1)">
+										<i class="fas fa-bullseye" style="color:#e74c3c;"></i> שמור מעקב
+									</button>
+									<button type="button" class="btn font-weight-bold px-3 bg-dark text-white"
+											onclick="fillLogTaskTracking($('#hidden_meeting_id').val(),$('#hidden_iteration').val(),'for_closing',0)">
+										<i class="fas fa-bullseye" style="color:#95a5a6;"></i> בטל מעקב
+									</button>
+									<input type="button" class="btn bg-dark text-white font-weight-bold px-3" value="בטל"
+										   onclick="hidePopup('modalTaskTracking',$('#hidden_iteration').val(),$('#hidden_meeting_id').val(),'fromMeetings')" />
+								</div>
+
+								</form>
                            </div>
 					  </div>
 					</div>
@@ -3222,7 +3208,8 @@ include 'menu_tasks.php';
             <div class="modal-dialog">
 				<div class="modal-content">
 				    <div class="modal-header">
-					   <h5 class="modal-title fontSize26"></h5>
+					   <button type="button" class="btn-close btn-close-white-small" data-bs-dismiss="modal" aria-label="Close"></button>
+					   <div class="modal-title"></div>
 					</div>
 					<div class="modal-body">	
 					    <div id="modalContent">
@@ -3433,15 +3420,37 @@ $(document).ready(function(){
 		_taskModalFullyShown = true;
 	});
 
+	$('#modalUpdateTask').on('hidden.bs.modal', function(){
+		if(_updateTaskSaving){
+			_updateTaskSaving = false;
+			return;
+		}
+		setlocalStorage($('#hidden_meeting_id').val(), $('#hidden_iteration').val());
+		window.location.reload();
+	});
+
 	$('#modalTaskFollowupActions').on('hidden.bs.modal', function (){
 		_taskModalFullyShown = false;
-		localStorage.removeItem('is_modal_task_actions_opened');
+		if(!_hidingForHistory){
+			localStorage.removeItem('is_modal_task_actions_opened');
+		}
+		_hidingForHistory = false;
 		if(!_suppressScrollOnHide){
-			let $row = $('#meetings_table tr.meeting_' + meeting_id);
-			if ($row.length) $row[0].scrollIntoView({block: 'center'});
+			const $row = $('tr.task-row-highlight');
+			if($row.length) $row[0].scrollIntoView({block: 'center'});
 		}
 		_suppressScrollOnHide = false;
     });
+
+	if(localStorage.getItem('highlight_after_reload') === 'true'){
+		localStorage.removeItem('highlight_after_reload');
+		const _mid = localStorage.getItem('meeting_id');
+		if(_mid){
+			$('tr.task-row-highlight').removeClass('task-row-highlight');
+			const $_r = $('#meetings_table tr.meeting_' + _mid);
+			if($_r.length) $_r.addClass('task-row-highlight');
+		}
+	}
 
 	if(localStorage.getItem("is_modal_task_actions_opened") === "true" &&
 	   localStorage.getItem("project_id") == "<?=$project_id?>"){
@@ -3465,6 +3474,7 @@ $(document).ready(function(){
 	   let form_data = new FormData();
        form_data.append('id_meeting',meeting_id);
 
+	   const _restoreMeetingId = meeting_id;
 	   $.ajax({
 			type: 'POST',
 			url: 'task_details.php',
@@ -3473,6 +3483,7 @@ $(document).ready(function(){
 			processData: false,
 			contentType: false,
 			success: function(data){
+				if(meeting_id != _restoreMeetingId) return;
 				if(data.indexOf('|~|') === -1){
 					localStorage.removeItem('is_modal_task_actions_opened');
 					localStorage.removeItem('meeting_id');
@@ -3485,6 +3496,7 @@ $(document).ready(function(){
 				setEmergencyTaskCSS(is_priority);
 				$('#modalContent').append("<input type='hidden' id='hidden_meeting_id' value='"+meeting_id+"'><input type='hidden' id='hidden_iteration' value='"+iteration+"'><input type='hidden' id='hidden_project_id' value='"+project_id+"'><input type='hidden' id='hidden_user_id' value='"+user_id+"'><input type='hidden' id='hidden_chapter' value='"+chapter+"'><input type='hidden' id='hidden_name' value='"+subject+"'><input type='hidden' id='hidden_area' value='"+area+"'><input type='hidden' id='hidden_recipient' value='"+recipient+"'><input type='hidden' id='hidden_responsible_id' value='"+responsible_id+"'><input type='hidden' id='hidden_is_priority' value='"+is_priority+"'><input type='hidden' id='hidden_remark' value='"+remark+"'><input type='hidden' id='hidden_track_responsible_id' value='"+track_responsible_id+"'><input type='hidden' id='hidden_track_type' value='"+track_type+"'><input type='hidden' id='hidden_reminder_date' value='"+reminder_date+"'><input type='hidden' id='hidden_reminder_time' value='"+reminder_time+"'>");
 				$('#modalTaskFollowupActions').modal('show');
+				setProjectModalTitle(project_id, '#modalTaskFollowupActions', false);
 				setTimeout(function(){
 				    let $row = $('#meetings_table tr.meeting_' + meeting_id);
 				    if ($row.length) $row[0].scrollIntoView({block: 'center'});
@@ -3495,6 +3507,7 @@ $(document).ready(function(){
 	}
 
 	if(localStorage.getItem("is_modal_tasks_hystory_opened")){
+		localStorage.removeItem('is_modal_tasks_hystory_opened');
 		meeting_id = localStorage.getItem("meeting_id");
 		iteration = localStorage.getItem("iteration");
 		
@@ -3517,10 +3530,14 @@ $(document).ready(function(){
 	   $('#modalContent').append("<input type='hidden' id='hidden_meeting_id' value='"+meeting_id+"'><input type='hidden' id='hidden_iteration' value='"+iteration+"'><input type='hidden' id='hidden_project_id' value='"+project_id+"'>");
 	   $('#modalTaskFollowupActions').modal('hide');
 	   $('#modalHistoryTasks').modal('show');
+	   $('#modalHistoryTasks .modal-title').html("הסטורי-ה");
 	};
-	
+
 	$('#modalHistoryTasks').on('hidden.bs.modal', function () {
-		setlocalStorage($('#hidden_meeting_id').val(),$('#iteration').val());
+		localStorage.removeItem('is_modal_tasks_hystory_opened');
+		localStorage.removeItem('is_modal_task_actions_opened');
+		localStorage.setItem('meeting_id', $('#hidden_meeting_id').val());
+		localStorage.setItem('highlight_after_reload', 'true');
 		window.location.reload();
     });
 
@@ -3718,14 +3735,14 @@ $(document).ready(function(){
 	    chapter = $('#hidden_chapter').val();
 	    subject = $('#hidden_subject').val();
 	    area = $('#hidden_area').val();
-	    
-		$('.modal-title').html("<img src='images/status-icon.png' alt='status icon' width='20' height='20'>&nbsp;&nbsp;עדכון תאריך יעד&nbsp;&nbsp;<img src='images/status-icon.png' alt='status icon' width='20' height='20'>");
+
+		$('#modalTaskFollowupDelayTargetDate .modal-title').html("<img src='images/status-icon.png' alt='status icon' width='20' height='20'>&nbsp;&nbsp;עדכון תאריך יעד&nbsp;&nbsp;<img src='images/status-icon.png' alt='status icon' width='20' height='20'>");
 	    $('.subtitle').html(chapter+"<br/>"+subject+"&nbsp;|&nbsp;"+area).css('line-height','1.1em');
-	   
+
 	    let form_data = new FormData();
         form_data.append('id_meeting',meeting_id);
 	    form_data.append('lang',$('#lang').val());
-		
+
 	    $.ajax({
 			type: 'POST',
 			url: 'fill_task_active_remarks.php',
@@ -3733,13 +3750,14 @@ $(document).ready(function(){
 			cache: false,
 			processData: false,
 			contentType: false,
-			success: function(data){	
+			success: function(data){
 			    $('#task_active_remarks_target_date').html(data);
 			},
-	    });   
-	   
+	    });
+
 	   $('#modalContent').append("<input type='hidden' id='hidden_meeting_id' value='"+meeting_id+"'><input type='hidden' id='hidden_iteration' value='"+iteration+"'>");
-	   $('#modalTaskFollowupDelayTargetDate').modal('show');
+	   $('#modalDestinationDate').modal('hide');
+	   setTimeout(function(){ $('#modalTaskFollowupDelayTargetDate').modal('show'); }, 350);
     });
 
     $('[id^="_progress_status"]').on('change', function(){	
@@ -3854,8 +3872,8 @@ $(document).ready(function(){
 	    track_responsible_id = $(this).data('trackresponsibleid');
 	    track_type = $(this).data('tracktype');  
 	    reminder_time = $(this).data('remindertime');
-		reminder_date = $(this).data('reminderdate'); 
-	    
+		reminder_date = $(this).data('reminderdate');
+
 	    let form_data = new FormData();
         form_data.append('id_meeting',meeting_id);
 		form_data.append('wn_meeting_ids',$('#wn_meeting_ids').val());
@@ -3895,27 +3913,31 @@ $(document).ready(function(){
 		   },
 	   });
 	   
-	   $('#modalContent input[type="hidden"]').remove();   
-	   $('#modalContent').append("<input type='hidden' id='hidden_meeting_id' value='"+meeting_id+"'><input type='hidden' id='hidden_iteration' value='"+iteration+"'><input type='hidden' id='hidden_project_id' value='"+project_id+"'><input type='hidden' id='hidden_lang' value='"+lang+"'><input type='hidden' id='hidden_user_id' value='"+user_id+"'><input type='hidden' id='hidden_chapter' value='"+chapter+"'><input type='hidden' id='hidden_name' value='"+subject+"'><input type='hidden' id='hidden_area' value='"+area+"'><input type='hidden' id='hidden_recipient' value='"+recipient+"'><input type='hidden' id='hidden_responsible_id' value='"+responsible_id+"'><input type='hidden' id='hidden_destination_date' value='"+destination_date+"'><input type='hidden' id='hidden_progress_status_id' value='"+progress_status_id+"'><input type='hidden' id='hidden_is_priority' value='"+is_priority+"'><input type='hidden' id='hidden_remark' value='"+remark+"'><input type='hidden' id='hidden_track_responsible_id' value='"+track_responsible_id+"'><input type='hidden' id='hidden_track_type' value='"+track_type+"'><input type='hidden' id='hidden_reminder_date' value='"+reminder_date+"'><input type='hidden' id='hidden_reminder_time' value='"+reminder_time+"'>");  
+	   $('#modalContent input[type="hidden"]').remove();
+	   $('#modalContent').append("<input type='hidden' id='hidden_meeting_id' value='"+meeting_id+"'><input type='hidden' id='hidden_iteration' value='"+iteration+"'><input type='hidden' id='hidden_project_id' value='"+project_id+"'><input type='hidden' id='hidden_lang' value='"+lang+"'><input type='hidden' id='hidden_user_id' value='"+user_id+"'><input type='hidden' id='hidden_chapter' value='"+chapter+"'><input type='hidden' id='hidden_name' value='"+subject+"'><input type='hidden' id='hidden_area' value='"+area+"'><input type='hidden' id='hidden_recipient' value='"+recipient+"'><input type='hidden' id='hidden_responsible_id' value='"+responsible_id+"'><input type='hidden' id='hidden_destination_date' value='"+destination_date+"'><input type='hidden' id='hidden_progress_status_id' value='"+progress_status_id+"'><input type='hidden' id='hidden_is_priority' value='"+is_priority+"'><input type='hidden' id='hidden_remark' value='"+remark+"'><input type='hidden' id='hidden_track_responsible_id' value='"+track_responsible_id+"'><input type='hidden' id='hidden_track_type' value='"+track_type+"'><input type='hidden' id='hidden_reminder_date' value='"+reminder_date+"'><input type='hidden' id='hidden_reminder_time' value='"+reminder_time+"'>");
+	   $('tr.task-row-highlight').removeClass('task-row-highlight');
+	   $('#meetings_table tr.meeting_' + meeting_id).addClass('task-row-highlight');
 	   $('#modalTaskFollowupActions').modal('show');
+	   setProjectModalTitle(project_id, '#modalTaskFollowupActions', false);
     });
 	
 	$('[id="continuous_btn"]').on('click', function(){
 		$('#modalTaskFollowupActions').one('hidden.bs.modal', function(){
 			$('[name="progress_status"]').prop('checked', false).prop('disabled', false);
 			$('#modalContinuousTask').modal('show');
+			$('#modalContinuousTask .modal-title').html('המשך');
 		});
 		$('#modalTaskFollowupActions').modal('hide');
 	});
 	
 	$('[id="history_btn"]').on('click', function(){
 		meeting_id = $('#hidden_meeting_id').val();
-		project_id = $('#hidden_project_id').val();		
-		
+		project_id = $('#hidden_project_id').val();
+
 		let form_data = new FormData();
         form_data.append('id_meeting',meeting_id);
 		form_data.append('id_project',project_id);
-	   
+
 	    $.ajax({
 			type: 'POST',
 			url: 'fill_tasks_followup_history.php',
@@ -3924,12 +3946,14 @@ $(document).ready(function(){
 			processData: false,
 			contentType: false,
 			success: function(data){
-				$('#modalHistoryTasksContent').html(data);	
+				$('#modalHistoryTasksContent').html(data);
 			},
 	   });
-	   
+
+	   _hidingForHistory = true;
 	   $('#modalTaskFollowupActions').modal('hide');
 	   $('#modalHistoryTasks').modal('show');
+	   $('#modalHistoryTasks .modal-title').html("הסטורי-ה");
 	});
 	
 	$('[id="update_btn"]').on('click', function(){
@@ -3944,11 +3968,11 @@ $(document).ready(function(){
 		form_data.append('lang',$('#project_lang').val());
 
 		if($('#project_lang').val() == "HE")
-			$('.modal-title').html("<img src='images/status-icon.png' alt='status icon' width='20' height='20'>&nbsp;&nbsp;עדכון&nbsp;&nbsp;<img src='images/status-icon.png' alt='status icon' width='20' height='20'>");
+			$('#modalUpdateTask .modal-title').html("<img src='images/status-icon.png' alt='status icon' width='20' height='20'>&nbsp;&nbsp;עדכון&nbsp;&nbsp;<img src='images/status-icon.png' alt='status icon' width='20' height='20'>");
         else
-		    $('.modal-title').html("Update");
-        
-        $('.subtitle').html(chapter+"<br/>"+subject+"&nbsp;|&nbsp;"+area).css('line-height','1.1em');		
+		    $('#modalUpdateTask .modal-title').html("Update");
+
+        $('#modalUpdateTask .subtitle').html(chapter+"<br/>"+subject+"&nbsp;|&nbsp;"+area).css('line-height','1.1em');		
 		
 	    $.ajax({
 			type: 'POST',
@@ -3980,34 +4004,28 @@ $(document).ready(function(){
 	    reminder_date = $('#hidden_reminder_date').val();	
 	    
 		if(reminder_date != '0000-00-00') {
+		  $('#date_col_wrapper').show();
 		  $('#div_reminder_date').show();
 	      $('#reminder_date').val(reminder_date);
 	    }
-	    else 
+	    else {
+		  $('#date_col_wrapper').hide();
 		  $('#div_reminder_date').hide();
+		}
 	 
-	    $('#modalTaskTracking .modal-title').html("<i class='fas fa-bullseye' style='font-size:22px;color:#888;'></i>&nbsp;&nbsp;מעקב אקטיבי&nbsp;&nbsp;<i class='fas fa-bullseye' style='font-size:22px;color:#888;'></i>");
+	    $('#modalTaskTracking .modal-title').html("<i class='fas fa-bullseye' style='font-size:22px;color:#e74c3c;'></i>&nbsp;&nbsp;מעקב אקטיבי&nbsp;&nbsp;<i class='fas fa-bullseye' style='font-size:22px;color:#e74c3c;'></i>");
 		$('.subtitle').html(chapter+"<br/>"+subject+"&nbsp;|&nbsp;"+area).css('line-height','1.1em');
 	  
-	    $('#div_reminder_date').css('display','block');
-	 
 	    if($('#hidden_reminder_time').val() == 0) {
-		  $('#div_reminder_date').css('display','none');
+		  $('#date_col_wrapper').hide();
 		  $('#not_reminders').prop('checked',true);
 	    }
-	   
-	    if($('#hidden_reminder_time').val() == 1)
-		  $('#reminder_tomorrow').prop('checked',true);
 	    if($('#hidden_reminder_time').val() == 2)
 		  $('#reminder_after_three_days').prop('checked',true);
-	    if($('#hidden_reminder_time').val() == 3)
-		  $('#reminder_after_one_week').prop('checked',true);
 	    if($('#hidden_reminder_time').val() == 4)
 		  $('#reminder_after_two_weeks').prop('checked',true);
 	    if($('#hidden_reminder_time').val() == 5)
 		  $('#reminder_after_one_month').prop('checked',true);
-	    if($('#hidden_reminder_time').val() == 6) 
-		  $('#reminder_after_selected_date').prop('checked',true);
 	   
         let savedResp = parseInt($('#hidden_track_responsible_id').val()) || 0;
 	    $('#users option').each(function() {
@@ -4099,9 +4117,9 @@ $(document).ready(function(){
 				let is_all_ids_to_edit = 0;
 			    
 				if(all_ids_to_edit == "") 
-				   content = fillContentTaskDetails(meeting_id,iteration,task_details,false);
-				else 
-				   content = fillMultiTasks(meeting_id,task_details)
+				   content = fillContentTaskDetails(meeting_id,iteration,task_details,false,true);
+				else
+				   content = fillMultiTasks(meeting_id,task_details,true)
 			    
 				if(all_ids_to_edit.indexOf(",") !== -1)
 					is_all_ids_to_edit = 1;			
@@ -4130,8 +4148,9 @@ $(document).ready(function(){
 						data: {imageData:imageData,meeting_id:meeting_id},
 						success: function(response) {
 							const imageUrl = '<?= BASE_URL ?>'+response;
-							shareImage(imageUrl,meeting_id,project_id,iteration,is_all_ids_to_edit); 							
-						}, 
+							$('#contentToScreenshot').html('');
+							shareImage(imageUrl,meeting_id,project_id,iteration,is_all_ids_to_edit);
+						},
 				   });
                 })	
 			},
@@ -4187,6 +4206,8 @@ $(document).ready(function(){
 	let modalTaskFollowupActions = $('#modalTaskFollowupActions');
 	var _taskModalFullyShown = false;
 	var _suppressScrollOnHide = false;
+	var _hidingForHistory = false;
+	var _updateTaskSaving = false;
 	let modalTaskFollowupChangeStatus = $('#modalTaskFollowupChangeStatus');
 	let modalContinuousTask = $('#modalContinuousTask');
 	let modalTaskCreationDate = $('#modalTaskCreationDate');
@@ -4337,6 +4358,7 @@ $(document).on('click', 'tr[id*="row_"]', function(){
 });
 
 $(document).on('click','#save_update_task_btn', function (){
+	_updateTaskSaving = true;
 	let form_data = new FormData();
 	form_data.append('from','meetings');
 	form_data.append('id_project',$('#hidden_project_id').val());
@@ -4811,6 +4833,42 @@ $('#to_add_meeting_btn').click (function (e){
 .btn {
     padding: 0px 5px !important;
 	box-shadow: 3px 3px 8px rgba(180, 180, 180, 0.6);
+}
+
+#modalTaskTracking .btn {
+    padding: .375rem .75rem !important;
+    box-shadow: none;
+}
+
+tr.task-row-highlight td[id^="td_cbx_meetings_to_update_"],
+tr.task-row-highlight td[id^="td_count_"],
+tr.task-row-highlight td[id^="td_description_"],
+tr.task-row-highlight td[id^="td_subject_"],
+tr.task-row-highlight td[id^="td_area_"] {
+	position: relative;
+}
+
+tr.task-row-highlight td[id^="td_cbx_meetings_to_update_"]::after,
+tr.task-row-highlight td[id^="td_count_"]::after,
+tr.task-row-highlight td[id^="td_description_"]::after,
+tr.task-row-highlight td[id^="td_subject_"]::after,
+tr.task-row-highlight td[id^="td_area_"]::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background-color: #99ccff;
+	pointer-events: none;
+	z-index: 0;
+}
+
+tr.task-row-highlight td[id^="td_cbx_meetings_to_update_"] > *,
+tr.task-row-highlight td[id^="td_count_"] > *,
+tr.task-row-highlight td[id^="td_description_"] > *,
+tr.task-row-highlight td[id^="td_subject_"] > *,
+tr.task-row-highlight td[id^="td_area_"] > * {
+	position: relative;
+	z-index: 1;
+	background-color: transparent !important;
 }
 
 .colorGreen {

@@ -59,8 +59,8 @@ $projects_list_array = explode(',',@$_SESSION['projects_list']);
   <script src="assets/dataTables/js/jquery.dataTables.js" type="text/javascript"></script>
   <script src="assets/dataTables/js/jquery.dataTables.columnFilter.js" type="text/javascript"></script>
 
-  <link href="css/custom.css" rel="stylesheet" type="text/css" />
-  <link rel="stylesheet" type="text/css" href="css/style.css" />
+  <link href="css/custom.css?v=<?=filemtime(__DIR__.'/../css/custom.css')?>" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="css/style.css?v=<?=filemtime(__DIR__.'/../css/style.css')?>" />
 
   <script src="js/script.js?v=<?=filemtime(__DIR__.'/../js/script.js')?>" type="text/javascript"></script>
 </head>

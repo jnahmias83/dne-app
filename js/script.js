@@ -46,13 +46,15 @@ function duplicateRecord(meeting_id,iteration,from){
 			else if(from == 'fromProjectHome'){
 		        url = 'add_meeting.php?project_id='+$('#project_id').val()+'&id='+meeting_id+'&fromProjectHome=1'; 
 	        }
-            else 
+            else {
+               localStorage.setItem('highlight_after_reload', 'true');
                url = 'add_meeting.php?project_id='+from+'&id='+data;
-			
+            }
+
 		    url += '&lang='+$('#hidden_lang').val();
 		    location.href = url;
 		},
-	});				
+	});
 }
 
 function continuousTask(meeting_id,progress_status,iteration,from){
@@ -84,8 +86,10 @@ function continuousTask(meeting_id,progress_status,iteration,from){
 			else if(from == 'fromProjectHome') {
 		        url = 'add_meeting.php?project_id='+$('#project_id').val()+'&id='+meeting_id+'&fromProjectHome=1';
 	        }
-            else
+            else {
+               localStorage.setItem('highlight_after_reload', 'true');
                url = 'add_meeting.php?project_id='+from+'&id='+data+'&iscontinious=1';
+            }
 
 		    url += '&lang='+$('#hidden_lang').val();
 		    location.href = url;
@@ -260,11 +264,18 @@ function setData(meeting_id,iteration,field,isRemark,forShare,screen_type){
 							contentType: false,
 							success: function(data2){	
 								let task_details = data2.split('|~|');
-								let content = fillContentTaskDetails(localStorage.getItem('next_meeting_id'), '', task_details, true);		
-								$('#div_content_task_details').html(content);    
+								let content = fillContentTaskDetails(localStorage.getItem('next_meeting_id'), '', task_details, true);
+								$('#div_content_task_details').html(content);
 								$('#modalUpdateTask').modal('hide');
-								$('#modalTaskFollowupActions').modal('show'); 
-								$(this).off('hidden.bs.modal');                                       
+								if(localStorage.getItem('is_to_do_today') == '1'){
+									localStorage.removeItem('is_to_do_today');
+									localStorage.setItem('highlight_after_reload','true');
+									location.href = 'projects.php';
+									return;
+								}
+								$('#modalTaskFollowupActions').modal('show');
+								setProjectModalTitle($('#hidden_project_id').val(), '#modalTaskFollowupActions', false);
+								$(this).off('hidden.bs.modal');
 								setlocalStorage(localStorage.getItem('next_meeting_id'), iteration);
 							},
 							error: function(xhr, status, error) {}
@@ -457,10 +468,10 @@ function removeAccountPayment(ap_type,record_id){
 		removePayment(record_id);
 }
 
-function fillContentTaskDetails(meeting_id,iteration,task_details,forShare){
-	let content = '<table dir="rtl" width="100%">';
-	content += '<tr class="alignCenter height26"><td colspan="3" class="bgColorBlue2 colorWhite font-weight-bold alignCenter paddingTop2 paddingBottom5">'+(forShare ? task_details[27]+'<br/>' : '')+task_details[1]+'</td></tr>';
-	
+function fillContentTaskDetails(meeting_id,iteration,task_details,forShare,withProjectHeader){
+	let content = '<table dir="rtl" width="100%" style="border-collapse:collapse;">';
+	if(withProjectHeader && task_details[1])
+		content += '<tr class="alignCenter height26"><td colspan="3" style="text-decoration:none;" class="bgColorBlue2 colorWhite font-weight-bold alignCenter paddingTop2 paddingBottom5 border-blue2">'+task_details[1]+'</td></tr>';
 	content += '<tr class="alignCenter height26">';
 	let taskBg    = task_details[26] || '#5b8dd9';
 	let taskColor = task_details[28] || '#ffffff';
@@ -530,9 +541,10 @@ function fillContentTaskDetails(meeting_id,iteration,task_details,forShare){
 	return content;
 }
 
-function fillMultiTasks(meeting_id,task_details){
+function fillMultiTasks(meeting_id,task_details,forShare){
 	let content = '<table dir="rtl" width="100%">';
-	content += '<tr class="alignCenter height26"><td class="bgColorBlue2 colorWhite font-weight-bold alignCenter paddingTop2 paddingBottom5 border-blue2">'+task_details[0]+'<br/>'+task_details[1]+'</td></tr>';
+	let headerText = forShare ? task_details[1] : task_details[0]+'<br/>'+task_details[1];
+	content += '<tr class="alignCenter height26"><td class="bgColorBlue2 colorWhite font-weight-bold alignCenter paddingTop2 paddingBottom5 border-blue2">'+headerText+'</td></tr>';
 	content += task_details[2];
 	content += '<tr class="alignCenter"><td colspan="3"><img src="uploads/'+task_details[3]+'" width="480" alt="" /></td></tr>';
 	content += '</table>';
@@ -580,17 +592,20 @@ function setReminderDate (reminder_type){
    
     if(reminder_type == 0){
       $('#div_reminder_date').hide();
+      $('#date_col_wrapper').hide();
       $('#reminder_date').val('0000-00-00');
     }
-    else if(reminder_type == 1){  
+    else if(reminder_type == 1){
 	   $('#div_reminder_date').show();
+	   $('#date_col_wrapper').show();
 	   let date_tomorrow = new Date();
        date_tomorrow.setDate(currentDate.getDate() + 1);	   
 	   date_tomorrow = formatDate(date_tomorrow);
 	   $('#reminder_date').val(date_tomorrow);
     }
-    else if(reminder_type == 2){  
+    else if(reminder_type == 2){
 	   $('#div_reminder_date').show();
+	   $('#date_col_wrapper').show();
 	   
 	   let date_after_three_days = new Date();
        date_after_three_days.setDate(currentDate.getDate() + 3);	   
@@ -605,24 +620,27 @@ function setReminderDate (reminder_type){
 	   date_after_one_week = formatDate(date_after_one_week);
 	   $('#reminder_date').val(date_after_one_week);
     }
-	else if(reminder_type == 4){  
+	else if(reminder_type == 4){
 	   $('#div_reminder_date').show();
+	   $('#date_col_wrapper').show();
 	   
 	   let date_after_two_weeks = new Date();
        date_after_two_weeks.setDate(currentDate.getDate() + 14);	   
 	   date_after_two_weeks = formatDate(date_after_two_weeks);
 	   $('#reminder_date').val(date_after_two_weeks);
     }
-	else if(reminder_type == 5){  
+	else if(reminder_type == 5){
 	   $('#div_reminder_date').show();
+	   $('#date_col_wrapper').show();
 	   
 	   let date_after_one_month = new Date();
        date_after_one_month.setMonth(currentDate.getMonth() + 1);	   
 	   date_after_one_month = formatDate(date_after_one_month);
 	   $('#reminder_date').val(date_after_one_month);
     }
-	else if(reminder_type == 6){  
+	else if(reminder_type == 6){
 	   $('#div_reminder_date').show();
+	   $('#date_col_wrapper').show();
     }
 }
 
@@ -660,6 +678,7 @@ function resetTrack(){
 }
 
 function setlocalStorage(id_meeting,iteration){
+	localStorage.setItem('highlight_after_reload','true');
 	localStorage.setItem('is_modal_task_actions_opened',true);
 	localStorage.setItem('meeting_id',id_meeting);
 	localStorage.setItem('iteration',iteration);
@@ -731,7 +750,7 @@ function setlocalStorage(id_meeting,iteration){
 		localStorage.setItem('reminder_time',$('#hidden_reminder_time').val());
 }
 
-function fillLogTaskTracking(id_meeting,iteration,screen_type){
+function fillLogTaskTracking(id_meeting,iteration,screen_type,track_type){
 	let selectedValues = $('input[name="log_meeting_tracking[]"]:checked')
 		.map(function() {
 			return $(this).val();
@@ -750,6 +769,7 @@ function fillLogTaskTracking(id_meeting,iteration,screen_type){
 	form_data.append('reminder_date', $('#reminder_date').val());
 	form_data.append('reminder_time', reminder_time);
 	form_data.append('ids_remark_tracking_checked', ids_remark_tracking_checked);
+	form_data.append('track_type', track_type !== undefined ? track_type : 1);
 
 	$.ajax({
 		type: 'POST',
@@ -780,10 +800,11 @@ function fillLogTaskTracking(id_meeting,iteration,screen_type){
 				localStorage.setItem('responsible_id', $('#hidden_responsible_id').val());
 				localStorage.setItem('is_priority', $('#hidden_is_priority').val());
 				localStorage.setItem('remark', $('#hidden_remark').val());
-				localStorage.setItem('track_type', 1);
+				localStorage.setItem('track_type', track_type !== undefined ? track_type : 1);
 				localStorage.setItem('updated_id','meeting_'+id_meeting);
+				if(iteration === '') localStorage.setItem('highlight_after_reload', 'true');
 			}
-			
+
 			location.href = url;
 		}
 	});
@@ -833,7 +854,7 @@ function sendEmail(id_meeting,iteration,screen_type,from){
 		contentType: false,
 		success: function(data){
 			let task_details = data.split('|~|');
-			let content = fillContentTaskDetails(id_meeting,iteration,task_details,false);
+			let content = fillContentTaskDetails(id_meeting,iteration,task_details,false,true);
 			$('#contentToScreenshot').html(content);
 			
 			const element = document.getElementById('contentToScreenshot');
@@ -846,6 +867,7 @@ function sendEmail(id_meeting,iteration,screen_type,from){
 					url: 'save_image.php',
 					data: {imageData:imageData},
 					success: function(response){
+						$('#contentToScreenshot').html('');
 					    let form_data = new FormData();
                         form_data.append('meeting_id',id_meeting);
  					    form_data.append('img_url',response);
@@ -874,8 +896,11 @@ function sendEmail(id_meeting,iteration,screen_type,from){
 										url+='&is_specific_filter=1';
 								}
 								else {
-								    if(from == 'fromProjects')
+								    if(from == 'fromProjects'){
+								      localStorage.setItem('highlight_after_reload', 'true');
+								      localStorage.setItem('meeting_id', id_meeting);
 								      url = 'projects.php';
+								    }
 								    else if(from == 'fromProjectHome')
 									   url = 'project_home.php?id='+$('#project_id').val();
 								}
@@ -902,16 +927,6 @@ function hidePopup(modal,iteration,meeting_id,from){
 	let form_data = new FormData();
 	form_data.append('meeting_id',meeting_id);
 	
-	if(modal == 'modalTaskTracking') {
-		$.ajax({
-			type: 'POST',
-			url: 'set_inactive_tracking.php',
-			data: form_data,
-			cache: false,
-			processData: false,
-			contentType: false
-	    });
-	}
 	
 	let url;
 	if(iteration != ''){
@@ -926,8 +941,9 @@ function hidePopup(modal,iteration,meeting_id,from){
 		   url = 'project_home.php?id='+$('#project_id').val();
 	}
 	
-	if(modal != 'modalTaskDescription' && modal != 'modalTaskFollowupChangeStatus' 
+	if(modal != 'modalTaskDescription' && modal != 'modalTaskFollowupChangeStatus'
 	   && modal != 'modalTaskFollowupDelayTargetDate'){
+		localStorage.setItem('highlight_after_reload','true');
 		localStorage.setItem('is_modal_task_actions_opened',true);
 		localStorage.setItem('project_id',$('#hidden_project_id').val());
 		localStorage.setItem('meeting_id',$('#hidden_meeting_id').val());
@@ -938,7 +954,8 @@ function hidePopup(modal,iteration,meeting_id,from){
 		localStorage.setItem('responsible_id',$('#hidden_responsible_id').val());
 		localStorage.setItem('is_priority',$('#hidden_is_priority').val());
 		localStorage.setItem('remark',$('#hidden_remark').val());
-		localStorage.setItem('track_type',0);		
+		if(modal != 'modalTaskTracking')
+			localStorage.setItem('track_type',0);
 	}		
 	
 	location.href = url;	
@@ -1001,18 +1018,31 @@ function setEmergencyTask(id_meeting,iteration){
     })
 }
 
-async function getProjectName(project_id){
+async function getProjectDetails(project_id){
     let form_data = new FormData();
     form_data.append('project_id', project_id);
 
     return await $.ajax({
         type: 'POST',
-        url: 'get_project_name.php',
+        url: 'get_project_details.php',
         data: form_data,
         cache: false,
         processData: false,
         contentType: false,
+        dataType: 'json',
     });
+}
+
+async function setProjectModalTitle(project_id, modalSelector, forShare) {
+    const d = await getProjectDetails(project_id);
+    let html;
+    if (!forShare && d.nickname) {
+        const sub = d.name_he ? `<div style="margin-top:4px;margin-bottom:6px;">${d.name_he}</div>` : '';
+        html = d.nickname + sub;
+    } else {
+        html = d.name_he ? `<div style="margin-bottom:6px;">${d.name_he}</div>` : '';
+    }
+    $(modalSelector + ' .modal-title').html(html);
 }
 
 async function shareImage(imageUrl,meeting_id,project_id,iteration,is_all_ids_to_edit){
@@ -1025,13 +1055,13 @@ async function shareImage(imageUrl,meeting_id,project_id,iteration,is_all_ids_to
         reader.readAsDataURL(file);
 
         reader.onloadend = async function (){
-            const project_name = await getProjectName(project_id);
-	  
+            const project_details = await getProjectDetails(project_id);
+
             if(navigator.canShare && navigator.canShare({ files: [file] })){
                 try {
                     await navigator.share({
                         title: "משימה חדשה",
-                        text: "שלום,\nשים לב בבקשה למשימה זו בפרוייקט:\n" + project_name,
+                        text: "שלום,\nשים לב בבקשה למשימה זו בפרוייקט:\n" + (project_details.name_he || ''),
                         files: [file]
                     });
                 } catch (shareError){

@@ -55,10 +55,7 @@ if($query->num_rows == 0){
 	$query->execute();
 }
 
-$track_type = 0;
-if(trim(strip_tags($_POST['remark'])) !== '' 
-   || sizeof($ids_remark_tracking_checked_array) > 0)
-	  $track_type = 1;
+$track_type = isset($_POST['track_type']) ? (int)$_POST['track_type'] : 1;
 
 $query = "UPDATE dne_meetings SET reminder_time = ?,reminder_date = ?,track_type = ? 
           WHERE id = ?";

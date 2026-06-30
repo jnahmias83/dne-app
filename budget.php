@@ -70,7 +70,7 @@ include 'menu_budget_reports.php';
 				
 			    <div class="row marginTop15 title">	
 					<div class="col-md-12">
-						<a id="a_project_title" class="text-decoration-none color-1A5276" href="<?php if($from == "projects") echo "projects.php";else echo 'project_home.php?id='.@$project_id?>">
+						<a id="a_project_title" class="text-decoration-none color-1A5276" href="projects.php">
 						    <strong class="fontSize33 line-height-1em"><?=@$project->nickname?></strong>
 							<div id="project_name_title"></div>
 					    </a>

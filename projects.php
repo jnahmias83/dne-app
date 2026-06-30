@@ -332,7 +332,9 @@ $query = $mysqli->prepare("SELECT ln.id_log_meeting_updates AS id_log_meeting_up
 						   m.track_type AS track_type,
 						   m.reminder_time AS reminder_time,
 						   m.reminder_date AS reminder_date,
-						   m.id_track_responsible AS id_track_responsible
+						   m.id_track_responsible AS id_track_responsible,
+					   u.nickname AS user_nickname,
+					(SELECT lmu2.remark FROM dne_log_meeting_updates lmu2 WHERE lmu2.id_meeting = m.id AND TRIM(lmu2.remark) <> '' ORDER BY lmu2.id DESC LIMIT 1) AS latest_lmu_remark
                            FROM dne_log_news ln
                            LEFT JOIN dne_log_meeting_updates lmu ON ln.id_log_meeting_updates = lmu.id
                            LEFT JOIN dne_users u ON lmu.id_user = u.id
@@ -566,14 +568,33 @@ foreach($all_what_news as $wn){
 															<span class="color-1A5276"><?=@$area?></span>
 														</div>
 													</div>
-												</div>								
+													<?php if($track_type == 1){
+														$one_ut = 1; $empty_ut = '';
+														$q_ut = $mysqli->prepare("SELECT lmt.action_date,lmt.remark,u.nickname AS user_nickname FROM dne_log_meeting_tracking lmt LEFT JOIN dne_users u ON lmt.id_user = u.id WHERE lmt.id_meeting = ? AND lmt.remark <> ? AND lmt.is_remark_appears_log = ? ORDER BY lmt.id DESC");
+														$q_ut->bind_param('isi',$ut->id,$empty_ut,$one_ut);
+														$tr_ut = fetch($q_ut);
+														if($q_ut->num_rows > 0){ ?>
+														<div class="d-flex flex-column">
+															<?php foreach($tr_ut as $tr_item){
+																$tr_remark = @$tr_item->remark;
+																if(mb_strlen(@$tr_remark,'UTF-8') > 30) $tr_remark = mb_substr($tr_remark,0,30,'UTF-8').'...';
+															?>
+															<div class="marginTop5 fontSize9 text-end" style="line-height:1">
+																<span class="border-black padding-2x-2y fontSize9 borderRadius20 align-items-center justify-content-center colorWhite bgColorBlack" style="display:inline-flex;line-height:1;"><?=@$tr_item->user_nickname?></span>
+																<span class="marginRight5 dir-rtl unicode-bidi-embed"><?=smartDate(@$tr_item->action_date)?> -</span>
+																<span class="colorRed dir-rtl unicode-bidi-embed display-inline-block"><?=html_entity_decode(@$tr_remark)?></span>
+															</div>
+															<?php } ?>
+														</div>
+													<?php } } ?>
+												</div>
 											</div>
-										</a>					
+										</a>
 									</td>
 								</tr>
 						<?php } ?>
-						</table>	
-					</div>									
+						</table>
+					</div>
 				</div>
 
                 <div id="div_active_tracking" class="display-none border-black dir-rtl">									
@@ -584,7 +605,7 @@ foreach($all_what_news as $wn){
 						</div>
 					</div>							
 									
-					<div class="marginTop10 overflow-y-scroll scrollbar-colored alignCenter dir-rtl" style="max-height:600px;">
+					<div class="marginTop10 overflow-y-scroll scrollbar-colored alignCenter dir-rtl" style="max-height:530px;">
 						<table align="center" class="dir-rtl" cellpadding="4" width="100%">
 							<?php foreach ($all_active_tracking as $at){ 
 								$user_id = @$at->id_user;
@@ -745,7 +766,7 @@ foreach($all_what_news as $wn){
 						</div>
 					</div>		
 									
-					<div class="marginTop10 width100Percents overflow-y-scroll scrollbar-colored alignCenter dir-rtl" style="max-height:600px;">
+					<div class="marginTop10 width100Percents overflow-y-scroll scrollbar-colored alignCenter dir-rtl" style="max-height:530px;">
 						<table align="center" class="dir-rtl" cellpadding="4" width="100%">
 							<?php foreach ($all_what_news as $wn){ 
 								$user_id = @$wn->id_user;
@@ -788,10 +809,17 @@ foreach($all_what_news as $wn){
 								$query = fetch_unique($query);					
 								$progress_status_name = @$query->ps_name_he;
 								$destination_date = @$query->lmu_destination_date;
-								
+								$track_responsible_name = '';
+								if($id_track_responsible > 0){
+									$q_tr = $mysqli->prepare("SELECT nickname FROM dne_users WHERE id = ?");
+									$q_tr->bind_param('i',$id_track_responsible);
+									$track_responsible = fetch_unique($q_tr);
+									$track_responsible_name = @$track_responsible->nickname;
+								}
+
 								if($reminder_date != '0000-00-00' || @$track_responsible_name != '')
 									$tracking_data = '(';
-											
+
 								if($reminder_date != '0000-00-00')
 									$tracking_data .= smartDate($reminder_date);
 
@@ -803,6 +831,16 @@ foreach($all_what_news as $wn){
 
 								if($reminder_date != '0000-00-00' || @$track_responsible_name != '')
 									$tracking_data .= ')';
+								$log_meeting_tracking_num_rows_wn = 0; 
+								$log_meeting_tracking_wn = new stdClass();
+								
+								if($track_type == 1){
+									$one_wn = 1; $empty_wn = '';
+									$q_wn = $mysqli->prepare("SELECT lmt.action_date,lmt.remark,u.nickname AS user_nickname FROM dne_log_meeting_tracking lmt LEFT JOIN dne_users u ON lmt.id_user = u.id WHERE lmt.id_meeting = ? AND lmt.remark <> ? AND lmt.is_remark_appears_log = ? ORDER BY lmt.id DESC");
+									$q_wn->bind_param('isi',$wn->id,$empty_wn,$one_wn);
+									$log_meeting_tracking_wn = fetch($q_wn);
+									$log_meeting_tracking_num_rows_wn = $q_wn->num_rows;
+								}
 								?>
 								<tr class="task-row fontSize13">
 									<td>
@@ -835,8 +873,9 @@ foreach($all_what_news as $wn){
 															<span class="color-1A5276"><?=@$area?></span>
 														</div>
 													</div>
-													<?php if(@$wn->id_log_meeting_updates != 0){ 
-													        $remark = @$wn->lmu_remark;
+													<?php if(@$wn->id_log_meeting_updates != 0){
+													        $remark = !isEffectivelyEmpty(@$wn->lmu_remark) ? @$wn->lmu_remark : @$wn->latest_lmu_remark;
+															$remark = trim(strip_tags(html_entity_decode($remark)));
 															if(mb_strlen(@$remark,'UTF-8') > 50)
 																$remark = mb_substr($remark,0,50,'UTF-8').'...';
 													?>
@@ -855,7 +894,7 @@ foreach($all_what_news as $wn){
 																			<?=@$progress_status_name?>
 																		</span> 
 																	<?php }	
-																	    if(@$remark != '') echo ' : <span class="color-19bf42 dir-rtl unicode-bidi-embed">'.html_entity_decode(@$wn->lmu_remark).'</span>';
+																	    if(@$remark != '') echo ' : <span class="color-19bf42 dir-rtl unicode-bidi-embed">'.$remark.'</span>';
 																	    if($destination_date != '0000-00-00'){ ?>
 																		  &nbsp;-
 																			<span class="dir-rtl unicode-bidi-embed color-19bf42 font-weight-bold">
@@ -864,26 +903,20 @@ foreach($all_what_news as $wn){
 																	<?php } ?>															
 																</div>
 															</div>
-													<?php } 
-													      if(@$wn->id_log_meeting_tracking != 0){ 
-															$remark = @$wn->remark;
-															if(mb_strlen(@$remark,'UTF-8') > 30)
-																$remark = mb_substr($remark,0,30,'UTF-8').'...';
-														  ?>	
-															<div class="marginTop5 fontSize9 text-end" style="line-height:1">
-																<span class="border-black padding-4x-4y borderRadius20 align-items-center justify-content-center font-weight-bold colorWhite bgColorRed" style="display:inline-flex;line-height:1;">
-																	<?=@$wn->user_nickname?>
-																</span>		
-																<span class="colorRed dir-rtl font-weight-bold unicode-bidi-embed">
-																	<?php echo smartDate(@$wn->lmt_action_date)?> :
-																</span>												
-																<span class="colorRed dir-rtl unicode-bidi-embed display-inline-block font-weight-bold">
-																	<?=html_entity_decode(@$remark)?>
-																</span>
-																<span class="marginRight5 colorRed dir-rtl unicode-bidi-embed display-inline-block font-weight-bold">
-																	<?=@$tracking_data?>
-																</span>
-															</div>
+													<?php }
+													      if($log_meeting_tracking_num_rows_wn > 0){ ?>
+													<div class="d-flex flex-column">
+														<?php foreach($log_meeting_tracking_wn as $tr_item){
+															$tr_remark = @$tr_item->remark;
+															if(mb_strlen(@$tr_remark,'UTF-8') > 30) $tr_remark = mb_substr($tr_remark,0,30,'UTF-8').'...';
+														?>
+														<div class="marginTop5 fontSize9 text-end" style="line-height:1">
+															<span class="border-black padding-2x-2y fontSize9 borderRadius20 align-items-center justify-content-center colorWhite bgColorBlack" style="display:inline-flex;line-height:1;"><?=@$tr_item->user_nickname?></span>
+															<span class="marginRight5 dir-rtl unicode-bidi-embed"><?=smartDate(@$tr_item->action_date)?> -</span>
+															<span class="colorRed dir-rtl unicode-bidi-embed display-inline-block"><?=html_entity_decode(@$tr_remark)?></span>
+														</div>
+														<?php } ?>
+													</div>
 													<?php } ?>
 												</div>
 											</div>
@@ -1008,7 +1041,8 @@ foreach($all_what_news as $wn){
 														   m.reminder_time AS reminder_time,
 														   m.reminder_date AS reminder_date,
 														   m.id_track_responsible AS id_track_responsible,
-														   u.nickname AS user_nickname
+														   u.nickname AS user_nickname,
+														   (SELECT lmu2.remark FROM dne_log_meeting_updates lmu2 WHERE lmu2.id_meeting = m.id AND TRIM(lmu2.remark) <> '' ORDER BY lmu2.id DESC LIMIT 1) AS latest_lmu_remark
 														   FROM dne_log_news ln
 														   LEFT JOIN dne_log_meeting_updates lmu ON ln.id_log_meeting_updates = lmu.id
 														   LEFT JOIN dne_users u ON lmu.id_user = u.id
@@ -1152,14 +1186,33 @@ foreach($all_what_news as $wn){
 																				<span class="color-1A5276"><?=@$area?></span>
 																			</div>
 																		</div>
+																		<?php if($track_type == 1){
+																			$one_pr = 1; $empty_pr = '';
+																			$q_pr = $mysqli->prepare("SELECT lmt.action_date,lmt.remark,u.nickname AS user_nickname FROM dne_log_meeting_tracking lmt LEFT JOIN dne_users u ON lmt.id_user = u.id WHERE lmt.id_meeting = ? AND lmt.remark <> ? AND lmt.is_remark_appears_log = ? ORDER BY lmt.id DESC");
+																			$q_pr->bind_param('isi',$ut->id,$empty_pr,$one_pr);
+																			$tr_pr = fetch($q_pr);
+																			if($q_pr->num_rows > 0){ ?>
+																		<div class="d-flex flex-column">
+																			<?php foreach($tr_pr as $tr_item){
+																				$tr_remark = @$tr_item->remark;
+																				if(mb_strlen(@$tr_remark,'UTF-8') > 30) $tr_remark = mb_substr($tr_remark,0,30,'UTF-8').'...';
+																			?>
+																			<div class="marginTop5 fontSize9 text-end" style="line-height:1">
+																				<span class="border-black padding-2x-2y fontSize9 borderRadius20 align-items-center justify-content-center colorWhite bgColorBlack" style="display:inline-flex;line-height:1;"><?=@$tr_item->user_nickname?></span>
+																				<span class="marginRight5 dir-rtl unicode-bidi-embed"><?=smartDate(@$tr_item->action_date)?> -</span>
+																				<span class="colorRed dir-rtl unicode-bidi-embed display-inline-block"><?=html_entity_decode(@$tr_remark)?></span>
+																			</div>
+																			<?php } ?>
+																		</div>
+																		<?php } } ?>
 																	</div>
 																</div>
 															</a>
 														</td>
 													</tr>
 											<?php } ?>
-											</table>	
-										</div>									
+											</table>
+										</div>
 									</div>
 									
 									<div id="div_active_tracking_<?=@$pr->id?>" class="flex margin-0-x-auto width50Percents border-black display-none dir-rtl">
@@ -1178,7 +1231,7 @@ foreach($all_what_news as $wn){
 											</div>
 										</div>
 										
-										<div class="marginTop10 width100Percents overflow-y-scroll scrollbar-colored alignCenter dir-rtl" style="max-height:600px;">
+										<div class="marginTop10 width100Percents overflow-y-scroll scrollbar-colored alignCenter dir-rtl" style="max-height:530px;">
 											<table align="center" class="dir-rtl" cellpadding="4" width="100%">
 												<?php foreach ($active_tracking as $at){ 
 													$user_id = @$at->id_user;
@@ -1359,7 +1412,7 @@ foreach($all_what_news as $wn){
 											</div>
 										</div>
 										
-										<div class="marginTop10 width100Percents overflow-y-scroll scrollbar-colored alignCenter dir-rtl" style="max-height:600px;">
+										<div class="marginTop10 width100Percents overflow-y-scroll scrollbar-colored alignCenter dir-rtl" style="max-height:530px;">
 											<table align="center" class="dir-rtl" cellpadding="4" width="100%">
 												<?php foreach ($what_news as $wn){ 
 													$user_id = @$wn->id_user;																					
@@ -1425,9 +1478,17 @@ foreach($all_what_news as $wn){
 														$tracking_data .= @$track_responsible_name;
 													
 													if($reminder_date != '0000-00-00' || @$track_responsible_name != '')
-														$tracking_data .= ')';								
+														$tracking_data .= ')';
+													$log_meeting_tracking_num_rows_wn = 0; $log_meeting_tracking_wn = new stdClass();
+													if($track_type == 1){
+														$one_wn = 1; $empty_wn = '';
+														$q_wn = $mysqli->prepare("SELECT lmt.action_date,lmt.remark,u.nickname AS user_nickname FROM dne_log_meeting_tracking lmt LEFT JOIN dne_users u ON lmt.id_user = u.id WHERE lmt.id_meeting = ? AND lmt.remark <> ? AND lmt.is_remark_appears_log = ? ORDER BY lmt.id DESC");
+														$q_wn->bind_param('isi',$wn->id,$empty_wn,$one_wn);
+														$log_meeting_tracking_wn = fetch($q_wn);
+														$log_meeting_tracking_num_rows_wn = $q_wn->num_rows;
+													}
 													?>
-													<tr class="task-row fontSize13">	
+													<tr class="task-row fontSize13">
 														<td>
 															<input type="hidden" id="p_nickname_<?=@$wn->id?>" value="<?=@$pr->nickname?>">
 															<a id="task_name_<?=@$wn->id?>" class="text-decoration-none w-100 d-block">		
@@ -1446,7 +1507,7 @@ foreach($all_what_news as $wn){
 																						</span>
 																				<?php } ?>
 																			</div>
-																		</div>
+				</div>
 																		<div class="marginRight5 marginTop5 flex flex-wrap justify-content-center">
 																			<div class="width100Percents">
 																				<span class="color-1A5276 font-weight-bold"><?=@$subject?></span>
@@ -1455,7 +1516,11 @@ foreach($all_what_news as $wn){
 																			</div>
 																		</div>
 																		
-																		<?php if(@$wn->id_log_meeting_updates != 0){ ?>
+																		<?php if(@$wn->id_log_meeting_updates != 0){
+																 	        $lmu_remark_s2 = !isEffectivelyEmpty(@$wn->lmu_remark) ? @$wn->lmu_remark : @$wn->latest_lmu_remark;
+																	        $lmu_remark_s2 = trim(strip_tags(html_entity_decode($lmu_remark_s2)));
+																 	        if(mb_strlen(@$lmu_remark_s2,'UTF-8') > 50) $lmu_remark_s2 = mb_substr($lmu_remark_s2,0,50,'UTF-8').'...';
+								                                         ?>
 																			<div class="marginRight5 marginTop5 flex flex-wrap justify-content-center">
 																				<div class="width100Percents">
 																					<span class="dir-rtl colorGrey unicode-bidi-embed">
@@ -1469,29 +1534,24 @@ foreach($all_what_news as $wn){
 																							<?=@$progress_status_name?>
 																						</span> 
 																					<?php }
-																					if(@$wn->lmu_remark != '') echo ' : <span class="colorGreen dir-rtl unicode-bidi-embed">'.html_entity_decode(@$wn->lmu_remark).'</span>'?>
+																					if(@$lmu_remark_s2 != '') echo ' : <span class="colorGreen dir-rtl unicode-bidi-embed">'.$lmu_remark_s2.'</span>'?>
 																				</div>
 																			</div>
 																		<?php }
-                                                                              if(@$wn->id_log_meeting_tracking != 0){ ?>
-																				<div class="marginTop5 flex flex-wrap justify-content-center">
-																					<div class="width100Percents">
-																						<span class="dir-rtl colorGrey unicode-bidi-embed">
-																							[<?=smartDate(@$wn->lmt_action_date)?>]
-																						</span> 
-																						<span class="colorGrey dir-rtl unicode-bidi-embed">
-																							<?=@$wn->user_nickname?>
-																						</span>
-																						<span class="colorGrey dir-rtl unicode-bidi-embed">																	
-																							- 
-																						</span>																		
-																						<?php if(@$wn->lmt_remark != '') echo ' : <span class="colorRed dir-rtl unicode-bidi-embed">'.html_entity_decode(@$wn->lmt_remark).'</span>'?>
-																					    <span class="marginRight5 colorRed dir-rtl unicode-bidi-embed display-inline-block">
-																							<?=@$tracking_data?>
-																						</span>
+																			if($log_meeting_tracking_num_rows_wn > 0){ ?>
+																				<div class="d-flex flex-column">
+																					<?php foreach($log_meeting_tracking_wn as $tr_item){
+																						$tr_remark = @$tr_item->remark;
+																						if(mb_strlen(@$tr_remark,'UTF-8') > 30) $tr_remark = mb_substr($tr_remark,0,30,'UTF-8').'...';
+																					?>
+																					<div class="marginTop5 fontSize9 text-end" style="line-height:1">
+																						<span class="border-black padding-2x-2y fontSize9 borderRadius20 align-items-center justify-content-center colorWhite bgColorBlack" style="display:inline-flex;line-height:1;"><?=@$tr_item->user_nickname?></span>
+																						<span class="marginRight5 dir-rtl unicode-bidi-embed"><?=smartDate(@$tr_item->action_date)?> -</span>
+																						<span class="colorRed dir-rtl unicode-bidi-embed display-inline-block"><?=html_entity_decode(@$tr_remark)?></span>
 																					</div>
+																					<?php } ?>
 																				</div>
-                                                                        <?php } ?>																				  		
+																				<?php } ?>																				  		
 																	</div>
 																</div>
 															</a>																				
@@ -1627,12 +1687,20 @@ foreach($all_what_news as $wn){
 																		   AND lmt.remark <> ?
 																		   AND lmt.is_remark_appears_log = ?
 																		   ORDER BY lmt.id DESC");
-												$query->bind_param('isi',$tdt->id,$empty_remark,$one);	
-												$query->execute(); 
+												$query->bind_param('isi',$tdt->id,$empty_remark,$one);
+												$query->execute();
 												$query->store_result();
 												$log_meeting_tracking_num_rows = $query->num_rows;
 												$log_meeting_tracking = fetch($query);
-											}		
+											}
+											$log_meeting_tracking_num_rows_ut = 0; $log_meeting_tracking_ut = new stdClass();
+											if(@$list_from == 'user_tasks' && $track_type == 1){
+												$one_tdt = 1; $empty_tdt = '';
+												$q_tdt = $mysqli->prepare("SELECT lmt.action_date,lmt.remark,u.nickname AS user_nickname FROM dne_log_meeting_tracking lmt LEFT JOIN dne_users u ON lmt.id_user = u.id WHERE lmt.id_meeting = ? AND lmt.remark <> ? AND lmt.is_remark_appears_log = ? ORDER BY lmt.id DESC");
+												$q_tdt->bind_param('isi',$tdt->id,$empty_tdt,$one_tdt);
+												$log_meeting_tracking_ut = fetch($q_tdt);
+												$log_meeting_tracking_num_rows_ut = $q_tdt->num_rows;
+											}
 											?>
 											<tr class="task-row fontSize13" style="background-color:<?=@$bgcolor?>">	
 												<td>
@@ -1740,6 +1808,20 @@ foreach($all_what_news as $wn){
 																			<span class="color-1A5276"><?=@$area?></span>
 																		</div>
 																	</div>
+																	<?php if($log_meeting_tracking_num_rows_ut > 0){ ?>
+																	<div class="d-flex flex-column">
+																		<?php foreach($log_meeting_tracking_ut as $tr_item){
+																			$tr_remark = @$tr_item->remark;
+																			if(mb_strlen(@$tr_remark,'UTF-8') > 30) $tr_remark = mb_substr($tr_remark,0,30,'UTF-8').'...';
+																		?>
+																		<div class="marginTop5 fontSize9 text-end" style="line-height:1">
+																			<span class="border-black padding-2x-2y fontSize9 borderRadius20 align-items-center justify-content-center colorWhite bgColorBlack" style="display:inline-flex;line-height:1;"><?=@$tr_item->user_nickname?></span>
+																			<span class="marginRight5 dir-rtl unicode-bidi-embed"><?=smartDate(@$tr_item->action_date)?> -</span>
+																			<span class="colorRed dir-rtl unicode-bidi-embed display-inline-block"><?=html_entity_decode(@$tr_remark)?></span>
+																		</div>
+																		<?php } ?>
+																	</div>
+																	<?php } ?>
 																<?php } ?>
 															</div>
 														</div>
@@ -1759,7 +1841,11 @@ foreach($all_what_news as $wn){
         <div class="modal fade dir-rtl" id="modalTaskFollowupActions" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
 				<div class="modal-content">
-					<div class="modal-body">	
+					<div class="modal-header">
+						<button type="button" class="btn-close btn-close-white-small" data-bs-dismiss="modal" aria-label="Close"></button>
+						<div class="modal-title"></div>
+					</div>
+					<div class="modal-body" style="padding:0;overflow:hidden;">
 					   <div id="modalContent">
 					       <div id="div_content_task_details"></div>
 					       <form class="marginTop15 alignCenter">    
@@ -1845,8 +1931,12 @@ foreach($all_what_news as $wn){
 		
 		<div class="modal fade dir-rtl" id="modalContinuousTask" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
-				<div class="modal-content">  
-					<div class="modal-body">	
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="btn-close btn-close-white-small" data-bs-dismiss="modal" aria-label="Close"></button>
+						<div class="modal-title"></div>	
+					</div>
+					<div class="modal-body">
 					   <div id="modalContent">
 					        <form class="alignCenter">
 						       <div class="marginTop15 fontSize18 alignCenter">בדרך ליצור עבורך משימת המשך לפני כן, תציין אם ברצונך לסמן סטטוס משימה כ:</div>
@@ -1864,8 +1954,12 @@ foreach($all_what_news as $wn){
 		
 		<div class="modal fade dir-rtl" id="modalHistoryTasks" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
-				<div class="modal-content">  
-					<div class="modal-body">	
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="btn-close btn-close-white-small" data-bs-dismiss="modal" aria-label="Close"></button>
+					    <div class="modal-title"></div>
+					</div>
+					<div class="modal-body">
 					    <div id="modalHistoryTasksContent"></div>
 					</div>
 				</div>
@@ -1874,14 +1968,14 @@ foreach($all_what_news as $wn){
 		
 		<div class="modal fade" id="modalUpdateTask" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
-				<div class="modal-content">  
+				<div class="modal-content">
 					<div class="modal-header">
-					    <button type="button" class="btn-close btn-close-white-small" data-bs-dismiss="modal" aria-label="Close"></button>
+						<button type="button" class="btn-close btn-close-white-small" data-bs-dismiss="modal" aria-label="Close"></button>
 						<div class="modal-title"></div>
 					</div>
 					<div class="modal-body">
                         <form action="" method="post">
-						    <div class='marginTop5 subtitle color-349feb fontSize18 font-weight-bold alignCenter'></div>
+						    <div class='marginTop5 subtitle color-19bf42 fontSize18 font-weight-bold alignCenter'></div>
 						    <div class="row marginTop10">
 							    <div class="col-12 fontSize13 alignCenter">
 									<span id="progress_status_for_update_label"></span>
@@ -1918,105 +2012,76 @@ foreach($all_what_news as $wn){
 					    <div id="modalContent">
 					        <div class="container">
 								<form>
-								    <div class='marginTop5 subtitle color-349feb fontSize18 font-weight-bold alignCenter'></div>
-								    <div class="row marginTop10 alignCenter">
-									    <div class="col-12">
-											<strong class="fontSize13">אחראי מעקב</strong>
+								    <div class='marginTop5 subtitle color-19bf42 fontSize18 font-weight-bold alignCenter'></div>
+								    <div class="row marginTop10" dir="rtl">
+										<!-- Col 1 (droite en RTL) : labels icones -->
+										<div class="col-4 p-2 text-center">
+											<div class="fw-bold fontSize13 marginBottom5">אחראי מעקב</div>
+											<i class="fa fa-user" style="font-size:20px;"></i>
+											<div class="fw-bold fontSize13 marginTop15 marginBottom5">תזכורת מעקב</div>
+											<img src="images/bell-solid.svg" width="20" height="20" />
 										</div>
-									</div>
-									
-									<div class="row marginTop5 alignCenter">
-										<div class="col-12">
-											<select id="users" class="paddingRight8 fontSize13">	
+										<!-- Col 2 (gauche en RTL) : inputs -->
+										<div class="col-8 p-2 text-end">
+											<select id="users" class="paddingRight8 fontSize13 marginBottom10">
 												<option value="0">--בחר משתמש--</option>
-												<?php 
+												<?php
 												foreach($active_users as $item){ ?>
 													<option value="<?=@$item->id?>">
 														<strong><?=@$item->firstname?> <?=@$item->lastname?></strong>
 													</option>
-													<?php } ?>						
+													<?php } ?>
 											</select>
-										</div>
-									</div>
-
-									<div class="row" dir="rtl">
-										<div class="col-12 d-flex justify-content-center">
-											<div class="row mt-2 width85Percents">
-												<div id="div_reminder_date" class="col-4 p-2 text-end">
-													<div class="fw-bold d-flex align-items-center justify-content-end gap-1">
-														<span class="fontSize13">תזכורת מעקב</span>
-														<img src="images/bell-solid.svg" width="15" height="15" />
-													</div>
-													<div class="marginTop5 fontSize12 text-end">
-														<input type="date" class="text-center" id="reminder_date" />
-													</div>
+											<div class="row align-items-center justify-content-start marginTop5" dir="rtl">
+												<div class="col-auto fontSize13 text-end">
+													<div><input type="radio" id="not_reminders" name="set_reminder_date_radio" value="0" onclick="setReminderDate(this.value)"> בלי תזכורת</div>
+													<div><input type="radio" id="reminder_after_three_days" name="set_reminder_date_radio" value="2" onclick="setReminderDate(this.value)"> בעוד 3 ימים</div>
+													<div><input type="radio" id="reminder_after_two_weeks" name="set_reminder_date_radio" value="4" onclick="setReminderDate(this.value)"> בעוד שבועיים</div>
+													<div><input type="radio" id="reminder_after_one_month" name="set_reminder_date_radio" value="5" onclick="setReminderDate(this.value)"> בעוד חודש</div>
 												</div>
-
-												<div id="div_radios" class="col-8 p-2 text-end">
-													<div class="row g-0 fontSize13">
-														<div class="col-6">
-															<div>
-																<input type="radio" id="reminder_tomorrow" name="set_reminder_date_radio" value="1"
-																	   onclick="setReminderDate(this.value)"> מחר
-															</div>
-															<div>
-																<input type="radio" id="reminder_after_three_days" name="set_reminder_date_radio" value="2"
-																	   onclick="setReminderDate(this.value)"> בעוד 3 ימים
-															</div>
-															<div>
-																<input type="radio" id="reminder_after_one_week" name="set_reminder_date_radio" value="3"
-																	   onclick="setReminderDate(this.value)"> בעוד שבוע
-															</div>
-														</div>
-
-														<div class="col-6">
-															<div>
-																<input type="radio" id="reminder_after_two_weeks" name="set_reminder_date_radio" value="4"
-																	   onclick="setReminderDate(this.value)"> בעוד שבועיים
-															</div>
-															<div>
-																<input type="radio" id="reminder_after_one_month" name="set_reminder_date_radio" value="5"
-																	   onclick="setReminderDate(this.value)"> בעוד חודש
-															</div>
-															<div>
-																<input type="radio" id="reminder_after_selected_date" name="set_reminder_date_radio" value="6"
-																	   onclick="setReminderDate(this.value)"> בתאריך...
-															</div>
-															<div>
-																<input type="radio" id="not_reminders" name="set_reminder_date_radio" value="0"
-																	   onclick="setReminderDate(this.value)"> אין צורך
-															</div>
-														</div>
+												<div class="col-auto" id="date_col_wrapper" style="display:none;">
+													<div id="div_reminder_date">
+														<input type="date" class="text-center" id="reminder_date" style="font-size:11px;" />
 													</div>
 												</div>
 											</div>
 										</div>
 									</div>
-									
-									<div id="task_active_remarks_tracking"></div>   
-								    
-								    <div class="row marginTop5">	
-										<div class="col-12 fontSize13">
-											<div class="row">
-												<div class="col-6 alignRight">				
+
+									<div id="task_active_remarks_tracking"></div>
+
+									<div class="row marginTop5" dir="rtl">
+										<div class="col-2" style="padding-top:26px; text-align:right;">
+											<div class="fw-bold fontSize13 marginBottom5">עדכון</div>
+											<img src="images/edit-button.svg" width="20" height="20" />
+										</div>
+										<div class="col-10 ps-1 pe-2">
+											<div class="d-flex justify-content-between marginBottom5">
+												<div>
+													<a class="text-decoration-none cursor-pointer" onclick="$('#new_remark').html('')">Clear</a>
+												</div>
+												<div>
 													<a id="new_remark_tracking_en" class="text-decoration-none cursor-pointer" onclick="$('#new_remark').css({'direction':'ltr','padding-left':'5px','padding-right':'0','text-align':'left'});$(this).css('font-weight','bold');$('#new_remark_tracking_he').css('font-weight','normal');">EN</a>&nbsp;|
 													<a id="new_remark_tracking_he" class="text-decoration-none cursor-pointer" onclick="$('#new_remark').css({'direction':'rtl','padding-right':'5px','padding-left':'0','text-align':'right'});$(this).css('font-weight','bold');$('#new_remark_tracking_en').css('font-weight','normal');">ע</a>
 												</div>
-
-												<div class="col-6 alignLeft">
-													<a class="text-decoration-none" onclick="$('#new_remark').html('')">Clear</a>
-												</div>
 											</div>
-
-											<div class="marginTop5 paddingRight10 alignRight height-auto bgColorWhite cursor-pointer margin-0-x-auto border-black overflow-y-scroll dir-rtl">		
+											<div class="bgColorWhite cursor-pointer border-black overflow-y-scroll dir-rtl w-100" style="padding:4px 8px; min-height:60px;">
 												<div name="new_remark" id="new_remark" contenteditable="true" class="editable red cursor-pointer" data-placeholder="ניתן להוסיף כאן הערה"></div>
 											</div>
-	                                    </div>										
-				                    </div>                               	
+										</div>
+									</div>                               	
 		   
-									<div class="marginTop15 alignCenter">
-										<input type="button" class="btn btn-primary font-weight-bold marginLeft10" value="שמור מעקב" onclick="fillLogTaskTracking($('#hidden_meeting_id').val(),'','for_closing')" />
-									    <input type="button" class="btn bg-dark text-white font-weight-bold" value="בטל מעקב" onclick="hidePopup('modalTaskTracking','',$('#hidden_meeting_id').val(),'fromProjects')" />  
+									<div class="marginTop15 d-flex justify-content-center gap-3">
+										<button type="button" class="btn font-weight-bold px-3" style="background-color:#1a5276; color:white;"
+												onclick="fillLogTaskTracking($('#hidden_meeting_id').val(),'','for_closing',1)">
+											<i class="fas fa-bullseye" style="color:#e74c3c;"></i> שמור מעקב
+										</button>
+										<button type="button" class="btn font-weight-bold px-3 bg-dark text-white"
+												onclick="fillLogTaskTracking($('#hidden_meeting_id').val(),'','for_closing',0)">
+											<i class="fas fa-bullseye" style="color:#95a5a6;"></i> בטל מעקב
+										</button>
+										<input type="button" class="btn bg-dark text-white font-weight-bold px-3" value="בטל"
+											   onclick="hidePopup('modalTaskTracking','',$('#hidden_meeting_id').val(),'fromProjects')" />
 									</div>
 							   </form>
                            </div>
@@ -2026,13 +2091,14 @@ foreach($all_what_news as $wn){
            </div>
 		</div>
 
-        <div class="modal fade dir-rtl" id="modalSendEmail" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidbackground-color:black;den="true">
+        <div class="modal fade dir-rtl" id="modalSendEmail" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog">
 				<div class="modal-content">
 				    <div class="modal-header">
-					   <h5 class="modal-title fontSize26"></h5>
+					   <button type="button" class="btn-close btn-close-white-small" data-bs-dismiss="modal" aria-label="Close"></button>
+					   <div class="modal-title"></div>
 					</div>
-					<div class="modal-body">	
+					<div class="modal-body">
 					    <div id="modalContent">
 					        <form class="marginTop15 alignCenter">
 						        <div class="alignCenter fontSize20">לשלוח ל</div>
@@ -2092,19 +2158,28 @@ $(document).ready(function(){
     let reminder_time;
 	let is_to_do_today;
 
+	$('#modalHistoryTasks').on('hidden.bs.modal', function(){
+		localStorage.removeItem('is_modal_task_actions_opened');
+		localStorage.setItem('meeting_id', $('#hidden_meeting_id').val());
+		localStorage.setItem('highlight_after_reload', 'true');
+		window.location.reload();
+	});
+
 	$('#modalTaskFollowupActions').on('hidden.bs.modal', function (){
 		localStorage.removeItem('is_modal_task_actions_opened');
 		const mid = localStorage.getItem('meeting_id');
 		if(mid){
-			$('tr.task-row-highlight').removeClass('task-row-highlight');
-			const $row = $('.task_name[data-meetingid="'+mid+'"]').closest('tr');
-			if($row.length){
-				$row.addClass('task-row-highlight');
-				setTimeout(function(){ $row[0].scrollIntoView({block:'center'}); }, 300);
+			const $rowL = $('#left_new_content .task_name[data-meetingid="'+mid+'"]').closest('tr');
+			const $rowR = $('#right_content .task_name[data-meetingid="'+mid+'"]').closest('tr');
+			const $found = $rowL.length ? $rowL : $rowR;
+			if($found.length){
+				$('tr.task-row-highlight').removeClass('task-row-highlight');
+				$found.addClass('task-row-highlight');
+				$found[0].scrollIntoView({behavior:'smooth', block:'nearest'});
 			}
 		}
 	});
-	
+
 	if(localStorage.getItem("is_modal_tasks_hystory_opened") === "true"){
 		localStorage.removeItem('is_modal_tasks_hystory_opened');
 		meeting_id = localStorage.getItem("meeting_id");
@@ -2130,6 +2205,7 @@ $(document).ready(function(){
 	   $('#modalContent').append("<input type='hidden' id='hidden_meeting_id' value='"+meeting_id+"'><input type='hidden' id='hidden_project_id' value='"+project_id+"'>");
 	   $('#modalTaskFollowupActions').modal('hide');
 	   $('#modalHistoryTasks').modal('show');
+	   $('#modalHistoryTasks .modal-title').html("הסטורי-ה");
 	};
 
 	if(localStorage.getItem('highlight_after_reload') === 'true'){
@@ -2139,7 +2215,10 @@ $(document).ready(function(){
 			const $rowReload = $('.task_name[data-meetingid="'+mid+'"]').closest('tr');
 			if($rowReload.length){
 				$rowReload.addClass('task-row-highlight');
-				setTimeout(function(){ $rowReload[0].scrollIntoView({block:'center'}); }, 300);
+				setTimeout(function(){
+					const $v = $('#left_new_content .task_name[data-meetingid="'+mid+'"]').closest('tr');
+					if($v.length) $v[0].scrollIntoView({behavior:'smooth', block:'nearest'});
+				}, 600);
 			}
 		}
 	}
@@ -2147,16 +2226,17 @@ $(document).ready(function(){
 	$('[id="continuous_btn"]').on('click', function(){
 		$('#modalTaskFollowupActions').modal('hide');
 	    $('#modalContinuousTask').modal('show');
+		$('#modalContinuousTask .modal-title').html('המשך');
 	});
 	
-	$('[id="history_btn"]').on('click', function(){	
+	$('[id="history_btn"]').on('click', function(){
 		meeting_id = $('#hidden_meeting_id').val();
-		project_id = $('#hidden_project_id').val();		
-		
+		project_id = $('#hidden_project_id').val();
+
 		let form_data = new FormData();
         form_data.append('id_meeting',meeting_id);
 		form_data.append('id_project',project_id);
-	   
+
 	    $.ajax({
 			type: 'POST',
 			url: 'fill_tasks_followup_history.php',
@@ -2165,12 +2245,13 @@ $(document).ready(function(){
 			processData: false,
 			contentType: false,
 			success: function(data){
-				$('#modalHistoryTasksContent').html(data);	
+				$('#modalHistoryTasksContent').html(data);
 			},
 	    });
-	   
+
 	   $('#modalTaskFollowupActions').modal('hide');
 	   $('#modalHistoryTasks').modal('show');
+	   $('#modalHistoryTasks .modal-title').html("הסטורי-ה");
 	});
 	
 	$('[id="update_btn"]').on('click', function(){
@@ -2185,8 +2266,8 @@ $(document).ready(function(){
 		lang = $('#hidden_lang').val();
 			
 		$('#modalUpdateTask').attr('dir','rtl');
-		$('.modal-title').html("<img src='images/status-icon.png' alt='status icon' width='30' height='30' />&nbsp;&nbsp;עדכון&nbsp;&nbsp;<img src='images/status-icon.png' alt='status icon' width='30' height='30' />");
-		$('.subtitle').html(chapter+"<br/>"+subject+"&nbsp;|&nbsp;"+area).css('line-height','1.1em');	
+		$('#modalUpdateTask .modal-title').html("<img src='images/status-icon.png' alt='status icon' width='20' height='20'>&nbsp;&nbsp;עדכון&nbsp;&nbsp;<img src='images/status-icon.png' alt='status icon' width='20' height='20'>");
+		$('.subtitle').html(chapter+"<br/>"+subject+"&nbsp;|&nbsp;"+area).css('line-height','1.1em');
         $('#div_remark_changes_status_update,#div_update_btns').css('direstion','rtl');
 	    $('#progress_status_for_update_label').html('סטטוס חדש:').css({'margin-bottom':'5px','margin-left':'5px'});
 	    $('#div_target_date_title').html('תאריך יעד');			   
@@ -2474,33 +2555,30 @@ $(document).ready(function(){
 		
 		if(reminder_date != '0000-00-00') {
 		  $('#div_reminder_date').show();
+		  $('#date_col_wrapper').show();
 	      $('#reminder_date').val(reminder_date);
 	    }
-	    else 
+	    else {
 		  $('#div_reminder_date').hide();
-	 
-	    $('#modalTaskTracking .modal-title').html("<i class='fas fa-bullseye' style='font-size:22px;color:#888;'></i>&nbsp;&nbsp;מעקב אקטיבי&nbsp;&nbsp;<i class='fas fa-bullseye' style='font-size:22px;color:#888;'></i>");
+		  $('#date_col_wrapper').hide();
+		}
+
+	    $('#modalTaskTracking .modal-title').html("<i class='fas fa-bullseye' style='font-size:22px;color:#e74c3c;'></i>&nbsp;&nbsp;מעקב אקטיבי&nbsp;&nbsp;<i class='fas fa-bullseye' style='font-size:22px;color:#e74c3c;'></i>");
 		$('.subtitle').html(chapter+"<br/>"+subject+"&nbsp;|&nbsp;"+area).css('line-height','1.1em');
-	    $('#div_reminder_date').css('display','block');
-	 
+
 	    if($('#hidden_reminder_time').val() == 0){
-		  $('#div_reminder_date').css('display','none');
+		  $('#div_reminder_date').hide();
+		  $('#date_col_wrapper').hide();
 		  $('#not_reminders').prop('checked',true);
 	    }
 	   
-	    if($('#hidden_reminder_time').val() == 1)
-		  $('#reminder_tomorrow').prop('checked',true);
-	    if($('#hidden_reminder_time').val() == 2)
-		  $('#reminder_after_three_days').prop('checked',true);
-	    if($('#hidden_reminder_time').val() == 3)
-		  $('#reminder_after_one_week').prop('checked',true);
+		    if($('#hidden_reminder_time').val() == 2)
+	      $('#reminder_after_three_days').prop('checked',true);
 	    if($('#hidden_reminder_time').val() == 4)
-		  $('#reminder_after_two_weeks').prop('checked',true);
+	      $('#reminder_after_two_weeks').prop('checked',true);
 	    if($('#hidden_reminder_time').val() == 5)
-		  $('#reminder_after_one_month').prop('checked',true);
-	    if($('#hidden_reminder_time').val() == 6) 
-		  $('#reminder_after_selected_date').prop('checked',true);   
-			
+	      $('#reminder_after_one_month').prop('checked',true);
+
         $('#users option').each(function(){			
 		    if($('#hidden_track_responsible_id').val() == 0){
 				if($(this).val() == $('#hidden_user_id').val()) 
@@ -2564,7 +2642,7 @@ $(document).ready(function(){
 			contentType: false,
 			success: function(data){
             	let task_details = data.split('|~|');
-				let content = fillContentTaskDetails(meeting_id,'',task_details,false);
+				let content = fillContentTaskDetails(meeting_id,'',task_details,false,true);
 				$('#contentToScreenshot').html(content);
 				
 				const element = document.getElementById('contentToScreenshot');
@@ -2682,10 +2760,11 @@ $(document).ready(function(){
 		remark = $(this).data('remark');
 		track_responsible_id = $(this).data('trackresponsibleid');
 		track_type = $(this).data('tracktype');
+		localStorage.setItem('track_type', track_type);
 		reminder_date = $(this).data('reminderdate');
 		reminder_time = $(this).data('remindertime');
 		is_to_do_today = $(this).data('istodotoday');
-		  
+
 		let form_data = new FormData();
 		form_data.append('id_meeting',meeting_id);
 		form_data.append('wn_meeting_ids',$('#wn_meeting_ids').val());
@@ -2715,14 +2794,15 @@ $(document).ready(function(){
 			processData: false,
 			contentType: false,
 			success: function(data){
+				$('.btn-set-to-read').remove();
 				if(data == 1) {
-					let button = 
+					let button =
 						"<button type='button' class='btn-set-to-read vertical-align-top btn btn-primary font-weight-bold marginLeft10 fontSize16' onclick='setToReadTask()'>" +
 							"<i class='fa-solid fa-check colorGreen'></i>&nbsp;תודה על העדכון" +
 						"</button>";
-	   
+
 					$('#link_next_task').after(button);
-				}			
+				}
 			},
 		});	
 		
@@ -2732,6 +2812,7 @@ $(document).ready(function(){
 		const $highlightRow = $('.task_name[data-meetingid="'+meeting_id+'"]').closest('tr');
 		if($highlightRow.length){ $highlightRow.addClass('task-row-highlight'); }
 		$('#modalTaskFollowupActions').modal('show');
+		setProjectModalTitle(project_id, '#modalTaskFollowupActions', false);
 	});
 	
 	$(document).on('click','#save_update_task_btn', function (){
@@ -2769,8 +2850,12 @@ $(document).ready(function(){
 							index = 0;
 				}
 				
-				let next_meeting_id = meeting_ids_array[index];				
+				let next_meeting_id = meeting_ids_array[index];
 				localStorage.setItem('next_meeting_id',next_meeting_id);
+				if($('#hidden_is_to_do_today').val() == 1)
+					localStorage.setItem('is_to_do_today','1');
+				else
+					localStorage.removeItem('is_to_do_today');
 				setData(current_meeting_id,'','update_task',1,0,'for_closing');
 			}
        });
@@ -2811,8 +2896,12 @@ $(document).ready(function(){
 							index = 0;
 				}
 				
-				let next_meeting_id = meeting_ids_array[index];				
+				let next_meeting_id = meeting_ids_array[index];
 				localStorage.setItem('next_meeting_id',next_meeting_id);
+				if($('#hidden_is_to_do_today').val() == 1)
+					localStorage.setItem('is_to_do_today','1');
+				else
+					localStorage.removeItem('is_to_do_today');
 				setData(current_meeting_id,'','update_task',0,0,'for_closing')
 			}
        });
@@ -2840,10 +2929,16 @@ function setListParam(list){
 $(window).on('load', function(){
     if(localStorage.getItem("is_modal_task_actions_opened") === "true"){
 		localStorage.removeItem('is_modal_task_actions_opened');
-		let project_id = localStorage.getItem("project_id");
-		let meeting_id = localStorage.getItem("meeting_id");
-		let iteration = localStorage.getItem("iteration");
-  
+		let project_id = localStorage.getItem("project_id") || '';
+		let meeting_id = localStorage.getItem("meeting_id") || '';
+		let iteration = localStorage.getItem("iteration") || '';
+		let subject_ls = localStorage.getItem("subject") || '';
+		let area_ls = localStorage.getItem("area") || '';
+		let recipient_ls = localStorage.getItem("recipient") || '';
+		let responsible_id_ls = localStorage.getItem("responsible_id") || '';
+		let is_priority_ls = localStorage.getItem("is_priority") || '';
+		let remark_ls = localStorage.getItem("remark") || '';
+
 		let form_data = new FormData();
 		form_data.append('id_meeting', meeting_id);
 
@@ -2859,19 +2954,20 @@ $(window).on('load', function(){
 				let content = fillContentTaskDetails(meeting_id,'',task_details,true);
 				$('#div_content_task_details').html(content);
 				$('#modalTaskFollowupActions').modal('show');
+				setProjectModalTitle(project_id, '#modalTaskFollowupActions', false);
 			},
 		});
 
-		setBellBcgColor(track_type);
+		setBellBcgColor(localStorage.getItem('track_type'));
 		setEmergencyTaskCSS(is_priority);
-		$('#modalContent').append("<input type='hidden' id='hidden_meeting_id' value='${meeting_id}'><input type='hidden' id='hidden_iteration' value='${iteration}'><input type='hidden' id='hidden_project_id' value='${project_id}'><input type='hidden' id='hidden_user_id' value='${user_id}'><input type='hidden' id='hidden_chapter' value='${chapter}'><input type='hidden' id='hidden_name' value='${subject}'><input type='hidden' id='hidden_area' value='${area}'><input type='hidden' id='hidden_recipient' value='${recipient}'><input type='hidden' id='hidden_responsible_id' value='${responsible_id}'><input type='hidden' id='hidden_is_priority' value='${is_priority}'><input type='hidden' id='hidden_remark' value='${remark}'><input type='hidden' id='hidden_track_responsible_id' value='${track_responsible_id}'><input type='hidden' id='hidden_reminder_date' value='${reminder_date}'><input type='hidden' id='hidden_reminder_time' value='${reminder_time}'>");
+		$('#modalContent').append("<input type='hidden' id='hidden_meeting_id' value='"+meeting_id+"'><input type='hidden' id='hidden_iteration' value='"+iteration+"'><input type='hidden' id='hidden_project_id' value='"+project_id+"'><input type='hidden' id='hidden_user_id' value=''><input type='hidden' id='hidden_chapter' value=''><input type='hidden' id='hidden_name' value='"+subject_ls+"'><input type='hidden' id='hidden_area' value='"+area_ls+"'><input type='hidden' id='hidden_recipient' value='"+recipient_ls+"'><input type='hidden' id='hidden_responsible_id' value='"+responsible_id_ls+"'><input type='hidden' id='hidden_is_priority' value='"+is_priority_ls+"'><input type='hidden' id='hidden_remark' value='"+remark_ls+"'><input type='hidden' id='hidden_track_responsible_id' value=''><input type='hidden' id='hidden_reminder_date' value=''><input type='hidden' id='hidden_reminder_time' value=''>");
     }
 });
 
 function setToReadTask(){
 	let form_data = new FormData();
 	form_data.append('id_meeting',$('#hidden_meeting_id').val());
-	
+
 	$.ajax({
 		type: 'POST',
 		url: 'set_to_read_task.php',
@@ -2880,8 +2976,9 @@ function setToReadTask(){
 		processData: false,
 		contentType: false,
 		success: function(data){
-			$('#link_next_task').trigger('click');
-		}, 
+			$('#modalTaskFollowupActions').modal('hide');
+			location.href = 'projects.php';
+		},
 	});
 }
 
@@ -3019,7 +3116,19 @@ function toTasksList(id_project){
 }
 
 tr.task-row-highlight td {
-    background-color: #d0e8ff !important;
-    transition: background-color 0.3s;
+    position: relative;
+}
+tr.task-row-highlight td::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: #99ccff;
+    pointer-events: none;
+    z-index: 0;
+}
+tr.task-row-highlight td > * {
+    position: relative;
+    z-index: 1;
+    background-color: transparent !important;
 }
 </style>
