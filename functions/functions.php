@@ -436,11 +436,23 @@ function rebuild_supplier_doh_lists($mysqli, $id_project) {
             if($pos === false) continue;
             $where = substr($cr->sql_str, $pos);
             $where = preg_replace("/id_responsible IN\([^)]*\)/", "id_responsible IN($list)", $where);
-            $and_or = strtoupper((string)@$cr->and_or_responsibles);
-            if($include_po || $and_or === 'OR')
+            if($include_po) {
                 $where = preg_replace("/id_pass_on IN\([^)]*\)/", "id_pass_on IN($list)", $where);
-            else
-                $where = preg_replace("/(m\.)?id_pass_on IN\([^)]*\)/", "1=1", $where);
+            } else {
+                $and_or = strtoupper((string)@$cr->and_or_responsibles);
+                if($and_or === 'OR') {
+                    // OR mode + is_include_pass_on=0: replace whole (responsible OR pass_on) block
+                    // with just id_responsible IN(list) — otherwise OR 1=1 would show all meetings
+                    $where = preg_replace(
+                        '/\(\s*(m\.)?id_responsible IN\([^)]*\)\s+OR\s+(m\.)?id_pass_on IN\([^)]*\)\s*\)/',
+                        '${1}id_responsible IN(' . $list . ')',
+                        $where
+                    );
+                } else {
+                    // AND mode: neutralize pass_on condition
+                    $where = preg_replace("/(m\.)?id_pass_on IN\([^)]*\)/", "1=1", $where);
+                }
+            }
             $new_sql = substr($cr->sql_str, 0, $pos) . $where;
             $u2 = $mysqli->prepare("UPDATE dne_custom_reports SET sql_str = ? WHERE id = ?");
             $u2->bind_param('si', $new_sql, $cr->id);
