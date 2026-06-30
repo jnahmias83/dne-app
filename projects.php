@@ -2001,7 +2001,8 @@ foreach($all_what_news as $wn){
             </div>
 		</div>
 
-        <div class="modal fade dir-rtl" id="modalTaskTracking" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <input type="hidden" id="default_bgcolor_tracking" value="<?=@$bg_color_inputs->default_bgcolor?>">
+<div class="modal fade dir-rtl" id="modalTaskTracking" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
 				<div class="modal-content">
 				    <div class="modal-header">
@@ -2589,6 +2590,7 @@ $(document).ready(function(){
 				$(this).prop('selected', true);  
 	    });
 	   
+	    $('#modalTaskTracking').find('[id="users"]').css('background-color', $('#default_bgcolor_tracking').val());
 	    let form_data = new FormData();  
 		form_data.append('id_meeting',meeting_id);
 		form_data.append('isTracking',1);
@@ -2610,6 +2612,7 @@ $(document).ready(function(){
     });
 	
 	$('[id="users"]').on('change', function(){
+		$(this).css('background-color', $(this).val() == '0' ? $('#default_bgcolor_tracking').val() : '');
 		setData($('#hidden_meeting_id').val(),0,'track_responsible_id',0,0,'popup');
 	});
 	
