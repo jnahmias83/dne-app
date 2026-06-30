@@ -28,6 +28,21 @@ $query->execute();
 $query->store_result();
 $custom_reports = fetch($query);
 
+$is_in_supplier_doh = false;
+$is_supplier_doh_include_pass_on = false;
+if(!empty($_POST['id_custom_report']) && (int)$_POST['id_custom_report'] > 0) {
+	$id_cr_check = (int)$_POST['id_custom_report'];
+	$q_cr = $mysqli->prepare("SELECT id_supplier, is_include_pass_on_tasks FROM dne_custom_reports WHERE id = ?");
+	$q_cr->bind_param('i', $id_cr_check);
+	$q_cr->execute();
+	$q_cr->store_result();
+	$cr_data = fetch_unique($q_cr);
+	if((int)@$cr_data->id_supplier > 0) {
+		$is_in_supplier_doh = true;
+		$is_supplier_doh_include_pass_on = (int)@$cr_data->is_include_pass_on_tasks == 1;
+	}
+}
+
 if($_POST['field'] == "subject"){
 	$query = "UPDATE dne_meetings SET subject = ? WHERE id = ?";
 	$query = $mysqli->prepare($query);
@@ -126,18 +141,41 @@ else if($_POST['field'] == "id_task"){
 }
 
 else if($_POST['field'] == "id_responsible"){
-	$query = "UPDATE dne_meetings SET id_responsible = ?
-	          WHERE id".@$where_ids;
-	$query = $mysqli->prepare($query);
-	$query->bind_param('i',$_POST['id_responsible']);
-	$query->execute();
+	$id_responsible_val = (int)$_POST['id_responsible'];
+	$do_update_resp = true;
+	if($is_in_supplier_doh && $id_responsible_val > 0) {
+		$q = $mysqli->prepare("SELECT id_projects_suppliers FROM dne_responsibles WHERE id = ?");
+		$q->bind_param('i', $id_responsible_val);
+		$q->execute();
+		$q->store_result();
+		$r = fetch_unique($q);
+		if(!(int)@$r->id_projects_suppliers) $do_update_resp = false;
+	}
+	if($do_update_resp) {
+		$query = "UPDATE dne_meetings SET id_responsible = ? WHERE id".@$where_ids;
+		$query = $mysqli->prepare($query);
+		$query->bind_param('i', $id_responsible_val);
+		$query->execute();
+	}
 }
 
 else if($_POST['field'] == "id_pass_on"){
-	$query = "UPDATE dne_meetings SET id_pass_on = ? WHERE id".@$where_ids;
-	$query = $mysqli->prepare($query);
-	$query->bind_param('i',$_POST['id_pass_on']);
-	$query->execute();
+	$id_pass_on_val = (int)$_POST['id_pass_on'];
+	$do_update_po = true;
+	if($is_in_supplier_doh && $is_supplier_doh_include_pass_on && $id_pass_on_val > 0) {
+		$q = $mysqli->prepare("SELECT id_projects_suppliers FROM dne_responsibles WHERE id = ?");
+		$q->bind_param('i', $id_pass_on_val);
+		$q->execute();
+		$q->store_result();
+		$r = fetch_unique($q);
+		if(!(int)@$r->id_projects_suppliers) $do_update_po = false;
+	}
+	if($do_update_po) {
+		$query = "UPDATE dne_meetings SET id_pass_on = ? WHERE id".@$where_ids;
+		$query = $mysqli->prepare($query);
+		$query->bind_param('i', $id_pass_on_val);
+		$query->execute();
+	}
 }
 
 else if($_POST['field'] == "task_creation_date"){
@@ -712,5 +750,9 @@ else {
 		$query->bind_param('issi',$_POST['meeting_id'],$screen_type,$list_name,$_SESSION['id_user']);	
 		$query->execute();	
 	}
+}
+
+if($is_in_supplier_doh && in_array($_POST['field'], ['id_responsible', 'id_pass_on'])) {
+	rebuild_supplier_doh_lists($mysqli, $_POST['id_project']);
 }
 ?>

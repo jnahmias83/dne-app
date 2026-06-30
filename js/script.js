@@ -155,10 +155,12 @@ function setData(meeting_id,iteration,field,isRemark,forShare,screen_type){
 	else if(field == 'id_responsible'){
 		form_data.append('field',field);
 		form_data.append('id_responsible',$(id_responsible_elem).val());
+		form_data.append('id_custom_report',$('#id_custom_report').val() || 0);
 	}
 	else if(field == 'id_pass_on') {
 		form_data.append('field',field);
 		form_data.append('id_pass_on',$(id_pass_on_elem).val());
+		form_data.append('id_custom_report',$('#id_custom_report').val() || 0);
 	}
 	else if(field == 'task_creation_date'){
 		form_data.append('field',field);

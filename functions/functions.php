@@ -403,3 +403,47 @@ function containsEnglishCharacters($inputString) {
 function isNumeric($input) {
     return ctype_digit($input);
 }
+
+function rebuild_supplier_doh_lists($mysqli, $id_project) {
+    $q = $mysqli->prepare("SELECT * FROM dne_custom_reports WHERE id_project = ? AND id_supplier > 0");
+    $q->bind_param('i', $id_project);
+    $q->execute();
+    $q->store_result();
+    $supplier_crs = fetch($q);
+    foreach($supplier_crs as $cr) {
+        if((int)@$cr->id_supplier == 0) continue;
+        $qr = $mysqli->prepare("SELECT id FROM dne_responsibles WHERE id_project = ? AND id_projects_suppliers = ?");
+        $id_sup = (int)$cr->id_supplier;
+        $qr->bind_param('ii', $id_project, $id_sup);
+        $qr->execute();
+        $qr->store_result();
+        $resps = fetch($qr);
+        $ids = [];
+        foreach($resps as $r) $ids[] = $r->id;
+        if(empty($ids)) continue;
+        $list = implode(',', $ids);
+        $include_po = (int)@$cr->is_include_pass_on_tasks;
+        if($include_po) {
+            $u = $mysqli->prepare("UPDATE dne_custom_reports SET responsibles_list = ?, pass_ons_list = ? WHERE id = ?");
+            $u->bind_param('ssi', $list, $list, $cr->id);
+        } else {
+            $u = $mysqli->prepare("UPDATE dne_custom_reports SET responsibles_list = ? WHERE id = ?");
+            $u->bind_param('si', $list, $cr->id);
+        }
+        $u->execute();
+        if(!empty($cr->sql_str)) {
+            $pos = strpos($cr->sql_str, "WHERE");
+            if($pos === false) continue;
+            $where = substr($cr->sql_str, $pos);
+            $where = preg_replace("/id_responsible IN\([^)]*\)/", "id_responsible IN($list)", $where);
+            if($include_po)
+                $where = preg_replace("/id_pass_on IN\([^)]*\)/", "id_pass_on IN($list)", $where);
+            else
+                $where = preg_replace("/(m\.)?id_pass_on IN\([^)]*\)/", "1=1", $where);
+            $new_sql = substr($cr->sql_str, 0, $pos) . $where;
+            $u2 = $mysqli->prepare("UPDATE dne_custom_reports SET sql_str = ? WHERE id = ?");
+            $u2->bind_param('si', $new_sql, $cr->id);
+            $u2->execute();
+        }
+    }
+}
