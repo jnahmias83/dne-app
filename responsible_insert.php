@@ -43,6 +43,7 @@ else {
 			
 			foreach ($custom_reports as $item){
 			   if($item->is_all_responsibles_checked){
+				  if((int)@$item->id_supplier > 0) continue;
 					$position_where = strpos($item->sql_str,"WHERE");
 					$where_length = strlen($item->sql_str)-$position_where;
 					$where_part_sql = substr($item->sql_str,$position_where,$where_length);
@@ -97,7 +98,8 @@ else {
 									   $new_sql_str,$item->id);	
 					$query->execute();
 			   }
-			}		
+			}
+			rebuild_supplier_doh_lists($mysqli, $_POST['id_project']);
             echo "inserted";
 		}
 		else echo 'exists';

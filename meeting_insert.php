@@ -202,9 +202,41 @@ else {
         
 		echo 'inserted_'.$inserted_meeting;		
 	}
-	else if($_POST['id'] > 0){	
-		$all_ids_to_edit_array = explode(',',$_POST['all_ids_to_edit']);    
-		
+	else if($_POST['id'] > 0){
+		$all_ids_to_edit_array = explode(',',$_POST['all_ids_to_edit']);
+
+		$responsible_is_valid = true;
+		$pass_on_is_valid = true;
+		$id_proj_check = (int)$_POST['id_project'];
+		$q_sup = $mysqli->prepare("SELECT id FROM dne_custom_reports WHERE id_project = ? AND id_supplier > 0 LIMIT 1");
+		$q_sup->bind_param('i', $id_proj_check);
+		$q_sup->execute();
+		$q_sup->store_result();
+		$q_sup_num_rows = $q_sup->num_rows;
+		$q_sup_po = $mysqli->prepare("SELECT id FROM dne_custom_reports WHERE id_project = ? AND id_supplier > 0 AND is_include_pass_on_tasks = 1 LIMIT 1");
+		$q_sup_po->bind_param('i', $id_proj_check);
+		$q_sup_po->execute();
+		$q_sup_po->store_result();
+		$has_supplier_doh_with_pass_on = $q_sup_po->num_rows > 0;
+		if($q_sup_num_rows > 0) {
+			$id_resp_check = (int)$_POST['id_responsible'];
+			if($id_resp_check > 0) {
+				$q = $mysqli->prepare("SELECT id_projects_suppliers FROM dne_responsibles WHERE id = ?");
+				$q->bind_param('i', $id_resp_check);
+				$q->execute(); $q->store_result();
+				$r = fetch_unique($q);
+				if(!(int)@$r->id_projects_suppliers) $responsible_is_valid = false;
+			}
+			$id_po_check = (int)$_POST['id_pass_on'];
+			if($has_supplier_doh_with_pass_on && $id_po_check > 0) {
+				$q = $mysqli->prepare("SELECT id_projects_suppliers FROM dne_responsibles WHERE id = ?");
+				$q->bind_param('i', $id_po_check);
+				$q->execute(); $q->store_result();
+				$r = fetch_unique($q);
+				if(!(int)@$r->id_projects_suppliers) $pass_on_is_valid = false;
+			}
+		}
+
 		if(isset($_FILES['image1']['name'])) {
 			$image1_name = $_FILES['image1']['name'];
 			$imageUploadPath = 'uploads/'.$image1_name;
@@ -320,9 +352,9 @@ else {
 					$area = @$_POST['area'];
 					$description = $_POST['description'];
 					$id_task = @$_POST['id_task'];
-					$id_responsible = @$_POST['id_responsible'];
-					$id_pass_on = @$_POST['id_pass_on'];
-					$destination_date = @$_POST['destination_date'];	    
+					$id_responsible = $responsible_is_valid ? @$_POST['id_responsible'] : @$elem_meeting->id_responsible;
+					$id_pass_on = $pass_on_is_valid ? @$_POST['id_pass_on'] : @$elem_meeting->id_pass_on;
+					$destination_date = @$_POST['destination_date'];
 					$id_progress_status = @$_POST['id_progress_status'];
 				}
 				else if(@$all_ids_to_edit_array[$i] != @$_POST['id']){
@@ -337,11 +369,11 @@ else {
 					   $id_task = @$_POST['id_task'];
 
                     $id_responsible = @$elem_meeting->id_responsible;
-				    if(@$id_responsible != @$_POST['id_responsible'])
+				    if(@$id_responsible != @$_POST['id_responsible'] && $responsible_is_valid)
 					   $id_responsible = @$_POST['id_responsible'];
 
                     $id_pass_on = @$elem_meeting->id_pass_on;
-				    if(@$id_pass_on != @$_POST['id_pass_on'])
+				    if(@$id_pass_on != @$_POST['id_pass_on'] && $pass_on_is_valid)
 					   $id_pass_on = @$_POST['id_pass_on'];
 				   
 					$destination_date = @$elem_meeting->destination_date;
@@ -446,7 +478,9 @@ else {
 		    $query->bind_param('i',$_POST['id']);   
 		    $query->execute();
 		    $query->store_result();
-		    $meeting = fetch_unique($query);  
+		    $meeting = fetch_unique($query);
+			$id_responsible_sv = $responsible_is_valid ? (int)$_POST['id_responsible'] : (int)@$meeting->id_responsible;
+			$id_pass_on_sv = $pass_on_is_valid ? (int)$_POST['id_pass_on'] : (int)@$meeting->id_pass_on;
 
             $track_type = 0;
 		    $reminder_date = '0000-00-00';
@@ -474,8 +508,8 @@ else {
 							   $_subject,
 							   $_area,
 							   $_descr,
-							   $_POST['id_task'],$_POST['id_responsible'],
-							   $_POST['id_pass_on'],$task_creation_date,
+							   $_POST['id_task'],$id_responsible_sv,
+							   $id_pass_on_sv,$task_creation_date,
 							   $_POST['destination_date'],
 							   $_POST['id_progress_status'],
 							   $is_appears,$is_change_row_style,
@@ -532,8 +566,11 @@ else {
 				$query->execute();
 			}
 		}
-		
-		echo 'updated';	
+
+		if($q_sup_num_rows > 0) {
+			rebuild_supplier_doh_lists($mysqli, $_POST['id_project']);
+		}
+		echo 'updated';
 	}
 	
 	$query = "SELECT * FROM dne_custom_reports WHERE id_project = ?";
