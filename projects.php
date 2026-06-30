@@ -2589,6 +2589,7 @@ $(document).ready(function(){
 				$(this).prop('selected', true);  
 	    });
 	   
+	    $('#users').css('background-color', $('#users').val() == '0' ? '<?=@$bg_color_inputs->default_bgcolor?>' : '');
 	    let form_data = new FormData();  
 		form_data.append('id_meeting',meeting_id);
 		form_data.append('isTracking',1);
@@ -2610,6 +2611,7 @@ $(document).ready(function(){
     });
 	
 	$('[id="users"]').on('change', function(){
+		$(this).css('background-color', $(this).val() == '0' ? '<?=@$bg_color_inputs->default_bgcolor?>' : '');
 		setData($('#hidden_meeting_id').val(),0,'track_responsible_id',0,0,'popup');
 	});
 	

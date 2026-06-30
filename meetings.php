@@ -4037,7 +4037,7 @@ $(document).ready(function(){
 	                $(this).prop('selected', true);
 	        }
 	    });
-	    $('#users').css('background-color', savedResp === 0 ? '#fffacd' : '');
+	    $('#users').css('background-color', savedResp === 0 ? '<?=@$bg_color_inputs->default_bgcolor?>' : '');
 
 	    let form_data = new FormData();
 		form_data.append('id_meeting',meeting_id);
@@ -4060,7 +4060,7 @@ $(document).ready(function(){
     });
 	
 	$('[id="users"]').on('change', function() {
-		$(this).css('background-color', '');
+		$(this).css('background-color', $(this).val() == '0' ? '<?=@$bg_color_inputs->default_bgcolor?>' : '');
 		setData($('#hidden_meeting_id').val(),$('#hidden_iteration').val(),'track_responsible_id',0,0,'popup');
 	});
 	
