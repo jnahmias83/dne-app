@@ -367,8 +367,9 @@ foreach($chapters as $item) {
 	if(strpos($sql,'m.id_chapter') !== true) 
 	   $sql.= ' AND m.id_chapter ='.$chapter_id;	
    
-	$query = $mysqli->prepare($sql.' ORDER BY t.id_display,m.subject,m.id_area,m.destination_date DESC');
-	$query->execute(); 
+	$_rcr_order = ($lang == 'HE') ? ' ORDER BY m.subject,m.id_area,t.name_he' : ' ORDER BY m.subject,m.id_area,t.name';
+	$query = $mysqli->prepare($sql.$_rcr_order);
+	$query->execute();
 	$query->store_result();
 	$meetings_num_rows = $query->num_rows;
 	$meetings = fetch($query);
@@ -760,8 +761,8 @@ foreach($chapters as $item) {
 			$counter_with_image++;
 	}							
 	
-	$query = $mysqli->prepare($sql." ORDER BY t.id_display,m.subject,m.id_area,m.destination_date DESC");
-	$query->execute(); 
+	$query = $mysqli->prepare($sql.$_rcr_order);
+	$query->execute();
 	$query->store_result();
 	$meetings = fetch($query);
 	

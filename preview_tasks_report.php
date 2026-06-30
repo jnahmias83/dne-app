@@ -472,7 +472,7 @@ include 'menu_tasks.php';
 												$counter_with_image++;
 										}
 										
-										$query = $mysqli->prepare($sql.' ORDER BY t.id_display,m.subject,m.id_area,m.destination_date DESC');
+										$query = $mysqli->prepare($sql.' ORDER BY m.subject,m.id_area,t.name_he');
 										$query->execute();
 										$query->store_result();
 										$meetings = fetch($query);
@@ -504,7 +504,7 @@ include 'menu_tasks.php';
 																  FROM dne_meetings m 
 																  LEFT JOIN dne_tasks t ON m.id_task = t.id
 																  WHERE m.id_project = ? AND m.id_chapter = ? AND m.is_appears = ? AND m.id_rdv = ?
-																  ORDER BY t.id_display,m.subject,m.id_area,m.destination_date DESC");
+																  ORDER BY m.subject,m.id_area,t.name_he");
 										$query->bind_param("iiii",$project_id,$chapter_id,$is_appears,$id_rdv_report);
 										$query->execute(); 
 										$query->store_result();
@@ -881,7 +881,7 @@ include 'menu_tasks.php';
 													$counter_with_image++;
 											}																
 											
-											$query = $mysqli->prepare($sql." ORDER BY t.id_display,m.subject,m.id_area,m.destination_date DESC");
+											$query = $mysqli->prepare($sql." ORDER BY m.subject,m.id_area,t.name_he");
 											$query->execute();
 											$query->store_result();
 											$meetings = fetch($query);	
@@ -913,7 +913,7 @@ include 'menu_tasks.php';
 																	  FROM dne_meetings m 
 																	  LEFT JOIN dne_tasks t ON m.id_task = t.id
 																	  WHERE m.id_project = ? AND m.id_chapter = ? AND m.is_appears = ? AND m.id_rdv = ?				
-																	  ORDER BY t.id_display,m.subject,m.id_area,m.destination_date DESC");
+																	  ORDER BY m.subject,m.id_area,t.name_he");
 											$query->bind_param("iiii",$project_id,$chapter_id,$is_appears,$id_rdv_report);
 											$query->execute(); 
 											$query->store_result();

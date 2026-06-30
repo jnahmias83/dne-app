@@ -101,7 +101,7 @@ foreach($chapters as $item) {
 	                          FROM dne_meetings m
 							  LEFT JOIN dne_chapters c ON m.id_chapter = c.id
 							  WHERE m.id_project = ? AND m.id_chapter = ? AND m.is_appears = ? AND m.updated_date > ? AND m.id_progress_status <> ?
-							  ORDER BY m.subject,m.area,m.destination_date DESC");
+							  ORDER BY m.subject,m.id_area");
 	$query->bind_param("iiisi",$project_id,$chapter_id,$is_appears,$last_pdf_date,$id_progress_status);
 	$query->execute(); 
 	$query->store_result();
