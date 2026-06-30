@@ -335,7 +335,8 @@ foreach ([$sort_select_1, $sort_select_2, $sort_select_3] as $_col) {
 		case 'status':             $_order_parts[] = (@$lang == 'HE') ? "ps.name_he" : "ps.name"; break;
 	}
 }
-$_order_by = !empty($_order_parts) ? ' ORDER BY '.implode(',',$_order_parts) : ' ORDER BY t.id_display,m.subject,m.id_area,m.destination_date DESC';
+$_default_order = (@$lang == 'HE') ? ' ORDER BY m.subject,m.id_area,t.name_he' : ' ORDER BY m.subject,m.id_area,t.name';
+$_order_by = !empty($_order_parts) ? ' ORDER BY '.implode(',',$_order_parts) : $_default_order;
 
 $align_txt = 'alignLeft';
 $padding_txt = 'paddingLeft10';
