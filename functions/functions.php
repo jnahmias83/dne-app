@@ -436,22 +436,11 @@ function rebuild_supplier_doh_lists($mysqli, $id_project) {
             if($pos === false) continue;
             $where = substr($cr->sql_str, $pos);
             $where = preg_replace("/id_responsible IN\([^)]*\)/", "id_responsible IN($list)", $where);
-            if($include_po)
+            $and_or = strtoupper((string)@$cr->and_or_responsibles);
+            if($include_po || $and_or === 'OR')
                 $where = preg_replace("/id_pass_on IN\([^)]*\)/", "id_pass_on IN($list)", $where);
-            else {
-                $and_or = strtoupper((string)@$cr->and_or_responsibles);
-                if($and_or === 'OR') {
-                    // OR mode: (id_responsible IN(...) OR id_pass_on IN(...)) → just id_responsible IN(list)
-                    $where = preg_replace(
-                        '/\(\s*(m\.)?id_responsible IN\([^)]*\)\s+OR\s+(m\.)?id_pass_on IN\([^)]*\)\s*\)/',
-                        '${1}id_responsible IN(' . $list . ')',
-                        $where
-                    );
-                } else {
-                    // AND mode: replace id_pass_on IN(...) with 1=1
-                    $where = preg_replace("/(m\.)?id_pass_on IN\([^)]*\)/", "1=1", $where);
-                }
-            }
+            else
+                $where = preg_replace("/(m\.)?id_pass_on IN\([^)]*\)/", "1=1", $where);
             $new_sql = substr($cr->sql_str, 0, $pos) . $where;
             $u2 = $mysqli->prepare("UPDATE dne_custom_reports SET sql_str = ? WHERE id = ?");
             $u2->bind_param('si', $new_sql, $cr->id);
