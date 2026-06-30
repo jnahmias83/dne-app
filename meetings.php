@@ -4835,6 +4835,11 @@ $('#to_add_meeting_btn').click (function (e){
 	box-shadow: 3px 3px 8px rgba(180, 180, 180, 0.6);
 }
 
+#modalTaskTracking .btn {
+    padding: .375rem .75rem !important;
+    box-shadow: none;
+}
+
 tr.task-row-highlight td[id^="td_cbx_meetings_to_update_"],
 tr.task-row-highlight td[id^="td_count_"],
 tr.task-row-highlight td[id^="td_description_"],
