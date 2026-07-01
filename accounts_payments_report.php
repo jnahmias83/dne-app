@@ -420,42 +420,39 @@ if($accounts_payments_num_rows > 0){
 		$pending_payment = 0;
 	}
 
+	// E = C_HT / A
+	$percent_paid = 0;
+	$percent_paid_display = '';
+	if ($total_sum_orders > 0) {
+		$percent_paid = ($total_paid_amount_vat_excluded / $total_sum_orders) * 100;
+		$percent_paid_display = (floor($percent_paid) == $percent_paid)
+			?number_format($percent_paid,0,'.',',').'%'
+			:number_format($percent_paid,2,'.',',').'%';
+	}
+
+	// F = 100 - E
+	$percent_to_pay = ($total_sum_orders > 0) ? (100 - $percent_paid) : 0;
+	$percent_to_pay_from_orders_vat_included_display = ($total_sum_orders > 0)
+		? ((floor($percent_to_pay) == $percent_to_pay)
+			?number_format($percent_to_pay,0,'.',',').'%'
+			:number_format($percent_to_pay,2,'.',',').'%')
+		: '';
+
+	// שאר לשלם montant = F/100 × A × (1+TVA)
+	$remaining_to_pay_vat_included = ($total_sum_orders > 0)
+		? ($percent_to_pay / 100) * $total_sum_orders * (1 + (@$vat->vat/100))
+		: 0;
+	$remaining_to_pay_vat_included_display = (floor($remaining_to_pay_vat_included) == $remaining_to_pay_vat_included)
+		?number_format($remaining_to_pay_vat_included,0,'.',',').'&#8362;'
+		:number_format($remaining_to_pay_vat_included,2,'.',',').'&#8362;';
+
+	// % לתשלום = B_HT / A
 	$percent_pending_display = '';
-	if(isset($pending_payment, $total_sum_orders_vat_included) && $total_sum_orders_vat_included != 0){
-		$pct_p = ($pending_payment / $total_sum_orders_vat_included) * 100;
+	if ($total_sum_orders > 0 && isset($pending_payment_vat_excluded)) {
+		$pct_p = ($pending_payment_vat_excluded / $total_sum_orders) * 100;
 		$percent_pending_display = (floor($pct_p) == $pct_p)
 			?number_format($pct_p,0,'.',',').'%'
 			:number_format($pct_p,2,'.',',').'%';
-	}
-
-	if($total_sum_orders > 0){
-		if(isset($total_sum_orders_vat_included, $total_paid_amount_vat_included) && $total_sum_orders_vat_included != 0){
-			$percent = ($total_paid_amount_vat_included / $total_sum_orders_vat_included) * 100;
-			$percent_paid_display = (floor($percent) == $percent)
-				?number_format($percent,0,'.',',').'%'
-				:number_format($percent,2,'.',',').'%';
-		}
-
-		if(isset($pending_payment_vat_excluded, $total_sum_orders) && $total_sum_orders != 0){
-			$percent = ($pending_payment_vat_excluded / $total_sum_orders) * 100;
-			$percent_paid_from_orders_vat_excluded_display = (floor($percent) == $percent)
-				?number_format($percent,0,'.',',').'%'
-				:number_format($percent,2,'.',',').'%';
-		}
-	}
-	
-	$remaining_to_pay_vat_included = $total_sum_orders_vat_included - $total_paid_amount_vat_included;
-	if(isset($remaining_to_pay_vat_included)){
-		$remaining_to_pay_vat_included_display = (floor($remaining_to_pay_vat_included) == $remaining_to_pay_vat_included)
-			?number_format($remaining_to_pay_vat_included,0,'.',',').'&#8362;'
-			:number_format($remaining_to_pay_vat_included,2,'.',',').'&#8362;';
-	}
-
-	if(isset($remaining_to_pay_vat_included, $total_sum_orders_vat_included) && $total_sum_orders_vat_included != 0){
-		$percent = ($remaining_to_pay_vat_included/$total_sum_orders_vat_included)*100;
-		$percent_to_pay_from_orders_vat_included_display = (floor($percent) == $percent)
-			?number_format($percent, 0,'.',',').'%'
-			:number_format($percent, 2,'.',',').'%';
 	}
 
 	if(@$lang == 'HE')

@@ -706,25 +706,33 @@ if($asbr == 1){
 			    }
 				
 				$elem_total_sum_orders_vat_included = $elem_total_sum_orders * (1 + (@$vat->vat/100));
-				$elem_percent_pending_display = '';
 
-				if($elem_total_sum_orders_vat_included > 0){
-					$val = ($elem_total_paid_amount_vat_included / $elem_total_sum_orders_vat_included) * 100;
-					$elem_percent_paid_display =
-						number_format($val,($val == floor($val)?0:2),'.',',').'%';
-
-					if(isset($elem_pending_payment)){
-						$pct_ep = ($elem_pending_payment / $elem_total_sum_orders_vat_included) * 100;
-						$elem_percent_pending_display =
-							number_format($pct_ep,($pct_ep == floor($pct_ep)?0:2),'.',',').'%';
-					}
+				// E = C_HT / A
+				$elem_percent_paid = 0;
+				$elem_percent_paid_display = '';
+				if ($elem_total_sum_orders > 0) {
+					$elem_percent_paid = ($elem_total_paid_amount_vat_excluded / $elem_total_sum_orders) * 100;
+					$elem_percent_paid_display = number_format($elem_percent_paid,($elem_percent_paid == floor($elem_percent_paid)?0:2),'.',',').'%';
 				}
-				if($elem_total_sum_orders_vat_included > 0) {
-					$elem_remaining_to_pay_vat_included = $elem_total_sum_orders_vat_included - $elem_total_paid_amount_vat_included;
-					$val = floatval($elem_remaining_to_pay_vat_included);
-					$elem_remaining_to_pay_vat_included_display = number_format($val,($val == floor($val)?0:2),'.',',').'&#8362;';
-					$pct = ($elem_remaining_to_pay_vat_included / $elem_total_sum_orders_vat_included) * 100;
-					$elem_percent_to_pay_from_orders_vat_included_display = number_format($pct,($pct == floor($pct)?0:2),'.',',').'%';
+
+				// F = 100 - E
+				$elem_percent_to_pay = ($elem_total_sum_orders > 0) ? (100 - $elem_percent_paid) : 0;
+				$elem_percent_to_pay_from_orders_vat_included_display = ($elem_total_sum_orders > 0)
+					? number_format($elem_percent_to_pay,($elem_percent_to_pay == floor($elem_percent_to_pay)?0:2),'.',',').'%'
+					: '';
+
+				// שאר לשלם montant = F/100 × A × (1+TVA)
+				$elem_remaining_to_pay_vat_included = ($elem_total_sum_orders > 0)
+					? ($elem_percent_to_pay / 100) * $elem_total_sum_orders * (1 + (@$vat->vat/100))
+					: 0;
+				$elem_remaining_to_pay_vat_included_display = number_format($elem_remaining_to_pay_vat_included,
+					($elem_remaining_to_pay_vat_included == floor($elem_remaining_to_pay_vat_included)?0:2),'.',',').'&#8362;';
+
+				// % לתשלום = B_HT / A
+				$elem_percent_pending_display = '';
+				if ($elem_total_sum_orders > 0 && isset($elem_pending_payment_vat_excluded)) {
+					$pct_ep = ($elem_pending_payment_vat_excluded / $elem_total_sum_orders) * 100;
+					$elem_percent_pending_display = number_format($pct_ep,($pct_ep == floor($pct_ep)?0:2),'.',',').'%';
 				}
 			}
 	

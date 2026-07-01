@@ -124,7 +124,7 @@ include 'menu_budget_reports.php';
 			    </div>
 				
 				<div class="d-flex justify-content-center my-3">
-					<div id="div_btns" class="d-flex flex-column align-items-center gap-2 bgColor-cbddec p-3 rounded">					
+					<div id="div_btns" class="d-flex flex-column align-items-center gap-2 bgColorBrown p-3 rounded-4">					
 						<div class="d-flex justify-content-center gap-2">
 							<a id="btn_add_order" onclick="location.href='add_order.php?project_id=<?=@$supplier->p_id?>&ps_id=<?=@$ps_id?>&from=accounts_payments&lang_screen=<?=@$lang_screen?>';"></a>
 							<a id="btn_add_account" onclick="location.href='add_account.php?project_id=<?=@$supplier->p_id?>&ps_id=<?=@$ps_id?>&from=accounts_payments&lang_screen=<?=@$lang_screen?>';"></a>				
@@ -342,31 +342,33 @@ include 'menu_budget_reports.php';
 									if($total_approved_amount_vat_included-$total_paid_amount_vat_included < 0)
 									   $pending_payment_display = '0&#8362;';
 
-									if($total_sum_orders_vat_included > 0) {
-										$percent_paid = ($total_paid_amount_vat_included / $total_sum_orders_vat_included) * 100;
-										$percent_paid_display = number_format(
-											$percent_paid,
-											($percent_paid == floor($percent_paid) ? 0 : 2),'.',','
-										).'%';
-
-										$percent_pending = ($pending_payment / $total_sum_orders_vat_included) * 100;
-										$percent_pending_display = number_format(
-											$percent_pending,
-											($percent_pending == floor($percent_pending) ? 0 : 2),'.',','
-										).'%';
+									// E = C_HT / A (% payé HT/HT)
+									$percent_paid = 0;
+									$percent_paid_display = '';
+									if ($total_sum_orders > 0) {
+										$percent_paid = ($total_paid_amount_vat_excluded / $total_sum_orders) * 100;
+										$percent_paid_display = number_format($percent_paid, ($percent_paid == floor($percent_paid) ? 0 : 2),'.',',').'%';
 									}
-					
-									$remaining_to_pay_vat_included = $total_sum_orders_vat_included - $total_paid_amount_vat_included;					
-									$remaining_to_pay_vat_included_display = number_format(
-									$remaining_to_pay_vat_included,
-										($remaining_to_pay_vat_included == floor($remaining_to_pay_vat_included)?0:2),'.',','
-									).'&#8362;';
-						
-									$percent_to_pay_from_orders_vat_included = ($remaining_to_pay_vat_included/$total_sum_orders_vat_included)*100;
-									$percent_to_pay_from_orders_vat_included_display = number_format(
-										$percent_to_pay_from_orders_vat_included,
-										($percent_to_pay_from_orders_vat_included == floor($percent_to_pay_from_orders_vat_included)?0:2),'.',','
-									).'%';
+
+									// F = 100 - E
+									$percent_to_pay = ($total_sum_orders > 0) ? (100 - $percent_paid) : 0;
+									$percent_to_pay_from_orders_vat_included_display = ($total_sum_orders > 0)
+										? number_format($percent_to_pay, ($percent_to_pay == floor($percent_to_pay) ? 0 : 2),'.',',').'%'
+										: '';
+
+									// שאר לשלם montant = F/100 × A × (1+TVA)
+									$remaining_to_pay_vat_included = ($total_sum_orders > 0)
+										? ($percent_to_pay / 100) * $total_sum_orders * (1 + (@$vat->vat/100))
+										: 0;
+									$remaining_to_pay_vat_included_display = number_format($remaining_to_pay_vat_included,
+										($remaining_to_pay_vat_included == floor($remaining_to_pay_vat_included) ? 0 : 2),'.',',').'&#8362;';
+
+									// % לתשלום = B_HT / A
+									$percent_pending_display = '';
+									if ($total_sum_orders > 0 && isset($pending_payment_vat_excluded)) {
+										$pct_p = ($pending_payment_vat_excluded / $total_sum_orders) * 100;
+										$percent_pending_display = number_format($pct_p, ($pct_p == floor($pct_p) ? 0 : 2),'.',',').'%';
+									}
 								}
 								?>
 
@@ -609,6 +611,14 @@ tr:nth-of-type(even) {
 
 .payment-row {
   background-color: #dcf1fa !important;
+}
+
+#lang {
+  border-radius: 8px;
+}
+
+#th_date, #th_signature_date, #th_submit_date {
+  min-width: 85px;
 }
 
 .btn {
