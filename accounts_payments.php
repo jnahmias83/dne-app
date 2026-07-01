@@ -293,7 +293,7 @@ include 'menu_budget_reports.php';
 												<td class="th_accounts_payments_item border-black"><a id="a_account_payment_type_<?=@$item->ap_id?>"><?=@$item->account_payment_type?></a></td>
 												<td class="th_accounts_payments_item border-black"><?=@$description?></td>
 												<td class="th_accounts_payments_item border-black alignCenter" dir="ltr"><?php if(@$item->account_payment_type == 'account') { if(@$item->pdf_approval != '') { ?><a href="uploads/<?=@$item->pdf_approval?>" title="View PDF" target="_blank"><?=@$approved_amount_display?></a><?php } else { echo @$approved_amount_display; }} ?></td>
-												<td class="th_accounts_payments_item border-black" dir="ltr"><?php if(@$item->account_payment_type == 'payment'){ if(@$item->pdf_payment != '') { ?><a href="uploads/<?=@$item->pdf_payment?>" title="View PDF" target="_blank" style="color:red;">-<?=@$paid_amount_vat_included_display?></a><?php } else { echo "<span dir='ltr' class='colorRed'>-".@$paid_amount_vat_included_display.'</span>'; }} ?></td>
+												<td class="th_accounts_payments_item border-black" dir="ltr"><?php if(@$item->account_payment_type == 'payment'){ if(@$item->pdf_payment != '') { ?><a href="uploads/<?=@$item->pdf_payment?>" title="View PDF" target="_blank" style="color:red;">-<?=@$paid_amount_vat_included_display?></a><?php } else { echo "<span dir='ltr' style='color:red;'>-".@$paid_amount_vat_included_display.'</span>'; }} ?></td>
 												<?php if($accounts_payments_num_rows > 0) { ?> <td class="alignCenter"><img src="images/delete.svg" class="cursor-pointer" title="Remove" onclick="return removeAccountPayment('<?=@$item->account_payment_type?>',<?=@$record_id?>);" /></td>	<?php } ?>
 											</tr>
 								<?php }}	
@@ -379,7 +379,7 @@ include 'menu_budget_reports.php';
 								<tr class="height30">
 									<td class="border-black bgColorSkyblue" id="th_total_accounts_payments" colspan="4"></td>
 									<td class="th_accounts_payments_item border-black bgColorSkyblue" dir="ltr"><strong><?=@$total_approved_amount_vat_included_display?></strong></td>
-									<td class="th_accounts_payments_item border-black bgColorSkyblue" colspan="2" dir="ltr"><strong><?='-'.@$total_paid_amount_vat_included_display?></strong></td>
+									<td class="th_accounts_payments_item border-black bgColorSkyblue" colspan="2" dir="ltr"><strong><span style="color:red;">-<?=@$total_paid_amount_vat_included_display?></span></strong></td>
 								</tr>
 								<tr class="height30">
 									<td class="bgColorWhite" colspan="4"></td>
