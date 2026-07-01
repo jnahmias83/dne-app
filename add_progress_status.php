@@ -73,13 +73,13 @@ include 'menu_tasks.php';
 								<div class="width50Percents">
 									<strong>צבע גופן</strong>
 									<br/>						
-									<input type="color" class="marginTop5 width200" name="color" id="color" placeholder="צבע גופן" value="<?=@$progress_status->color?>" />
+									<input type="color" class="marginTop5 width200" name="color" id="color" placeholder="צבע גופן" value="<?=@$progress_status->color?>" <?php if(@$progress_status->name_he == 'בוצע/נמסר') echo 'disabled';?> />
 								</div>
 							
 								<div class="width50Percents">
 									<strong>צבע רקע</strong>
 									<br/>					
-									<input type="color" class="marginTop5 width200" name="bgcolor" id="bgcolor" placeholder="צבע רקע" value="<?php if($id == 0) echo '#ffffff';else echo @$progress_status->bgcolor;?>" />
+									<input type="color" class="marginTop5 width200" name="bgcolor" id="bgcolor" placeholder="צבע רקע" value="<?php if($id == 0) echo '#ffffff';else echo @$progress_status->bgcolor;?>" <?php if(@$progress_status->name_he == 'בוצע/נמסר') echo 'disabled';?> />
 								</div>
 							</div>
 							
