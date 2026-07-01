@@ -125,15 +125,15 @@ else {
 			}
 			
 			else if($_POST['id'] > 0) {
-				$query = "UPDATE dne_tasks SET name = ?,name_he = ?,
-				          color = ?,bgcolor = ?,bgcolor_columns = ?,
-						  text_columns = ? WHERE id = ?";
-				$query = $mysqli->prepare($query);
-				$query->bind_param('ssssssi',$_POST['name'],
-				                   $_POST['name_he'],$_POST['color'],
-								   $_POST['bgcolor'],
-								   $_POST['bgcolor_columns'],
-								   $_POST['text_columns'],$_POST['id']);	
+				if(@$_POST['name_he'] == 'בקרת איכות') {
+					$query = "UPDATE dne_tasks SET name = ?, name_he = ?, bgcolor_columns = ?, text_columns = ? WHERE id = ?";
+					$query = $mysqli->prepare($query);
+					$query->bind_param('ssssi', $_POST['name'], $_POST['name_he'], $_POST['bgcolor_columns'], $_POST['text_columns'], $_POST['id']);
+				} else {
+					$query = "UPDATE dne_tasks SET name = ?, name_he = ?, color = ?, bgcolor = ?, bgcolor_columns = ?, text_columns = ? WHERE id = ?";
+					$query = $mysqli->prepare($query);
+					$query->bind_param('ssssssi', $_POST['name'], $_POST['name_he'], $_POST['color'], $_POST['bgcolor'], $_POST['bgcolor_columns'], $_POST['text_columns'], $_POST['id']);
+				}
 				$query->execute();
 				echo 'updated';
 			}
@@ -160,15 +160,17 @@ else {
 				else echo 'exists';
 			}
 			else if($_POST['id'] > 0) {
-					$query = "UPDATE dne_global_tasks SET name = ?,
-					          name_he = ?,color = ?,bgcolor = ? 
-							  WHERE id = ?";
+				if(@$_POST['name_he'] == 'בקרת איכות') {
+					$query = "UPDATE dne_global_tasks SET name = ?, name_he = ? WHERE id = ?";
 					$query = $mysqli->prepare($query);
-					$query->bind_param('ssssi',$_POST['name'],
-					                   $_POST['name_he'],$_POST['color'],
-									   $_POST['bgcolor'],$_POST['id']);	
-					$query->execute();
-					echo 'updated';
+					$query->bind_param('ssi', $_POST['name'], $_POST['name_he'], $_POST['id']);
+				} else {
+					$query = "UPDATE dne_global_tasks SET name = ?, name_he = ?, color = ?, bgcolor = ? WHERE id = ?";
+					$query = $mysqli->prepare($query);
+					$query->bind_param('ssssi', $_POST['name'], $_POST['name_he'], $_POST['color'], $_POST['bgcolor'], $_POST['id']);
+				}
+				$query->execute();
+				echo 'updated';
 			}
 		}
 	}
