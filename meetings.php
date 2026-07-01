@@ -3421,6 +3421,30 @@ $(document).ready(function(){
 		_taskModalFullyShown = true;
 	});
 
+	$('#modalTaskTracking').on('shown.bs.modal', function(){
+		$('#new_remark').focus();
+	});
+
+	$('#modalTaskFollowupDelayTargetDate').on('shown.bs.modal', function(){
+		$('#remark_delay_target_date').focus();
+	});
+
+	$('#modalTaskFollowupChangeStatus').on('shown.bs.modal', function(){
+		$('#remark_changes_status').focus();
+	});
+
+	$('#modalUpdateTask').on('shown.bs.modal', function(){
+		$('#remark_changes_status_update').focus();
+	});
+
+	$('#modalSendEmail').on('shown.bs.modal', function(){
+		$('#email_body').focus();
+	});
+
+	$('#modalTaskDescription').on('shown.bs.modal', function(){
+		$('#new_description').focus();
+	});
+
 	$('#modalUpdateTask').on('hidden.bs.modal', function(){
 		if(_updateTaskSaving){
 			_updateTaskSaving = false;
@@ -4853,25 +4877,16 @@ $('#to_add_meeting_btn').click (function (e){
 }
 
 tr.task-row-highlight td {
-    position: relative;
+    background-color: #9ef7b6 !important;
 }
 
-tr.task-row-highlight td::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-color: #9ef7b6;
-    pointer-events: none;
-    z-index: 0;
-}
-
-tr.task-row-highlight td > * {
-    position: relative;
-    z-index: 1;
-}
-
-tr.task-row-highlight td > *:not(select) {
+tr.task-row-highlight td *:not(select) {
     background-color: transparent !important;
+}
+
+.modal [contenteditable="true"],
+.modal textarea {
+    cursor: text !important;
 }
 
 .colorGreen {
