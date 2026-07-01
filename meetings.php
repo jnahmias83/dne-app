@@ -1753,7 +1753,7 @@ include 'menu_tasks.php';
 											$query->store_result();
 											$query = fetch_unique($query);
 											$pass_on = @$query->name;
-											$pass_on_bgcolor = 'background-color:white';							   																							
+											$pass_on_bgcolor = '';
 											
 											$task_creation_date_color = 'color:black';
 											if(@$is_colors && !empty($ids_rdv) && !empty($id_rdv_report) 
@@ -4833,14 +4833,13 @@ $('#to_add_meeting_btn').click (function (e){
 </script>
 
 <style>
-.bgColor-f2f6f9 { background-color: #9ef7b6 !important; }
-
 [id^="td_task_"] select,
 [id^="td_responsible_"] select,
 [id^="td_pass_on_"] select,
 [id^="td_progress_status_"] select {
     border-radius: 10px;
     border: 1px solid #bbb !important;
+    background-color: #9ef7b6;
 }
 
 .btn {
@@ -4853,35 +4852,12 @@ $('#to_add_meeting_btn').click (function (e){
     box-shadow: none;
 }
 
-tr.task-row-highlight td[id^="td_cbx_meetings_to_update_"],
-tr.task-row-highlight td[id^="td_count_"],
-tr.task-row-highlight td[id^="td_description_"],
-tr.task-row-highlight td[id^="td_subject_"],
-tr.task-row-highlight td[id^="td_area_"] {
-	position: relative;
+tr.task-row-highlight td {
+    background-color: #9ef7b6 !important;
 }
 
-tr.task-row-highlight td[id^="td_cbx_meetings_to_update_"]::after,
-tr.task-row-highlight td[id^="td_count_"]::after,
-tr.task-row-highlight td[id^="td_description_"]::after,
-tr.task-row-highlight td[id^="td_subject_"]::after,
-tr.task-row-highlight td[id^="td_area_"]::after {
-	content: "";
-	position: absolute;
-	inset: 0;
-	background-color: #99ccff;
-	pointer-events: none;
-	z-index: 0;
-}
-
-tr.task-row-highlight td[id^="td_cbx_meetings_to_update_"] > *,
-tr.task-row-highlight td[id^="td_count_"] > *,
-tr.task-row-highlight td[id^="td_description_"] > *,
-tr.task-row-highlight td[id^="td_subject_"] > *,
-tr.task-row-highlight td[id^="td_area_"] > * {
-	position: relative;
-	z-index: 1;
-	background-color: transparent !important;
+tr.task-row-highlight td > *:not(select) {
+    background-color: transparent !important;
 }
 
 .colorGreen {
