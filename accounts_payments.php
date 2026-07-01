@@ -384,8 +384,8 @@ include 'menu_budget_reports.php';
 									<td class="th_accounts_payments_item border-black bgColorSkyblue" colspan="2" dir="ltr"><strong><span style="color:red;">-<?=@$total_paid_amount_vat_included_display?></span></strong></td>
 								</tr>
 								<tr class="height30">
-									<td class="bgColorSilver" colspan="4"></td>
-									<td <?php if($accounts_payments_num_rows > 0) { echo 'colspan=3';} else echo 'colspan=2';?> class="border-black" id="pending_payment_cell" dir="ltr"><span id="span_pending_payment"></span>&nbsp;<?=@$pending_payment_display?></td>
+									<td class="bgColorWhite" colspan="4"></td>
+									<td <?php if($accounts_payments_num_rows > 0) { echo 'colspan=3';} else echo 'colspan=2';?> class="border-black bgColorSilver" id="pending_payment_cell" dir="ltr"><span id="span_pending_payment"></span>&nbsp;<?=@$pending_payment_display?></td>
 								</tr>
 							</table>
 								
