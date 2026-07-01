@@ -600,11 +600,7 @@ if($asbr == 1){
 			foreach($elems_accounts_payments as $item){
 				$count4++;
 				
-				if (@$item->account_payment_type == 'payment') {
-					$data_bg_color = '#dcf1fa';
-				} else {
-					$data_bg_color = ($count4%2 != 0) ? '#dedede' : '#ffffff';
-				}
+				$data_bg_color = ($count4%2 != 0) ? '#dedede' : '#ffffff';
 			    
 				if($count4 == $elems_accounts_payments_num_rows)
 	               $elem_border_bottom = 'border:1px solid black';
@@ -741,7 +737,7 @@ if($asbr == 1){
 			$html3_body.='<td style="'.@$text_align.';'.@$padding.':5px;border:1px solid black;"><strong>'.@$elem_total_approved_amount_vat_included_display.'</strong></td>';
 			$html3_body.='<td dir="ltr" style="'.@$text_align.';'.@$padding.':5px;border:1px solid black;"><strong>-'.@$elem_total_paid_amount_vat_included_display.'</strong></td>';
 			$html3_body.='</tr>';
-			$html3_body.='<tr style="font-size:10px;text-align:center;"><td colspan="4">'.@$table_ap_down_text.'</td><td style="border:1px solid black;background-color:#dcf1fa;direction:ltr;text-align:center;" colspan="2"><div style="font-size:8px;">&nbsp;</div><strong style="font-size:12px;">'.getLang2($lang,'pending_payment').'&nbsp;'.@$elem_pending_payment_display.'</strong></td></tr>';
+			$html3_body.='<tr style="font-size:10px;text-align:center;"><td colspan="4">'.@$table_ap_down_text.'</td><td style="border:1px solid black;background-color:silver;direction:ltr;text-align:center;" colspan="2"><div style="font-size:8px;">&nbsp;</div><strong style="font-size:12px;">'.getLang2($lang,'pending_payment').'&nbsp;'.@$elem_pending_payment_display.'</strong></td></tr>';
 			$html3_body.='</table>';
 			$html3_body.='</td></tr></table>';
 
