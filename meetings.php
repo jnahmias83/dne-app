@@ -4920,34 +4920,25 @@ td {
 	width: 36%;
 }
 
-.row-darken td[id^="td_cbx_meetings_to_update_"],
-.row-darken td[id^="td_count_"],
-.row-darken td[id^="td_description_"],
-.row-darken td[id^="td_subject_"],
-.row-darken td[id^="td_area_"] {
+.row-darken td {
     position: relative;
 }
 
-.row-darken td[id^="td_cbx_meetings_to_update_"]::after,
-.row-darken td[id^="td_count_"]::after,
-.row-darken td[id^="td_description_"]::after,
-.row-darken td[id^="td_subject_"]::after,
-.row-darken td[id^="td_area_"]::after {
+.row-darken td::after {
     content: "";
     position: absolute;
     inset: 0;
-    background-color: #99ccff;
+    background-color: #9ef7b6;
     pointer-events: none;
     z-index: 0;
 }
 
-.row-darken td[id^="td_cbx_meetings_to_update_"] > *,
-.row-darken td[id^="td_count_"] > *,
-.row-darken td[id^="td_description_"] > *,
-.row-darken td[id^="td_subject_"] > *,
-.row-darken td[id^="td_area_"] > * {
+.row-darken td > * {
     position: relative;
     z-index: 1;
+}
+
+.row-darken td > *:not(select) {
     background-color: transparent !important;
 }
 
