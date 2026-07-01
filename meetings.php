@@ -4833,7 +4833,7 @@ $('#to_add_meeting_btn').click (function (e){
 </script>
 
 <style>
-.bgColor-cbddec { background-color: #9ef7b6 !important; }
+.bgColor-f2f6f9 { background-color: #9ef7b6 !important; }
 
 [id^="td_task_"] select,
 [id^="td_responsible_"] select,
