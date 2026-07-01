@@ -63,7 +63,7 @@ $task = fetch_unique($query);
 					<div class="col-md-12">
 						<strong>צבע גופן</strong>
 						<br/>
-						<input type="color" class="marginTop5 width150" name="color" id="color" placeholder="צבע גופן" value="<?=@$task->color?>" />
+						<input type="color" class="marginTop5 width150" name="color" id="color" placeholder="צבע גופן" value="<?=@$task->color?>" <?php if(@$task->name_he == 'בקרת איכות') echo 'disabled';?> />
 					</div>
 				</div>
 
@@ -71,7 +71,7 @@ $task = fetch_unique($query);
 					<div class="col-md-12">
 						<strong>צבע רקע</strong>
 						<br/>					
-						<input type="color" class="marginTop5 width150" name="bgcolor" id="bgcolor" placeholder="צבע רקע" value="<?php if($id == 0) echo '#ffffff';else echo @$task->bgcolor;?>" />
+						<input type="color" class="marginTop5 width150" name="bgcolor" id="bgcolor" placeholder="צבע רקע" value="<?php if($id == 0) echo '#ffffff';else echo @$task->bgcolor;?>" <?php if(@$task->name_he == 'בקרת איכות') echo 'disabled';?> />
 					</div>
 				</div>				
 						
