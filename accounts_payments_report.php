@@ -306,9 +306,11 @@ $total_paid_amount_vat_excluded = 0;
 
 $count = 0;	
 foreach($accounts_payments as $item) {
-	$data_bg_color = '#ffffff';
-	if($count%2 == 0) 
-	   $data_bg_color = '#dedede';
+	if (@$item->account_payment_type == 'payment') {
+		$data_bg_color = '#dcf1fa';
+	} else {
+		$data_bg_color = ($count%2 == 0) ? '#dedede' : '#ffffff';
+	}
 	
     if($count == $accounts_payments_num_rows)
 	   $border_bottom = 'border:1px solid black';
@@ -413,12 +415,22 @@ if($accounts_payments_num_rows > 0){
 		}
 	}
 	
-	if($total_approved_amount_vat_included-$total_paid_amount_vat_included < 0) 
-		$pending_payment_display = '0.00&#8362';
-	
+	if($total_approved_amount_vat_included-$total_paid_amount_vat_included < 0) {
+		$pending_payment_display = '0&#8362;';
+		$pending_payment = 0;
+	}
+
+	$percent_pending_display = '';
+	if(isset($pending_payment, $total_sum_orders_vat_included) && $total_sum_orders_vat_included != 0){
+		$pct_p = ($pending_payment / $total_sum_orders_vat_included) * 100;
+		$percent_pending_display = (floor($pct_p) == $pct_p)
+			?number_format($pct_p,0,'.',',').'%'
+			:number_format($pct_p,2,'.',',').'%';
+	}
+
 	if($total_sum_orders > 0){
-		if(isset($total_paid_amount_vat_excluded, $total_sum_orders) && $total_sum_orders != 0){
-			$percent = ($total_paid_amount_vat_excluded / $total_sum_orders) * 100;
+		if(isset($total_sum_orders_vat_included, $total_paid_amount_vat_included) && $total_sum_orders_vat_included != 0){
+			$percent = ($total_paid_amount_vat_included / $total_sum_orders_vat_included) * 100;
 			$percent_paid_display = (floor($percent) == $percent)
 				?number_format($percent,0,'.',',').'%'
 				:number_format($percent,2,'.',',').'%';
@@ -476,7 +488,7 @@ $html.='<tr style="font-size:10px;">';
 $html.='<td width="50%"></td>';
 $html.='<td style="text-align:center;border:1px solid black;background-color:#dcf1fa;" width="17%"><strong>'.$to_pay_label.'</strong></td>';
 $html.='<td style="direction:ltr;text-align:center;border:1px solid black;background-color:#dcf1fa;" width="17%"><strong>'.@$pending_payment_display.'</strong></td>';
-$html.='<td style="border:1px solid black;background-color:#dcf1fa;" width="16%"></td>';
+$html.='<td style="text-align:center;border:1px solid black;background-color:#dcf1fa;" width="16%"><strong>'.@$percent_pending_display.'</strong></td>';
 $html.='</tr>';
 $html.='<tr style="font-size:10px;">';
 $html.='<td width="50%"></td>';

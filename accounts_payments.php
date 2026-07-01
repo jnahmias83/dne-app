@@ -287,13 +287,13 @@ include 'menu_budget_reports.php';
 										?>
 											<input type="hidden" id="hidden_account_payment_type_<?=@$item->ap_id?>" value="<?=@$item->account_payment_type?>" />
 											
-											<tr class="height25">
+											<tr class="height25<?php if(@$item->account_payment_type == 'payment') echo ' payment-row';?>">
 												<td class="alignCenter border-black"><a href="<?php if(@$item->account_payment_type == 'account') echo 'add_account';else echo 'add_payment'?>.php?id=<?php if(@$item->account_payment_type == 'account') echo @$item->a_id;else echo @$item->p_id?>&project_id=<?=@$supplier->p_id?>&ps_id=<?=@$ps_id?>&from=accounts_payments&lang_screen=<?=@$lang_screen?>"><?=@$count?></a></td>
 												<td class="th_accounts_payments_item border-black"><?=@$account_payment_date?></td>
 												<td class="th_accounts_payments_item border-black"><a id="a_account_payment_type_<?=@$item->ap_id?>"><?=@$item->account_payment_type?></a></td>
 												<td class="th_accounts_payments_item border-black"><?=@$description?></td>
 												<td class="th_accounts_payments_item border-black alignCenter" dir="ltr"><?php if(@$item->account_payment_type == 'account') { if(@$item->pdf_approval != '') { ?><a href="uploads/<?=@$item->pdf_approval?>" title="View PDF" target="_blank"><?=@$approved_amount_display?></a><?php } else { echo @$approved_amount_display; }} ?></td>
-												<td class="th_accounts_payments_item border-black" dir="ltr"><?php if(@$item->account_payment_type == 'payment'){ if(@$item->pdf_payment != '') { ?><a href="uploads/<?=@$item->pdf_payment?>"  title="View PDF" target="_blank"><span dir="ltr" class="colorRed">-<?=@$paid_amount_vat_included_display?></span></a><?php } else { echo "<span dir='ltr' class='colorRed'>-".@$paid_amount_vat_included_display.'</span>'; }} ?></td>
+												<td class="th_accounts_payments_item border-black" dir="ltr"><?php if(@$item->account_payment_type == 'payment'){ if(@$item->pdf_payment != '') { ?><a href="uploads/<?=@$item->pdf_payment?>" title="View PDF" target="_blank" style="color:red;">-<?=@$paid_amount_vat_included_display?></a><?php } else { echo "<span dir='ltr' class='colorRed'>-".@$paid_amount_vat_included_display.'</span>'; }} ?></td>
 												<?php if($accounts_payments_num_rows > 0) { ?> <td class="alignCenter"><img src="images/delete.svg" class="cursor-pointer" title="Remove" onclick="return removeAccountPayment('<?=@$item->account_payment_type?>',<?=@$record_id?>);" /></td>	<?php } ?>
 											</tr>
 								<?php }}	
@@ -339,27 +339,22 @@ include 'menu_budget_reports.php';
 										).'&#8362;';
 									}										
 									
-									if($total_approved_amount_vat_included-$total_paid_amount_vat_included < 0) 
-									   $pending_payment_display = '0.00&#8362';
-									
-									if($total_sum_orders > 0) {
-										$percent = (@$total_paid_amount_vat_excluded/@$total_sum_orders)*100;
-										$percent_paid_display = number_format(
-											$percent,($percent == floor($percent)?0:2),'.',','
-										).'%';
-										
-										$percent_from_orders = (@$pending_payment_vat_excluded/@$total_sum_orders)*100;
-										$percent_paid_from_orders_vat_excluded_display = number_format(
-											$percent_from_orders,($percent_from_orders == floor($percent_from_orders)?0:2),'.',','
-										).'%';
-									}
-									
-									if($total_sum_orders > 0) 
-									    $percent_paid = (@$total_paid_amount_vat_excluded/@$total_sum_orders)*100;
+									if($total_approved_amount_vat_included-$total_paid_amount_vat_included < 0)
+									   $pending_payment_display = '0&#8362;';
+
+									if($total_sum_orders_vat_included > 0) {
+										$percent_paid = ($total_paid_amount_vat_included / $total_sum_orders_vat_included) * 100;
 										$percent_paid_display = number_format(
 											$percent_paid,
 											($percent_paid == floor($percent_paid) ? 0 : 2),'.',','
 										).'%';
+
+										$percent_pending = ($pending_payment / $total_sum_orders_vat_included) * 100;
+										$percent_pending_display = number_format(
+											$percent_pending,
+											($percent_pending == floor($percent_pending) ? 0 : 2),'.',','
+										).'%';
+									}
 					
 									$remaining_to_pay_vat_included = $total_sum_orders_vat_included - $total_paid_amount_vat_included;					
 									$remaining_to_pay_vat_included_display = number_format(
@@ -379,6 +374,7 @@ include 'menu_budget_reports.php';
 								<input type="hidden" id="percent_to_pay_from_orders_vat_included" value="<?=@$percent_to_pay_from_orders_vat_included_display?>" />
 								<input type="hidden" id="total_paid_amount_vat_included_val" value="<?=@$total_paid_amount_vat_included_display?>" />
 								<input type="hidden" id="percent_paid_display_val" value="<?=@$percent_paid_display?>" />
+								<input type="hidden" id="percent_pending_display_val" value="<?=@$percent_pending_display?>" />
 								
 								<tr class="height30">
 									<td class="border-black bgColorSkyblue" id="th_total_accounts_payments" colspan="4"></td>
@@ -398,7 +394,7 @@ include 'menu_budget_reports.php';
 								<tr>
 									<td id="td_to_pay_label" class="bgColorSkyblue border-black alignCenter padding-4x-4y"></td>
 									<td class="bgColorSkyblue border-black alignCenter padding-4x-4y" dir="ltr"><?=@$pending_payment_display?></td>
-									<td class="bgColorSkyblue border-black alignCenter padding-4x-4y"></td>
+									<td id="td_to_pay_pct" class="bgColorSkyblue border-black alignCenter padding-4x-4y"></td>
 								</tr>
 								<tr>
 									<td id="td_paid_label" class="bgColorSkyblue border-black alignCenter padding-4x-4y"></td>
@@ -519,9 +515,10 @@ $(document).ready(function() {
 		  $('#td_to_pay_label').html('<strong>To be paid</strong>');
 		  $('#td_paid_label').html('<strong>Paid</strong>');
 		  $('#td_remaining_label').html('<strong>Remaining to pay</strong>');
+		  $('#td_to_pay_pct').html('<strong>' + $('#percent_pending_display_val').val() + '</strong>');
 		  $('#td_paid_pct').html('<strong>' + $('#percent_paid_display_val').val() + '</strong>');
 		  $('#td_remaining_pct').html('<strong>' + $('#percent_to_pay_from_orders_vat_included').val() + '</strong>');
-			 
+
 		  $('a[id^="a_account_payment_type"]').each(function () {
 			  let elem = 'hidden_'+$(this).attr('id').substring($(this).attr('id').indexOf('a_')+2);
 			  if($('#'+elem).val() == 'account')
@@ -575,9 +572,10 @@ $(document).ready(function() {
 		  $('#td_to_pay_label').html('<strong>לתשלום</strong>');
 		  $('#td_paid_label').html('<strong>שולם</strong>');
 		  $('#td_remaining_label').html('<strong>שאר לשלם</strong>');
+		  $('#td_to_pay_pct').html('<strong>' + $('#percent_pending_display_val').val() + '</strong>');
 		  $('#td_paid_pct').html('<strong>' + $('#percent_paid_display_val').val() + '</strong>');
 		  $('#td_remaining_pct').html('<strong>' + $('#percent_to_pay_from_orders_vat_included').val() + '</strong>');
-		  
+
 		   $('a[id^="a_account_payment_type"]').each(function () {
 			  let elem = 'hidden_'+$(this).attr('id').substring($(this).attr('id').indexOf('a_')+2);
 			  if($('#'+elem).val() == 'account')
@@ -607,6 +605,10 @@ function toSupplierPdfReport() {
 <style>
 tr:nth-of-type(even) {
   background-color: #dedede;
+}
+
+.payment-row {
+  background-color: #dcf1fa !important;
 }
 
 .btn {
