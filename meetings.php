@@ -4853,7 +4853,21 @@ $('#to_add_meeting_btn').click (function (e){
 }
 
 tr.task-row-highlight td {
-    background-color: #9ef7b6 !important;
+    position: relative;
+}
+
+tr.task-row-highlight td::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: #9ef7b6;
+    pointer-events: none;
+    z-index: 0;
+}
+
+tr.task-row-highlight td > * {
+    position: relative;
+    z-index: 1;
 }
 
 tr.task-row-highlight td > *:not(select) {
