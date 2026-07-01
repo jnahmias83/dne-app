@@ -3020,6 +3020,8 @@ function toTasksList(id_project){
 </script>
 
 <style>
+.bgColor-cbddec { background-color: #9ef7b6 !important; }
+
 .padding-btn {
 	padding: 15px 0;
 }
