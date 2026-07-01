@@ -1716,9 +1716,9 @@ include 'menu_tasks.php';
 												}
 											}	
 																		
-											$subject_bgcolor = 'background-color:white';
-											$area_bgcolor = 'background-color:white';	 
-											$description_bgcolor = 'background-color:white';
+											$subject_bgcolor = '';
+											$area_bgcolor = '';
+											$description_bgcolor = '';
 											
 											$query = $mysqli->prepare("SELECT * FROM dne_tasks WHERE id = ?");
 											$query->bind_param("i",$task_id);
@@ -1760,10 +1760,10 @@ include 'menu_tasks.php';
 											   && strpos($ids_rdv,(string)$id_rdv_report) !== false)
 												$task_creation_date_color = 'color:green';
 											
-											$task_creation_date_bgcolor = 'background-color:white';
-											
+											$task_creation_date_bgcolor = '';
+
 											$dest_date_color = 'color:black';
-											$dest_date_bgcolor = 'background-color:white';
+											$dest_date_bgcolor = '';
 											
 											if(@$is_colors && $destination_date < date('Y-m-d')) 
 											   $dest_date_color = 'color:red;';										   
@@ -1835,7 +1835,7 @@ include 'menu_tasks.php';
 												else $end_new_tasks_date = '0000-00-00';
 											}
 
-											$td_count_bgcolor = 'background-color:white';										
+											$td_count_bgcolor = '';
 											if(@$is_colors && @$progress_status != 'בוצע/נמסר' && @$task != 'בקרת איכות'){
 												if(strlen(@$period_new_tasks) > 1 && (date('Y-m-d') <= $end_new_tasks_date)){			
 													$td_count_bgcolor = 'background-color:'.$global_bgcolor_new_task->bgcolor;
@@ -4839,6 +4839,10 @@ $('#to_add_meeting_btn').click (function (e){
 [id^="td_progress_status_"] select {
     border-radius: 10px;
     border: 1px solid #bbb !important;
+    background-color: #9ef7b6;
+}
+
+tr[id^="row_"] td {
     background-color: #9ef7b6;
 }
 
