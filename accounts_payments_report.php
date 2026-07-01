@@ -306,11 +306,7 @@ $total_paid_amount_vat_excluded = 0;
 
 $count = 0;	
 foreach($accounts_payments as $item) {
-	if (@$item->account_payment_type == 'payment') {
-		$data_bg_color = '#dcf1fa';
-	} else {
-		$data_bg_color = ($count%2 == 0) ? '#dedede' : '#ffffff';
-	}
+	$data_bg_color = ($count%2 == 0) ? '#dedede' : '#ffffff';
 	
     if($count == $accounts_payments_num_rows)
 	   $border_bottom = 'border:1px solid black';
@@ -466,7 +462,7 @@ $html.='<td colspan="4" style="'.$style_td_totals.'border:1px solid black;"><str
 $html.='<td style="direction:ltr;'.@$text_align.';'.@$padding.':5px;border:1px solid black;"><strong>'.@$total_approved_amount_vat_included_display.'</strong></td>';
 $html.='<td dir="ltr" style="'.@$text_align.';'.@$padding.':5px;border:1px solid black;"><strong>-'.@$total_paid_amount_vat_included_display.'</strong></td>';
 $html.='</tr>';
-$html.='<tr style="font-size:10px;text-align:center;"><td colspan="4">'.@$table_ap_down_text.'</td><td style="border:1px solid black;background-color:#dcf1fa;direction:ltr;text-align:center;" colspan="2"><div style="font-size:4px;">&nbsp;</div><strong style="font-size:12px;">'.getLang2($lang,'pending_payment').'&nbsp;'.@$pending_payment_display.'</strong></td></tr>';
+$html.='<tr style="font-size:10px;text-align:center;"><td colspan="4">'.@$table_ap_down_text.'</td><td style="border:1px solid black;background-color:silver;direction:ltr;text-align:center;" colspan="2"><div style="font-size:4px;">&nbsp;</div><strong style="font-size:12px;">'.getLang2($lang,'pending_payment').'&nbsp;'.@$pending_payment_display.'</strong></td></tr>';
 $html.='</table>';
 $html.='</td></tr></table>';
 
