@@ -3423,6 +3423,9 @@ $(document).ready(function(){
 
 	$('#modalTaskTracking').on('shown.bs.modal', function(){
 		$('#new_remark').focus();
+		var lang = $('#lang').val();
+		if (lang === 'HE') { $('#new_remark_tracking_he').trigger('click'); }
+		else { $('#new_remark_tracking_en').trigger('click'); }
 	});
 
 	$('#modalTaskFollowupDelayTargetDate').on('shown.bs.modal', function(){
@@ -4938,7 +4941,7 @@ td {
     z-index: 1;
 }
 
-.row-darken td > *:not(select) {
+.row-darken td *:not(select) {
     background-color: transparent !important;
 }
 

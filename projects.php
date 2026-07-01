@@ -3127,7 +3127,7 @@ tr.task-row-highlight td::after {
     content: "";
     position: absolute;
     inset: 0;
-    background-color: #99ccff;
+    background-color: #9ef7b6;
     pointer-events: none;
     z-index: 0;
 }
