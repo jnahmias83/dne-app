@@ -124,7 +124,7 @@ include 'menu_budget_reports.php';
 			    </div>
 				
 				<div class="d-flex justify-content-center my-3">
-					<div id="div_btns" class="d-flex flex-column align-items-center gap-2 bgColor-cbddec p-3 rounded">					
+					<div id="div_btns" class="d-flex flex-column align-items-center gap-2 bgColorBrown p-3 rounded-4">					
 						<div class="d-flex justify-content-center gap-2">
 							<a id="btn_add_order" onclick="location.href='add_order.php?project_id=<?=@$supplier->p_id?>&ps_id=<?=@$ps_id?>&from=accounts_payments&lang_screen=<?=@$lang_screen?>';"></a>
 							<a id="btn_add_account" onclick="location.href='add_account.php?project_id=<?=@$supplier->p_id?>&ps_id=<?=@$ps_id?>&from=accounts_payments&lang_screen=<?=@$lang_screen?>';"></a>				
@@ -287,13 +287,13 @@ include 'menu_budget_reports.php';
 										?>
 											<input type="hidden" id="hidden_account_payment_type_<?=@$item->ap_id?>" value="<?=@$item->account_payment_type?>" />
 											
-											<tr class="height25">
+											<tr class="height25<?php if(@$item->account_payment_type == 'payment') echo ' payment-row';?>">
 												<td class="alignCenter border-black"><a href="<?php if(@$item->account_payment_type == 'account') echo 'add_account';else echo 'add_payment'?>.php?id=<?php if(@$item->account_payment_type == 'account') echo @$item->a_id;else echo @$item->p_id?>&project_id=<?=@$supplier->p_id?>&ps_id=<?=@$ps_id?>&from=accounts_payments&lang_screen=<?=@$lang_screen?>"><?=@$count?></a></td>
 												<td class="th_accounts_payments_item border-black"><?=@$account_payment_date?></td>
 												<td class="th_accounts_payments_item border-black"><a id="a_account_payment_type_<?=@$item->ap_id?>"><?=@$item->account_payment_type?></a></td>
 												<td class="th_accounts_payments_item border-black"><?=@$description?></td>
 												<td class="th_accounts_payments_item border-black alignCenter" dir="ltr"><?php if(@$item->account_payment_type == 'account') { if(@$item->pdf_approval != '') { ?><a href="uploads/<?=@$item->pdf_approval?>" title="View PDF" target="_blank"><?=@$approved_amount_display?></a><?php } else { echo @$approved_amount_display; }} ?></td>
-												<td class="th_accounts_payments_item border-black" dir="ltr"><?php if(@$item->account_payment_type == 'payment'){ if(@$item->pdf_payment != '') { ?><a href="uploads/<?=@$item->pdf_payment?>"  title="View PDF" target="_blank"><span dir="ltr" class="colorRed">-<?=@$paid_amount_vat_included_display?></span></a><?php } else { echo "<span dir='ltr' class='colorRed'>-".@$paid_amount_vat_included_display.'</span>'; }} ?></td>
+												<td class="th_accounts_payments_item border-black" dir="ltr"><?php if(@$item->account_payment_type == 'payment'){ if(@$item->pdf_payment != '') { ?><a href="uploads/<?=@$item->pdf_payment?>" title="View PDF" target="_blank" style="color:red;">-<?=@$paid_amount_vat_included_display?></a><?php } else { echo "<span dir='ltr' style='color:red;'>-".@$paid_amount_vat_included_display.'</span>'; }} ?></td>
 												<?php if($accounts_payments_num_rows > 0) { ?> <td class="alignCenter"><img src="images/delete.svg" class="cursor-pointer" title="Remove" onclick="return removeAccountPayment('<?=@$item->account_payment_type?>',<?=@$record_id?>);" /></td>	<?php } ?>
 											</tr>
 								<?php }}	
@@ -339,39 +339,36 @@ include 'menu_budget_reports.php';
 										).'&#8362;';
 									}										
 									
-									if($total_approved_amount_vat_included-$total_paid_amount_vat_included < 0) 
-									   $pending_payment_display = '0.00&#8362';
-									
-									if($total_sum_orders > 0) {
-										$percent = (@$total_paid_amount_vat_excluded/@$total_sum_orders)*100;
-										$percent_paid_display = number_format(
-											$percent,($percent == floor($percent)?0:2),'.',','
-										).'%';
-										
-										$percent_from_orders = (@$pending_payment_vat_excluded/@$total_sum_orders)*100;
-										$percent_paid_from_orders_vat_excluded_display = number_format(
-											$percent_from_orders,($percent_from_orders == floor($percent_from_orders)?0:2),'.',','
-										).'%';
+									if($total_approved_amount_vat_included-$total_paid_amount_vat_included < 0)
+									   $pending_payment_display = '0&#8362;';
+
+									// E = C_HT / A (% payé HT/HT)
+									$percent_paid = 0;
+									$percent_paid_display = '';
+									if ($total_sum_orders > 0) {
+										$percent_paid = ($total_paid_amount_vat_excluded / $total_sum_orders) * 100;
+										$percent_paid_display = number_format($percent_paid, ($percent_paid == floor($percent_paid) ? 0 : 2),'.',',').'%';
 									}
-									
-									if($total_sum_orders > 0) 
-									    $percent_paid = (@$total_paid_amount_vat_excluded/@$total_sum_orders)*100;
-										$percent_paid_display = number_format(
-											$percent_paid,
-											($percent_paid == floor($percent_paid) ? 0 : 2),'.',','
-										).'%';
-					
-									$remaining_to_pay_vat_included = $total_sum_orders_vat_included - $total_paid_amount_vat_included;					
-									$remaining_to_pay_vat_included_display = number_format(
-									$remaining_to_pay_vat_included,
-										($remaining_to_pay_vat_included == floor($remaining_to_pay_vat_included)?0:2),'.',','
-									).'&#8362;';
-						
-									$percent_to_pay_from_orders_vat_included = ($remaining_to_pay_vat_included/$total_sum_orders_vat_included)*100;
-									$percent_to_pay_from_orders_vat_included_display = number_format(
-										$percent_to_pay_from_orders_vat_included,
-										($percent_to_pay_from_orders_vat_included == floor($percent_to_pay_from_orders_vat_included)?0:2),'.',','
-									).'%';
+
+									// F = 100 - E
+									$percent_to_pay = ($total_sum_orders > 0) ? (100 - $percent_paid) : 0;
+									$percent_to_pay_from_orders_vat_included_display = ($total_sum_orders > 0)
+										? number_format($percent_to_pay, ($percent_to_pay == floor($percent_to_pay) ? 0 : 2),'.',',').'%'
+										: '';
+
+									// שאר לשלם montant = F/100 × A × (1+TVA)
+									$remaining_to_pay_vat_included = ($total_sum_orders > 0)
+										? ($percent_to_pay / 100) * $total_sum_orders * (1 + (@$vat->vat/100))
+										: 0;
+									$remaining_to_pay_vat_included_display = number_format($remaining_to_pay_vat_included,
+										($remaining_to_pay_vat_included == floor($remaining_to_pay_vat_included) ? 0 : 2),'.',',').'&#8362;';
+
+									// % לתשלום = B_HT / A
+									$percent_pending_display = '';
+									if ($total_sum_orders > 0 && isset($pending_payment_vat_excluded)) {
+										$pct_p = ($pending_payment_vat_excluded / $total_sum_orders) * 100;
+										$percent_pending_display = number_format($pct_p, ($pct_p == floor($pct_p) ? 0 : 2),'.',',').'%';
+									}
 								}
 								?>
 
@@ -379,11 +376,12 @@ include 'menu_budget_reports.php';
 								<input type="hidden" id="percent_to_pay_from_orders_vat_included" value="<?=@$percent_to_pay_from_orders_vat_included_display?>" />
 								<input type="hidden" id="total_paid_amount_vat_included_val" value="<?=@$total_paid_amount_vat_included_display?>" />
 								<input type="hidden" id="percent_paid_display_val" value="<?=@$percent_paid_display?>" />
+								<input type="hidden" id="percent_pending_display_val" value="<?=@$percent_pending_display?>" />
 								
 								<tr class="height30">
 									<td class="border-black bgColorSkyblue" id="th_total_accounts_payments" colspan="4"></td>
 									<td class="th_accounts_payments_item border-black bgColorSkyblue" dir="ltr"><strong><?=@$total_approved_amount_vat_included_display?></strong></td>
-									<td class="th_accounts_payments_item border-black bgColorSkyblue" colspan="2" dir="ltr"><strong><?='-'.@$total_paid_amount_vat_included_display?></strong></td>
+									<td class="th_accounts_payments_item border-black bgColorSkyblue" colspan="2" dir="ltr"><strong><span style="color:red;">-<?=@$total_paid_amount_vat_included_display?></span></strong></td>
 								</tr>
 								<tr class="height30">
 									<td class="bgColorWhite" colspan="4"></td>
@@ -398,7 +396,7 @@ include 'menu_budget_reports.php';
 								<tr>
 									<td id="td_to_pay_label" class="bgColorSkyblue border-black alignCenter padding-4x-4y"></td>
 									<td class="bgColorSkyblue border-black alignCenter padding-4x-4y" dir="ltr"><?=@$pending_payment_display?></td>
-									<td class="bgColorSkyblue border-black alignCenter padding-4x-4y"></td>
+									<td id="td_to_pay_pct" class="bgColorSkyblue border-black alignCenter padding-4x-4y"></td>
 								</tr>
 								<tr>
 									<td id="td_paid_label" class="bgColorSkyblue border-black alignCenter padding-4x-4y"></td>
@@ -495,9 +493,9 @@ $(document).ready(function() {
 		  $('.th_not_approved_accounts_item').css({"text-align":"left",'padding-left':'5px'});
 		  $('#create_pdf_btn').css({"direction":"rtl","margin-right":"10px"});
 		  $('#lang').css({"padding-left":"10px"});
-		  $('#btn_add_order').html("<div class='alignCenter border-black borderRadius10 padding-4x-4y'><i class='fa-solid fa-plus colorGrey'></i><br/><strong class='fontSize13'>Order</strong></div>");
-		  $('#btn_add_account').html("<div class='alignCenter border-black borderRadius10 padding-4x-4y'><i class='fa-solid fa-plus colorGrey'></i><br/><strong class='fontSize13'>Account</strong></div>");
-		  $('#btn_add_payment').html("<div class='alignCenter border-black borderRadius10 padding-4x-4y'><i class='fa-solid fa-plus colorGrey'></i><br/><strong class='fontSize13'>Payment</strong></div>");
+		  $('#btn_add_order').html("<div class='alignCenter border-black borderRadius10 padding-4x-4y bgColorWhite'><i class='fa-solid fa-plus colorGrey'></i><br/><strong class='fontSize13'>Order</strong></div>");
+		  $('#btn_add_account').html("<div class='alignCenter border-black borderRadius10 padding-4x-4y bgColorWhite'><i class='fa-solid fa-plus colorGrey'></i><br/><strong class='fontSize13'>Account</strong></div>");
+		  $('#btn_add_payment').html("<div class='alignCenter border-black borderRadius10 padding-4x-4y bgColorWhite'><i class='fa-solid fa-plus colorGrey'></i><br/><strong class='fontSize13'>Payment</strong></div>");
 		  $('#div_title_orders_list').html('Orders');
 		  $('#div_title_orders_list').css({"text-align":"left","font-size":"22px"});
 		  $('.th_iteration').html('&#x2116;');
@@ -519,9 +517,10 @@ $(document).ready(function() {
 		  $('#td_to_pay_label').html('<strong>To be paid</strong>');
 		  $('#td_paid_label').html('<strong>Paid</strong>');
 		  $('#td_remaining_label').html('<strong>Remaining to pay</strong>');
+		  $('#td_to_pay_pct').html('<strong>' + $('#percent_pending_display_val').val() + '</strong>');
 		  $('#td_paid_pct').html('<strong>' + $('#percent_paid_display_val').val() + '</strong>');
 		  $('#td_remaining_pct').html('<strong>' + $('#percent_to_pay_from_orders_vat_included').val() + '</strong>');
-			 
+
 		  $('a[id^="a_account_payment_type"]').each(function () {
 			  let elem = 'hidden_'+$(this).attr('id').substring($(this).attr('id').indexOf('a_')+2);
 			  if($('#'+elem).val() == 'account')
@@ -537,9 +536,9 @@ $(document).ready(function() {
 		  $('#project_name_title').html("<span class='fontSize26 font-weight-bold font-family-david cursor-pointer'>פרוייקט "+$('#project_name_he').val()+"</span>");
 		  $('#title').html('<span class="fontSize25 font-weight-bold text-decoration-underline font-family-david">'+$('#s_name_he').val()+'</span><br/><span class="fontSize24 font-family-david">'+$('#sfow_name_he').val()+"</span><br/><span class='fontSize23 font-family-david'>סטטוס הזמנות ותשלומים</span>");
 		  $('#div_btns').css({"direction":"rtl"});
-		  $('#btn_add_order').html("<div class='alignCenter border-black borderRadius10 padding-4x-4y'><i class='fa-solid fa-plus colorGrey'></i><br/><strong class='fontSize13'>הזמנה</strong></div>"); 
-		  $('#btn_add_account').html("<div class='alignCenter border-black borderRadius10 padding-4x-4y'><i class='fa-solid fa-plus colorGrey'></i><br/><strong class='fontSize13'>חשבון</strong></div>");
-		  $('#btn_add_payment').html("<div class='alignCenter border-black borderRadius10 padding-4x-4y'><i class='fa-solid fa-plus colorGrey'></i><br/><strong class='fontSize13'>תשלום</strong></div>");
+		  $('#btn_add_order').html("<div class='alignCenter border-black borderRadius10 padding-4x-4y bgColorWhite'><i class='fa-solid fa-plus colorGrey'></i><br/><strong class='fontSize13'>הזמנה</strong></div>");
+		  $('#btn_add_account').html("<div class='alignCenter border-black borderRadius10 padding-4x-4y bgColorWhite'><i class='fa-solid fa-plus colorGrey'></i><br/><strong class='fontSize13'>חשבון</strong></div>");
+		  $('#btn_add_payment').html("<div class='alignCenter border-black borderRadius10 padding-4x-4y bgColorWhite'><i class='fa-solid fa-plus colorGrey'></i><br/><strong class='fontSize13'>תשלום</strong></div>");
 		  $('#div_title_orders_list').html('הזמנות');
 		  $('#div_title_orders_list').css({"text-align":"right","font-size":"22px"});
 		  $('#th_signature_date').html('תאריך <br/> חתימה');
@@ -575,9 +574,10 @@ $(document).ready(function() {
 		  $('#td_to_pay_label').html('<strong>לתשלום</strong>');
 		  $('#td_paid_label').html('<strong>שולם</strong>');
 		  $('#td_remaining_label').html('<strong>שאר לשלם</strong>');
+		  $('#td_to_pay_pct').html('<strong>' + $('#percent_pending_display_val').val() + '</strong>');
 		  $('#td_paid_pct').html('<strong>' + $('#percent_paid_display_val').val() + '</strong>');
 		  $('#td_remaining_pct').html('<strong>' + $('#percent_to_pay_from_orders_vat_included').val() + '</strong>');
-		  
+
 		   $('a[id^="a_account_payment_type"]').each(function () {
 			  let elem = 'hidden_'+$(this).attr('id').substring($(this).attr('id').indexOf('a_')+2);
 			  if($('#'+elem).val() == 'account')
@@ -607,6 +607,22 @@ function toSupplierPdfReport() {
 <style>
 tr:nth-of-type(even) {
   background-color: #dedede;
+}
+
+.payment-row {
+  background-color: #dcf1fa !important;
+}
+
+#lang {
+  border-radius: 8px;
+}
+
+#div_btns {
+  border-radius: 20px !important;
+}
+
+#th_date, #th_signature_date, #th_submit_date {
+  min-width: 85px;
 }
 
 .btn {
