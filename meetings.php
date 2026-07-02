@@ -4865,8 +4865,14 @@ $('#to_add_meeting_btn').click (function (e){
 [id^="td_pass_on_"] select,
 [id^="td_progress_status_"] select {
     border-radius: 10px;
-    border: 1px solid #bbb !important;
     background-color: #9ef7b6;
+}
+
+.row-darken [id^="td_task_"] select,
+.row-darken [id^="td_responsible_"] select,
+.row-darken [id^="td_pass_on_"] select,
+.row-darken [id^="td_progress_status_"] select {
+    border: 1px solid #bbb !important;
 }
 
 .btn {
