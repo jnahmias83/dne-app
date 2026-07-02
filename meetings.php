@@ -1753,7 +1753,7 @@ include 'menu_tasks.php';
 											$query->store_result();
 											$query = fetch_unique($query);
 											$pass_on = @$query->name;
-											$pass_on_bgcolor = '';
+											$pass_on_bgcolor = (@$is_colors && @$query->bgcolor) ? 'background-color:'.@$query->bgcolor : '';
 											
 											$task_creation_date_color = 'color:black';
 											if(@$is_colors && !empty($ids_rdv) && !empty($id_rdv_report) 
