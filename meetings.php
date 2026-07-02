@@ -485,6 +485,9 @@ if (!empty($_SESSION['meetings_forced_lang'])) {
 
 $_SESSION['filter_lang'] = $lang;
 
+// Langue des popups עריכה/שכפול : suit le choix dropdown de l'utilisateur si présent, sinon la langue du projet (jamais la langue spécifique à un rapport/RDV)
+$popup_lang = !empty($_SESSION['meetings_forced_lang']) ? $_SESSION['meetings_forced_lang'] : (!empty(@$project->lang) ? @$project->lang : 'HE');
+
 if(@$lang == 'HE'){
    $dir = 'rtl';
    $inverse_dir = 'ltr';
@@ -834,7 +837,7 @@ include 'menu_tasks.php';
 				<input type="hidden" id="destination_date_end" name="destination_date_end" value="<?=@$destination_date_end?>" />
 				<input type="hidden" id="columns_list" name="columns_list" value="<?=@$columns_list?>" />
 				<input type="hidden" id="lang" name="lang" value="<?=@$lang?>" />
-				<input type="hidden" id="project_lang" value="<?=!empty(@$project->lang)?@$project->lang:'HE'?>" />
+				<input type="hidden" id="project_lang" value="<?=@$popup_lang?>" />
 				<input type="hidden" id="is_images" name="is_images" value="<?=@$is_images?>" />
 				<input type="hidden" id="is_colors" name="is_colors" value="<?=@$is_colors?>" />
 				<input type="hidden" id="sql" name="sql" value="<?=@$sql?>" />
@@ -3014,7 +3017,7 @@ include 'menu_tasks.php';
            </div>
 		</div>
 		
-		<div class="modal fade <?=(!empty(@$project->lang) ? @$project->lang : 'HE')=='HE' ? 'dir-rtl' : ''?>" id="modalContinuousTask" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal fade <?=@$popup_lang=='HE' ? 'dir-rtl' : ''?>" id="modalContinuousTask" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -3024,16 +3027,16 @@ include 'menu_tasks.php';
 					<div class="modal-body">
 					    <div id="modalContent">
 					        <form class="alignCenter">
-						        <div class="marginTop15 fontSize18 alignCenter"><?=(!empty(@$project->lang)?@$project->lang:'HE')=='HE' ? 'בדרך ליצור עבורך משימת המשך לפני כן, תציין אם ברצונך לסמן סטטוס משימה כ:' : 'A continuation task will be created. Please select the status to apply to the current task:'?></div>
+						        <div class="marginTop15 fontSize18 alignCenter"><?=@$popup_lang=='HE' ? 'בדרך ליצור עבורך משימת המשך לפני כן, תציין אם ברצונך לסמן סטטוס משימה כ:' : 'A continuation task will be created. Please select the status to apply to the current task:'?></div>
 							    <div class="marginTop15 d-flex justify-content-center" style="gap:20px;">
 									<label style="cursor:pointer">
-										<input type="radio" id="done" name="progress_status" value="1" onclick="continuousTask($('#hidden_meeting_id').val(),'בוצע/נמסר',$('#hidden_iteration').val(),'fromMeetings')" />&nbsp;<?=(!empty(@$project->lang)?@$project->lang:'HE')=='HE' ? 'בוצע/נמסר' : 'Done/Delivered'?>
+										<input type="radio" id="done" name="progress_status" value="1" onclick="continuousTask($('#hidden_meeting_id').val(),'בוצע/נמסר',$('#hidden_iteration').val(),'fromMeetings')" />&nbsp;<?=@$popup_lang=='HE' ? 'בוצע/נמסר' : 'Done/Delivered'?>
 									</label>
 									<label style="cursor:pointer">
-										<input type="radio" id="archive" name="progress_status" value="2" onclick="continuousTask($('#hidden_meeting_id').val(),'ארכיון',$('#hidden_iteration').val(),'fromMeetings')" />&nbsp;<?=(!empty(@$project->lang)?@$project->lang:'HE')=='HE' ? 'ארכיון' : 'Archive'?>
+										<input type="radio" id="archive" name="progress_status" value="2" onclick="continuousTask($('#hidden_meeting_id').val(),'ארכיון',$('#hidden_iteration').val(),'fromMeetings')" />&nbsp;<?=@$popup_lang=='HE' ? 'ארכיון' : 'Archive'?>
 									</label>
 									<label style="cursor:pointer">
-										<input type="radio" id="no_change" name="progress_status" value="3" onclick="continuousTask($('#hidden_meeting_id').val(),'no_change',$('#hidden_iteration').val(),'fromMeetings')" />&nbsp;<?=(!empty(@$project->lang)?@$project->lang:'HE')=='HE' ? 'ללא שינוי' : 'No change'?>
+										<input type="radio" id="no_change" name="progress_status" value="3" onclick="continuousTask($('#hidden_meeting_id').val(),'no_change',$('#hidden_iteration').val(),'fromMeetings')" />&nbsp;<?=@$popup_lang=='HE' ? 'ללא שינוי' : 'No change'?>
 									</label>
 							    </div>
 						    </form>
@@ -3057,7 +3060,7 @@ include 'menu_tasks.php';
             </div>
 		</div>
 		
-		<?php $_pl = !empty(@$project->lang) ? @$project->lang : 'HE'; $_pd = ($_pl=='HE') ? 'rtl' : 'ltr'; ?>
+		<?php $_pl = !empty(@$popup_lang) ? @$popup_lang : 'HE'; $_pd = ($_pl=='HE') ? 'rtl' : 'ltr'; ?>
 		<div class="modal fade <?=($_pl=='HE') ? 'dir-rtl' : ''?>" id="modalUpdateTask" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
 				<div class="modal-content">
@@ -3423,7 +3426,7 @@ $(document).ready(function(){
 
 	$('#modalTaskTracking').on('shown.bs.modal', function(){
 		$('#new_remark').focus();
-		var lang = $('#lang').val();
+		var lang = $('#project_lang').val();
 		if (lang === 'HE') { $('#new_remark_tracking_he').trigger('click'); }
 		else { $('#new_remark_tracking_en').trigger('click'); }
 	});
@@ -3953,7 +3956,7 @@ $(document).ready(function(){
 		$('#modalTaskFollowupActions').one('hidden.bs.modal', function(){
 			$('[name="progress_status"]').prop('checked', false).prop('disabled', false);
 			$('#modalContinuousTask').modal('show');
-			$('#modalContinuousTask .modal-title').html('המשך');
+			$('#modalContinuousTask .modal-title').html($('#project_lang').val() == 'HE' ? 'המשך' : 'Continue');
 		});
 		$('#modalTaskFollowupActions').modal('hide');
 	});
