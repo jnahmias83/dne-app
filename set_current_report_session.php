@@ -34,8 +34,6 @@ $_SESSION['filter_lang'] = '';
 $_SESSION['filter_period_new_tasks'] = 'empty';
 $_SESSION['filter_columns_list'] = '';
 
-$_SESSION['meetings_forced_lang'] = '';
-
 if(@$_POST['rdv_override'] && @$_POST['id_custom_report']){
 	$v_is_images = (int)$_POST['is_images'];
 	$v_is_colors = (int)$_POST['is_colors'];
