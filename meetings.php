@@ -4984,6 +4984,14 @@ td {
     background-color: transparent !important;
 }
 
+.row-darken td .badge-circle {
+    background-color: #333 !important;
+}
+
+.row-darken td .badge-circle-track {
+    background-color: #e53935 !important;
+}
+
 td[id^="td_description_"] > div,
 td[id^="td_subject_"] > div,
 td[id^="td_area_"] > div {
