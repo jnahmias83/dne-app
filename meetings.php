@@ -1252,11 +1252,11 @@ include 'menu_tasks.php';
 									<?php }
 									
 									if(in_array('task creation',$columns_list_array)){ ?>   
-								       <th class="<?php if(end($columns_list_array) == "task creation") echo $border_cell_table_end;?> border-top-white no-border-inline-end alignCenter" width="<?=$w_task_cr?>%"><?=@$task_creation_date_label?></th>
+								       <th class="<?php if(end($columns_list_array) == "task creation") echo $border_cell_table_end;?> border-top-white no-border-inline-end alignCenter" width="<?=$w_task_cr?>%" style="min-width:60px;"><?=@$task_creation_date_label?></th>
 									<?php }
 									
 									if(in_array('destination date',$columns_list_array)) { ?>   
-									   <th class="<?php if(end($columns_list_array) == "destination date") echo $border_cell_table_end;?> border-top-white no-border-inline-end alignCenter" width="<?=$w_dest?>%"><?=@$target_date_label?></th>
+									   <th class="<?php if(end($columns_list_array) == "destination date") echo $border_cell_table_end;?> border-top-white no-border-inline-end alignCenter" width="<?=$w_dest?>%" style="min-width:60px;"><?=@$target_date_label?></th>
 									<?php }
 									
 									if(in_array('progress status',$columns_list_array)){ ?>   
