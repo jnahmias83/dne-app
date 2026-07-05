@@ -5015,6 +5015,14 @@ td[id^="td_area_"] > div {
     width: 100%;
 }
 
+#meetings_table td[id^="td_count_"] {
+    width: 80px !important;
+    max-width: 80px !important;
+    min-width: 80px !important;
+    overflow: hidden !important;
+    padding: 2px !important;
+}
+
 #meetings_table td {
     word-wrap: break-word;
     overflow-wrap: break-word;
