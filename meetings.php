@@ -1194,12 +1194,12 @@ include 'menu_tasks.php';
 						    $fixed = [
 						        'subject'          => 10,
 						        'area'             => 10,
-						        '_task'            => 10,
+						        '_task'            => 6,
 						        'task creation'    => 6,
 						        'destination date' => 6,
-						        'progress status'  => 8,
-						        'responsible'      => 11,
-						        'pass on'          => 10,
+						        'progress status'  => 6,
+						        'responsible'      => 6,
+						        'pass on'          => 6,
 						    ];
 						    $fixed_sum = $w_first;
 						    foreach ($columns_list_array as $col) {
