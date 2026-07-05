@@ -1218,10 +1218,10 @@ include 'menu_tasks.php';
 						    ?>
 					    <table id="meetings_table" class="rounded-table" border="1">
 								<tr class="bgColor-f2f6f9 height50">
-									<th class="border-top-white <?=@$border_cell_table_start?> no-border-right alignCenter" width="30px">
+									<th class="border-top-white <?=@$border_cell_table_start?> no-border-right alignCenter" style="width:30px;">
 										<a class="text-decoration-underline cursor-pointer" onclick="location.href='chapters.php?project_id=<?=@$project_id?>'"><img id="img_plus_rdv" src="images/plus-icon.png" width="18" height="18" alt="plus icon" /></a>
 									</th>
-									<th class="border-top-white no-border-right alignCenter" width="80px"></th>
+									<th class="border-top-white no-border-right alignCenter" style="width:80px;"></th>
 
 									<?php if(in_array('subject',$columns_list_array)){ ?>
 									    <th class="<?php if(end($columns_list_array) == "subject") echo $border_cell_table_end;?> border-top-white no-border-inline-end alignCenter" width="<?=$w_subject?>%"><?=@$subject_label?></th>
