@@ -1961,13 +1961,13 @@ include 'menu_tasks.php';
 												<?php } 
 												
 												if(in_array('task creation',$columns_list_array)){ ?>
-													<td id="td_task_creation_date_<?=@$meeting_id?>" class="<?php if(end($columns_list_array) == "task creation") echo $border_cell_table_end;?> cursor-pointer alignCenter" style="<?=@$task_creation_date_bgcolor?>">
+													<td id="td_task_creation_date_<?=@$meeting_id?>" class="<?php if(end($columns_list_array) == "task creation") echo $border_cell_table_end;?> cursor-pointer alignCenter" style="text-align:center;<?=@$task_creation_date_bgcolor?>">
 														<input type="text" id="task_creation_date_<?=@$meeting_id?>" name="task_creation_date_<?=@$meeting_id?>" class="fontSize13 border-none width60 cursor-pointer alignCenter" style="direction:<?=@$dir?>;<?=@$task_creation_date_color?>;<?=@$task_creation_date_bgcolor?>;" value="<?=smartDate(@$task_creation_date, $lang)?>" data-meetingid="<?=@$meeting_id?>" data-iteration=<?=@$iteration?> data-taskcreationdate="<?=@$task_creation_date?>" />
 													</td>
 												<?php }
 												
 												if(in_array('destination date',$columns_list_array)){ ?>
-													<td id="td_destination_date_<?=@$meeting_id?>" class="<?php if(end($columns_list_array) == "destination date") echo $border_cell_table_end;?> cursor-pointer alignCenter" style="<?=@$text_align?>;<?=@$padding?>:5px;<?=@$dest_date_color?>;<?=@$dest_date_bgcolor?>;">			
+													<td id="td_destination_date_<?=@$meeting_id?>" class="<?php if(end($columns_list_array) == "destination date") echo $border_cell_table_end;?> cursor-pointer alignCenter" style="text-align:center;<?=@$padding?>:5px;<?=@$dest_date_color?>;<?=@$dest_date_bgcolor?>;">
 													   <input type="text" id="destination_date_<?=@$meeting_id?>" name="destination_date_<?=@$meeting_id?>" class="fontSize13 border-none width60 cursor-pointer alignCenter" style="direction:<?=@$dir?>;<?=@$dest_date_color?>;<?=@$dest_date_bgcolor?>;" value="<?=smartDate(@$destination_date, $lang)?>" data-meetingid="<?=@$meeting_id?>" data-iteration="<?=@$iteration?>" data-chapter="<?=@$chapter_name?>" data-name="<?=@$subject?>" data-area="<?=@$area?>" data-destinationdate="<?=@$destination_date?>" />
 													</td>
 												<?php }
