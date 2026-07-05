@@ -485,6 +485,9 @@ if (!empty($_SESSION['meetings_forced_lang'])) {
 
 $_SESSION['filter_lang'] = $lang;
 
+// Langue des popups עריכה/שכפול : suit le choix dropdown de l'utilisateur si présent, sinon la langue du projet (jamais la langue spécifique à un rapport/RDV)
+$popup_lang = !empty($_SESSION['meetings_forced_lang']) ? $_SESSION['meetings_forced_lang'] : (!empty(@$project->lang) ? @$project->lang : 'HE');
+
 if(@$lang == 'HE'){
    $dir = 'rtl';
    $inverse_dir = 'ltr';
@@ -834,7 +837,7 @@ include 'menu_tasks.php';
 				<input type="hidden" id="destination_date_end" name="destination_date_end" value="<?=@$destination_date_end?>" />
 				<input type="hidden" id="columns_list" name="columns_list" value="<?=@$columns_list?>" />
 				<input type="hidden" id="lang" name="lang" value="<?=@$lang?>" />
-				<input type="hidden" id="project_lang" value="<?=!empty(@$project->lang)?@$project->lang:'HE'?>" />
+				<input type="hidden" id="project_lang" value="<?=@$popup_lang?>" />
 				<input type="hidden" id="is_images" name="is_images" value="<?=@$is_images?>" />
 				<input type="hidden" id="is_colors" name="is_colors" value="<?=@$is_colors?>" />
 				<input type="hidden" id="sql" name="sql" value="<?=@$sql?>" />
@@ -1670,8 +1673,8 @@ include 'menu_tasks.php';
 																  . (@$tracking_data != '' ? " <span class='colorRed ".(@$lang=='HE' ? 'dir-rtl' : 'dir-ltr')." unicode-bidi-embed'>".@$tracking_data."</span>" : "")
 																  . "</div>";
 												}
-											}											
-											
+											}
+
 											if(@$image1_width > 0 && @$image1_height > 0){
 												$original_width = @$image1_width;
 												$original_height = @$image1_height;
@@ -2250,8 +2253,8 @@ include 'menu_tasks.php';
 																	  . (@$tracking_data != '' ? " <span class='colorRed ".(@$lang=='HE' ? 'dir-rtl' : 'dir-ltr')." unicode-bidi-embed'>".@$tracking_data."</span>" : "")
 																	  . "</div>";
 													}
-												}																	
-												
+												}
+
 												if(@$image1_width > 0 && @$image1_height > 0) {
 													$original_width = @$image1_width;
 													$original_height = @$image1_height;
@@ -3014,7 +3017,7 @@ include 'menu_tasks.php';
            </div>
 		</div>
 		
-		<div class="modal fade <?=(!empty(@$project->lang) ? @$project->lang : 'HE')=='HE' ? 'dir-rtl' : ''?>" id="modalContinuousTask" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal fade <?=@$popup_lang=='HE' ? 'dir-rtl' : ''?>" id="modalContinuousTask" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -3024,16 +3027,16 @@ include 'menu_tasks.php';
 					<div class="modal-body">
 					    <div id="modalContent">
 					        <form class="alignCenter">
-						        <div class="marginTop15 fontSize18 alignCenter"><?=(!empty(@$project->lang)?@$project->lang:'HE')=='HE' ? 'בדרך ליצור עבורך משימת המשך לפני כן, תציין אם ברצונך לסמן סטטוס משימה כ:' : 'A continuation task will be created. Please select the status to apply to the current task:'?></div>
+						        <div class="marginTop15 fontSize18 alignCenter"><?=@$popup_lang=='HE' ? 'בדרך ליצור עבורך משימת המשך לפני כן, תציין אם ברצונך לסמן סטטוס משימה כ:' : 'A continuation task will be created. Please select the status to apply to the current task:'?></div>
 							    <div class="marginTop15 d-flex justify-content-center" style="gap:20px;">
 									<label style="cursor:pointer">
-										<input type="radio" id="done" name="progress_status" value="1" onclick="continuousTask($('#hidden_meeting_id').val(),'בוצע/נמסר',$('#hidden_iteration').val(),'fromMeetings')" />&nbsp;<?=(!empty(@$project->lang)?@$project->lang:'HE')=='HE' ? 'בוצע/נמסר' : 'Done/Delivered'?>
+										<input type="radio" id="done" name="progress_status" value="1" onclick="continuousTask($('#hidden_meeting_id').val(),'בוצע/נמסר',$('#hidden_iteration').val(),'fromMeetings')" />&nbsp;<?=@$popup_lang=='HE' ? 'בוצע/נמסר' : 'Done/Delivered'?>
 									</label>
 									<label style="cursor:pointer">
-										<input type="radio" id="archive" name="progress_status" value="2" onclick="continuousTask($('#hidden_meeting_id').val(),'ארכיון',$('#hidden_iteration').val(),'fromMeetings')" />&nbsp;<?=(!empty(@$project->lang)?@$project->lang:'HE')=='HE' ? 'ארכיון' : 'Archive'?>
+										<input type="radio" id="archive" name="progress_status" value="2" onclick="continuousTask($('#hidden_meeting_id').val(),'ארכיון',$('#hidden_iteration').val(),'fromMeetings')" />&nbsp;<?=@$popup_lang=='HE' ? 'ארכיון' : 'Archive'?>
 									</label>
 									<label style="cursor:pointer">
-										<input type="radio" id="no_change" name="progress_status" value="3" onclick="continuousTask($('#hidden_meeting_id').val(),'no_change',$('#hidden_iteration').val(),'fromMeetings')" />&nbsp;<?=(!empty(@$project->lang)?@$project->lang:'HE')=='HE' ? 'ללא שינוי' : 'No change'?>
+										<input type="radio" id="no_change" name="progress_status" value="3" onclick="continuousTask($('#hidden_meeting_id').val(),'no_change',$('#hidden_iteration').val(),'fromMeetings')" />&nbsp;<?=@$popup_lang=='HE' ? 'ללא שינוי' : 'No change'?>
 									</label>
 							    </div>
 						    </form>
@@ -3057,7 +3060,7 @@ include 'menu_tasks.php';
             </div>
 		</div>
 		
-		<?php $_pl = !empty(@$project->lang) ? @$project->lang : 'HE'; $_pd = ($_pl=='HE') ? 'rtl' : 'ltr'; ?>
+		<?php $_pl = !empty(@$popup_lang) ? @$popup_lang : 'HE'; $_pd = ($_pl=='HE') ? 'rtl' : 'ltr'; ?>
 		<div class="modal fade <?=($_pl=='HE') ? 'dir-rtl' : ''?>" id="modalUpdateTask" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
 				<div class="modal-content">
@@ -3130,15 +3133,19 @@ include 'menu_tasks.php';
 					    <div id="modalContent">
 					        <div class="container">
 								<form>
-								    <div class='marginTop5 subtitle color-19bf42 fontSize18 font-weight-bold alignCenter'></div>
-								<div class="row marginTop5">
-									<div class="col-4 p-2 text-center">
-										<div class="fw-bold fontSize13 marginBottom5">אחראי מעקב</div>
-										<i class="fa fa-user" style="font-size:20px;"></i>
-										<div class="fw-bold fontSize13 marginTop15 marginBottom5">תזכורת מעקב</div>
-										<img src="images/bell-solid.svg" width="20" height="20" />
+								<div class="row" dir="rtl">
+									<div class="col-2"></div>
+									<div class="col-10">
+										<div class='marginTop5 subtitle color-19bf42 fontSize18 font-weight-bold alignCenter'></div>
 									</div>
-									<div class="col-8 p-2 text-end">
+								</div>
+
+								<div class="row marginTop5" dir="rtl">
+									<div class="col-2 p-2 text-center d-flex flex-column align-items-center justify-content-center">
+										<div class="fw-bold fontSize13 marginBottom5 text-nowrap">אחראי מעקב</div>
+										<i class="fa fa-user" style="font-size:20px;"></i>
+									</div>
+									<div class="col-10 p-2 text-end d-flex flex-column justify-content-center align-items-center">
 										<select id="users" class="paddingRight8 fontSize13 marginBottom10">
 											<option value="0">--בחר משתמש--</option>
 											<?php foreach($active_users as $item){ ?>
@@ -3147,7 +3154,16 @@ include 'menu_tasks.php';
 												</option>
 											<?php } ?>
 										</select>
-										<div class="row align-items-center justify-content-start marginTop5" dir="rtl">
+									</div>
+								</div>
+
+								<div class="row marginTop5" dir="rtl">
+									<div class="col-2 p-2 text-center d-flex flex-column align-items-center justify-content-center">
+										<div class="fw-bold fontSize13 marginBottom5 text-nowrap">תזכורת מעקב</div>
+										<img src="images/bell-solid.svg" width="20" height="20" />
+									</div>
+									<div class="col-10 p-2 text-end d-flex flex-column justify-content-center align-items-center">
+										<div class="row align-items-center justify-content-start" dir="rtl">
 											<div class="col-auto fontSize13 text-end">
 												<div><input type="radio" id="not_reminders" name="set_reminder_date_radio" value="0" onclick="setReminderDate(this.value)"> בלי תזכורת</div>
 												<div><input type="radio" id="reminder_after_three_days" name="set_reminder_date_radio" value="2" onclick="setReminderDate(this.value)"> בעוד 3 ימים</div>
@@ -3163,38 +3179,46 @@ include 'menu_tasks.php';
 									</div>
 								</div>
 
-								<div id="task_active_remarks_tracking"></div>
+								<div class="row" dir="rtl">
+									<div class="col-2"></div>
+									<div class="col-10">
+										<div id="task_active_remarks_tracking"></div>
+									</div>
+								</div>
 
 								<div class="row marginTop5" dir="rtl">
-									<div class="col-2" style="padding-top:26px; text-align:right;">
+									<div class="col-2 p-2 text-center d-flex flex-column align-items-center justify-content-center">
 										<div class="fw-bold fontSize13 marginBottom5">עדכון</div>
 										<img src="images/edit-button.svg" width="20" height="20" />
 									</div>
-									<div class="col-10 ps-1 pe-2">
-										<div class="d-flex justify-content-between marginBottom5">
+									<div class="col-10 ps-1 pe-2 d-flex flex-column justify-content-center align-items-center">
+										<div class="d-flex justify-content-between marginBottom5 w-100">
 											<div><a class="text-decoration-none cursor-pointer" onclick="$('#new_remark').html('')">Clear</a></div>
 											<div>
 												<a id="new_remark_tracking_en" class="text-decoration-none cursor-pointer" onclick="$('#new_remark').css({'direction':'ltr','padding-left':'5px','padding-right':'0','text-align':'left'});$(this).css('font-weight','bold');$('#new_remark_tracking_he').css('font-weight','normal');">EN</a>&nbsp;|
 												<a id="new_remark_tracking_he" class="text-decoration-none cursor-pointer" onclick="$('#new_remark').css({'direction':'rtl','padding-right':'5px','padding-left':'0','text-align':'right'});$(this).css('font-weight','bold');$('#new_remark_tracking_en').css('font-weight','normal');">ע</a>
 											</div>
 										</div>
-										<div class="bgColorWhite cursor-pointer border-black overflow-y-scroll dir-rtl w-100" style="padding:4px 8px; min-height:60px;">
+										<div class="bgColorWhite cursor-pointer border-black overflow-y-scroll dir-rtl w-100" style="padding:5px 8px; min-height:20px;">
 											<div name="new_remark" id="new_remark" contenteditable="true" class="editable red cursor-pointer" data-placeholder="ניתן להוסיף כאן הערה"></div>
 										</div>
 									</div>
 								</div>
 
-								<div class="marginTop15 d-flex justify-content-center gap-3">
-									<button type="button" class="btn font-weight-bold px-3" style="background-color:#1a5276; color:white;"
-											onclick="fillLogTaskTracking($('#hidden_meeting_id').val(),$('#hidden_iteration').val(),'for_closing',1)">
-										<i class="fas fa-bullseye" style="color:#e74c3c;"></i> שמור מעקב
-									</button>
-									<button type="button" class="btn font-weight-bold px-3 bg-dark text-white"
-											onclick="fillLogTaskTracking($('#hidden_meeting_id').val(),$('#hidden_iteration').val(),'for_closing',0)">
-										<i class="fas fa-bullseye" style="color:#95a5a6;"></i> בטל מעקב
-									</button>
-									<input type="button" class="btn bg-dark text-white font-weight-bold px-3" value="בטל"
-										   onclick="hidePopup('modalTaskTracking',$('#hidden_iteration').val(),$('#hidden_meeting_id').val(),'fromMeetings')" />
+								<div class="row marginTop15" dir="rtl">
+									<div class="col-2"></div>
+									<div class="col-10 d-flex justify-content-center gap-3">
+										<button type="button" class="btn font-weight-bold px-3 text-nowrap" style="background-color:#1a5276; color:white;"
+												onclick="fillLogTaskTracking($('#hidden_meeting_id').val(),$('#hidden_iteration').val(),'for_closing',1)">
+											<i class="fas fa-bullseye" style="color:#e74c3c;"></i> שמור מעקב
+										</button>
+										<button type="button" class="btn font-weight-bold px-3 bg-dark text-white text-nowrap"
+												onclick="fillLogTaskTracking($('#hidden_meeting_id').val(),$('#hidden_iteration').val(),'for_closing',0)">
+											<i class="fas fa-bullseye" style="color:#95a5a6;"></i> בטל מעקב
+										</button>
+										<input type="button" class="btn bg-dark text-white font-weight-bold px-3" value="סגור"
+											   onclick="hidePopup('modalTaskTracking',$('#hidden_iteration').val(),$('#hidden_meeting_id').val(),'fromMeetings')" />
+									</div>
 								</div>
 
 								</form>
@@ -3423,7 +3447,7 @@ $(document).ready(function(){
 
 	$('#modalTaskTracking').on('shown.bs.modal', function(){
 		$('#new_remark').focus();
-		var lang = $('#lang').val();
+		var lang = $('#project_lang').val();
 		if (lang === 'HE') { $('#new_remark_tracking_he').trigger('click'); }
 		else { $('#new_remark_tracking_en').trigger('click'); }
 	});
@@ -3740,6 +3764,7 @@ $(document).ready(function(){
 	   meeting_id = $(this).data('meetingid');
 	   iteration = $(this).data('iteration');
 	   task_creation_date = $(this).data('taskcreationdate');
+	   $('#modalTaskCreationDate .modal-title').html('');
 	   $('#popup_task_creation_date').val(task_creation_date);
 	   $('#modalContent').append("<input type='hidden' id='hidden_meeting_id' value='"+meeting_id+"'><input type='hidden' id='hidden_iteration' value='"+iteration+"'><input type='hidden' id='hidden_task_creation_date' value='"+task_creation_date+"'>");
 	   $('#modalTaskCreationDate').modal('show');
@@ -3953,7 +3978,7 @@ $(document).ready(function(){
 		$('#modalTaskFollowupActions').one('hidden.bs.modal', function(){
 			$('[name="progress_status"]').prop('checked', false).prop('disabled', false);
 			$('#modalContinuousTask').modal('show');
-			$('#modalContinuousTask .modal-title').html('המשך');
+			$('#modalContinuousTask .modal-title').html($('#project_lang').val() == 'HE' ? 'המשך' : 'Continue');
 		});
 		$('#modalTaskFollowupActions').modal('hide');
 	});
@@ -4865,7 +4890,6 @@ $('#to_add_meeting_btn').click (function (e){
 [id^="td_pass_on_"] select,
 [id^="td_progress_status_"] select {
     border-radius: 10px;
-    background-color: #9ef7b6;
 }
 
 .row-darken [id^="td_task_"] select,
@@ -4873,6 +4897,7 @@ $('#to_add_meeting_btn').click (function (e){
 .row-darken [id^="td_pass_on_"] select,
 .row-darken [id^="td_progress_status_"] select {
     border: 1px solid #bbb !important;
+    background-color: #9ef7b6;
 }
 
 .btn {
@@ -4891,6 +4916,14 @@ tr.task-row-highlight td {
 
 tr.task-row-highlight td *:not(select) {
     background-color: transparent !important;
+}
+
+tr.task-row-highlight td .badge-circle {
+    background-color: #333 !important;
+}
+
+tr.task-row-highlight td .badge-circle-track {
+    background-color: #e53935 !important;
 }
 
 .modal [contenteditable="true"],

@@ -66,40 +66,24 @@ else {
 if(@$_POST['isTracking'] == 1){
 	if($log_meeting_tracking_num_rows > 0){	
 		$content =	"<div class='marginTop5 fontSize13 color-349feb font-weight-bold alignCenter'>עדכונים</div>";
-		$content .= "<div class='margin-10-x-auto max-height-180 overflow-x-hidden overflow-y-scroll'>";		
-	
+		$content .= "<div class='margin-10-x-auto max-height-180 overflow-x-hidden overflow-y-scroll'>";
+
 		foreach(@$log_meeting_tracking as $item){
-			$id_track_responsible = @$item->id_track_responsible;
-			$query = $mysqli->prepare("SELECT nickname FROM dne_users WHERE id = ?");
-			$query->bind_param('i',$item->id_track_responsible);	
-			$query->execute(); 
-			$query->store_result();
-			$track_responsible = fetch_unique($query);
-			$track_responsible_name = @$track_responsible->nickname;
-			
-            if($item->reminder_date != '0000-00-00' || @$track_responsible_name != '')
-				$tracking_data = '(';
-											
-			if($item->reminder_date != '0000-00-00')
-				$tracking_data .= smartDate($item->reminder_date, @$_POST['lang']);
-			
-			if($item->reminder_date != '0000-00-00' && $track_responsible_name != '')
-				$tracking_data .= ',';
-			
-			if(@$track_responsible_name != '')
-				$tracking_data .= @$track_responsible_name;
-			
-			if($item->reminder_date != '0000-00-00' || @$track_responsible_name != '')
-				$tracking_data .= ')';	   
-			
-			$content .= "<div class='flex marginTop10 width100Percents' >";
+			if(@$item->remark == '')
+				$tracking_remark = 'מעקב';
+			else
+				$tracking_remark = @$item->remark;
+
+			$tracking_initials = mb_strtoupper(mb_substr(@$item->user_nickname, 0, 2, 'UTF-8'));
+
+			$content .= "<div class='flex marginTop10 width100Percents'>";
 			$content .=      "<div class='width30 paddingTop5'>";
 			$content .=           "<input type='checkbox' id='log_meeting_tracking_{$item->id}' name='log_meeting_tracking[]' value='{$item->id}' onclick=\"setTextColor('div_log_meeting_tracking_{$item->id}',this,'colorRed')\" />";
 			$content .=      "</div>";
-			$content .=      "<div id='div_log_meeting_tracking_{$item->id}' class='".@$padding." fontSize13 width90Percents colorGrey border-black ".$align."'>";      
-			$content .=           "<span class='dir-rtl unicode-bidi-embed'>[".smartDate(@$item->action_date, @$_POST['lang'])."]</span> <span class='dir-rtl unicode-bidi-embed'>".@$item->user_nickname."</span>";
-			$content .= " - <span class='dir-rtl unicode-bidi-embed'>מעקב</span>";						
-			$content .= " : <span class='dir-rtl unicode-bidi-embed display-inline-block'>".html_entity_decode(@$item->remark)."</span> <span class='dir-rtl unicode-bidi-embed'>".@$tracking_data."</span>					         
+			$content .=      "<div id='div_log_meeting_tracking_{$item->id}' class='".@$padding." fontSize13 width90Percents colorGrey border-black ".$align." display-block' style='line-height:1.8; padding:5px;'>";
+			$content .=           "<span class='badge-circle' style='display:inline-flex;background-color:#333;width:15px;height:15px;font-size:8px;vertical-align:middle;'>".$tracking_initials."</span>";
+			$content .=           " <span class='dir-rtl unicode-bidi-embed' style='vertical-align:top;'>".smartDate(@$item->action_date, @$_POST['lang'])."</span>";
+			$content .= " : <span class='dir-rtl unicode-bidi-embed'>".html_entity_decode(@$tracking_remark)."</span>
 			              </div></div>";
 		}
 
@@ -132,14 +116,17 @@ else {
 				$content .=      "</div>";
 			}
 				
-			$content .=   "<div id='div_log_meeting_updates_{$item->id}' class='".@$padding." fontSize13 width90Percents colorGrey border-black ".@$align."'>";      
-			$content .=   "<span class='dir-rtl unicode-bidi-embed'>[".smartDate(@$item->action_date, @$_POST['lang'])."]</span> <span class='dir-rtl unicode-bidi-embed'>".@$item->user_nickname."</span>";
-			
+			$update_initials = mb_strtoupper(mb_substr(@$item->user_nickname, 0, 2, 'UTF-8'));
+
+			$content .=   "<div id='div_log_meeting_updates_{$item->id}' class='".@$padding." fontSize13 width90Percents colorGrey border-black ".@$align." display-block' style='line-height:1.8; padding:5px;'>";
+			$content .=   "<span class='badge-circle' style='display:inline-flex;background-color:#333;width:15px;height:15px;font-size:8px;vertical-align:middle;'>".$update_initials."</span>";
+			$content .=   " <span class='dir-rtl unicode-bidi-embed' style='vertical-align:top;'>".smartDate(@$item->action_date, @$_POST['lang'])."</span>";
+
 			if(preg_match('/\p{L}/u', $progress_status)){
 				$content .= " - <span class='dir-rtl unicode-bidi-embed'>".@$progress_status."</span>";
-			}				 
-							 
-			$content .=  " : <span class='dir-rtl unicode-bidi-embed display-inline-block'>".html_entity_decode(@$item->remark)."</span>	          								         
+			}
+
+			$content .=  " : <span class='dir-rtl unicode-bidi-embed display-inline-block'>".html_entity_decode(@$item->remark)."</span>
 			              </div></div>";
 		}
 
