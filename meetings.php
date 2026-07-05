@@ -1217,11 +1217,16 @@ include 'menu_tasks.php';
 						    $w_desc        = in_array('description', $columns_list_array) ? max(12, 100 - $fixed_sum) : 0;
 						    ?>
 					    <table id="meetings_table" class="rounded-table" border="1">
+					    <colgroup>
+					        <col style="width:30px;">
+					        <col style="width:80px;">
+					    </colgroup>
 								<tr class="bgColor-f2f6f9 height50">
-									<th class="border-top-white <?=@$border_cell_table_start?> no-border-right alignCenter" colspan="2" width="<?=$w_first?>%">
+									<th class="border-top-white <?=@$border_cell_table_start?> no-border-right alignCenter" style="width:30px;">
 										<a class="text-decoration-underline cursor-pointer" onclick="location.href='chapters.php?project_id=<?=@$project_id?>'"><img id="img_plus_rdv" src="images/plus-icon.png" width="18" height="18" alt="plus icon" /></a>
 									</th>
-									
+									<th id="th_count" class="border-top-white no-border-right alignCenter" style="width:80px;"></th>
+
 									<?php if(in_array('subject',$columns_list_array)){ ?>
 									    <th class="<?php if(end($columns_list_array) == "subject") echo $border_cell_table_end;?> border-top-white no-border-inline-end alignCenter" width="<?=$w_subject?>%"><?=@$subject_label?></th>
 									<?php } 
@@ -1874,15 +1879,15 @@ include 'menu_tasks.php';
 											    <td id="td_cbx_meetings_to_update_<?=@$meeting_id?>" class="alignCenter <?=@$border_cell_table_start?> <?=@$border_cell_cbx?>" style="<?=@$td_count_bgcolor?>">
 												    <input type="checkbox" id="meetings_to_update_cbx_<?=@$meeting_id?>" name="meetings_to_update_cbx[]" class="meetings_to_update_cbx" value="<?=@$meeting_id?>" />	
 												</td>
-												<td id="td_count_<?=@$meeting_id?>" class="alignCenter <?=@$border_cell_number?>" style="<?=@$td_count_bgcolor?>">
-													<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;height:100%;width:100%;">
-														<a id="task_actions_<?=@$meeting_id?>" data-projectid="<?=@$project_id?>" data-lang="<?=@$lang?>" data-meetingid="<?=@$meeting_id?>" data-iteration=<?=@$iteration?> data-userid="<?=@$user_id?>" data-ispriority="<?=@$is_priority?>" data-remark="<?=@$remark?>" data-chapter="<?=@$chapter_name?>" data-name="<?=@$subject?>" data-area="<?=@$area?>" data-recipient="<?=@$responsible_email?>" data-responsibleid="<?=@$responsible_id?>" data-destinationdate="<?=@$destination_date?>" data-progresstatusid="<?=@$progress_status_id?>" data-trackresponsibleid="<?=@$id_track_responsible?>" data-tracktype="<?=@$track_type?>" data-reminderdate="<?=@$reminder_date?>" data-remindertime="<?=@$reminder_time?>" class="text-decoration-none cursor-pointer fontSize12 padding-7x-3y font-weight-bold borderRadius10" style="<?=@$num_bgcolor?>!important;<?=@$num_border_color?>;display:inline-block;"><?=@$count?></a><?php if(@$track_type && @$track_responsible_name != ''): ?><span class="badge-circle badge-circle-track" style="background-color:#e53935;width:18px;height:18px;font-size:9px;display:inline-flex;align-items:center;justify-content:center;box-shadow:none;margin-bottom:4px;" title="<?=htmlspecialchars(@$track_responsible_name)?>"><?=mb_strtoupper(mb_substr(@$track_responsible_name, 0, 2, 'UTF-8'))?></span><?php endif; ?>
+												<td id="td_count_<?=@$meeting_id?>" class="alignCenter <?=@$border_cell_number?>" style="<?=@$td_count_bgcolor?>;">
+													<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;height:100%;width:80px;max-width:80px;overflow:hidden;box-sizing:border-box;margin:0 auto;">
+														<a id="task_actions_<?=@$meeting_id?>" data-projectid="<?=@$project_id?>" data-lang="<?=@$lang?>" data-meetingid="<?=@$meeting_id?>" data-iteration=<?=@$iteration?> data-userid="<?=@$user_id?>" data-ispriority="<?=@$is_priority?>" data-remark="<?=@$remark?>" data-chapter="<?=@$chapter_name?>" data-name="<?=@$subject?>" data-area="<?=@$area?>" data-recipient="<?=@$responsible_email?>" data-responsibleid="<?=@$responsible_id?>" data-destinationdate="<?=@$destination_date?>" data-progresstatusid="<?=@$progress_status_id?>" data-trackresponsibleid="<?=@$id_track_responsible?>" data-tracktype="<?=@$track_type?>" data-reminderdate="<?=@$reminder_date?>" data-remindertime="<?=@$reminder_time?>" class="text-decoration-none cursor-pointer fontSize12 padding-7x-3y font-weight-bold borderRadius10" style="<?=@$num_bgcolor?>!important;<?=@$num_border_color?>;display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;box-sizing:border-box;"><?=@$count?></a><?php if(@$track_type && @$track_responsible_name != ''): ?><span class="badge-circle badge-circle-track" style="background-color:#e53935;width:18px;height:18px;font-size:9px;display:inline-flex;align-items:center;justify-content:center;box-shadow:none;margin-bottom:4px;" title="<?=htmlspecialchars(@$track_responsible_name)?>"><?=mb_strtoupper(mb_substr(@$track_responsible_name, 0, 2, 'UTF-8'))?></span><?php endif; ?>
 													</div>
 												</td>
 												
 												<?php if(in_array('subject',$columns_list_array)){ ?>
 													<td id="td_subject_<?=@$meeting_id?>" class="<?php if(end($columns_list_array) == "subject") echo $border_cell_table_end;?>" style="<?=@$text_align?>;<?=@$padding?>:5px;<?=@$subject_bgcolor?>;">
-														<div class="height-auto fontSize12 cursor-pointer overflow-y-scroll" id="subject_<?=@$meeting_id?>" name="subject_<?=@$meeting_id?>" style="direction:<?=@$dir?>;width:100%;<?=@$padding?>:5px;<?=@$subject_bgcolor?>;" contenteditable="true" onblur="setData(<?=@$meeting_id?>,<?=@$iteration?>,'subject',0,0,'screen');">
+														<div class="height-auto fontSize12 cursor-pointer overflow-y-scroll" id="subject_<?=@$meeting_id?>" name="subject_<?=@$meeting_id?>" style="direction:<?=@$dir?>;width:100%;max-width:8ch;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;<?=@$padding?>:5px;<?=@$subject_bgcolor?>;" contenteditable="true" onblur="setData(<?=@$meeting_id?>,<?=@$iteration?>,'subject',0,0,'screen');">
 															<?=html_entity_decode($subject)?>
 														</div>
 													</td>
@@ -1890,7 +1895,7 @@ include 'menu_tasks.php';
 
 												if(in_array('area',$columns_list_array)){ ?> 
 													<td id="td_area_<?=@$meeting_id?>" class="<?php if(end($columns_list_array) == "area") echo $border_cell_table_end;?>" style="<?=@$text_align?>;<?=@$padding?>:5px;<?=@$area_bgcolor?>;" contenteditable="true" onblur="setData(<?=@$meeting_id?>,<?=@$iteration?>,'area',0,0,'screen');">
-														<div class="height-auto fontSize12 cursor-pointer overflow-y-scroll" id="area_<?=@$meeting_id?>" name="area_<?=@$meeting_id?>" style="direction:<?=@$dir?>;width:100%;<?=@$padding?>:5px;<?=@$area_bgcolor?>;" contenteditable="true">
+														<div class="height-auto fontSize12 cursor-pointer overflow-y-scroll" id="area_<?=@$meeting_id?>" name="area_<?=@$meeting_id?>" style="direction:<?=@$dir?>;width:100%;max-width:8ch;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;<?=@$padding?>:5px;<?=@$area_bgcolor?>;" contenteditable="true">
 															<?=html_entity_decode($area)?>
 														</div>
 													</td>																	
@@ -1905,8 +1910,9 @@ include 'menu_tasks.php';
 												<?php } 
 												
 												if(in_array('_task',$columns_list_array)){ ?>
-													<td id="td_task_<?=@$meeting_id?>" class="<?php if(end($columns_list_array) == "_task") echo $border_cell_table_end;?> cursor-pointer" style="<?=@$task_bgcolor?>">
-														<select id="task_<?=@$meeting_id?>" class="form-control font-weight-bold fontSize12 border-none cursor-pointer alignCenter" style="direction:<?=@$dir?>;width:98%;<?=@$task_color?>;<?=@$task_bgcolor?>;" onchange="setData(<?=@$meeting_id?>,<?=@$iteration?>,'id_task',0,0,'screen');">	
+													<td id="td_task_<?=@$meeting_id?>" class="<?php if(end($columns_list_array) == "_task") echo $border_cell_table_end;?> cursor-pointer" style="<?=@$task_bgcolor?>;">
+														<div style="max-width:8ch;overflow:hidden;box-sizing:border-box;margin:0 auto;">
+														<select id="task_<?=@$meeting_id?>" class="form-control font-weight-bold fontSize12 border-none cursor-pointer alignCenter" style="direction:<?=@$dir?>;width:98%;<?=@$task_color?>;<?=@$task_bgcolor?>;" onchange="setData(<?=@$meeting_id?>,<?=@$iteration?>,'id_task',0,0,'screen');">
 															<?php
 															foreach($tasks as $task){
 																if ($task->is_appears_tasks_list != 1 && $task->id != @$task_id) continue;
@@ -1916,8 +1922,9 @@ include 'menu_tasks.php';
 																</option>
 																<?php
 															}
-															?>         														
+															?>
 														</select>
+														</div>
 													</td>
 											    <?php }
 												
@@ -1967,6 +1974,7 @@ include 'menu_tasks.php';
 												
 												if(in_array('progress status',$columns_list_array)){ ?>
 													<td id="td_progress_status_<?=@$meeting_id?>" class="<?php if(end($columns_list_array) == "progress status") echo $border_cell_table_end;?> cursor-pointer" style="<?=@$text_align?>;<?=@$padding?>:5px;<?=@$progress_status_color?>;<?=@$progress_status_bgcolor?>;">
+														<div style="max-width:8ch;overflow:hidden;box-sizing:border-box;margin:0 auto;">
 														<select id="_progress_status_<?=@$meeting_id?>" class="form-control fontSize12 font-weight-bold border-none cursor-pointer alignCenter" style="direction:<?=@$dir?>;width:98%;<?=@$progress_status_bgcolor?>;" data-meetingid="<?=@$meeting_id?>" data-iteration=<?=@$iteration?> data-chapter="<?=@$chapter_name?>" data-name="<?=@$subject?>" data-area="<?=@$area?>" data-destinationdate="<?=@$destination_date?>">
 															<option>---סטטוס---</option>
 															<?php 
@@ -1985,8 +1993,9 @@ include 'menu_tasks.php';
 																</option>
 																<?php
 															}
-															?>						
+															?>
 														</select>
+														</div>
 													</td>
 												<?php } ?>
 										    </tr>
@@ -5008,6 +5017,20 @@ td[id^="td_area_"] > div {
 #meetings_table {
     table-layout: fixed;
     width: 100%;
+}
+
+#meetings_table td[id^="td_count_"] {
+    width: 80px !important;
+    max-width: 80px !important;
+    min-width: 80px !important;
+    overflow: hidden !important;
+    padding: 2px !important;
+}
+
+#meetings_table #th_count {
+    width: 80px !important;
+    max-width: 80px !important;
+    min-width: 80px !important;
 }
 
 #meetings_table td {
