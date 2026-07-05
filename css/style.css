@@ -492,11 +492,16 @@ th,td,table {
 
 .editable {
     outline: none;
-    border: none; 
-    padding: 10px; 
-    background-color: #f9f9f9; 
+    border: none;
+    padding: 10px;
+    background-color: #f9f9f9;
     min-height: 30px;
     box-shadow: none;
+}
+
+#new_remark.editable {
+    min-height: 0;
+    padding: 1px 8px;
 }
 
 .editable.red:empty:before {
