@@ -314,6 +314,7 @@ foreach($query as $item){
 $query = $mysqli->prepare("SELECT ln.id_log_meeting_updates AS id_log_meeting_updates,
                            ln.id_log_meeting_tracking AS id_log_meeting_tracking,
                            lmu.id AS lmu_id,lmu.action_date AS lmu_action_date,
+						   lmu.updated_users AS lmu_updated_users,
 						   COALESCE(TRIM(lmu.remark),'') AS lmu_remark,
                            lmt.id AS lmt_id,lmt.action_date AS lmt_action_date,
 						   COALESCE(TRIM(lmt.remark),'') AS lmt_remark,						   
@@ -703,29 +704,27 @@ foreach($all_what_news as $wn){
 																			$remark = mb_substr($remark,0,30,'UTF-8').'...';
 																?>
 																	<div class="marginTop5 fontSize9 text-end" style="line-height:1">
-																		<span class="border-black padding-4x-4y borderRadius20 align-items-center justify-content-center colorWhite bgColorRed" style="display:inline-flex;line-height:1;">
-																			<?=@$track_responsible_name?>
-																		</span>
-                                                                        <span class="border-black padding-2x-2y fontSize9 borderRadius20 align-items-center justify-content-center colorWhite bgColorBlack" style="display:inline-flex;line-height:1;">
-																			<?=@$item->user_nickname?>
-																		</span>																	
-																		<span class="marginRight5 dir-rtl unicode-bidi-embed">
-																			<?php 
-																			$formatter = new IntlDateFormatter(
-																				'he_IL', 
-																				IntlDateFormatter::NONE,
-																				IntlDateFormatter::NONE,
-																				null,
-																				null,
-																				'd MMM'
-																			);
-																			$action_date = new DateTime(@$item->action_date);
-																			echo $formatter->format($action_date)?> -
-																		</span>												
-																		<span class="colorRed dir-rtl unicode-bidi-embed display-inline-block">
-																			<?=html_entity_decode(@$remark)?>
-																		</span>
-																	</div>
+																			<span class="dir-rtl unicode-bidi-embed">
+																				[<?php
+																				$formatter = new IntlDateFormatter(
+																					'he_IL',
+																					IntlDateFormatter::NONE,
+																					IntlDateFormatter::NONE,
+																					null,
+																					null,
+																					'd MMM'
+																				);
+																				$action_date = new DateTime(@$item->action_date);
+																				echo $formatter->format($action_date)?>]
+																			</span>
+																			<span class="dir-rtl unicode-bidi-embed">
+																				<?=@$item->user_nickname?>
+																			</span>
+																			- <span class="dir-rtl unicode-bidi-embed">מעקב</span> :
+																			<span class="colorRed dir-rtl unicode-bidi-embed display-inline-block">
+																				<?=html_entity_decode(@$remark)?>
+																			</span>
+																		</div>
 																<?php } ?>
 															</div>
 													<?php } ?>
@@ -758,13 +757,16 @@ foreach($all_what_news as $wn){
 					<?php } ?>	
 				</div>
 
-                <div id="div_what_news" class="display-none border-black dir-rtl">					
+                <div id="div_what_news" class="display-none border-black dir-rtl">
 					<div class="row fontSize16 position-relative">
 						<div class="col-12 position-relative">
 							<strong class="d-block text-center" style="color:<?=@$bg_color_inputs->h_bgcolor?>">מה חדש</strong>
-							<input type="button" id="btn-close-what-news" class="borderRadius10 fontSize16 font-weight-bold position-absolute" style="top:0;right:13;color:<?=@$bg_color_inputs->h_bgcolor?>;border:1px solid <?=@$bg_color_inputs->h_bgcolor?>" value="X" />
+							<div class="d-flex align-items-center position-absolute" style="top:0;right:13;gap:8px;">
+								<button type="button" class="btn btn-primary btn-sm fontSize12 whats-new-mark-seen-btn" data-panel="#left_new_content" onclick="markCheckedWhatsNewSeen('#left_new_content')">תודה על העדכון</button>
+								<input type="button" id="btn-close-what-news" class="borderRadius10 fontSize16 font-weight-bold" style="color:<?=@$bg_color_inputs->h_bgcolor?>;border:1px solid <?=@$bg_color_inputs->h_bgcolor?>" value="X" />
+							</div>
 						</div>
-					</div>		
+					</div>
 									
 					<div class="marginTop10 width100Percents overflow-y-scroll scrollbar-colored alignCenter dir-rtl" style="max-height:530px;">
 						<table align="center" class="dir-rtl" cellpadding="4" width="100%">
@@ -844,9 +846,10 @@ foreach($all_what_news as $wn){
 								?>
 								<tr class="task-row fontSize13">
 									<td>
-										<a id="task_name_<?=@$wn->id?>" class="text-decoration-none w-100 d-block">		
+										<a id="task_name_<?=@$wn->id?>" class="text-decoration-none w-100 d-block">
 											<div class="marginTop5 marginBottom5 flex flex-wrap justify-content-center align-items-center task_name width100Percents cursor-pointer" data-projectnickname="<?=@$wn->p_nickname?>" data-meetingid="<?=@$wn->id?>" data-projectid="<?=@$wn->p_id?>" data-userid="<?=@$user_id?>" data-lang="<?=@$wn->p_lang?>" data-chapter="<?=@$wn->chapter_name?>" data-name="<?=@$wn->subject?>" data-area="<?=@$wn->area?>" data-recipient="<?=@$responsible_email?>" data-responsibleid="<?=@$wn->id_responsible?>" data-destinationdate="<?=@$wn->destination_date?>" data-progresstatusid="<?=@$wn->id_progress_status?>" data-ispriority="<?=@$wn->is_priority?>" data-trackresponsibleid="<?=@$id_track_responsible?>" data-tracktype="<?=@$track_type?>" data-reminderdate="<?=@$reminder_date?>" data-remindertime="<?=@$reminder_time?>" data-istodotoday="0">
-												<div class="width15Percents">	
+												<div class="width15Percents d-flex flex-row align-items-center justify-content-center">
+													<input type='checkbox' class='whats-new-checkbox marginRight5' title='כבר לא חדש' data-lmuid="<?=@$wn->lmu_id?>" data-updatedusers="<?=@$wn->lmu_updated_users?>" onclick="event.stopPropagation();" />
 													<span class="marginRight5 colorWhite bgColor-1a5276 border-black borderRadius10 padding-4x-4y fw-bold fontSize9">
 													  <?=@$wn->p_nickname?>
 													</span>
@@ -1022,6 +1025,7 @@ foreach($all_what_news as $wn){
 								$query = $mysqli->prepare("SELECT ln.id_log_meeting_updates AS id_log_meeting_updates,
 								                           ln.id_log_meeting_tracking AS id_log_meeting_tracking,
 								                           lmu.id AS lmu_id,lmu.action_date AS lmu_action_date,
+														   lmu.updated_users AS lmu_updated_users,
 														   lmu.remark as lmu_remark,
 														   lmt.action_date AS lmt_action_date,
 														   lmt.remark as lmt_remark,
@@ -1398,11 +1402,14 @@ foreach($all_what_news as $wn){
 									
 									<div id="div_what_news_<?=@$pr->id?>" class="flex margin-0-x-auto width50Percents border-black display-none overflow-y-scroll dir-rtl">	
 										<div class="row fontSize18 alignCenter dir-rtl">
-											<div class="col-12 d-flex justify-content-between align-items-center position-relative">
+											<div class="col-12 position-relative" style="min-height:38px;">
 												<label class="padding-4x-4y borderRadius20 bgColor-cbddec mx-auto position-absolute start-50 translate-middle-x">
 													<?=@$pr->nickname?>
 												</label>
-												<input type="button" id="btn-close-what-news-<?=@$pr->id?>" class="borderRadius10 fontSize16 font-weight-bold ms-auto" style="color:<?=@$bg_color_inputs->h_bgcolor?>; border:1px solid <?=@$bg_color_inputs->h_bgcolor?>" value="X" />
+												<div class="d-flex align-items-center position-absolute" style="top:0;right:13;gap:8px;">
+													<input type="button" id="btn-close-what-news-<?=@$pr->id?>" class="borderRadius10 fontSize16 font-weight-bold" style="color:<?=@$bg_color_inputs->h_bgcolor?>; border:1px solid <?=@$bg_color_inputs->h_bgcolor?>" value="X" />
+													<button type="button" class="btn btn-primary btn-sm fontSize12 whats-new-mark-seen-btn" data-panel="#left_new_content" onclick="markCheckedWhatsNewSeen('#left_new_content')">תודה על העדכון</button>
+												</div>
 											</div>
 											
 											<div class="row marginTop5 fontSize16">
@@ -1491,9 +1498,12 @@ foreach($all_what_news as $wn){
 													<tr class="task-row fontSize13">
 														<td>
 															<input type="hidden" id="p_nickname_<?=@$wn->id?>" value="<?=@$pr->nickname?>">
-															<a id="task_name_<?=@$wn->id?>" class="text-decoration-none w-100 d-block">		
-																<div class="marginTop5 marginBottom5 flex flex-wrap justify-content-center align-items-center task_name width100Percents cursor-pointer" data-projectnickname="<?=@$wn->p_nickname?>" data-meetingid="<?=@$wn->id?>" data-projectid="<?=@$wn->p_id?>" data-userid="<?=@$user_id?>" data-lang="<?=@$wn->p_lang?>" data-chapter="<?=@$wn->chapter_name?>" data-name="<?=@$wn->subject?>" data-area="<?=@$wn->area?>" data-recipient="<?=@$responsible_email?>" data-responsibleid="<?=@$wn->id_responsible?>" data-destinationdate="<?=@$wn->destination_date?>" data-progresstatusid="<?=@$wn->id_progress_status?>" data-ispriority="<?=@$wn->is_priority?>" data-trackresponsibleid="<?=@$id_track_responsible?>" data-tracktype="<?=@$track_type?>" data-reminderdate="<?=@$reminder_date?>" data-remindertime="<?=@$reminder_time?>" data-istodotoday="0">		
-																	<div class="width100Percents">
+															<a id="task_name_<?=@$wn->id?>" class="text-decoration-none w-100 d-block">
+																<div class="marginTop5 marginBottom5 flex flex-wrap justify-content-center align-items-center task_name width100Percents cursor-pointer" data-projectnickname="<?=@$wn->p_nickname?>" data-meetingid="<?=@$wn->id?>" data-projectid="<?=@$wn->p_id?>" data-userid="<?=@$user_id?>" data-lang="<?=@$wn->p_lang?>" data-chapter="<?=@$wn->chapter_name?>" data-name="<?=@$wn->subject?>" data-area="<?=@$wn->area?>" data-recipient="<?=@$responsible_email?>" data-responsibleid="<?=@$wn->id_responsible?>" data-destinationdate="<?=@$wn->destination_date?>" data-progresstatusid="<?=@$wn->id_progress_status?>" data-ispriority="<?=@$wn->is_priority?>" data-trackresponsibleid="<?=@$id_track_responsible?>" data-tracktype="<?=@$track_type?>" data-reminderdate="<?=@$reminder_date?>" data-remindertime="<?=@$reminder_time?>" data-istodotoday="0">
+																	<div class="width10Percents d-flex align-items-center justify-content-center">
+																		<input type='checkbox' class='whats-new-checkbox' title='כבר לא חדש' data-lmuid="<?=@$wn->lmu_id?>" data-updatedusers="<?=@$wn->lmu_updated_users?>" onclick="event.stopPropagation();" />
+																	</div>
+																	<div class="width90Percents">
 																		<div class="marginRight5 flex flex-wrap justify-content-center align-items-center" style="line-height:0.1">
 																			<div class="width65Percents align-items-center">
 																				<span class="color-19bf42 font-weight-bold"><?=@$chapter_name?></span>
@@ -1753,35 +1763,28 @@ foreach($all_what_news as $wn){
 																					if(mb_strlen(@$remark,'UTF-8') > 50)
 																						$remark = mb_substr($remark,0,50,'UTF-8').'...';
 																				?>
-																				<div class="marginTop5 fontSize9 text-end">
-																						<?php if(@$track_responsible_name != ''){ ?>		
-																								<span class="border-black padding-4x-4y borderRadius20 align-items-center justify-content-center colorWhite bgColorRed" style="display:inline-flex;line-height:1;">
-																									<?=@$track_responsible_name?>
-																								</span>
-																						<?php } ?>	
-																					
-																						<?php if(@$item->user_nickname != ''){ ?>
-																								<span class="border-black padding-2x-2y fontSize9 borderRadius20 align-items-center justify-content-center colorWhite bgColorBlack" style="display:inline-flex;line-height:1;">
-																									<?=@$item->user_nickname?>
-																								</span>
-																						<?php } ?>		
-																						<span class="marginRight5 dir-rtl font-weight-bold unicode-bidi-embed">
-																							<?php 
-																							$formatter = new IntlDateFormatter(
-																								'he_IL', 
-																								IntlDateFormatter::NONE,
-																								IntlDateFormatter::NONE,
-																								null,
-																								null,
-																								'd MMM'
-																							);
-																							$action_date = new DateTime(@$item->action_date);
-																							echo $formatter->format($action_date)?> -
-																						</span>												
-																						<span class="colorRed dir-rtl unicode-bidi-embed display-inline-block font-weight-bold">
-																							<?=html_entity_decode(@$remark)?>
-																						</span>
-																					</div>
+																	<div class="marginTop5 fontSize9 text-end">
+																			<span class="dir-rtl unicode-bidi-embed">
+																				[<?php
+																				$formatter = new IntlDateFormatter(
+																					'he_IL',
+																					IntlDateFormatter::NONE,
+																					IntlDateFormatter::NONE,
+																					null,
+																					null,
+																					'd MMM'
+																				);
+																				$action_date = new DateTime(@$item->action_date);
+																				echo $formatter->format($action_date)?>]
+																			</span>
+																			<span class="dir-rtl unicode-bidi-embed font-weight-bold">
+																				<?=@$item->user_nickname?>
+																			</span>
+																			- <span class="dir-rtl unicode-bidi-embed font-weight-bold">מעקב</span> :
+																			<span class="colorRed dir-rtl unicode-bidi-embed display-inline-block font-weight-bold">
+																				<?=html_entity_decode(@$remark)?>
+																			</span>
+																		</div>
 																				<?php } ?>
 																			</div>
 																	<?php } 
@@ -2013,76 +2016,96 @@ foreach($all_what_news as $wn){
 					    <div id="modalContent">
 					        <div class="container">
 								<form>
-								    <div class='marginTop5 subtitle color-19bf42 fontSize18 font-weight-bold alignCenter'></div>
-								    <div class="row marginTop10" dir="rtl">
-										<!-- Col 1 (droite en RTL) : labels icones -->
-										<div class="col-4 p-2 text-center">
-											<div class="fw-bold fontSize13 marginBottom5">אחראי מעקב</div>
-											<i class="fa fa-user" style="font-size:20px;"></i>
-											<div class="fw-bold fontSize13 marginTop15 marginBottom5">תזכורת מעקב</div>
-											<img src="images/bell-solid.svg" width="20" height="20" />
-										</div>
-										<!-- Col 2 (gauche en RTL) : inputs -->
-										<div class="col-8 p-2 text-end">
-											<select id="users" class="paddingRight8 fontSize13 marginBottom10">
-												<option value="0">--בחר משתמש--</option>
-												<?php
-												foreach($active_users as $item){ ?>
-													<option value="<?=@$item->id?>">
-														<strong><?=@$item->firstname?> <?=@$item->lastname?></strong>
-													</option>
-													<?php } ?>
-											</select>
-											<div class="row align-items-center justify-content-start marginTop5" dir="rtl">
-												<div class="col-auto fontSize13 text-end">
-													<div><input type="radio" id="not_reminders" name="set_reminder_date_radio" value="0" onclick="setReminderDate(this.value)"> בלי תזכורת</div>
-													<div><input type="radio" id="reminder_after_three_days" name="set_reminder_date_radio" value="2" onclick="setReminderDate(this.value)"> בעוד 3 ימים</div>
-													<div><input type="radio" id="reminder_after_two_weeks" name="set_reminder_date_radio" value="4" onclick="setReminderDate(this.value)"> בעוד שבועיים</div>
-													<div><input type="radio" id="reminder_after_one_month" name="set_reminder_date_radio" value="5" onclick="setReminderDate(this.value)"> בעוד חודש</div>
-												</div>
-												<div class="col-auto" id="date_col_wrapper" style="display:none;">
-													<div id="div_reminder_date">
-														<input type="date" class="text-center" id="reminder_date" style="font-size:11px;" />
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
+								    <div class="row" dir="rtl">
+									    <div class="col-2"></div>
+									    <div class="col-10">
+										    <div class='marginTop5 subtitle color-19bf42 fontSize18 font-weight-bold alignCenter'></div>
+									    </div>
+								    </div>
 
-									<div id="task_active_remarks_tracking"></div>
+								    <div class="row marginTop5" dir="rtl">
+									    <div class="col-2 p-2 text-center d-flex flex-column align-items-center justify-content-center">
+										    <div class="fw-bold fontSize13 marginBottom5 text-nowrap">אחראי מעקב</div>
+										    <i class="fa fa-user" style="font-size:20px;"></i>
+									    </div>
+									    <div class="col-10 p-2 text-end d-flex flex-column justify-content-center align-items-center">
+										    <select id="users" class="paddingRight8 fontSize13 marginBottom10">
+											    <option value="0">--בחר משתמש--</option>
+											    <?php
+											    foreach($active_users as $item){ ?>
+												    <option value="<?=@$item->id?>">
+													    <strong><?=@$item->firstname?> <?=@$item->lastname?></strong>
+												    </option>
+												    <?php } ?>
+										    </select>
+									    </div>
+								    </div>
 
-									<div class="row marginTop5" dir="rtl">
-										<div class="col-2" style="padding-top:26px; text-align:right;">
-											<div class="fw-bold fontSize13 marginBottom5">עדכון</div>
-											<img src="images/edit-button.svg" width="20" height="20" />
-										</div>
-										<div class="col-10 ps-1 pe-2">
-											<div class="d-flex justify-content-between marginBottom5">
-												<div>
-													<a class="text-decoration-none cursor-pointer" onclick="$('#new_remark').html('')">Clear</a>
-												</div>
-												<div>
-													<a id="new_remark_tracking_en" class="text-decoration-none cursor-pointer" onclick="$('#new_remark').css({'direction':'ltr','padding-left':'5px','padding-right':'0','text-align':'left'});$(this).css('font-weight','bold');$('#new_remark_tracking_he').css('font-weight','normal');">EN</a>&nbsp;|
-													<a id="new_remark_tracking_he" class="text-decoration-none cursor-pointer" onclick="$('#new_remark').css({'direction':'rtl','padding-right':'5px','padding-left':'0','text-align':'right'});$(this).css('font-weight','bold');$('#new_remark_tracking_en').css('font-weight','normal');">ע</a>
-												</div>
-											</div>
-											<div class="bgColorWhite cursor-pointer border-black overflow-y-scroll dir-rtl w-100" style="padding:4px 8px; min-height:60px;">
-												<div name="new_remark" id="new_remark" contenteditable="true" class="editable red cursor-pointer" data-placeholder="ניתן להוסיף כאן הערה"></div>
-											</div>
-										</div>
-									</div>                               	
+								    <div class="row marginTop5" dir="rtl">
+									    <div class="col-2 p-2 text-center d-flex flex-column align-items-center justify-content-center">
+										    <div class="fw-bold fontSize13 marginBottom5 text-nowrap">תזכורת מעקב</div>
+										    <img src="images/bell-solid.svg" width="20" height="20" />
+									    </div>
+									    <div class="col-10 p-2 text-end d-flex flex-column justify-content-center align-items-center">
+										    <div class="row align-items-center justify-content-start" dir="rtl">
+											    <div class="col-auto fontSize13 text-end">
+												    <div><input type="radio" id="not_reminders" name="set_reminder_date_radio" value="0" onclick="setReminderDate(this.value)"> בלי תזכורת</div>
+												    <div><input type="radio" id="reminder_after_three_days" name="set_reminder_date_radio" value="2" onclick="setReminderDate(this.value)"> בעוד 3 ימים</div>
+												    <div><input type="radio" id="reminder_after_two_weeks" name="set_reminder_date_radio" value="4" onclick="setReminderDate(this.value)"> בעוד שבועיים</div>
+												    <div><input type="radio" id="reminder_after_one_month" name="set_reminder_date_radio" value="5" onclick="setReminderDate(this.value)"> בעוד חודש</div>
+											    </div>
+											    <div class="col-auto" id="date_col_wrapper" style="display:none;">
+												    <div id="div_reminder_date">
+													    <input type="date" class="text-center" id="reminder_date" style="font-size:11px;" />
+												    </div>
+											    </div>
+										    </div>
+									    </div>
+								    </div>
+
+								    <div class="row" dir="rtl">
+									    <div class="col-2"></div>
+									    <div class="col-10">
+										    <div id="task_active_remarks_tracking"></div>
+									    </div>
+								    </div>
+
+								    <div class="row marginTop5" dir="rtl">
+									    <div class="col-2 p-2 text-center d-flex flex-column align-items-center justify-content-center">
+										    <div class="fw-bold fontSize13 marginBottom5">עדכון</div>
+										    <img src="images/edit-button.svg" width="20" height="20" />
+									    </div>
+									    <div class="col-10 ps-1 pe-2 d-flex flex-column justify-content-center align-items-center">
+										    <div class="d-flex justify-content-between marginBottom5 w-100">
+											    <div>
+												    <a class="text-decoration-none cursor-pointer" onclick="$('#new_remark').html('')">Clear</a>
+											    </div>
+											    <div>
+												    <a id="new_remark_tracking_en" class="text-decoration-none cursor-pointer" onclick="$('#new_remark').css({'direction':'ltr','padding-left':'5px','padding-right':'0','text-align':'left'});$(this).css('font-weight','bold');$('#new_remark_tracking_he').css('font-weight','normal');">EN</a>&nbsp;|
+												    <a id="new_remark_tracking_he" class="text-decoration-none cursor-pointer" onclick="$('#new_remark').css({'direction':'rtl','padding-right':'5px','padding-left':'0','text-align':'right'});$(this).css('font-weight','bold');$('#new_remark_tracking_en').css('font-weight','normal');">ע</a>
+											    </div>
+										    </div>
+										    <div class="bgColorWhite cursor-pointer border-black overflow-y-scroll dir-rtl w-100" style="padding:5px 8px; min-height:20px;">
+											    <div name="new_remark" id="new_remark" contenteditable="true" class="editable red cursor-pointer" data-placeholder="ניתן להוסיף כאן הערה"></div>
+										    </div>
+									    </div>
+								    </div>
+
 		   
-									<div class="marginTop15 d-flex justify-content-center gap-3">
-										<button type="button" class="btn font-weight-bold px-3" style="background-color:#1a5276; color:white;"
-												onclick="fillLogTaskTracking($('#hidden_meeting_id').val(),'','for_closing',1)">
-											<i class="fas fa-bullseye" style="color:#e74c3c;"></i> שמור מעקב
-										</button>
-										<button type="button" class="btn font-weight-bold px-3 bg-dark text-white"
-												onclick="fillLogTaskTracking($('#hidden_meeting_id').val(),'','for_closing',0)">
-											<i class="fas fa-bullseye" style="color:#95a5a6;"></i> בטל מעקב
-										</button>
-										<input type="button" class="btn bg-dark text-white font-weight-bold px-3" value="בטל"
-											   onclick="hidePopup('modalTaskTracking','',$('#hidden_meeting_id').val(),'fromProjects')" />
+									<div class="row marginTop15" dir="rtl">
+										<div class="col-2"></div>
+										<div class="col-10 d-flex justify-content-center gap-3">
+											<button type="button" class="btn font-weight-bold px-3 text-nowrap" style="background-color:#1a5276; color:white;"
+													onclick="fillLogTaskTracking($('#hidden_meeting_id').val(),'','for_closing',1)">
+												<i class="fas fa-bullseye" style="color:#e74c3c;"></i> שמור מעקב
+											</button>
+											<button type="button" class="btn font-weight-bold px-3 bg-dark text-white text-nowrap"
+													onclick="fillLogTaskTracking($('#hidden_meeting_id').val(),'','for_closing',0)">
+												<i class="fas fa-bullseye" style="color:#95a5a6;"></i> בטל מעקב
+											</button>
+											<input type="button" class="btn bg-dark text-white font-weight-bold px-3" value="סגור"
+												   onclick="hidePopup('modalTaskTracking','',$('#hidden_meeting_id').val(),'fromProjects')" />
+										</div>
 									</div>
 							   </form>
                            </div>
@@ -2728,12 +2751,27 @@ $(document).ready(function(){
 		});		   
 	});
 
-	let modalTaskFollowupActions = $('#modalTaskFollowupActions');	
+	let modalTaskFollowupActions = $('#modalTaskFollowupActions');
 	let modalTaskTracking = $('#modalTaskTracking');
 	let modalSendEmail = $('#modalSendEmail');
 	let modalHistoryTasks = $('#modalHistoryTasks');
 	let modalUpdateTask = $('#modalUpdateTask');
-	
+
+	modalTaskTracking.on('shown.bs.modal', function(){
+		$('#new_remark').focus();
+		var lang = $('#hidden_lang').val();
+		if (lang === 'HE') { $('#new_remark_tracking_he').trigger('click'); }
+		else { $('#new_remark_tracking_en').trigger('click'); }
+	});
+
+	modalUpdateTask.on('shown.bs.modal', function(){
+		$('#remark_changes_status_update').focus();
+	});
+
+	modalSendEmail.on('shown.bs.modal', function(){
+		$('#email_body').focus();
+	});
+
 	$(window).click(function(event){
 	    if ($(event.target).is(modalTaskFollowupActions) ||
 			$(event.target).is(modalTaskTracking) ||
@@ -2982,6 +3020,35 @@ function setToReadTask(){
 			$('#modalTaskFollowupActions').modal('hide');
 			location.href = 'projects.php';
 		},
+	});
+}
+
+function markCheckedWhatsNewSeen(panelSelector){
+	let $checked = $(panelSelector).find('.whats-new-checkbox:checked');
+	if($checked.length == 0) return;
+
+	let requests = [];
+	$checked.each(function(){
+		let $checkbox = $(this);
+		let log_id = $checkbox.data('lmuid');
+		let updated_users = $checkbox.data('updatedusers');
+
+		let form_data = new FormData();
+		form_data.append('log_id', log_id);
+		form_data.append('updated_users', updated_users);
+
+		requests.push($.ajax({
+			type: 'POST',
+			url: 'set_to_read_task.php',
+			data: form_data,
+			cache: false,
+			processData: false,
+			contentType: false,
+		}));
+	});
+
+	$.when.apply($, requests).then(function(){
+		location.reload();
 	});
 }
 
