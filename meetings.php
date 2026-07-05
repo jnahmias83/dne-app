@@ -1217,6 +1217,10 @@ include 'menu_tasks.php';
 						    $w_desc        = in_array('description', $columns_list_array) ? max(12, 100 - $fixed_sum) : 0;
 						    ?>
 					    <table id="meetings_table" class="rounded-table" border="1">
+					    <colgroup>
+					        <col style="width:30px;">
+					        <col style="width:80px;">
+					    </colgroup>
 								<tr class="bgColor-f2f6f9 height50">
 									<th class="border-top-white <?=@$border_cell_table_start?> no-border-right alignCenter" style="width:30px;">
 										<a class="text-decoration-underline cursor-pointer" onclick="location.href='chapters.php?project_id=<?=@$project_id?>'"><img id="img_plus_rdv" src="images/plus-icon.png" width="18" height="18" alt="plus icon" /></a>
