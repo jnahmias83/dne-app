@@ -726,13 +726,15 @@ let image2_container = $('#image2-container');
 let div_rotations_image1 = $('#div-rotations-image1');
 let div_rotations_image2 = $('#div-rotations-image2');
 
-$(document).ready(function(){     
+$(document).ready(function(){
 	let meeting_id;
 	let iteration;
 	let subject;
 	let area;
 	let remark;
-		
+
+	$('#subject').focus();
+
 	if($('#id').val() == 0){
 		$('#chapter,#subject,#area,#description,#task,#responsible,#pass_on').css('background-color',$('#empty_bgcolor').val());
 		
