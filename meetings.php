@@ -1219,13 +1219,13 @@ include 'menu_tasks.php';
 					    <table id="meetings_table" class="rounded-table" border="1">
 					    <colgroup>
 					        <col style="width:30px;">
-					        <col style="width:80px;">
+					        <col style="width:40px;">
 					    </colgroup>
 								<tr class="bgColor-f2f6f9 height50">
 									<th class="border-top-white <?=@$border_cell_table_start?> no-border-right alignCenter" style="width:30px;">
 										<a class="text-decoration-underline cursor-pointer" onclick="location.href='chapters.php?project_id=<?=@$project_id?>'"><img id="img_plus_rdv" src="images/plus-icon.png" width="18" height="18" alt="plus icon" /></a>
 									</th>
-									<th id="th_count" class="border-top-white no-border-right alignCenter" style="width:80px;"></th>
+									<th id="th_count" class="border-top-white no-border-right alignCenter" style="width:40px;"></th>
 
 									<?php if(in_array('subject',$columns_list_array)){ ?>
 									    <th class="<?php if(end($columns_list_array) == "subject") echo $border_cell_table_end;?> border-top-white no-border-inline-end alignCenter" width="<?=$w_subject?>%"><?=@$subject_label?></th>
@@ -1880,7 +1880,7 @@ include 'menu_tasks.php';
 												    <input type="checkbox" id="meetings_to_update_cbx_<?=@$meeting_id?>" name="meetings_to_update_cbx[]" class="meetings_to_update_cbx" value="<?=@$meeting_id?>" />	
 												</td>
 												<td id="td_count_<?=@$meeting_id?>" class="alignCenter <?=@$border_cell_number?>" style="<?=@$td_count_bgcolor?>;">
-													<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;height:100%;width:80px;max-width:80px;overflow:hidden;box-sizing:border-box;margin:0 auto;">
+													<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:5px;height:100%;width:40px;max-width:40px;overflow:hidden;box-sizing:border-box;margin:0 auto;">
 														<a id="task_actions_<?=@$meeting_id?>" data-projectid="<?=@$project_id?>" data-lang="<?=@$lang?>" data-meetingid="<?=@$meeting_id?>" data-iteration=<?=@$iteration?> data-userid="<?=@$user_id?>" data-ispriority="<?=@$is_priority?>" data-remark="<?=@$remark?>" data-chapter="<?=@$chapter_name?>" data-name="<?=@$subject?>" data-area="<?=@$area?>" data-recipient="<?=@$responsible_email?>" data-responsibleid="<?=@$responsible_id?>" data-destinationdate="<?=@$destination_date?>" data-progresstatusid="<?=@$progress_status_id?>" data-trackresponsibleid="<?=@$id_track_responsible?>" data-tracktype="<?=@$track_type?>" data-reminderdate="<?=@$reminder_date?>" data-remindertime="<?=@$reminder_time?>" class="text-decoration-none cursor-pointer fontSize12 padding-7x-3y font-weight-bold borderRadius10" style="<?=@$num_bgcolor?>!important;<?=@$num_border_color?>;display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;box-sizing:border-box;"><?=@$count?></a><?php if(@$track_type && @$track_responsible_name != ''): ?><span class="badge-circle badge-circle-track" style="background-color:#e53935;width:18px;height:18px;font-size:9px;display:inline-flex;align-items:center;justify-content:center;box-shadow:none;margin-bottom:4px;" title="<?=htmlspecialchars(@$track_responsible_name)?>"><?=mb_strtoupper(mb_substr(@$track_responsible_name, 0, 2, 'UTF-8'))?></span><?php endif; ?>
 													</div>
 												</td>
@@ -5020,17 +5020,17 @@ td[id^="td_area_"] > div {
 }
 
 #meetings_table td[id^="td_count_"] {
-    width: 80px !important;
-    max-width: 80px !important;
-    min-width: 80px !important;
+    width: 40px !important;
+    max-width: 40px !important;
+    min-width: 40px !important;
     overflow: hidden !important;
     padding: 2px !important;
 }
 
 #meetings_table #th_count {
-    width: 80px !important;
-    max-width: 80px !important;
-    min-width: 80px !important;
+    width: 40px !important;
+    max-width: 40px !important;
+    min-width: 40px !important;
 }
 
 #meetings_table td {
