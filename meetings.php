@@ -1225,7 +1225,7 @@ include 'menu_tasks.php';
 									<th class="border-top-white <?=@$border_cell_table_start?> no-border-right alignCenter" style="width:30px;">
 										<a class="text-decoration-underline cursor-pointer" onclick="location.href='chapters.php?project_id=<?=@$project_id?>'"><img id="img_plus_rdv" src="images/plus-icon.png" width="18" height="18" alt="plus icon" /></a>
 									</th>
-									<th class="border-top-white no-border-right alignCenter" style="width:80px;"></th>
+									<th id="th_count" class="border-top-white no-border-right alignCenter" style="width:80px;"></th>
 
 									<?php if(in_array('subject',$columns_list_array)){ ?>
 									    <th class="<?php if(end($columns_list_array) == "subject") echo $border_cell_table_end;?> border-top-white no-border-inline-end alignCenter" width="<?=$w_subject?>%"><?=@$subject_label?></th>
@@ -5025,6 +5025,12 @@ td[id^="td_area_"] > div {
     min-width: 80px !important;
     overflow: hidden !important;
     padding: 2px !important;
+}
+
+#meetings_table #th_count {
+    width: 80px !important;
+    max-width: 80px !important;
+    min-width: 80px !important;
 }
 
 #meetings_table td {
