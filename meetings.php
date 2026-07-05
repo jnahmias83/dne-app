@@ -1887,7 +1887,7 @@ include 'menu_tasks.php';
 												
 												<?php if(in_array('subject',$columns_list_array)){ ?>
 													<td id="td_subject_<?=@$meeting_id?>" class="<?php if(end($columns_list_array) == "subject") echo $border_cell_table_end;?>" style="<?=@$text_align?>;<?=@$padding?>:5px;<?=@$subject_bgcolor?>;">
-														<div class="height-auto fontSize12 cursor-pointer overflow-y-scroll" id="subject_<?=@$meeting_id?>" name="subject_<?=@$meeting_id?>" style="direction:<?=@$dir?>;width:100%;max-width:8ch;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;<?=@$padding?>:5px;<?=@$subject_bgcolor?>;" contenteditable="true" onblur="setData(<?=@$meeting_id?>,<?=@$iteration?>,'subject',0,0,'screen');">
+														<div class="height-auto fontSize12 cursor-pointer overflow-y-scroll" id="subject_<?=@$meeting_id?>" name="subject_<?=@$meeting_id?>" style="direction:<?=@$dir?>;width:100%;<?=@$padding?>:5px;<?=@$subject_bgcolor?>;" contenteditable="true" onblur="setData(<?=@$meeting_id?>,<?=@$iteration?>,'subject',0,0,'screen');">
 															<?=html_entity_decode($subject)?>
 														</div>
 													</td>
@@ -1895,7 +1895,7 @@ include 'menu_tasks.php';
 
 												if(in_array('area',$columns_list_array)){ ?> 
 													<td id="td_area_<?=@$meeting_id?>" class="<?php if(end($columns_list_array) == "area") echo $border_cell_table_end;?>" style="<?=@$text_align?>;<?=@$padding?>:5px;<?=@$area_bgcolor?>;" contenteditable="true" onblur="setData(<?=@$meeting_id?>,<?=@$iteration?>,'area',0,0,'screen');">
-														<div class="height-auto fontSize12 cursor-pointer overflow-y-scroll" id="area_<?=@$meeting_id?>" name="area_<?=@$meeting_id?>" style="direction:<?=@$dir?>;width:100%;max-width:8ch;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;<?=@$padding?>:5px;<?=@$area_bgcolor?>;" contenteditable="true">
+														<div class="height-auto fontSize12 cursor-pointer overflow-y-scroll" id="area_<?=@$meeting_id?>" name="area_<?=@$meeting_id?>" style="direction:<?=@$dir?>;width:100%;<?=@$padding?>:5px;<?=@$area_bgcolor?>;" contenteditable="true">
 															<?=html_entity_decode($area)?>
 														</div>
 													</td>																	
@@ -5058,7 +5058,7 @@ td[id^="td_description_"] span {
     display: inline !important;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 950px) {
     #meetings_table {
         font-size: 11px;
     }
