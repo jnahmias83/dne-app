@@ -1111,7 +1111,7 @@ foreach($chapters as $item){
 				$row_max_h = 0;
 				$row_cell_heights = array();
 				foreach ($row_cell_texts as $rk => $rv) {
-					$rw_mm = $pdf->getHTMLUnitToUnits($rv[0], $content_width_mm, 'px');
+					$rw_mm = $pdf->getHTMLUnitToUnits($rv[0], $content_width_mm, 'px') * 1.4;
 					// les remarques colorees sont chacune dans un <div> separe, qui force un saut de ligne visuel :
 					// il faut le convertir en \n ici aussi, sinon la hauteur mesuree sous-estime le nombre de lignes reel
 					$normalized = preg_replace('/<\/(div|p)>/i', "\n", (string)$rv[1]);
@@ -1129,7 +1129,9 @@ foreach($chapters as $item){
 				$row_pad_lines = array();
 				foreach ($row_cell_heights as $rk => $rhw) {
 					list($rh, $rw_mm) = $rhw;
-					$gap_mm = ($row_max_h - $rh) / 2;
+					// coefficient empirique : TCPDF rend visuellement le texte un peu plus bas que le calcul
+					// mathematique exact, on remonte donc legerement (1.2mm) pour un centrage visuel correct
+					$gap_mm = (($row_max_h - $rh) / 2) - 1.2;
 					if ($gap_mm > 0.3) {
 						$one_line_h = $pdf->getStringHeight($rw_mm, '');
 						$spacer_font_px = ($one_line_h > 0) ? max(1, round(10 * ($gap_mm / $one_line_h), 1)) : 0;
