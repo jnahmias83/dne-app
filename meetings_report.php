@@ -551,7 +551,7 @@ $pdf->setPrintHeader(false);
 $html_header = '<table><tr><td style="text-align:center;"><img src="uploads/'.@$logo->logo_stread.'" /><br/><br/></td></tr>';
 
 $new_task_legend_html = '';
-if(@$is_colors) {
+if(@$is_colors && !empty(@$period_new_tasks)) {
 	$new_task_legend_label = (@$lang == 'HE') ? 'עדכון/חדש' : 'Update/New';
 	$new_task_legend_page_w = $pdf->getPageWidth() - $pdf->getMargins()['left'] - $pdf->getMargins()['right'];
 	$new_task_legend_badge = '<table width="28mm" cellpadding="2" cellspacing="0"><tr><td style="background-color:'.@$global_bgcolor_new_task->bgcolor.';border:1px solid black;text-align:center;"><strong style="font-size:13px;">'.$new_task_legend_label.'</strong></td></tr></table>';
