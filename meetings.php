@@ -5021,6 +5021,10 @@ td[id^="td_area_"] > div {
     width: 100%;
 }
 
+#meetings_table th {
+    font-size: <?=(@$lang=='HE') ? '12px' : '11px';?>;
+}
+
 #meetings_table td[id^="td_count_"] {
     width: 40px !important;
     max-width: 40px !important;
@@ -5038,6 +5042,7 @@ td[id^="td_area_"] > div {
 #meetings_table td {
     word-wrap: break-word;
     overflow-wrap: break-word;
+    vertical-align: middle;
 }
 
 td[id^="td_description_"] {
