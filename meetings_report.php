@@ -343,7 +343,7 @@ $padding_txt = 'paddingLeft10';
 												
 if(@$lang == 'HE'){
 	$dir_table = 'rtl';
-    $style_table = "margin-left:1%;";
+    $style_table = "margin:auto;";
 	$text_align = 'text-align:right';
 	$padding = 'padding-right';
 	$image_concentration_label = 'ריכוז משימות עם תמונות';
@@ -360,7 +360,7 @@ if(@$lang == 'HE'){
 }
 else {
 	$dir_table = 'ltr';
-    $style_table = "margin-right:1%;";
+    $style_table = "margin:auto;";
 	$text_align = 'text-align:left';
 	$padding = 'padding-left';
 	$image_concentration_label = 'Concentration of tasks with images';
@@ -767,7 +767,10 @@ foreach($chapters as $item){
 		$meetings_num_rows = $query->num_rows;
 		$meetings = fetch($query);
 	}
-	
+
+	// Largeur de contenu disponible (mm), utilisee pour mesurer la vraie hauteur de texte par cellule (centrage vertical)
+	$content_width_mm = $pdf->getPageWidth() - $pdf->getMargins()['left'] - $pdf->getMargins()['right'];
+
 	if($counter_with_image > 0) {
 		$html1_body.='<tr style="background-color:#cbddec;font-size:11px;">';
 		$html1_body.='<td colspan="12" style="'.$text_align.','.$padding.':5px;border:1px solid black;"><strong>'.@$chapter_name.'</strong></td>';
@@ -1092,31 +1095,75 @@ foreach($chapters as $item){
 			}
 			
 			if(@$all_ids_to_print == '' || in_array($meeting_id,$all_ids_to_print_array)){
-			    $html1_body.='<tr style="font-size:10px;'.@$dir_table.'">';	
+
+				// Mesure la vraie hauteur de chaque cellule (via TCPDF) pour calculer un padding-top qui centre verticalement le contenu le plus court sur la hauteur de la ligne
+				$row_cell_texts = array();
+				if(in_array('subject',$columns_list_array)) $row_cell_texts['subject'] = array(@$subject_width, @$subject);
+				if(in_array('area',$columns_list_array)) $row_cell_texts['area'] = array(@$area_width, @$area);
+				if(in_array('description',$columns_list_array)) $row_cell_texts['description'] = array(@$description_width, @$description);
+				if(in_array('_task',$columns_list_array)) $row_cell_texts['task'] = array(@$task_width, @$task);
+				if(in_array('responsible',$columns_list_array)) $row_cell_texts['responsible'] = array(@$responsible_width, @$responsible);
+				if(in_array('pass on',$columns_list_array)) $row_cell_texts['pass_on'] = array(@$pass_on_width, @$pass_on);
+				if(in_array('task creation',$columns_list_array)) $row_cell_texts['task_creation'] = array(@$task_creation_width, @$task_creation_date_display);
+				if(in_array('destination date',$columns_list_array)) $row_cell_texts['destination_date'] = array(@$destination_date_width, @$destination_date_display);
+				if(in_array('progress status',$columns_list_array)) $row_cell_texts['progress_status'] = array(@$progress_status_width, @$progress_status);
+
+				$row_max_h = 0;
+				$row_cell_heights = array();
+				foreach ($row_cell_texts as $rk => $rv) {
+					$rw_mm = $pdf->getHTMLUnitToUnits($rv[0], $content_width_mm, 'px');
+					// les remarques colorees sont chacune dans un <div> separe, qui force un saut de ligne visuel :
+					// il faut le convertir en \n ici aussi, sinon la hauteur mesuree sous-estime le nombre de lignes reel
+					$normalized = preg_replace('/<\/(div|p)>/i', "\n", (string)$rv[1]);
+					$normalized = preg_replace('/<(div|p)[^>]*>/i', "\n", $normalized);
+					$normalized = str_replace(array('<br>','<br/>','<br />'), "\n", $normalized);
+					$plain = trim(preg_replace('/\n{2,}/', "\n", strip_tags($normalized)));
+					$rh = $pdf->getStringHeight(max($rw_mm, 1), $plain);
+					$row_cell_heights[$rk] = array($rh, max($rw_mm, 1));
+					if ($rh > $row_max_h) $row_max_h = $rh;
+				}
+				// Cette librairie PDF ignore vertical-align et le padding par cellule (seul le cellpadding
+				// global du tableau compte) : on centre en ajoutant un espaceur vide avant le contenu court,
+				// dont la taille de police est calculee (via une mesure TCPDF) pour occuper exactement le
+				// demi-ecart de hauteur, sans arrondi a la ligne entiere.
+				$row_pad_lines = array();
+				foreach ($row_cell_heights as $rk => $rhw) {
+					list($rh, $rw_mm) = $rhw;
+					$gap_mm = ($row_max_h - $rh) / 2;
+					if ($gap_mm > 0.3) {
+						$one_line_h = $pdf->getStringHeight($rw_mm, '');
+						$spacer_font_px = ($one_line_h > 0) ? max(1, round(10 * ($gap_mm / $one_line_h), 1)) : 0;
+						$row_pad_lines[$rk] = $spacer_font_px > 0 ? '<span style="font-size:'.$spacer_font_px.'px;">&nbsp;<br></span>' : '';
+					} else {
+						$row_pad_lines[$rk] = '';
+					}
+				}
+
+			    $html1_body.='<tr style="font-size:10px;'.@$dir_table.'">';
                 $html1_body.='<td width="'.@$count_width.'" style="text-align:center;'.@$update_cell_bgcolor.';border:1px solid black;'.$color_num.'">'.@$count1.'</td>';
 			    if(in_array('subject',$columns_list_array))
-			      $html1_body.='<td width="'.@$subject_width.'" style="'.setTextAlign($subject).';'.setPadding($subject).':5px;'.@$subject_bgcolor.';border:1px solid black;">'.@$subject.'</td>';	
+			      $html1_body.='<td width="'.@$subject_width.'" style="'.@$text_align.';'.@$padding.':5px;'.@$subject_bgcolor.';border:1px solid black;">'.(@$row_pad_lines['subject']??'').@$subject.'</td>';
 				if(in_array('area',$columns_list_array))
-				   $html1_body.='<td width="'.@$area_width.'" style="'.setTextAlign($area).';'.setPadding($area).':5px;'.@$area_bgcolor.';border:1px solid black;">'.@$area.'</td>';
-				
+				   $html1_body.='<td width="'.@$area_width.'" style="'.@$text_align.';'.@$padding.':5px;'.@$area_bgcolor.';border:1px solid black;">'.(@$row_pad_lines['area']??'').@$area.'</td>';
+
 				if(in_array('description',$columns_list_array)){
-					$html1_body.='<td width="'.@$description_width.'" style="'.setTextAlign($description).';'.setPadding($description).':5px;'.@$description_bgcolor.';border:1px solid black;">';
-				    $html1_body.= @$description;	
+					$html1_body.='<td width="'.@$description_width.'" style="'.@$text_align.';'.@$padding.':5px;'.@$description_bgcolor.';border:1px solid black;">';
+				    $html1_body.= (@$row_pad_lines['description']??'').@$description;
 				    $html1_body.= '</td>';
 				}
-				
+
 				if(in_array('_task',$columns_list_array))
-				   $html1_body.='<td width="'.@$task_width.'" style="text-align:center;'.@$task_color.';'.@$task_bgcolor.';border:1px solid black;"><strong>'.@$task.'</strong></td>';			
+				   $html1_body.='<td width="'.@$task_width.'" style="text-align:center;'.@$task_color.';'.@$task_bgcolor.';border:1px solid black;">'.(@$row_pad_lines['task']??'').'<strong>'.@$task.'</strong></td>';
 				if(in_array('responsible',$columns_list_array))
-				   $html1_body.='<td width="'.@$responsible_width.'" style="text-align:center;'.@$responsible_color.';'.@$responsible_bgcolor.';border:1px solid black;"><strong>'.@$responsible.'</strong></td>';
+				   $html1_body.='<td width="'.@$responsible_width.'" style="text-align:center;'.@$responsible_color.';'.@$responsible_bgcolor.';border:1px solid black;">'.(@$row_pad_lines['responsible']??'').'<strong>'.@$responsible.'</strong></td>';
 				if(in_array('pass on',$columns_list_array))
-				   $html1_body.='<td width="'.@$pass_on_width.'" style="text-align:center;border:1px solid black;'.@$pass_on_bgcolor.'">'.@$pass_on.'</td>';
+				   $html1_body.='<td width="'.@$pass_on_width.'" style="text-align:center;border:1px solid black;'.@$pass_on_bgcolor.'">'.(@$row_pad_lines['pass_on']??'').@$pass_on.'</td>';
 				if(in_array('task creation',$columns_list_array))
-				   $html1_body.='<td width="'.@$task_creation_width.'" style="text-align:center;border:1px solid black;font-size:10px;'.$task_creation_date_color.';'.$task_creation_date_bgcolor.'">'.@$task_creation_date_display.'</td>';
+				   $html1_body.='<td width="'.@$task_creation_width.'" style="text-align:center;border:1px solid black;font-size:10px;'.$task_creation_date_color.';'.$task_creation_date_bgcolor.'">'.(@$row_pad_lines['task_creation']??'').@$task_creation_date_display.'</td>';
 				if(in_array('destination date',$columns_list_array))
-				   $html1_body.='<td width="'.@$destination_date_width.'" style="text-align:center;border:1px solid black;font-size:10px;'.@$dest_date_color.';'.$dest_date_bgcolor.';'.@$target_date_text_decoration.'"><strong>'.@$destination_date_display.'</strong></td>';
+				   $html1_body.='<td width="'.@$destination_date_width.'" style="text-align:center;border:1px solid black;font-size:10px;'.@$dest_date_color.';'.$dest_date_bgcolor.';'.@$target_date_text_decoration.'">'.(@$row_pad_lines['destination_date']??'').'<strong>'.@$destination_date_display.'</strong></td>';
 				if(in_array('progress status',$columns_list_array))
-				   $html1_body.='<td width="'.@$progress_status_width.'" style="text-align:center;'.@$progress_status_color.';'.@$progress_status_bgcolor.';border:1px solid black;"><strong>'.@$progress_status.'</strong></td>';
+				   $html1_body.='<td width="'.@$progress_status_width.'" style="text-align:center;'.@$progress_status_color.';'.@$progress_status_bgcolor.';border:1px solid black;">'.(@$row_pad_lines['progress_status']??'').'<strong>'.@$progress_status.'</strong></td>';
 				$html1_body.='</tr>';
 				
 				$image1_path = !empty($image1) ? realpath(__DIR__.'/uploads/'.$image1) : false;
@@ -1584,30 +1631,30 @@ foreach($chapters as $item) {
                 $count2++;
 				
 				$html2_body.='<tr style="font-size:10px;'.@$dir_table.'">';		
-				$html2_body.='<td width="'.@$count_width.'" style="text-align:center;'.@$update_cell_bgcolor.';border:1px solid black;'.$color_num.'">'.@$count2.'</td>';			
+				$html2_body.='<td width="'.@$count_width.'" style="text-align:center;'.@$update_cell_bgcolor.';border:1px solid black;'.$color_num.'">'.@$count2.'</td>';
 				if(in_array('subject',$columns_list_array))
-				   $html2_body.='<td width="'.@$subject_width.'" style="'.setTextAlign($subject).';'.setPadding($subject).':5px;'.@$subject_bgcolor.';border:1px solid black;">'.@$subject.'</td>';	
+				   $html2_body.='<td width="'.@$subject_width.'" style="'.@$text_align.';'.@$padding.':5px;'.@$subject_bgcolor.';border:1px solid black;">'.(@$row_pad_lines['subject']??'').@$subject.'</td>';
 				if(in_array('area',$columns_list_array))
-				   $html2_body.='<td width="'.@$area_width.'" style="'.setTextAlign($area).';'.setPadding($area).':5px;'.@$area_bgcolor.';border:1px solid black;">'.@$area.'</td>';
-				
+				   $html2_body.='<td width="'.@$area_width.'" style="'.@$text_align.';'.@$padding.':5px;'.@$area_bgcolor.';border:1px solid black;">'.(@$row_pad_lines['area']??'').@$area.'</td>';
+
 				if(in_array('description',$columns_list_array)) {
-				   $html2_body.='<td width="'.@$description_width.'" style="'.setTextAlign($description).';'.@setPadding($description).':5px;'.@$description_bgcolor.';border:1px solid black;">';
-				   $html2_body.= nl2br(@$description);	 	
+				   $html2_body.='<td width="'.@$description_width.'" style="'.@$text_align.';'.@$padding.':5px;'.@$description_bgcolor.';border:1px solid black;">';
+				   $html2_body.= (@$row_pad_lines['description']??'').nl2br(@$description);
 				   $html2_body.= '</td>';
 				}
-				
+
 				if(in_array('_task',$columns_list_array))
-				   $html2_body.='<td width="'.@$task_width.'" style="text-align:center;'.@$task_color.';'.@$task_bgcolor.';border:1px solid black;"><strong>'.@$task.'</strong></td>';
+				   $html2_body.='<td width="'.@$task_width.'" style="text-align:center;'.@$task_color.';'.@$task_bgcolor.';border:1px solid black;">'.(@$row_pad_lines['task']??'').'<strong>'.@$task.'</strong></td>';
 				if(in_array('responsible',$columns_list_array))
-				   $html2_body.='<td width="'.@$responsible_width.'" style="text-align:center;'.@$responsible_color.';'.@$responsible_bgcolor.';border:1px solid black;"><strong>'.@$responsible.'</strong></td>';
+				   $html2_body.='<td width="'.@$responsible_width.'" style="text-align:center;'.@$responsible_color.';'.@$responsible_bgcolor.';border:1px solid black;">'.(@$row_pad_lines['responsible']??'').'<strong>'.@$responsible.'</strong></td>';
 				if(in_array('pass on',$columns_list_array))
-				   $html2_body.='<td width="'.@$pass_on_width.'" style="text-align:center;border:1px solid black;'.@$pass_on_bgcolor.'">'.@$pass_on.'</td>';
+				   $html2_body.='<td width="'.@$pass_on_width.'" style="text-align:center;border:1px solid black;'.@$pass_on_bgcolor.'">'.(@$row_pad_lines['pass_on']??'').@$pass_on.'</td>';
 				if(in_array('task creation',$columns_list_array))
-				   $html2_body.='<td width="'.@$task_creation_width.'" style="text-align:center;border:1px solid black;font-size:10px;'.$task_creation_date_color.';'.$task_creation_date_bgcolor.'">'.@$task_creation_date_display.'</td>';
+				   $html2_body.='<td width="'.@$task_creation_width.'" style="text-align:center;border:1px solid black;font-size:10px;'.$task_creation_date_color.';'.$task_creation_date_bgcolor.'">'.(@$row_pad_lines['task_creation']??'').@$task_creation_date_display.'</td>';
 				if(in_array('destination date',$columns_list_array))
-				   $html2_body.='<td width="'.@$destination_date_width.'" style="text-align:center;border:1px solid black;font-size:10px;'.@$dest_date_color.';'.$dest_date_bgcolor.';'.@$target_date_text_decoration.'"><strong>'.@$destination_date_display.'</strong></td>';
+				   $html2_body.='<td width="'.@$destination_date_width.'" style="text-align:center;border:1px solid black;font-size:10px;'.@$dest_date_color.';'.$dest_date_bgcolor.';'.@$target_date_text_decoration.'">'.(@$row_pad_lines['destination_date']??'').'<strong>'.@$destination_date_display.'</strong></td>';
 				if(in_array('progress status',$columns_list_array))
-				   $html2_body.='<td width="'.@$progress_status_width.'" style="text-align:center;'.@$progress_status_color.';'.@$progress_status_bgcolor.';border:1px solid black;"><strong>'.@$progress_status.'</strong></td>';
+				   $html2_body.='<td width="'.@$progress_status_width.'" style="text-align:center;'.@$progress_status_color.';'.@$progress_status_bgcolor.';border:1px solid black;">'.(@$row_pad_lines['progress_status']??'').'<strong>'.@$progress_status.'</strong></td>';
 				$html2_body.='</tr>'; 
 				
 				if(strpos($image1,'Snag') === false && strpos($image2,'Snag') === false) {
