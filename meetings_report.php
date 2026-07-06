@@ -553,13 +553,18 @@ $html_header = '<table><tr><td style="text-align:center;"><img src="uploads/'.@$
 $new_task_legend_html = '';
 if(@$is_colors) {
 	$new_task_legend_label = (@$lang == 'HE') ? 'עדכון/חדש' : 'Update/New';
+	$new_task_legend_page_w = $pdf->getPageWidth() - $pdf->getMargins()['left'] - $pdf->getMargins()['right'];
 	$new_task_legend_badge = '<table width="28mm" cellpadding="2" cellspacing="0"><tr><td style="background-color:'.@$global_bgcolor_new_task->bgcolor.';border:1px solid black;text-align:center;"><strong style="font-size:13px;">'.$new_task_legend_label.'</strong></td></tr></table>';
-	// reutilise exactement la meme structure/marge que le tableau de donnees (dir=$dir_table, style=$style_table,
-	// spacer 1% identique) pour garantir le meme alignement, peu importe le rapport/projet
-	$new_task_legend_html = '<table dir="'.$dir_table.'" style="'.$style_table.'"><tr><td width="1%">&nbsp;</td><td>'.$new_task_legend_badge.'</td></tr></table><br/>';
+	// structure qui a deja donne HE=gauche/EN=droite de façon fiable : table pleine largeur explicite (pas
+	// margin:auto), dir="ltr" force, meme ordre spacer+badge dans les deux langues (le bidi du texte suffit
+	// a determiner le cote sous ce contexte precis)
+	$new_task_legend_spacer = '<td width="85%">&nbsp;</td>';
+	$new_task_legend_cell = '<td width="15%">'.$new_task_legend_badge.'</td>';
+	$new_task_legend_cells = $new_task_legend_spacer.$new_task_legend_cell;
+	$new_task_legend_html = '<tr><td colspan="2"><table width="'.$new_task_legend_page_w.'mm" cellpadding="0" cellspacing="0" dir="ltr"><tr>'.$new_task_legend_cells.'</tr></table></td></tr>';
 }
 
-$html1_body = '<tr style="font-size:16px;"><td width="40px;">&nbsp;</td><td style="text-align:center;"><span dir="'.$dir_table.'"><strong><u>'.$title.'</u></strong></span></td></tr></table>'.$new_task_legend_html;
+$html1_body = '<tr style="font-size:16px;"><td width="40px;">&nbsp;</td><td style="text-align:center;"><span dir="'.$dir_table.'"><strong><u>'.$title.'</u></strong></span></td></tr>'.$new_task_legend_html.'</table>';
 
 if(@$id_rdv_report > 0) { 
     $html1_body.= '<span>&nbsp;&nbsp;&nbsp;</span><strong style="text-decoration:underline;font-size:12px;">'.@$participants_label.':</strong><br/>';
