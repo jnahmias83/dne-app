@@ -555,8 +555,11 @@ if(@$is_colors) {
 	$new_task_legend_label = (@$lang == 'HE') ? 'עדכון/חדש' : 'Update/New';
 	$new_task_legend_align = (@$lang == 'HE') ? 'left' : 'right';
 	$new_task_legend_page_w = $pdf->getPageWidth() - $pdf->getMargins()['left'] - $pdf->getMargins()['right'];
-	$new_task_legend_badge = '<span style="background-color:'.@$global_bgcolor_new_task->bgcolor.';border:1px solid black;"><strong style="font-size:10px;">&nbsp;'.$new_task_legend_label.'&nbsp;</strong></span>';
-	$new_task_legend_html = '<tr><td colspan="2"><table width="'.$new_task_legend_page_w.'mm" cellpadding="0" cellspacing="0"><tr><td style="text-align:'.$new_task_legend_align.';">'.$new_task_legend_badge.'</td></tr></table></td></tr>';
+	$new_task_legend_badge = '<table cellpadding="4" cellspacing="0"><tr><td style="background-color:'.@$global_bgcolor_new_task->bgcolor.';border:1px solid black;text-align:center;"><strong style="font-size:14px;">'.$new_task_legend_label.'</strong></td></tr></table>';
+	$new_task_legend_spacer = '<td width="85%">&nbsp;</td>';
+	$new_task_legend_cell = '<td width="15%">'.$new_task_legend_badge.'</td>';
+	$new_task_legend_cells = ($new_task_legend_align == 'left') ? ($new_task_legend_cell.$new_task_legend_spacer) : ($new_task_legend_spacer.$new_task_legend_cell);
+	$new_task_legend_html = '<tr><td colspan="2"><table width="'.$new_task_legend_page_w.'mm" cellpadding="0" cellspacing="0" dir="ltr"><tr>'.$new_task_legend_cells.'</tr></table></td></tr>';
 }
 
 $html1_body = '<tr style="font-size:16px;"><td width="40px;">&nbsp;</td><td style="text-align:center;"><span dir="'.$dir_table.'"><strong><u>'.$title.'</u></strong></span></td></tr>'.$new_task_legend_html.'</table>';
