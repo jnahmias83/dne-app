@@ -1133,9 +1133,28 @@ foreach($chapters as $item){
 					// mathematique exact, on remonte donc legerement (1.2mm) pour un centrage visuel correct
 					$gap_mm = (($row_max_h - $rh) / 2) - 1.2;
 					if ($gap_mm > 0.3) {
-						$one_line_h = $pdf->getStringHeight($rw_mm, '');
-						$spacer_font_px = ($one_line_h > 0) ? max(1, round(10 * ($gap_mm / $one_line_h), 1)) : 0;
-						$row_pad_lines[$rk] = $spacer_font_px > 0 ? '<span style="font-size:'.$spacer_font_px.'px;">&nbsp;<br></span>' : '';
+						// TCPDF n'est fiable/lineaire qu'a des tailles de police "normales" : on plafonne
+						// chaque ligne d'espaceur a 24px et on la repete autant que necessaire, plutot que
+						// de demander une seule ligne a une taille de police extreme (peu fiable pour les
+						// tres gros ecarts, ex: descriptions a 8+ lignes).
+						$unit_font_px = 24;
+						$unit_h = $pdf->getStringHeight($rw_mm, '') * ($unit_font_px / 10);
+						$spacer_html = '';
+						if ($unit_h > 0) {
+							$full_units = (int)floor($gap_mm / $unit_h);
+							$remainder_mm = $gap_mm - ($full_units * $unit_h);
+							for ($u = 0; $u < $full_units; $u++) {
+								$spacer_html .= '<span style="font-size:'.$unit_font_px.'px;">&nbsp;<br></span>';
+							}
+							if ($remainder_mm > 0.3) {
+								$one_line_h = $pdf->getStringHeight($rw_mm, '');
+								$rem_font_px = ($one_line_h > 0) ? max(1, round(10 * ($remainder_mm / $one_line_h), 1)) : 0;
+								if ($rem_font_px > 0) {
+									$spacer_html .= '<span style="font-size:'.$rem_font_px.'px;">&nbsp;<br></span>';
+								}
+							}
+						}
+						$row_pad_lines[$rk] = $spacer_html;
 					} else {
 						$row_pad_lines[$rk] = '';
 					}
