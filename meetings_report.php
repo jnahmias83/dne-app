@@ -554,8 +554,9 @@ $new_task_legend_html = '';
 if(@$is_colors) {
 	$new_task_legend_label = (@$lang == 'HE') ? 'עדכון/חדש' : 'Update/New';
 	$new_task_legend_page_w = $pdf->getPageWidth() - $pdf->getMargins()['left'] - $pdf->getMargins()['right'];
-	// span (pas table) : ne s'etire pas pour remplir la cellule, garde sa taille naturelle autour du texte
-	$new_task_legend_badge = '<span style="background-color:'.@$global_bgcolor_new_task->bgcolor.';border:1px solid black;"><strong style="font-size:14px;">&nbsp;&nbsp;&nbsp;'.$new_task_legend_label.'&nbsp;&nbsp;&nbsp;</strong></span>';
+	// table avec largeur fixe explicite (45mm) : donne un padding propre via cellpadding, sans s'etirer
+	// puisque la largeur est fixee (contrairement a une table sans width, qui remplit sa cellule parente)
+	$new_task_legend_badge = '<table width="45mm" cellpadding="4" cellspacing="0"><tr><td style="background-color:'.@$global_bgcolor_new_task->bgcolor.';border:1px solid black;text-align:center;"><strong style="font-size:14px;">'.$new_task_legend_label.'</strong></td></tr></table>';
 	$new_task_legend_spacer = '<td width="80%">&nbsp;</td>';
 	$new_task_legend_cell = '<td width="20%">'.$new_task_legend_badge.'</td>';
 	// ordre source spacer+cellule (identique dans les deux langues) : donne HE=gauche, EN=droite car le bidi
