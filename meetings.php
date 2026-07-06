@@ -471,38 +471,24 @@ if(empty(array_filter($columns_list_array))){
 if (empty($lang))
 	$lang = @$project->lang;
 
-// Quand l'utilisateur change le dropdown : sauvegarder en session ET en base (persistance permanente par utilisateur)
+// Quand l'utilisateur change le dropdown : sauvegarder la langue sur CE rapport ou CE rdv precisement (jamais globalement)
 if (!empty(@$_GET['lang']) && @$_GET['lang_origin'] === 'user') {
-    $_SESSION['meetings_forced_lang'] = $_GET['lang'];
-    if (!empty($_SESSION['id_user'])) {
-        $query = $mysqli->prepare("UPDATE dne_users SET meetings_lang = ? WHERE id = ?");
-        $query->bind_param('si', $_GET['lang'], $_SESSION['id_user']);
+    $lang = $_GET['lang'];
+    if ($id_rdv_report > 0) {
+        $query = $mysqli->prepare("UPDATE dne_rdv SET rdv_lang = ? WHERE id = ?");
+        $query->bind_param('si', $lang, $id_rdv_report);
+        $query->execute();
+    } elseif ($id_custom_report > 0) {
+        $query = $mysqli->prepare("UPDATE dne_custom_reports SET lang = ? WHERE id = ?");
+        $query->bind_param('si', $lang, $id_custom_report);
         $query->execute();
     }
 }
 
-// Si rien en session (nouvelle session/reconnexion), reprendre la dernière langue choisie, sauvegardée en base
-if (empty($_SESSION['meetings_forced_lang']) && !empty($_SESSION['id_user'])) {
-    $query = $mysqli->prepare("SELECT meetings_lang FROM dne_users WHERE id = ?");
-    $query->bind_param('i', $_SESSION['id_user']);
-    $query->execute();
-    $result = $query->get_result()->fetch_assoc();
-    if (!empty($result['meetings_lang'])) {
-        $_SESSION['meetings_forced_lang'] = $result['meetings_lang'];
-    }
-}
-
-// La langue choisie par l'utilisateur prend le dessus sur la langue du rapport/rdv
-if (!empty($_SESSION['meetings_forced_lang'])) {
-    $lang = $_SESSION['meetings_forced_lang'];
-} elseif (empty($lang)) {
-    $lang = @$_GET['lang'];
-}
-
 $_SESSION['filter_lang'] = $lang;
 
-// Langue des popups עריכה/שכפול : suit le choix dropdown de l'utilisateur si présent, sinon la langue du projet (jamais la langue spécifique à un rapport/RDV)
-$popup_lang = !empty($_SESSION['meetings_forced_lang']) ? $_SESSION['meetings_forced_lang'] : (!empty(@$project->lang) ? @$project->lang : 'HE');
+// Langue des popups עריכה/שכפול/מעקב : suit la langue du rapport/rdv courant
+$popup_lang = !empty($lang) ? $lang : (!empty(@$project->lang) ? @$project->lang : 'HE');
 
 if(@$lang == 'HE'){
    $dir = 'rtl';
