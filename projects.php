@@ -1932,22 +1932,22 @@ foreach($all_what_news as $wn){
            </div>
 		</div>
 		
-		<div class="modal fade dir-rtl" id="modalContinuousTask" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal fade" id="modalContinuousTask" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="btn-close btn-close-white-small" data-bs-dismiss="modal" aria-label="Close"></button>
-						<div class="modal-title"></div>	
+						<div class="modal-title"></div>
 					</div>
 					<div class="modal-body">
 					   <div id="modalContent">
 					        <form class="alignCenter">
-						       <div class="marginTop15 fontSize18 alignCenter">בדרך ליצור עבורך משימת המשך לפני כן, תציין אם ברצונך לסמן סטטוס משימה כ:</div>
+						       <div class="marginTop15 fontSize18 alignCenter" id="continuous_task_intro">בדרך ליצור עבורך משימת המשך לפני כן, תציין אם ברצונך לסמן סטטוס משימה כ:</div>
 							   <div class="marginTop15">
-									<input type="radio" id="done" name="progress_status" value="1" onclick="continuousTask($('#hidden_meeting_id').val(),'בוצע/נמסר','','from_'+$('#hidden_project_id').val())" />&nbsp;בוצע/נמסר
-							        <input type="radio" id="archive" name="progress_status" class="marginRight8" value="2" onclick="continuousTask($('#hidden_meeting_id').val(),'ארכיון','','from_'+$('#hidden_project_id').val())" />&nbsp;ארכיון
-							        <input type="radio" id="no_change" name="progress_status" class="marginRight8" value="3" onclick="continuousTask($('#hidden_meeting_id').val(),'no_change','','from_'+$('#hidden_project_id').val())" />&nbsp;ללא שינוי
-							   </div> 
+									<input type="radio" id="done" name="progress_status" value="1" onclick="continuousTask($('#hidden_meeting_id').val(),'בוצע/נמסר','','from_'+$('#hidden_project_id').val())" />&nbsp;<span id="continuous_label_done">בוצע/נמסר</span>
+							        <input type="radio" id="archive" name="progress_status" class="marginRight8" value="2" onclick="continuousTask($('#hidden_meeting_id').val(),'ארכיון','','from_'+$('#hidden_project_id').val())" />&nbsp;<span id="continuous_label_archive">ארכיון</span>
+							        <input type="radio" id="no_change" name="progress_status" class="marginRight8" value="3" onclick="continuousTask($('#hidden_meeting_id').val(),'no_change','','from_'+$('#hidden_project_id').val())" />&nbsp;<span id="continuous_label_no_change">ללא שינוי</span>
+							   </div>
 						   </form>
 					  </div>
 					</div>
@@ -1996,7 +1996,7 @@ foreach($all_what_news as $wn){
 							</div>
 							<div id="div_update_btns" class="marginTop15 marginBottom10 alignCenter">		   
 							   	<input type="button" id="save_update_task_btn" class="btn btn-primary text-white font-weight-bold marginLeft5" value="שמור"/>
-							    <input type="button" class="btn bg-dark text-white font-weight-bold" value="בטל" onclick="hidePopup('modalUpdateTask','',$('#hidden_meeting_id').val(),'fromProjects')" />
+							    <input type="button" id="cancel_update_task_btn" class="btn bg-dark text-white font-weight-bold" value="בטל" onclick="hidePopup('modalUpdateTask','',$('#hidden_meeting_id').val(),'fromProjects')" />
 							</div>
 						</form>
 					</div>
@@ -2250,7 +2250,13 @@ $(document).ready(function(){
 	$('[id="continuous_btn"]').on('click', function(){
 		$('#modalTaskFollowupActions').modal('hide');
 	    $('#modalContinuousTask').modal('show');
-		$('#modalContinuousTask .modal-title').html('המשך');
+		let isHE = ($('#hidden_lang').val() || 'HE') !== 'EN';
+		$('#modalContinuousTask').attr('dir', isHE ? 'rtl' : 'ltr').toggleClass('dir-rtl', isHE);
+		$('#modalContinuousTask .modal-title').html(isHE ? 'המשך' : 'Continue');
+		$('#continuous_task_intro').html(isHE ? 'בדרך ליצור עבורך משימת המשך לפני כן, תציין אם ברצונך לסמן סטטוס משימה כ:' : 'A continuation task will be created. Please select the status to apply to the current task:');
+		$('#continuous_label_done').html(isHE ? 'בוצע/נמסר' : 'Done/Delivered');
+		$('#continuous_label_archive').html(isHE ? 'ארכיון' : 'Archive');
+		$('#continuous_label_no_change').html(isHE ? 'ללא שינוי' : 'No change');
 	});
 	
 	$('[id="history_btn"]').on('click', function(){
@@ -2288,16 +2294,20 @@ $(document).ready(function(){
 		destination_date = 	$('#hidden_destination_date').val();
 		progress_status_id = $('#hidden_progress_status_id').val();
 		lang = $('#hidden_lang').val();
-			
-		$('#modalUpdateTask').attr('dir','rtl');
-		$('#modalUpdateTask .modal-title').html("<img src='images/status-icon.png' alt='status icon' width='20' height='20'>&nbsp;&nbsp;עדכון&nbsp;&nbsp;<img src='images/status-icon.png' alt='status icon' width='20' height='20'>");
+		let isHE = (lang || 'HE') !== 'EN';
+
+		$('#modalUpdateTask').attr('dir', isHE ? 'rtl' : 'ltr');
+		$('#modalUpdateTask .modal-title').html("<img src='images/status-icon.png' alt='status icon' width='20' height='20'>&nbsp;&nbsp;"+(isHE?'עדכון':'Update')+"&nbsp;&nbsp;<img src='images/status-icon.png' alt='status icon' width='20' height='20'>");
 		$('.subtitle').html(chapter+"<br/>"+subject+"&nbsp;|&nbsp;"+area).css('line-height','1.1em');
-        $('#div_remark_changes_status_update,#div_update_btns').css('direstion','rtl');
-	    $('#progress_status_for_update_label').html('סטטוס חדש:').css({'margin-bottom':'5px','margin-left':'5px'});
-	    $('#div_target_date_title').html('תאריך יעד');			   
+        $('#div_remark_changes_status_update,#div_update_btns').css('direstion', isHE ? 'rtl' : 'ltr');
+	    $('#progress_status_for_update_label').html(isHE ? 'סטטוס חדש:' : 'New status:').css({'margin-bottom':'5px','margin-left':'5px'});
+	    $('#div_target_date_title').html(isHE ? 'תאריך יעד' : 'Target date');
 		$('#save_remark_btn').css('margin-left','10px');
-		$('#save_remark_btn').val('שמור');
-		$('#cancel_remark_btn').val('ללא הערות');
+		$('#save_remark_btn').val(isHE ? 'שמור' : 'Save');
+		$('#cancel_remark_btn').val(isHE ? 'ללא הערות' : 'No comments');
+		$('#save_update_task_btn').val(isHE ? 'שמור' : 'Save');
+		$('#cancel_update_task_btn').val(isHE ? 'בטל' : 'Cancel');
+		$('#remark_changes_status_update').attr('data-placeholder', isHE ? 'ניתן להוסיף כאן הערה' : 'You can add a note here');
 	    
         let form_data = new FormData();
 		form_data.append('is_updates',1);
