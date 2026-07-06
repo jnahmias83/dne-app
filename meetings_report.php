@@ -625,72 +625,26 @@ if(@$id_rdv_report > 0) {
 }
 
 $html1_body.= '<table dir="'.$dir_table.'" style="'.$style_table.'"><tr><td></td></tr><tr><td width="1%">&nbsp;</td><td><table cellpadding="4">';
-
-// centrage vertical de l'en-tete : certains libelles font 2 lignes ("Subject/<br/>Domain") et d'autres 1.
-// IMPORTANT : html_entity_decode sur le libelle du numero (&#x2116;) avant mesure, sinon getStringHeight
-// mesure la chaine litterale "&#x2116;" (9 caracteres) dans une colonne etroite -> hauteur fausse enorme
-$header_page_w = $pdf->getPageWidth() - $pdf->getMargins()['left'] - $pdf->getMargins()['right'];
-$header_cells_def = array();
-$header_cells_def['count'] = array(@$count_width, html_entity_decode('&#x2116;', ENT_QUOTES, 'UTF-8'));
-if(in_array('subject',$columns_list_array)) $header_cells_def['subject'] = array(@$subject_width, $subject_domain_header);
-if(in_array('area',$columns_list_array)) $header_cells_def['area'] = array(@$area_width, $area_subject_header);
-if(in_array('description',$columns_list_array)) $header_cells_def['description'] = array(@$description_width, $description_header);
-if(in_array('_task',$columns_list_array)) $header_cells_def['task'] = array(@$task_width, $task_type_header);
-if(in_array('responsible',$columns_list_array)) $header_cells_def['responsible'] = array(@$responsible_width, $responsible_header);
-if(in_array('pass on',$columns_list_array)) $header_cells_def['pass_on'] = array(@$pass_on_width, $transfer_confirm_header);
-if(in_array('task creation',$columns_list_array)) $header_cells_def['task_creation'] = array(@$task_creation_width, $task_creation_date_header);
-if(in_array('destination date',$columns_list_array)) $header_cells_def['destination_date'] = array(@$destination_date_width, $destination_date_header);
-if(in_array('progress status',$columns_list_array)) $header_cells_def['progress_status'] = array(@$progress_status_width, $progress_status_header);
-
-$header_max_h = 0;
-$header_heights = array();
-foreach ($header_cells_def as $hk => $hv) {
-	$hw_mm = $pdf->getHTMLUnitToUnits($hv[0], $header_page_w, 'px');
-	$hplain = trim(preg_replace('/\n{2,}/', "\n", strip_tags(str_replace(array('<br>','<br/>','<br />'), "\n", (string)$hv[1]))));
-	$hh = $pdf->getStringHeight(max($hw_mm,1), $hplain);
-	$header_heights[$hk] = $hh;
-	if ($hh > $header_max_h) $header_max_h = $hh;
-}
-$header_spacers = array();
-foreach ($header_heights as $hk => $hh) {
-	$hgap = $header_max_h - $hh;
-	if ($hgap > 0.3) {
-		$unit_font_px = 24;
-		$unit_h = $pdf->getStringHeight(1, '') * ($unit_font_px / 10);
-		$full_units = ($unit_h > 0) ? (int)floor($hgap / $unit_h) : 0;
-		$remainder = $hgap - ($full_units * $unit_h);
-		$sp = str_repeat('<span style="font-size:'.$unit_font_px.'px;">&nbsp;<br></span>', $full_units);
-		if ($remainder > 0.3) {
-			$one_line_h = $pdf->getStringHeight(1, '');
-			$rem_px = ($one_line_h > 0) ? max(1, round(10 * ($remainder / $one_line_h), 1)) : 0;
-			if ($rem_px > 0) $sp .= '<span style="font-size:'.$rem_px.'px;">&nbsp;<br></span>';
-		}
-		$header_spacers[$hk] = $sp;
-	} else {
-		$header_spacers[$hk] = '';
-	}
-}
-
 $html1_body.='<tr style="background-color:#e5f4ff;font-size:11px;">';
-$html1_body.='<th width="'.@$count_width.'" style="text-align:center;border:1px solid black;font-size:10px;font-weight:bold;">'.(@$header_spacers['count']??'').'&#x2116;</th>';
+$html1_body.='<th width="'.@$count_width.'" style="text-align:center;border:1px solid black;font-size:10px;font-weight:bold;">&#x2116;</th>';
 if(in_array('subject',$columns_list_array))
-  $html1_body.='<th width="'.@$subject_width.'" style="text-align:center;border:1px solid black;font-size:10px;font-weight:bold;">'.(@$header_spacers['subject']??'').$subject_domain_header.'</th>';
+  $html1_body.='<th width="'.@$subject_width.'" style="text-align:center;border:1px solid black;font-size:10px;font-weight:bold;">'.$subject_domain_header.'</th>';
 if(in_array('area',$columns_list_array))
-  $html1_body.='<th width="'.@$area_width.'" style="text-align:center;border:1px solid black;font-size:10px;font-weight:bold;">'.(@$header_spacers['area']??'').$area_subject_header.'</th>';
+  $html1_body.='<th width="'.@$area_width.'" style="text-align:center;border:1px solid black;font-size:10px;font-weight:bold;">'.$area_subject_header.'</th>';
 if(in_array('description',$columns_list_array))
-  $html1_body.='<th width="'.@$description_width.'" style="text-align:center;border:1px solid black;font-size:10px;font-weight:bold;">'.(@$header_spacers['description']??'').$description_header.'</th>';
+  $html1_body.='<th width="'.@$description_width.'" style="text-align:center;border:1px solid black;font-size:10px;font-weight:bold;">'.$description_header.'</th>';
 if(in_array('_task',$columns_list_array))
-  $html1_body.='<th width="'.@$task_width.'" style="text-align:center;border:1px solid black;font-size:10px;font-weight:bold;">'.(@$header_spacers['task']??'').$task_type_header.'</th>';
+  $html1_body.='<th width="'.@$task_width.'" style="text-align:center;border:1px solid black;font-size:10px;font-weight:bold;">'.$task_type_header.'</th>';
 if(in_array('responsible',$columns_list_array))
-  $html1_body.='<th width="'.@$responsible_width.'" style="text-align:center;border:1px solid black;font-size:10px;font-weight:bold;">'.(@$header_spacers['responsible']??'').$responsible_header.'</th>';
+  $html1_body.='<th width="'.@$responsible_width.'" style="text-align:center;border:1px solid black;font-size:10px;font-weight:bold;">'.$responsible_header.'</th>';
 if(in_array('pass on',$columns_list_array))
-  $html1_body.='<th width="'.@$pass_on_width.'" style="text-align:center;border:1px solid black;font-size:10px;font-weight:bold;">'.(@$header_spacers['pass_on']??'').$transfer_confirm_header.'</th>';
+  $html1_body.='<th width="'.@$pass_on_width.'" style="text-align:center;border:1px solid black;font-size:10px;font-weight:bold;">'.$transfer_confirm_header.'</th>';
 if(in_array('task creation',$columns_list_array))
-  $html1_body.='<th width="'.@$task_creation_width.'" style="text-align:center;border:1px solid black;font-size:10px;font-weight:bold;">'.(@$header_spacers['task_creation']??'').$task_creation_date_header.'</th>';
+  $html1_body.='<th width="'.@$task_creation_width.'" style="text-align:center;border:1px solid black;font-size:10px;font-weight:bold;">'.$task_creation_date_header.'</th>';
 if(in_array('destination date',$columns_list_array))
-  $html1_body.='<th width="'.@$destination_date_width.'" style="text-align:center;border:1px solid black;font-size:10px;font-weight:bold;">'.(@$header_spacers['destination_date']??'').$destination_date_header.'</th>';
+  $html1_body.='<th width="'.@$destination_date_width.'" style="text-align:center;border:1px solid black;font-size:10px;font-weight:bold;">'.$destination_date_header.'</th>';
 if(in_array('progress status',$columns_list_array))
-  $html1_body.='<th width="'.@$progress_status_width.'" style="text-align:center;border:1px solid black;font-size:10px;font-weight:bold;">'.(@$header_spacers['progress_status']??'').$progress_status_header.'</th>';
+  $html1_body.='<th width="'.@$progress_status_width.'" style="text-align:center;border:1px solid black;font-size:10px;font-weight:bold;">'.$progress_status_header.'</th>';
 $html1_body.='</tr>';
 
 if($id_custom_report > 0 || ($id_rdv_report > 0 && $is_specific_filter)){
