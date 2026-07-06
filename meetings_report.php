@@ -556,9 +556,9 @@ if(@$is_colors) {
 	$new_task_legend_page_w = $pdf->getPageWidth() - $pdf->getMargins()['left'] - $pdf->getMargins()['right'];
 	// table avec largeur fixe explicite (45mm) : donne un padding propre via cellpadding, sans s'etirer
 	// puisque la largeur est fixee (contrairement a une table sans width, qui remplit sa cellule parente)
-	$new_task_legend_badge = '<table width="45mm" cellpadding="4" cellspacing="0"><tr><td style="background-color:'.@$global_bgcolor_new_task->bgcolor.';border:1px solid black;text-align:center;"><strong style="font-size:14px;">'.$new_task_legend_label.'</strong></td></tr></table>';
-	$new_task_legend_spacer = '<td width="80%">&nbsp;</td>';
-	$new_task_legend_cell = '<td width="20%">'.$new_task_legend_badge.'</td>';
+	$new_task_legend_badge = '<table width="32mm" cellpadding="2" cellspacing="0"><tr><td style="background-color:'.@$global_bgcolor_new_task->bgcolor.';border:1px solid black;text-align:center;"><strong style="font-size:13px;">'.$new_task_legend_label.'</strong></td></tr></table>';
+	$new_task_legend_spacer = '<td width="85%">&nbsp;</td>';
+	$new_task_legend_cell = '<td width="15%">'.$new_task_legend_badge.'</td>';
 	// ordre source spacer+cellule (identique dans les deux langues) : donne HE=gauche, EN=droite car le bidi
 	// du texte a l'interieur determine le cote reel, pas le CSS text-align (verifie empiriquement)
 	$new_task_legend_cells = $new_task_legend_spacer.$new_task_legend_cell;
