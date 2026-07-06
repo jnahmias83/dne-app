@@ -550,7 +550,16 @@ $pdf->setPrintHeader(false);
 
 $html_header = '<table><tr><td style="text-align:center;"><img src="uploads/'.@$logo->logo_stread.'" /><br/><br/></td></tr>';
 
-$html1_body = '<tr style="font-size:16px;"><td width="40px;">&nbsp;</td><td style="text-align:center;"><span dir="'.$dir_table.'"><strong><u>'.$title.'</u></strong></span></td></tr></table>';
+$new_task_legend_html = '';
+if(@$is_colors) {
+	$new_task_legend_label = (@$lang == 'HE') ? 'עדכון/חדש' : 'Update/New';
+	$new_task_legend_align = (@$lang == 'HE') ? 'left' : 'right';
+	$new_task_legend_page_w = $pdf->getPageWidth() - $pdf->getMargins()['left'] - $pdf->getMargins()['right'];
+	$new_task_legend_badge = '<span style="background-color:'.@$global_bgcolor_new_task->bgcolor.';border:1px solid black;"><strong style="font-size:10px;">&nbsp;'.$new_task_legend_label.'&nbsp;</strong></span>';
+	$new_task_legend_html = '<tr><td colspan="2"><table width="'.$new_task_legend_page_w.'mm" cellpadding="0" cellspacing="0"><tr><td style="text-align:'.$new_task_legend_align.';">'.$new_task_legend_badge.'</td></tr></table></td></tr>';
+}
+
+$html1_body = '<tr style="font-size:16px;"><td width="40px;">&nbsp;</td><td style="text-align:center;"><span dir="'.$dir_table.'"><strong><u>'.$title.'</u></strong></span></td></tr>'.$new_task_legend_html.'</table>';
 
 if(@$id_rdv_report > 0) { 
     $html1_body.= '<span>&nbsp;&nbsp;&nbsp;</span><strong style="text-decoration:underline;font-size:12px;">'.@$participants_label.':</strong><br/>';
