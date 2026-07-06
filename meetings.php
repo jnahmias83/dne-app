@@ -471,9 +471,25 @@ if(empty(array_filter($columns_list_array))){
 if (empty($lang))
 	$lang = @$project->lang;
 
-// Sauvegarder en session UNIQUEMENT quand l'utilisateur change le dropdown (lang_origin=user)
+// Quand l'utilisateur change le dropdown : sauvegarder en session ET en base (persistance permanente par utilisateur)
 if (!empty(@$_GET['lang']) && @$_GET['lang_origin'] === 'user') {
     $_SESSION['meetings_forced_lang'] = $_GET['lang'];
+    if (!empty($_SESSION['id_user'])) {
+        $query = $mysqli->prepare("UPDATE dne_users SET meetings_lang = ? WHERE id = ?");
+        $query->bind_param('si', $_GET['lang'], $_SESSION['id_user']);
+        $query->execute();
+    }
+}
+
+// Si rien en session (nouvelle session/reconnexion), reprendre la dernière langue choisie, sauvegardée en base
+if (empty($_SESSION['meetings_forced_lang']) && !empty($_SESSION['id_user'])) {
+    $query = $mysqli->prepare("SELECT meetings_lang FROM dne_users WHERE id = ?");
+    $query->bind_param('i', $_SESSION['id_user']);
+    $query->execute();
+    $result = $query->get_result()->fetch_assoc();
+    if (!empty($result['meetings_lang'])) {
+        $_SESSION['meetings_forced_lang'] = $result['meetings_lang'];
+    }
 }
 
 // La langue choisie par l'utilisateur prend le dessus sur la langue du rapport/rdv
