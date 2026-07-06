@@ -553,13 +553,13 @@ $html_header = '<table><tr><td style="text-align:center;"><img src="uploads/'.@$
 $new_task_legend_html = '';
 if(@$is_colors) {
 	$new_task_legend_label = (@$lang == 'HE') ? 'עדכון/חדש' : 'Update/New';
-	$new_task_legend_align = (@$lang == 'HE') ? 'left' : 'right';
 	$new_task_legend_page_w = $pdf->getPageWidth() - $pdf->getMargins()['left'] - $pdf->getMargins()['right'];
-	$new_task_legend_badge = '<table cellpadding="4" cellspacing="0"><tr><td style="background-color:'.@$global_bgcolor_new_task->bgcolor.';border:1px solid black;text-align:center;"><strong style="font-size:14px;">'.$new_task_legend_label.'</strong></td></tr></table>';
-	$new_task_legend_spacer = '<td width="70%">&nbsp;</td>';
-	$new_task_legend_cell = '<td width="30%" style="text-align:center;">'.$new_task_legend_badge.'</td>';
-	// l'ordre source spacer+cellule donne le bon cote visuel dans les deux langues (le bidi hebreu/anglais
-	// du texte a l'interieur inverse deja le rendu visuel, meme a ordre source identique)
+	// span (pas table) : ne s'etire pas pour remplir la cellule, garde sa taille naturelle autour du texte
+	$new_task_legend_badge = '<span style="background-color:'.@$global_bgcolor_new_task->bgcolor.';border:1px solid black;"><strong style="font-size:14px;">&nbsp;&nbsp;&nbsp;'.$new_task_legend_label.'&nbsp;&nbsp;&nbsp;</strong></span>';
+	$new_task_legend_spacer = '<td width="80%">&nbsp;</td>';
+	$new_task_legend_cell = '<td width="20%">'.$new_task_legend_badge.'</td>';
+	// ordre source spacer+cellule (identique dans les deux langues) : donne HE=gauche, EN=droite car le bidi
+	// du texte a l'interieur determine le cote reel, pas le CSS text-align (verifie empiriquement)
 	$new_task_legend_cells = $new_task_legend_spacer.$new_task_legend_cell;
 	$new_task_legend_html = '<tr><td colspan="2"><table width="'.$new_task_legend_page_w.'mm" cellpadding="0" cellspacing="0" dir="ltr"><tr>'.$new_task_legend_cells.'</tr></table></td></tr>';
 }
