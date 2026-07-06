@@ -553,19 +553,13 @@ $html_header = '<table><tr><td style="text-align:center;"><img src="uploads/'.@$
 $new_task_legend_html = '';
 if(@$is_colors) {
 	$new_task_legend_label = (@$lang == 'HE') ? 'עדכון/חדש' : 'Update/New';
-	$new_task_legend_page_w = $pdf->getPageWidth() - $pdf->getMargins()['left'] - $pdf->getMargins()['right'];
-	// table avec largeur fixe explicite (45mm) : donne un padding propre via cellpadding, sans s'etirer
-	// puisque la largeur est fixee (contrairement a une table sans width, qui remplit sa cellule parente)
-	$new_task_legend_badge = '<table width="32mm" cellpadding="2" cellspacing="0"><tr><td style="background-color:'.@$global_bgcolor_new_task->bgcolor.';border:1px solid black;text-align:center;"><strong style="font-size:13px;">'.$new_task_legend_label.'</strong></td></tr></table>';
-	$new_task_legend_spacer = '<td width="85%">&nbsp;</td>';
-	$new_task_legend_cell = '<td width="15%">'.$new_task_legend_badge.'</td>';
-	// ordre source spacer+cellule (identique dans les deux langues) : donne HE=gauche, EN=droite car le bidi
-	// du texte a l'interieur determine le cote reel, pas le CSS text-align (verifie empiriquement)
-	$new_task_legend_cells = $new_task_legend_spacer.$new_task_legend_cell;
-	$new_task_legend_html = '<tr><td colspan="2"><table width="'.$new_task_legend_page_w.'mm" cellpadding="0" cellspacing="0" dir="ltr"><tr>'.$new_task_legend_cells.'</tr></table></td></tr>';
+	$new_task_legend_badge = '<table width="28mm" cellpadding="2" cellspacing="0"><tr><td style="background-color:'.@$global_bgcolor_new_task->bgcolor.';border:1px solid black;text-align:center;"><strong style="font-size:13px;">'.$new_task_legend_label.'</strong></td></tr></table>';
+	// reutilise exactement la meme structure/marge que le tableau de donnees (dir=$dir_table, style=$style_table,
+	// spacer 1% identique) pour garantir le meme alignement, peu importe le rapport/projet
+	$new_task_legend_html = '<table dir="'.$dir_table.'" style="'.$style_table.'"><tr><td width="1%">&nbsp;</td><td>'.$new_task_legend_badge.'</td></tr></table><br/>';
 }
 
-$html1_body = '<tr style="font-size:16px;"><td width="40px;">&nbsp;</td><td style="text-align:center;"><span dir="'.$dir_table.'"><strong><u>'.$title.'</u></strong></span></td></tr>'.$new_task_legend_html.'</table>';
+$html1_body = '<tr style="font-size:16px;"><td width="40px;">&nbsp;</td><td style="text-align:center;"><span dir="'.$dir_table.'"><strong><u>'.$title.'</u></strong></span></td></tr></table>'.$new_task_legend_html;
 
 if(@$id_rdv_report > 0) { 
     $html1_body.= '<span>&nbsp;&nbsp;&nbsp;</span><strong style="text-decoration:underline;font-size:12px;">'.@$participants_label.':</strong><br/>';
