@@ -3508,9 +3508,10 @@ $(document).ready(function(){
 	if(localStorage.getItem('highlight_after_reload') === 'true'){
 		localStorage.removeItem('highlight_after_reload');
 		const _mid = localStorage.getItem('meeting_id');
+		const _iter = localStorage.getItem('iteration');
 		if(_mid){
 			$('tr.task-row-highlight').removeClass('task-row-highlight');
-			const $_r = $('#meetings_table tr.meeting_' + _mid);
+			const $_r = _iter ? $('#row_' + _iter) : $('#meetings_table tr.meeting_' + _mid);
 			if($_r.length) $_r.addClass('task-row-highlight');
 		}
 	}
@@ -3561,7 +3562,7 @@ $(document).ready(function(){
 				$('#modalTaskFollowupActions').modal('show');
 				setProjectModalTitle(project_id, '#modalTaskFollowupActions', false);
 				setTimeout(function(){
-				    let $row = $('#meetings_table tr.meeting_' + meeting_id);
+				    let $row = iteration ? $('#row_' + iteration) : $('#meetings_table tr.meeting_' + meeting_id);
 				    if ($row.length) $row[0].scrollIntoView({block: 'center'});
 				}, 400);
 			},
