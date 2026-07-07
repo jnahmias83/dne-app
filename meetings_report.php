@@ -1221,7 +1221,7 @@ foreach($chapters as $item){
 					// espaceur fixe (25% de la hauteur de ligne) plutot qu'un calcul precis base sur la mesure de
 					// texte : le calcul exact (demi-ecart mesure) ne correspondait pas assez fidelement au rendu
 					// reel de TCPDF
-					$gap_mm = ($rh < $row_max_h - 0.3) ? (0.45 * $row_max_h) : 0;
+					$gap_mm = ($rh < $row_max_h - 0.3) ? (0.38 * $row_max_h) : 0;
 					if ($gap_mm > 0.3) {
 						// TCPDF n'est fiable/lineaire qu'a des tailles de police "normales" : on plafonne
 						// chaque ligne d'espaceur a 24px et on la repete autant que necessaire, plutot que
