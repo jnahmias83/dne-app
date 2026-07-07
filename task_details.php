@@ -76,7 +76,7 @@ if(@$_POST['all_ids_to_edit'] == '') {
 			$progress_status_log_updates = @$item->ps_name;
 		
 		if(@$remark != '')
-			$description .= "<div class='marginTop5 fontSize13 colorGreen'>"
+			$description .= "<div class='marginTop5 fontSize13 colorGreen' style='text-align:right;display:table;margin:0 auto;'>"
 							."<span class='dir-rtl unicode-bidi-embed'>"
 							."[".smartDate(@$action_date, @$meeting->lang)."]"
 							."</span> "
@@ -89,7 +89,7 @@ if(@$_POST['all_ids_to_edit'] == '') {
 								."</span> ";
 			}				
 							
-			$description .=	 ": <span class='dir-rtl unicode-bidi-embed display-inline-block'>"
+			$description .=	 ": <span class='dir-rtl unicode-bidi-embed'>"
 							.html_entity_decode(@$remark)
 							."</span>"
 							."</div>";
@@ -128,43 +128,53 @@ if(@$_POST['all_ids_to_edit'] == '') {
 		                           lmt.remark AS remark,u.nickname AS user_nickname
 								   FROM dne_log_meeting_tracking lmt
 							       LEFT JOIN dne_users u ON lmt.id_user = u.id
-								   WHERE lmt.id_meeting = ? 
+								   WHERE lmt.id_meeting = ?
 							       AND lmt.is_remark_appears_log = ?
 							       AND lmt.remark <> ?
 							       ORDER BY lmt.id");
 	    $query->bind_param("iis",$id,$one,$empty_remark);
 	    $query->execute();
-	    $query->store_result();	
+	    $query->store_result();
     	$log_meeting_tracking = fetch($query);
-		
+
+		if(@$meeting->reminder_date != '0000-00-00')
+			$reminder_bell_html = "<i class='fa-solid fa-bell colorRed'></i><br/><span class='dir-rtl unicode-bidi-embed' style='white-space:nowrap;'>".smartDate(@$meeting->reminder_date, @$meeting->lang)."</span>";
+		else
+			$reminder_bell_html = "<i class='fa-solid fa-bell-slash colorGrey'></i>";
+
+		$tracking_remarks .= "<tr><td colspan='3'><table style='width:100%;table-layout:fixed;border-collapse:collapse;'>";
+
 		foreach($log_meeting_tracking as $item){
 			if(@$item->remark == '')
 				$remark = 'במעקב';
 			else
 				$remark = html_entity_decode(@$item->remark);
-	  
+
 		    $action_date = @$item->action_date;
-			
+
 			$action_date = smartDate(@$item->action_date, @$meeting->lang);
-			
+
 			$user_nickname = @$item->user_nickname;
 
-			if(@$remark != '')
-				$tracking_remarks .= "<div class='marginTop5 fontSize13 display-block'>";
-                
-                if($track_responsible_name != ""){
-					$tracking_remarks .=  "<span class='border-black padding-4x-4y borderRadius20 align-items-center justify-content-center fontSize12 colorWhite bgColorRed' style='display:inline-flex;line-height:1;'>"
-											.@$track_responsible_name
-									      ."</span>";
-				}					
-										 
-				$tracking_remarks .=  "<span class='marginRight5 border-black padding-2x-2y borderRadius20 align-items-center justify-content-center fontSize9 colorWhite bgColorBlack' style='display:inline-flex;line-height:1;'>"
-											.@$item->user_nickname
-										   ."</span>
-                                           <span class='marginRight5 dir-rtl unicode-bidi-embed'>".@$action_date."</span>  										   
-										   - <span class='colorRed dir-rtl unicode-bidi-embed'>".html_entity_decode(@$remark)."</span>
-										</div>";
+			$tracking_remarks .= "<tr class='bg-fceaea alignCenter'>";
+			$tracking_remarks .= "<td style='vertical-align:middle;width:8%;padding-right:20px;'><i class='fa-solid fa-list' style='cursor:pointer;'></i></td>";
+			$tracking_remarks .= "<td style='vertical-align:middle;width:17%;'>";
+			if($track_responsible_name != ""){
+				$tracking_remarks .=  "<span class='border-black padding-4x-4y borderRadius20 align-items-center justify-content-center fontSize12 colorWhite bgColorRed' style='display:inline-flex;line-height:1;'>"
+										.@$track_responsible_name
+									  ."</span>";
+			}
+
+			$tracking_remarks .=  "<span class='marginRight5 border-black padding-2x-2y borderRadius20 align-items-center justify-content-center fontSize9 colorWhite bgColorBlack' style='display:inline-flex;line-height:1;'>"
+										.@$item->user_nickname
+									   ."</span>";
+			$tracking_remarks .= "</td>";
+			$tracking_remarks .= "<td style='vertical-align:middle;text-align:right;padding:0 12px;width:63%;'><span class='marginRight5 dir-rtl unicode-bidi-embed' style='white-space:nowrap;'>".@$action_date." -</span> <span class='colorRed dir-rtl unicode-bidi-embed' style='white-space:normal;word-wrap:break-word;overflow-wrap:break-word;'>".html_entity_decode(@$remark)."</span></td>";
+			$tracking_remarks .= "<td style='vertical-align:middle;padding-left:20px;width:12%;'>".$reminder_bell_html."</td>";
+			$tracking_remarks .= "</tr>";
 	    }
+
+		$tracking_remarks .= "</table></td></tr>";
 	}	
 	
 	$new_task_label = 'חדשה';

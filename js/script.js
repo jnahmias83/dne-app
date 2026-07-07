@@ -504,10 +504,7 @@ function fillContentTaskDetails(meeting_id,iteration,task_details,forShare,withP
 	content += '<tr class="alignCenter bgColor-ebf4f5"><td colspan="3"><p>'+decodeHtmlAndNl2br(task_details[8])+'</p></td></tr>';
 	
 	if(forShare && task_details[22] == 1){
-		let remember_content = '<i class="fa-solid fa-bell-slash colorGrey"></i>';
-		if(task_details[24] != '0000-00-00')
-			remember_content = '<i class="fa-solid fa-bell colorRed"></i>&nbsp;'+task_details[24].substr(8,2)+'.'+task_details[24].substr(5,2)+'.'+task_details[24].substr(2,2);
-		content += '<tr class="alignCenter bg-fceaea"><td colspan="2" class="border-left-white"><p>'+task_details[23]+'</p></td><td>'+remember_content+'</td></tr>';    
+		content += task_details[23];
 	}
 	
 	if(task_details[9] != ''){
@@ -751,6 +748,13 @@ function setlocalStorage(id_meeting,iteration){
 	else 	
 		localStorage.setItem('reminder_time',$('#hidden_reminder_time').val());
 }
+
+$(document).on('keydown', '#new_remark', function(e){
+	if(e.key === 'Enter'){
+		e.preventDefault();
+		document.execCommand('insertHTML', false, '<br>');
+	}
+});
 
 function fillLogTaskTracking(id_meeting,iteration,screen_type,track_type){
 	let selectedValues = $('input[name="log_meeting_tracking[]"]:checked')
