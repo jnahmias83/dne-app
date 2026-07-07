@@ -558,8 +558,29 @@ if(@$is_colors && !empty(@$period_new_tasks)) {
 	// structure qui a deja donne HE=gauche/EN=droite de façon fiable : table pleine largeur explicite (pas
 	// margin:auto), dir="ltr" force, meme ordre spacer+badge dans les deux langues (le bidi du texte suffit
 	// a determiner le cote sous ce contexte precis)
-	$new_task_legend_spacer = '<td width="85%">&nbsp;</td>';
-	$new_task_legend_cell = '<td width="15%">'.$new_task_legend_badge.'</td>';
+	$new_task_legend_spacer_percent = 85;
+	if($pdf_direction == 'L') {
+		$new_task_legend_cols_width_px = @$count_width;
+		if(in_array('subject',$columns_list_array)) $new_task_legend_cols_width_px += @$subject_width;
+		if(in_array('area',$columns_list_array)) $new_task_legend_cols_width_px += @$area_width;
+		if(in_array('_task',$columns_list_array)) $new_task_legend_cols_width_px += @$task_width;
+		if(in_array('responsible',$columns_list_array)) $new_task_legend_cols_width_px += @$responsible_width;
+		if(in_array('pass on',$columns_list_array)) $new_task_legend_cols_width_px += @$pass_on_width;
+		if(in_array('task creation',$columns_list_array)) $new_task_legend_cols_width_px += @$task_creation_width;
+		if(in_array('destination date',$columns_list_array)) $new_task_legend_cols_width_px += @$destination_date_width;
+		if(in_array('progress status',$columns_list_array)) $new_task_legend_cols_width_px += @$progress_status_width;
+		$new_task_legend_fixed_mm = $pdf->getHTMLUnitToUnits($new_task_legend_cols_width_px, $new_task_legend_page_w, 'px');
+		$new_task_legend_description_pct = 0;
+		if(in_array('description',$columns_list_array))
+			$new_task_legend_description_pct = ((float)rtrim(@$description_width,'%')) / 100;
+		$new_task_legend_real_table_mm = ($new_task_legend_description_pct > 0 && $new_task_legend_description_pct < 1)
+			? ($new_task_legend_fixed_mm / (1 - $new_task_legend_description_pct))
+			: $new_task_legend_fixed_mm;
+		$new_task_legend_gap_mm = ($new_task_legend_page_w - $new_task_legend_real_table_mm) / 2;
+		$new_task_legend_spacer_percent = (($new_task_legend_gap_mm + $new_task_legend_real_table_mm - 28) / $new_task_legend_page_w) * 100;
+	}
+	$new_task_legend_spacer = '<td width="'.$new_task_legend_spacer_percent.'%">&nbsp;</td>';
+	$new_task_legend_cell = '<td width="'.(100 - $new_task_legend_spacer_percent).'%">'.$new_task_legend_badge.'</td>';
 	$new_task_legend_cells = $new_task_legend_spacer.$new_task_legend_cell;
 	$new_task_legend_html = '<tr><td colspan="2"><table width="'.$new_task_legend_page_w.'mm" cellpadding="0" cellspacing="0" dir="ltr"><tr>'.$new_task_legend_cells.'</tr></table></td></tr>';
 }
@@ -624,27 +645,80 @@ if(@$id_rdv_report > 0) {
     $html1_body .= '</tr></table>';
 }
 
+// centrage vertical de l'en-tete (meme technique/pourcentage que les lignes de donnees, calcule une seule
+// fois puisque les libelles d'en-tete sont statiques, partage entre html1_body et html2_body)
+$header_content_width_mm = $pdf->getPageWidth() - $pdf->getMargins()['left'] - $pdf->getMargins()['right'];
+$header_cell_texts = array();
+$header_cell_texts['count'] = array(@$count_width, '&#x2116;');
+if(in_array('subject',$columns_list_array)) $header_cell_texts['subject'] = array(@$subject_width, $subject_domain_header);
+if(in_array('area',$columns_list_array)) $header_cell_texts['area'] = array(@$area_width, $area_subject_header);
+if(in_array('description',$columns_list_array)) $header_cell_texts['description'] = array(@$description_width, $description_header);
+if(in_array('_task',$columns_list_array)) $header_cell_texts['task'] = array(@$task_width, $task_type_header);
+if(in_array('responsible',$columns_list_array)) $header_cell_texts['responsible'] = array(@$responsible_width, $responsible_header);
+if(in_array('pass on',$columns_list_array)) $header_cell_texts['pass_on'] = array(@$pass_on_width, $transfer_confirm_header);
+if(in_array('task creation',$columns_list_array)) $header_cell_texts['task_creation'] = array(@$task_creation_width, $task_creation_date_header);
+if(in_array('destination date',$columns_list_array)) $header_cell_texts['destination_date'] = array(@$destination_date_width, $destination_date_header);
+if(in_array('progress status',$columns_list_array)) $header_cell_texts['progress_status'] = array(@$progress_status_width, $progress_status_header);
+
+$header_max_h = 0;
+$header_cell_heights = array();
+foreach ($header_cell_texts as $hk => $hv) {
+	$hw_mm = $pdf->getHTMLUnitToUnits($hv[0], $header_content_width_mm, 'px') * 1.4;
+	$hnorm = str_replace(array('<br>','<br/>','<br />'), "\n", (string)$hv[1]);
+	$hplain = html_entity_decode(trim($hnorm), ENT_QUOTES, 'UTF-8');
+	$hh = $pdf->getStringHeight(max($hw_mm, 1), $hplain);
+	$header_cell_heights[$hk] = array($hh, max($hw_mm, 1));
+	if ($hh > $header_max_h) $header_max_h = $hh;
+}
+$header_pad_lines = array();
+foreach ($header_cell_heights as $hk => $hhw) {
+	list($hh, $hw_mm) = $hhw;
+	$gap_mm = ($hh < $header_max_h - 0.3) ? (0.25 * $header_max_h) : 0;
+	if ($gap_mm > 0.3) {
+		$unit_font_px = 24;
+		$unit_h = $pdf->getStringHeight($hw_mm, '') * ($unit_font_px / 10);
+		$spacer_html = '';
+		if ($unit_h > 0) {
+			$full_units = (int)floor($gap_mm / $unit_h);
+			$remainder_mm = $gap_mm - ($full_units * $unit_h);
+			for ($u = 0; $u < $full_units; $u++) {
+				$spacer_html .= '<span style="font-size:'.$unit_font_px.'px;">&nbsp;<br></span>';
+			}
+			if ($remainder_mm > 0.3) {
+				$one_line_h = $pdf->getStringHeight($hw_mm, '');
+				$rem_font_px = ($one_line_h > 0) ? max(1, round(10 * ($remainder_mm / $one_line_h), 1)) : 0;
+				if ($rem_font_px > 0) {
+					$spacer_html .= '<span style="font-size:'.$rem_font_px.'px;">&nbsp;<br></span>';
+				}
+			}
+		}
+		$header_pad_lines[$hk] = $spacer_html;
+	} else {
+		$header_pad_lines[$hk] = '';
+	}
+}
+
 $html1_body.= '<table dir="'.$dir_table.'" style="'.$style_table.'"><tr><td></td></tr><tr><td width="1%">&nbsp;</td><td><table cellpadding="4">';
 $html1_body.='<tr style="background-color:#e5f4ff;font-size:11px;">';
-$html1_body.='<th width="'.@$count_width.'" style="text-align:center;border:1px solid black;font-size:10px;font-weight:bold;">&#x2116;</th>';
+$html1_body.='<th width="'.@$count_width.'" style="text-align:center;border:1px solid black;font-size:10px;font-weight:bold;">'.(@$header_pad_lines['count']??'').'&#x2116;</th>';
 if(in_array('subject',$columns_list_array))
-  $html1_body.='<th width="'.@$subject_width.'" style="text-align:center;border:1px solid black;font-size:10px;font-weight:bold;">'.$subject_domain_header.'</th>';
+  $html1_body.='<th width="'.@$subject_width.'" style="text-align:center;border:1px solid black;font-size:10px;font-weight:bold;">'.(@$header_pad_lines['subject']??'').$subject_domain_header.'</th>';
 if(in_array('area',$columns_list_array))
-  $html1_body.='<th width="'.@$area_width.'" style="text-align:center;border:1px solid black;font-size:10px;font-weight:bold;">'.$area_subject_header.'</th>';
+  $html1_body.='<th width="'.@$area_width.'" style="text-align:center;border:1px solid black;font-size:10px;font-weight:bold;">'.(@$header_pad_lines['area']??'').$area_subject_header.'</th>';
 if(in_array('description',$columns_list_array))
-  $html1_body.='<th width="'.@$description_width.'" style="text-align:center;border:1px solid black;font-size:10px;font-weight:bold;">'.$description_header.'</th>';
+  $html1_body.='<th width="'.@$description_width.'" style="text-align:center;border:1px solid black;font-size:10px;font-weight:bold;">'.(@$header_pad_lines['description']??'').$description_header.'</th>';
 if(in_array('_task',$columns_list_array))
-  $html1_body.='<th width="'.@$task_width.'" style="text-align:center;border:1px solid black;font-size:10px;font-weight:bold;">'.$task_type_header.'</th>';
+  $html1_body.='<th width="'.@$task_width.'" style="text-align:center;border:1px solid black;font-size:10px;font-weight:bold;">'.(@$header_pad_lines['task']??'').$task_type_header.'</th>';
 if(in_array('responsible',$columns_list_array))
-  $html1_body.='<th width="'.@$responsible_width.'" style="text-align:center;border:1px solid black;font-size:10px;font-weight:bold;">'.$responsible_header.'</th>';
+  $html1_body.='<th width="'.@$responsible_width.'" style="text-align:center;border:1px solid black;font-size:10px;font-weight:bold;">'.(@$header_pad_lines['responsible']??'').$responsible_header.'</th>';
 if(in_array('pass on',$columns_list_array))
-  $html1_body.='<th width="'.@$pass_on_width.'" style="text-align:center;border:1px solid black;font-size:10px;font-weight:bold;">'.$transfer_confirm_header.'</th>';
+  $html1_body.='<th width="'.@$pass_on_width.'" style="text-align:center;border:1px solid black;font-size:10px;font-weight:bold;">'.(@$header_pad_lines['pass_on']??'').$transfer_confirm_header.'</th>';
 if(in_array('task creation',$columns_list_array))
-  $html1_body.='<th width="'.@$task_creation_width.'" style="text-align:center;border:1px solid black;font-size:10px;font-weight:bold;">'.$task_creation_date_header.'</th>';
+  $html1_body.='<th width="'.@$task_creation_width.'" style="text-align:center;border:1px solid black;font-size:10px;font-weight:bold;">'.(@$header_pad_lines['task_creation']??'').$task_creation_date_header.'</th>';
 if(in_array('destination date',$columns_list_array))
-  $html1_body.='<th width="'.@$destination_date_width.'" style="text-align:center;border:1px solid black;font-size:10px;font-weight:bold;">'.$destination_date_header.'</th>';
+  $html1_body.='<th width="'.@$destination_date_width.'" style="text-align:center;border:1px solid black;font-size:10px;font-weight:bold;">'.(@$header_pad_lines['destination_date']??'').$destination_date_header.'</th>';
 if(in_array('progress status',$columns_list_array))
-  $html1_body.='<th width="'.@$progress_status_width.'" style="text-align:center;border:1px solid black;font-size:10px;font-weight:bold;">'.$progress_status_header.'</th>';
+  $html1_body.='<th width="'.@$progress_status_width.'" style="text-align:center;border:1px solid black;font-size:10px;font-weight:bold;">'.(@$header_pad_lines['progress_status']??'').$progress_status_header.'</th>';
 $html1_body.='</tr>';
 
 if($id_custom_report > 0 || ($id_rdv_report > 0 && $is_specific_filter)){
@@ -1112,6 +1186,7 @@ foreach($chapters as $item){
 
 				// Mesure la vraie hauteur de chaque cellule (via TCPDF) pour calculer un padding-top qui centre verticalement le contenu le plus court sur la hauteur de la ligne
 				$row_cell_texts = array();
+				$row_cell_texts['count'] = array(@$count_width, @$count1);
 				if(in_array('subject',$columns_list_array)) $row_cell_texts['subject'] = array(@$subject_width, @$subject);
 				if(in_array('area',$columns_list_array)) $row_cell_texts['area'] = array(@$area_width, @$area);
 				if(in_array('description',$columns_list_array)) $row_cell_texts['description'] = array(@$description_width, @$description);
@@ -1143,9 +1218,10 @@ foreach($chapters as $item){
 				$row_pad_lines = array();
 				foreach ($row_cell_heights as $rk => $rhw) {
 					list($rh, $rw_mm) = $rhw;
-					// coefficient empirique : TCPDF rend visuellement le texte un peu plus bas que le calcul
-					// mathematique exact, on remonte donc legerement (1.2mm) pour un centrage visuel correct
-					$gap_mm = (($row_max_h - $rh) / 2) - 1.2;
+					// espaceur fixe (25% de la hauteur de ligne) plutot qu'un calcul precis base sur la mesure de
+					// texte : le calcul exact (demi-ecart mesure) ne correspondait pas assez fidelement au rendu
+					// reel de TCPDF
+					$gap_mm = ($rh < $row_max_h - 0.3) ? (0.45 * $row_max_h) : 0;
 					if ($gap_mm > 0.3) {
 						// TCPDF n'est fiable/lineaire qu'a des tailles de police "normales" : on plafonne
 						// chaque ligne d'espaceur a 24px et on la repete autant que necessaire, plutot que
@@ -1175,7 +1251,7 @@ foreach($chapters as $item){
 				}
 
 			    $html1_body.='<tr style="font-size:10px;'.@$dir_table.'">';
-                $html1_body.='<td width="'.@$count_width.'" style="text-align:center;'.@$update_cell_bgcolor.';border:1px solid black;'.$color_num.'">'.@$count1.'</td>';
+                $html1_body.='<td width="'.@$count_width.'" style="text-align:center;'.@$update_cell_bgcolor.';border:1px solid black;'.$color_num.'">'.(@$row_pad_lines['count']??'').@$count1.'</td>';
 			    if(in_array('subject',$columns_list_array))
 			      $html1_body.='<td width="'.@$subject_width.'" style="'.@$text_align.';'.@$padding.':5px;'.@$subject_bgcolor.';border:1px solid black;">'.(@$row_pad_lines['subject']??'').@$subject.'</td>';
 				if(in_array('area',$columns_list_array))
@@ -1252,25 +1328,25 @@ $html2_body.= '<div class="row">';
 $html2_body.= '<div class="col-md-12">';
 $html2_body.= '<table dir="'.$dir_table.'" style="'.$style_table.'"><tr><td width="1%">&nbsp;</td><td><table cellpadding="4">';
 $html2_body.='<tr style="background-color:#e5f4ff;font-size:11px;">';
-$html2_body.='<th width="'.@$count_width.'" style="text-align:center;border:1px solid black;font-size:11px;font-weight:bold;">&#x2116;</th>';
+$html2_body.='<th width="'.@$count_width.'" style="text-align:center;border:1px solid black;font-size:11px;font-weight:bold;">'.(@$header_pad_lines['count']??'').'&#x2116;</th>';
 if(in_array('subject',$columns_list_array))
-  $html2_body.='<th width="'.@$subject_width.'" style="text-align:center;border:1px solid black;font-size:11px;font-weight:bold;">'.$subject_domain_header.'</th>';
+  $html2_body.='<th width="'.@$subject_width.'" style="text-align:center;border:1px solid black;font-size:11px;font-weight:bold;">'.(@$header_pad_lines['subject']??'').$subject_domain_header.'</th>';
 if(in_array('area',$columns_list_array))
-  $html2_body.='<th width="'.@$area_width.'" style="text-align:center;border:1px solid black;font-size:11px;font-weight:bold;">'.$area_subject_header.'</th>';
+  $html2_body.='<th width="'.@$area_width.'" style="text-align:center;border:1px solid black;font-size:11px;font-weight:bold;">'.(@$header_pad_lines['area']??'').$area_subject_header.'</th>';
 if(in_array('description',$columns_list_array))
-  $html2_body.='<th width="'.@$description_width.'" style="text-align:center;border:1px solid black;font-size:11px;font-weight:bold;">'.$description_header.'</th>';
+  $html2_body.='<th width="'.@$description_width.'" style="text-align:center;border:1px solid black;font-size:11px;font-weight:bold;">'.(@$header_pad_lines['description']??'').$description_header.'</th>';
 if(in_array('_task',$columns_list_array))
-  $html2_body.='<th width="'.@$task_width.'" style="text-align:center;border:1px solid black;font-size:11px;font-weight:bold;">'.$task_type_header.'</th>';
+  $html2_body.='<th width="'.@$task_width.'" style="text-align:center;border:1px solid black;font-size:11px;font-weight:bold;">'.(@$header_pad_lines['task']??'').$task_type_header.'</th>';
 if(in_array('responsible',$columns_list_array))
-  $html2_body.='<th width="'.@$responsible_width.'" style="text-align:center;border:1px solid black;font-size:11px;font-weight:bold;">'.$responsible_header.'</th>';
+  $html2_body.='<th width="'.@$responsible_width.'" style="text-align:center;border:1px solid black;font-size:11px;font-weight:bold;">'.(@$header_pad_lines['responsible']??'').$responsible_header.'</th>';
 if(in_array('pass on',$columns_list_array))
-  $html2_body.='<th width="'.@$pass_on_width.'" style="text-align:center;border:1px solid black;font-size:11px;font-weight:bold;">'.$transfer_confirm_header.'</th>';
+  $html2_body.='<th width="'.@$pass_on_width.'" style="text-align:center;border:1px solid black;font-size:11px;font-weight:bold;">'.(@$header_pad_lines['pass_on']??'').$transfer_confirm_header.'</th>';
 if(in_array('task creation',$columns_list_array))
-  $html2_body.='<th width="'.@$task_creation_width.'" style="text-align:center;border:1px solid black;font-size:10px;font-weight:bold;">'.$task_creation_date_header.'</th>';
+  $html2_body.='<th width="'.@$task_creation_width.'" style="text-align:center;border:1px solid black;font-size:10px;font-weight:bold;">'.(@$header_pad_lines['task_creation']??'').$task_creation_date_header.'</th>';
 if(in_array('destination date',$columns_list_array))
-  $html2_body.='<th width="'.@$destination_date_width.'" style="text-align:center;border:1px solid black;font-size:10px;font-weight:bold;">'.$destination_date_header.'</th>';
+  $html2_body.='<th width="'.@$destination_date_width.'" style="text-align:center;border:1px solid black;font-size:10px;font-weight:bold;">'.(@$header_pad_lines['destination_date']??'').$destination_date_header.'</th>';
 if(in_array('progress status',$columns_list_array))
-  $html2_body.='<th width="'.@$progress_status_width.'" style="text-align:center;border:1px solid black;font-size:11px;font-weight:bold;">'.$progress_status_header.'</th>';
+  $html2_body.='<th width="'.@$progress_status_width.'" style="text-align:center;border:1px solid black;font-size:11px;font-weight:bold;">'.(@$header_pad_lines['progress_status']??'').$progress_status_header.'</th>';
 $html2_body.='</tr>';
 
 $is_html2_appears = false;
@@ -1666,7 +1742,7 @@ foreach($chapters as $item) {
                 $count2++;
 				
 				$html2_body.='<tr style="font-size:10px;'.@$dir_table.'">';		
-				$html2_body.='<td width="'.@$count_width.'" style="text-align:center;'.@$update_cell_bgcolor.';border:1px solid black;'.$color_num.'">'.@$count2.'</td>';
+				$html2_body.='<td width="'.@$count_width.'" style="text-align:center;'.@$update_cell_bgcolor.';border:1px solid black;'.$color_num.'">'.(@$row_pad_lines['count']??'').@$count2.'</td>';
 				if(in_array('subject',$columns_list_array))
 				   $html2_body.='<td width="'.@$subject_width.'" style="'.@$text_align.';'.@$padding.':5px;'.@$subject_bgcolor.';border:1px solid black;">'.(@$row_pad_lines['subject']??'').@$subject.'</td>';
 				if(in_array('area',$columns_list_array))
