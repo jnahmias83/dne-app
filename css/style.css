@@ -265,7 +265,7 @@ th,td,table {
 	color: #706f6c;
 }
 
-.colorGreen {
+.colorGreen, .colorGreen * {
 	color: #5bbd8d !important;
 }
 
@@ -277,7 +277,7 @@ th,td,table {
    color: #F99D34;
 }
 
-.colorRed {
+.colorRed, .colorRed * {
 	color: red !important;
 }
 
