@@ -265,7 +265,7 @@ th,td,table {
 	color: #706f6c;
 }
 
-.colorGreen, .colorGreen * {
+.colorGreen, .colorGreen *:not(.badge-circle) {
 	color: #5bbd8d !important;
 }
 
@@ -277,7 +277,7 @@ th,td,table {
    color: #F99D34;
 }
 
-.colorRed, .colorRed * {
+.colorRed, .colorRed *:not(.badge-circle) {
 	color: red !important;
 }
 
