@@ -5118,7 +5118,7 @@ $(function() {
     if (!term) return;
 
     let esc = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    let re = new RegExp('(' + esc + ')', 'gi');
+    let re = new RegExp('([\\u05D0-\\u05EA]*' + esc + '[\\u05D0-\\u05EA]*)', 'gi');
 
     function highlightEl(el) {
         let html = el.innerHTML;
