@@ -1,14 +1,14 @@
-# deploy-to-prod.ps1
-# Uploads files changed since last prod state to the PRODUCTION server (root folder).
-# Only run this AFTER testing on the test server and merging dev into prod.
+# deploy-to-test.ps1
+# Uploads files changed since the last successful test deployment to the TEST server (Development folder).
+# Run this immediately after committing to the dev branch.
 
 $winScpPath = "C:\Users\jnahm\AppData\Local\Programs\WinSCP\WinSCP.com"
 $ftpHost    = "davidnahmiasengineering.com"
 $ftpUser    = "xz71g5thavyl"
-$remotePath = "/public_html"
+$remotePath = "/public_html/Development"
 $localBase  = "c:\DNE Local"
-$logFile    = "$localBase\deploy-prod.log"
-$markerFile = "$localBase\.last-deploy-prod"
+$logFile    = "$localBase\deploy-test.log"
+$markerFile = "$localBase\.last-deploy-test"
 
 # Prompt for password (never stored)
 $securePass = Read-Host -Prompt "FTP Password" -AsSecureString
@@ -17,39 +17,33 @@ $plainPass  = [Runtime.InteropServices.Marshal]::PtrToStringAuto(
 Add-Type -AssemblyName System.Web
 $encodedPass = [System.Web.HttpUtility]::UrlEncode($plainPass)
 
-# Compare against the last commit actually deployed (fallback to HEAD~1 on first run)
+# Compare against the last commit actually deployed (fallback to HEAD~7 on first run)
 if (Test-Path $markerFile) {
     $sinceCommit = (Get-Content $markerFile -Raw).Trim()
 } else {
-    $sinceCommit = "HEAD~1"
+    $sinceCommit = "HEAD~7"
 }
 
-# Files to upload (modified/added since last successful prod deployment)
+# Files to upload (modified/added since last successful test deployment)
 $files = & git -C $localBase diff $sinceCommit --name-only --diff-filter=d | Sort-Object -Unique
 
-# Files to delete from server (deleted since last successful prod deployment)
+# Files to delete from server (deleted since last successful test deployment)
 $deletedFiles = & git -C $localBase diff $sinceCommit --name-only --diff-filter=D | Sort-Object -Unique
 
 if (-not $files -and -not $deletedFiles) {
-    Write-Host "No files found. Nothing to do." -ForegroundColor Yellow
+    Write-Host "No files found from last commits. Nothing to do." -ForegroundColor Yellow
     exit
 }
 
 if ($files) {
-    Write-Host "`nFiles to upload to PRODUCTION server:" -ForegroundColor Cyan
+    Write-Host "`nFiles to upload to TEST server:" -ForegroundColor Cyan
     $files | ForEach-Object { Write-Host "  $_" -ForegroundColor White }
 }
 if ($deletedFiles) {
-    Write-Host "`nFiles to DELETE from PRODUCTION server:" -ForegroundColor Yellow
+    Write-Host "`nFiles to DELETE from TEST server:" -ForegroundColor Yellow
     $deletedFiles | ForEach-Object { Write-Host "  $_" -ForegroundColor Red }
 }
 Write-Host ""
-Write-Host "WARNING: This will overwrite files on the live production server." -ForegroundColor Yellow
-$confirm = Read-Host "Type YES to continue"
-if ($confirm -ne "YES") {
-    Write-Host "Cancelled." -ForegroundColor Yellow
-    exit
-}
 
 $uploadOk = $true
 
@@ -71,7 +65,7 @@ if ($files) {
     $tmpScript = [System.IO.Path]::GetTempFileName() + ".winscp"
     [System.IO.File]::WriteAllText($tmpScript, ($lines -join "`n"), [System.Text.Encoding]::ASCII)
 
-    Write-Host "`nConnecting to $ftpHost ..." -ForegroundColor Cyan
+    Write-Host "Uploading files..." -ForegroundColor Cyan
     & $winScpPath /script=$tmpScript /log=$logFile
     if ($LASTEXITCODE -ne 0) { $uploadOk = $false }
     Remove-Item $tmpScript -ErrorAction SilentlyContinue
@@ -94,14 +88,14 @@ if ($deletedFiles) {
     $tmpScript = [System.IO.Path]::GetTempFileName() + ".winscp"
     [System.IO.File]::WriteAllText($tmpScript, ($lines -join "`n"), [System.Text.Encoding]::ASCII)
 
-    Write-Host "Deleting removed files from PRODUCTION..." -ForegroundColor Cyan
+    Write-Host "Deleting removed files..." -ForegroundColor Cyan
     & $winScpPath /script=$tmpScript /log=$logFile
     Remove-Item $tmpScript -ErrorAction SilentlyContinue
 }
 
 if ($uploadOk) {
     & git -C $localBase rev-parse HEAD | Set-Content -Path $markerFile -NoNewline
-    Write-Host "`nAll done. Verify at: https://davidnahmiasengineering.com/" -ForegroundColor Green
+    Write-Host "`nDone. Test at: https://davidnahmiasengineering.com/Development/" -ForegroundColor Green
 } else {
-    Write-Host "`nUpload failed. Check deploy-prod.log for details." -ForegroundColor Red
+    Write-Host "`nUpload failed. Check deploy-test.log for details." -ForegroundColor Red
 }

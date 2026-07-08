@@ -9,3 +9,5 @@ config.server-test.php
 config.server-prod.php
 deploy-test.log
 deploy-prod.log
+.last-deploy-prod
+.last-deploy-test
