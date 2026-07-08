@@ -266,7 +266,7 @@ th,td,table {
 }
 
 .colorGreen {
-	color: #5bbd8d;
+	color: #5bbd8d !important;
 }
 
 .colorGreen2 {
@@ -278,7 +278,7 @@ th,td,table {
 }
 
 .colorRed {
-	color: red;
+	color: red !important;
 }
 
 .colorBlue {
