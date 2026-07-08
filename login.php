@@ -89,11 +89,7 @@ if(isset($_POST['login_btn'])) {
 							</div>
 						</div>
 
-						<div class="row marginTop10 alignCenter">
-							<div class="col-md-12">
-								<span class="colorGrey fontSize11">Version: <?=trim(@file_get_contents(__DIR__.'/version.txt'))?></span>
-							</div>
-						</div>
+						<!-- Version: <?=trim(@file_get_contents(__DIR__.'/version.txt'))?> -->
 					</div>
 					<div class="col-md-4"></div>
 				</div>
