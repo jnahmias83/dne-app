@@ -5106,7 +5106,6 @@ td[id^="td_description_"] span {
 span.sf-hl {
     font-weight: bold;
     font-style: italic;
-    display: contents;
 }
 .modal.fade .modal-dialog { transition-duration: .15s !important; }
 .modal-backdrop.fade { transition-duration: .1s !important; }
