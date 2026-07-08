@@ -76,7 +76,7 @@ if(@$_POST['all_ids_to_edit'] == '') {
 			$progress_status_log_updates = @$item->ps_name;
 		
 		if(@$remark != '')
-			$description .= "<div class='marginTop5 fontSize13 colorGreen' style='text-align:right;display:table;margin:0 auto;'>"
+			$description .= "<div class='marginTop5 fontSize13 colorGreen' style='text-align:right;'>"
 							."<span class='dir-rtl unicode-bidi-embed'>"
 							."[".smartDate(@$action_date, @$meeting->lang)."]"
 							."</span> "
