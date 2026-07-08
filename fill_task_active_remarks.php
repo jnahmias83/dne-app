@@ -81,11 +81,11 @@ if(@$_POST['isTracking'] == 1){
 
 			$content .= "<div class='flex marginTop10 width100Percents'>";
 			$content .=      "<div class='width30 paddingTop5'>";
-			$content .=           "<input type='checkbox' id='log_meeting_tracking_{$item->id}' name='log_meeting_tracking[]' value='{$item->id}' onclick=\"setTextColor('div_log_meeting_tracking_{$item->id}',this,'colorRed')\" />";
+			$content .=           "<input type='checkbox' id='log_meeting_tracking_{$item->id}' name='log_meeting_tracking[]' value='{$item->id}' onclick=\"setTextColor('div_log_meeting_tracking_{$item->id}',this,'colorRed');setTextColor('badge_log_meeting_tracking_{$item->id}',this,'bgColorRed')\" />";
 			$content .=      "</div>";
 			$content .=      "<div id='div_log_meeting_tracking_{$item->id}' dir='".@$dir_attr."' class='".@$padding." fontSize13 width90Percents colorGrey border-black ".$align." display-block' style='line-height:1.8; padding:5px;'>";
 			$content .=           "<span style='display:inline-flex;align-items:center;gap:4px;vertical-align:top;'>";
-			$content .=                "<span class='badge-circle' style='display:inline-flex;align-items:center;justify-content:center;background-color:#333;width:15px;height:15px;font-size:8px;'>".$tracking_initials."</span>";
+			$content .=                "<span id='badge_log_meeting_tracking_{$item->id}' class='badge-circle' style='display:inline-flex;align-items:center;justify-content:center;background-color:#333;width:15px;height:15px;font-size:8px;'>".$tracking_initials."</span>";
 			$content .=                "<span class='dir-rtl unicode-bidi-embed'>".smartDate(@$item->action_date, @$_POST['lang'])."</span>";
 			$content .=           "</span>";
 			$content .= " : <span class='dir-rtl unicode-bidi-embed'>".html_entity_decode(@$tracking_remark)."</span>
@@ -112,20 +112,20 @@ else {
 			
 			if(@$_POST['is_updates']){
 				$content .=      "<div class='width30 paddingTop5'>";
-				$content .=           "<input type='checkbox' id='log_meeting_updates_is_updates_{$item->id}' name='log_meeting_updates_is_updates[]' value='{$item->id}' onclick=\"setTextColor('div_log_meeting_updates_{$item->id}',this,'colorGreen')\" />";
+				$content .=           "<input type='checkbox' id='log_meeting_updates_is_updates_{$item->id}' name='log_meeting_updates_is_updates[]' value='{$item->id}' onclick=\"setTextColor('div_log_meeting_updates_{$item->id}',this,'colorGreen');setTextColor('badge_log_meeting_updates_{$item->id}',this,'bgColorGreen')\" />";
 				$content .=      "</div>";
 			}
 			else {
 				$content .=      "<div class='width30 paddingTop5'>";
-				$content .=           "<input type='checkbox' id='log_meeting_updates_{$item->id}' name='log_meeting_updates[]' value='{$item->id}' onclick=\"setTextColor('div_log_meeting_updates_{$item->id}',this,'colorGreen')\" />";
+				$content .=           "<input type='checkbox' id='log_meeting_updates_{$item->id}' name='log_meeting_updates[]' value='{$item->id}' onclick=\"setTextColor('div_log_meeting_updates_{$item->id}',this,'colorGreen');setTextColor('badge_log_meeting_updates_{$item->id}',this,'bgColorGreen')\" />";
 				$content .=      "</div>";
 			}
-				
+
 			$update_initials = mb_strtoupper(mb_substr(@$item->user_nickname, 0, 2, 'UTF-8'));
 
 			$content .=   "<div id='div_log_meeting_updates_{$item->id}' dir='".@$dir_attr."' class='".@$padding." fontSize13 width90Percents colorGrey border-black ".@$align." display-block' style='line-height:1.8; padding:5px;'>";
 			$content .=   "<span style='display:inline-flex;align-items:center;gap:4px;vertical-align:top;'>";
-			$content .=        "<span class='badge-circle' style='display:inline-flex;align-items:center;justify-content:center;background-color:#333;width:15px;height:15px;font-size:8px;'>".$update_initials."</span>";
+			$content .=        "<span id='badge_log_meeting_updates_{$item->id}' class='badge-circle' style='display:inline-flex;align-items:center;justify-content:center;background-color:#333;width:15px;height:15px;font-size:8px;'>".$update_initials."</span>";
 			$content .=        "<span class='dir-rtl unicode-bidi-embed'>".smartDate(@$item->action_date, @$_POST['lang'])."</span>";
 			$content .=   "</span>";
 
