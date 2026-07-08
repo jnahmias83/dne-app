@@ -142,7 +142,7 @@ if(@$_POST['all_ids_to_edit'] == '') {
 		else
 			$reminder_bell_html = "<i class='fa-solid fa-bell-slash colorGrey'></i>";
 
-		$tracking_remarks .= "<tr><td colspan='3'><table style='width:100%;table-layout:fixed;border-collapse:collapse;'>";
+		$tracking_remarks .= "<tr><td colspan='3'><table style='width:100%;table-layout:fixed;border-collapse:collapse;border:none!important;'>";
 
 		foreach($log_meeting_tracking as $item){
 			if(@$item->remark == '')
@@ -157,8 +157,8 @@ if(@$_POST['all_ids_to_edit'] == '') {
 			$user_nickname = @$item->user_nickname;
 
 			$tracking_remarks .= "<tr class='bg-fceaea alignCenter'>";
-			$tracking_remarks .= "<td style='vertical-align:middle;width:8%;padding-right:20px;'><i class='fa-solid fa-list' style='cursor:pointer;'></i></td>";
-			$tracking_remarks .= "<td style='vertical-align:middle;width:17%;'>";
+			$tracking_remarks .= "<td style='vertical-align:middle;width:8%;padding-right:20px;border:none!important;'><i class='fa-solid fa-list' style='cursor:pointer;'></i></td>";
+			$tracking_remarks .= "<td style='vertical-align:middle;width:17%;border:none!important;'>";
 			if($track_responsible_name != ""){
 				$tracking_remarks .=  "<span class='border-black padding-4x-4y borderRadius20 align-items-center justify-content-center fontSize12 colorWhite bgColorRed' style='display:inline-flex;line-height:1;'>"
 										.@$track_responsible_name
@@ -169,8 +169,8 @@ if(@$_POST['all_ids_to_edit'] == '') {
 										.@$item->user_nickname
 									   ."</span>";
 			$tracking_remarks .= "</td>";
-			$tracking_remarks .= "<td style='vertical-align:middle;text-align:right;padding:0 12px;width:63%;'><span class='marginRight5 dir-rtl unicode-bidi-embed' style='white-space:nowrap;'>".@$action_date." -</span> <span class='colorRed dir-rtl unicode-bidi-embed' style='white-space:normal;word-wrap:break-word;overflow-wrap:break-word;'>".html_entity_decode(@$remark)."</span></td>";
-			$tracking_remarks .= "<td style='vertical-align:middle;padding-left:20px;width:12%;'>".$reminder_bell_html."</td>";
+			$tracking_remarks .= "<td style='vertical-align:middle;text-align:right;padding:0 12px;width:63%;border:none!important;'><span class='marginRight5 dir-rtl unicode-bidi-embed' style='white-space:nowrap;'>".@$action_date." -</span> <span class='colorRed dir-rtl unicode-bidi-embed' style='white-space:normal;word-wrap:break-word;overflow-wrap:break-word;'>".html_entity_decode(@$remark)."</span></td>";
+			$tracking_remarks .= "<td style='vertical-align:middle;padding-left:20px;width:12%;border:none!important;'>".$reminder_bell_html."</td>";
 			$tracking_remarks .= "</tr>";
 	    }
 
