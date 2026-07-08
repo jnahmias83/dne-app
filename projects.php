@@ -2157,7 +2157,7 @@ foreach($all_what_news as $wn){
 	</body>
 </html>
 
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.min.js"></script>
 
 <script>
 $(document).ready(function(){ 
@@ -3010,7 +3010,7 @@ $(window).on('load', function(){
 		});
 
 		setBellBcgColor(localStorage.getItem('track_type'));
-		setEmergencyTaskCSS(is_priority);
+		setEmergencyTaskCSS(is_priority_ls);
 		$('#modalContent').append("<input type='hidden' id='hidden_meeting_id' value='"+meeting_id+"'><input type='hidden' id='hidden_iteration' value='"+iteration+"'><input type='hidden' id='hidden_project_id' value='"+project_id+"'><input type='hidden' id='hidden_user_id' value=''><input type='hidden' id='hidden_chapter' value=''><input type='hidden' id='hidden_name' value='"+subject_ls+"'><input type='hidden' id='hidden_area' value='"+area_ls+"'><input type='hidden' id='hidden_recipient' value='"+recipient_ls+"'><input type='hidden' id='hidden_responsible_id' value='"+responsible_id_ls+"'><input type='hidden' id='hidden_is_priority' value='"+is_priority_ls+"'><input type='hidden' id='hidden_remark' value='"+remark_ls+"'><input type='hidden' id='hidden_track_responsible_id' value=''><input type='hidden' id='hidden_reminder_date' value=''><input type='hidden' id='hidden_reminder_time' value=''>");
     }
 });
