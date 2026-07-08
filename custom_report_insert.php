@@ -29,7 +29,7 @@ if($_POST['report_type'] == 'generalTasksReport') {
 		  array_push($chapters_ids_array,@$chapter->id);
 	}
 
-	$tasks_array = array();
+	$tasks_array = array();
 	$tasks_ids_array = array();
 	$query = $mysqli->prepare("SELECT * FROM dne_tasks WHERE id_project = ?");
 	$query->bind_param("i",$_POST['id_project']);
