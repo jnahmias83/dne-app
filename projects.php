@@ -1533,14 +1533,14 @@ foreach($all_what_news as $wn){
 								                                         ?>
 																			<div class="marginRight5 marginTop5 flex flex-wrap justify-content-center">
 																				<div class="width100Percents">
-																					<span class="dir-rtl colorGrey unicode-bidi-embed">
+																					<span class="dir-rtl colorGreen unicode-bidi-embed">
 																						[<?=smartDate(@$wn->lmu_action_date)?>]
 																					</span> 
-																					<span class="colorGrey dir-rtl unicode-bidi-embed">
+																					<span class="colorGreen dir-rtl unicode-bidi-embed">
 																						<?=@$wn->user_nickname?>
 																					</span>					
 																					<?php if($progress_status_name != ' '){ ?>
-																						<span class="colorGrey dir-rtl unicode-bidi-embed">
+																						<span class="colorGreen dir-rtl unicode-bidi-embed">
 																							<?=@$progress_status_name?>
 																						</span> 
 																					<?php }
