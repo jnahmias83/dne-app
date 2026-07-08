@@ -855,7 +855,7 @@ foreach($all_what_news as $wn){
 													</span>
 												</div>
 												<div class="width85Percents">
-													<div class="flex flex-wrap justify-content-center align-items-center" style="line-height:0.1">
+													<div class="flex flex-wrap justify-content-center align-items-center" style="line-height:1.3;">
 														<div class="width65Percents align-items-center">
 															<span class="color-19bf42 font-weight-bold"><?=@$chapter_name?></span>
 															<!--<span class="color-1A5276 font-weight-bold">|</span>
@@ -1504,7 +1504,7 @@ foreach($all_what_news as $wn){
 																		<input type='checkbox' class='whats-new-checkbox' title='כבר לא חדש' data-lmuid="<?=@$wn->lmu_id?>" data-updatedusers="<?=@$wn->lmu_updated_users?>" onclick="event.stopPropagation();" />
 																	</div>
 																	<div class="width90Percents">
-																		<div class="marginRight5 flex flex-wrap justify-content-center align-items-center" style="line-height:0.1">
+																		<div class="marginRight5 flex flex-wrap justify-content-center align-items-center" style="line-height:1.3;">
 																			<div class="width65Percents align-items-center">
 																				<span class="color-19bf42 font-weight-bold"><?=@$chapter_name?></span>
 																				<!--<span class="color-1A5276 font-weight-bold">|</span>
