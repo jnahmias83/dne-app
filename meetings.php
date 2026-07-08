@@ -1555,6 +1555,9 @@ include 'menu_tasks.php';
 
 											$description_popup = nl2br(@$item->description);
 											$description = @$item->description;
+											$description = preg_replace('/&lt;div\b.*?&gt;/i', ' ', $description);
+											$description = str_ireplace('&lt;/div&gt;', '', $description);
+											$description = preg_replace('/&lt;br\s*\/?&gt;/i', ' ', $description);
 
 											$id_track_responsible = @$item->id_track_responsible;
 											$query = $mysqli->prepare("SELECT nickname FROM dne_users WHERE id = ?");
@@ -2170,7 +2173,10 @@ include 'menu_tasks.php';
 												$updated_date = @$item->updated_date;
 
 												$description = @$item->description;
-												
+												$description = preg_replace('/&lt;div\b.*?&gt;/i', ' ', $description);
+												$description = str_ireplace('&lt;/div&gt;', '', $description);
+												$description = preg_replace('/&lt;br\s*\/?&gt;/i', ' ', $description);
+
 												$id_track_responsible = @$item->id_track_responsible;
 												$query = $mysqli->prepare("SELECT nickname FROM dne_users WHERE id = ?");
 												$query->bind_param('i',$id_track_responsible);	
@@ -5066,6 +5072,10 @@ td[id^="td_description_"] span {
     display: inline !important;
 }
 
+td[id^="td_description_"] span.sf-hl {
+    display: contents !important;
+}
+
 @media (max-width: 950px) {
     #meetings_table {
         font-size: 11px;
@@ -5118,7 +5128,7 @@ $(function() {
     if (!term) return;
 
     let esc = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    let re = new RegExp('([\\u05D0-\\u05EA]*' + esc + '[\\u05D0-\\u05EA]*)', 'gi');
+    let re = new RegExp('(' + esc + ')', 'gi');
 
     function highlightEl(el) {
         let html = el.innerHTML;
