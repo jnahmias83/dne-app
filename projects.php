@@ -911,7 +911,7 @@ foreach($all_what_news as $wn){
 													<div class="d-flex flex-column">
 														<?php foreach($log_meeting_tracking_wn as $tr_item){
 															$tr_remark = @$tr_item->remark;
-															if(mb_strlen(@$tr_remark,'UTF-8') > 30) $tr_remark = mb_substr($tr_remark,0,30,'UTF-8').'...';
+															if(mb_strlen(@$tr_remark,'UTF-8') > 120) $tr_remark = mb_substr($tr_remark,0,120,'UTF-8').'...';
 														?>
 														<div class="marginTop5 fontSize9 text-end" style="line-height:1.4;">
 															<span class="border-black padding-2x-2y fontSize9 borderRadius20 align-items-center justify-content-center colorWhite bgColorBlack" style="display:inline-flex;line-height:1;margin-left:5px;"><?=@$tr_item->user_nickname?></span>
@@ -1552,7 +1552,7 @@ foreach($all_what_news as $wn){
 																				<div class="d-flex flex-column">
 																					<?php foreach($log_meeting_tracking_wn as $tr_item){
 																						$tr_remark = @$tr_item->remark;
-																						if(mb_strlen(@$tr_remark,'UTF-8') > 30) $tr_remark = mb_substr($tr_remark,0,30,'UTF-8').'...';
+																						if(mb_strlen(@$tr_remark,'UTF-8') > 120) $tr_remark = mb_substr($tr_remark,0,120,'UTF-8').'...';
 																					?>
 																					<div class="marginTop5 fontSize9 text-end" style="line-height:1">
 																						<span class="border-black padding-2x-2y fontSize9 borderRadius20 align-items-center justify-content-center colorWhite bgColorBlack" style="display:inline-flex;line-height:1;"><?=@$tr_item->user_nickname?></span>
