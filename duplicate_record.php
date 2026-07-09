@@ -78,10 +78,10 @@ if($_POST['table_name'] == 'dne_meetings') {
 			  status_hold_updated_date,status_archived_updated_date,
 			  status_decision_updated_date,status_updated_date,
 			  last_pdf_created,last_pdf_created_date,is_appears,
-			  is_change_row_style,updated_date)
-			  VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			  is_change_row_style,updated_date,lang)
+			  VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 	$query = $mysqli->prepare($query);
-	$query->bind_param('iiiiisssiiississsssssssiis',$id_parent,$meeting->id_user,$meeting->id_project,
+	$query->bind_param('iiiiisssiiississsssssssiiss',$id_parent,$meeting->id_user,$meeting->id_project,
 	                   $meeting->id_chapter,$meeting->id_task_type,$meeting->ids_rdv,$meeting->subject,
 					   $meeting->area,$meeting->id_task,$meeting->id_responsible,$meeting->id_pass_on,
 					   $currentDate,$destination_date_new,$id_progress_status,
@@ -89,7 +89,8 @@ if($_POST['table_name'] == 'dne_meetings') {
 					   $meeting->status_finished_updated_date,$meeting->status_hold_updated_date,
 					   $meeting->status_archived_updated_date,$meeting->status_decision_updated_date,
 					   $meeting->status_updated_date,$meeting->last_pdf_created,
-					   $meeting->last_pdf_created_date,$is_appears,$is_change_row_style,$currentDate);
+					   $meeting->last_pdf_created_date,$is_appears,$is_change_row_style,$currentDate,
+					   $meeting->lang);
 	$query->execute();
 	$inserted_meeting = $query->insert_id;
 	ob_end_clean();

@@ -175,7 +175,7 @@ asort($pass_ons_array);
 asort($progress_status_array);
 
 if ($id > 0) {
-	if (!empty($id_rdv_report) && !empty(@$rdv->rdv_lang)) {
+	if ($is_specific_filter && !empty($id_rdv_report) && !empty(@$rdv->rdv_lang)) {
 		$page_lang = $rdv->rdv_lang;
 	} elseif (@$custom_report->lang == 'EN' || @$custom_report->lang == 1) {
 		$page_lang = 'EN';

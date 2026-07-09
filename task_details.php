@@ -28,8 +28,8 @@ if(@$_POST['all_ids_to_edit'] == '') {
 						      m.image2_height AS image2_height,
 							  m.id_track_responsible AS id_track_responsible,
 							  m.track_type AS track_type,
-							  m.reminder_date AS reminder_date,m.lang AS lang 
-						      FROM dne_meetings m 
+							  m.reminder_date AS reminder_date,m.lang AS lang,p.lang AS p_lang
+						      FROM dne_meetings m
 						      LEFT JOIN dne_projects p ON m.id_project = p.id 
 						      LEFT JOIN dne_responsibles r1 ON m.id_responsible = r1.id 
 						      LEFT JOIN dne_responsibles r2 ON m.id_pass_on = r2.id 
@@ -69,16 +69,16 @@ if(@$_POST['all_ids_to_edit'] == '') {
 		$action_date = @$item->action_date;
 		$user_nickname = @$item->user_nickname;
 		
-		$all_remarks .= "<div class='marginTop5'>".@$user_nickname." - [".smartDate(@$action_date, @$meeting->lang).'] - '.html_entity_decode(@$remark).'</div>';
+		$all_remarks .= "<div class='marginTop5'>".@$user_nickname." - [".smartDate(@$action_date, @$meeting->p_lang).'] - '.html_entity_decode(@$remark).'</div>';
 		
 		$progress_status_log_updates = @$item->ps_name_he;
-		if(@$meeting->lang == 'EN')
+		if(@$meeting->p_lang == 'EN')
 			$progress_status_log_updates = @$item->ps_name;
 		
 		if(@$remark != '')
 			$description .= "<div class='marginTop5 fontSize13 colorGreen' style='text-align:right;padding-right:8px;'>"
 							."<span class='dir-rtl unicode-bidi-embed'>"
-							."[".smartDate(@$action_date, @$meeting->lang)."]"
+							."[".smartDate(@$action_date, @$meeting->p_lang)."]"
 							."</span> "
 							."<span class='dir-rtl unicode-bidi-embed'>"
 							.@$user_nickname
@@ -99,7 +99,7 @@ if(@$_POST['all_ids_to_edit'] == '') {
 
     if(@$meeting->track_type == 1){
 		$progress_status = @$meeting->ps_name_he;
-		if(@$meeting->lang != 'HE')
+		if(@$meeting->p_lang != 'HE')
 			$progress_status = @$meeting->ps_name;										
 											
 		$query = $mysqli->prepare("SELECT nickname FROM dne_users WHERE id = ?");
@@ -113,7 +113,7 @@ if(@$_POST['all_ids_to_edit'] == '') {
 			$tracking_data = '(';
 											
 		if(@$meeting->reminder_date != '0000-00-00')
-			$tracking_data .= smartDate(@$meeting->reminder_date, @$meeting->lang);
+			$tracking_data .= smartDate(@$meeting->reminder_date, @$meeting->p_lang);
 		
 		if(@$meeting->reminder_date != '0000-00-00' && $track_responsible_name != '')
 			$tracking_data .= ',';
@@ -138,7 +138,7 @@ if(@$_POST['all_ids_to_edit'] == '') {
     	$log_meeting_tracking = fetch($query);
 
 		if(@$meeting->reminder_date != '0000-00-00')
-			$reminder_bell_html = "<i class='fa-solid fa-bell colorRed'></i><br/><span class='dir-rtl unicode-bidi-embed' style='white-space:nowrap;'>".smartDate(@$meeting->reminder_date, @$meeting->lang)."</span>";
+			$reminder_bell_html = "<i class='fa-solid fa-bell colorRed'></i><br/><span class='dir-rtl unicode-bidi-embed' style='white-space:nowrap;'>".smartDate(@$meeting->reminder_date, @$meeting->p_lang)."</span>";
 		else
 			$reminder_bell_html = "<i class='fa-solid fa-bell-slash colorGrey'></i>";
 
@@ -152,7 +152,7 @@ if(@$_POST['all_ids_to_edit'] == '') {
 
 		    $action_date = @$item->action_date;
 
-			$action_date = smartDate(@$item->action_date, @$meeting->lang);
+			$action_date = smartDate(@$item->action_date, @$meeting->p_lang);
 
 			$user_nickname = @$item->user_nickname;
 

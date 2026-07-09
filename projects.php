@@ -2225,7 +2225,8 @@ $(document).ready(function(){
 				$('#modalHistoryTasksContent').html(data);	
 			},
 	   });
-	   
+
+	   $('#modalContent input[type="hidden"]').remove();
 	   $('#modalContent').append("<input type='hidden' id='hidden_meeting_id' value='"+meeting_id+"'><input type='hidden' id='hidden_project_id' value='"+project_id+"'>");
 	   $('#modalTaskFollowupActions').modal('hide');
 	   $('#modalHistoryTasks').modal('show');
@@ -2240,7 +2241,9 @@ $(document).ready(function(){
 			if($rowReload.length){
 				$rowReload.addClass('task-row-highlight');
 				setTimeout(function(){
-					const $v = $('#left_new_content .task_name[data-meetingid="'+mid+'"]').closest('tr');
+					const $vL = $('#left_new_content .task_name[data-meetingid="'+mid+'"]').closest('tr');
+					const $vR = $('#right_content .task_name[data-meetingid="'+mid+'"]').closest('tr');
+					const $v = $vL.length ? $vL : $vR;
 					if($v.length) $v[0].scrollIntoView({behavior:'smooth', block:'nearest'});
 				}, 600);
 			}
@@ -2859,6 +2862,7 @@ $(document).ready(function(){
 			},
 		});	
 		
+		$('#modalContent input[type="hidden"]').remove();
 		$('#modalContent').append("<input type='hidden' id='hidden_project_nickname' value='"+project_nickname+"'><input type='hidden' id='hidden_lang' value='"+lang+"'><input type='hidden' id='hidden_meeting_id' value='"+meeting_id+"'><input type='hidden' id='hidden_project_id' value='"+project_id+"'><input type='hidden' id='hidden_user_id' value='"+user_id+"'><input type='hidden' id='hidden_chapter' value='"+chapter+"'><input type='hidden' id='hidden_name' value='"+subject+"'><input type='hidden' id='hidden_area' value='"+area+"'><input type='hidden' id='hidden_recipient' value='"+recipient+"'><input type='hidden' id='hidden_responsible_id' value='"+responsible_id+"'><input type='hidden' id='hidden_destination_date' value='"+destination_date+"'><input type='hidden' id='hidden_progress_status_id' name='hidden_progress_status_id' value='"+progress_status_id+"'><input type='hidden' id='hidden_is_priority' value='"+is_priority+"'><input type='hidden' id='hidden_remark' value='"+remark+"'><input type='hidden' id='hidden_track_responsible_id' value='"+track_responsible_id+"'><input type='hidden' id='hidden_track_type' value='"+track_type+"'><input type='hidden' id='hidden_reminder_date' value='"+reminder_date+"'><input type='hidden' id='hidden_reminder_time' value='"+reminder_time+"'><input type='hidden' id='hidden_is_to_do_today' value='"+is_to_do_today+"'>");
 		localStorage.setItem('meeting_id', meeting_id);
 		$('tr.task-row-highlight').removeClass('task-row-highlight');
@@ -2991,6 +2995,7 @@ $(window).on('load', function(){
 		let responsible_id_ls = localStorage.getItem("responsible_id") || '';
 		let is_priority_ls = localStorage.getItem("is_priority") || '';
 		let remark_ls = localStorage.getItem("remark") || '';
+		let lang_ls = localStorage.getItem("lang") || '';
 
 		let form_data = new FormData();
 		form_data.append('id_meeting', meeting_id);
@@ -3013,7 +3018,8 @@ $(window).on('load', function(){
 
 		setBellBcgColor(localStorage.getItem('track_type'));
 		setEmergencyTaskCSS(is_priority_ls);
-		$('#modalContent').append("<input type='hidden' id='hidden_meeting_id' value='"+meeting_id+"'><input type='hidden' id='hidden_iteration' value='"+iteration+"'><input type='hidden' id='hidden_project_id' value='"+project_id+"'><input type='hidden' id='hidden_user_id' value=''><input type='hidden' id='hidden_chapter' value=''><input type='hidden' id='hidden_name' value='"+subject_ls+"'><input type='hidden' id='hidden_area' value='"+area_ls+"'><input type='hidden' id='hidden_recipient' value='"+recipient_ls+"'><input type='hidden' id='hidden_responsible_id' value='"+responsible_id_ls+"'><input type='hidden' id='hidden_is_priority' value='"+is_priority_ls+"'><input type='hidden' id='hidden_remark' value='"+remark_ls+"'><input type='hidden' id='hidden_track_responsible_id' value=''><input type='hidden' id='hidden_reminder_date' value=''><input type='hidden' id='hidden_reminder_time' value=''>");
+		$('#modalContent input[type="hidden"]').remove();
+		$('#modalContent').append("<input type='hidden' id='hidden_meeting_id' value='"+meeting_id+"'><input type='hidden' id='hidden_iteration' value='"+iteration+"'><input type='hidden' id='hidden_project_id' value='"+project_id+"'><input type='hidden' id='hidden_user_id' value=''><input type='hidden' id='hidden_chapter' value=''><input type='hidden' id='hidden_name' value='"+subject_ls+"'><input type='hidden' id='hidden_area' value='"+area_ls+"'><input type='hidden' id='hidden_recipient' value='"+recipient_ls+"'><input type='hidden' id='hidden_responsible_id' value='"+responsible_id_ls+"'><input type='hidden' id='hidden_is_priority' value='"+is_priority_ls+"'><input type='hidden' id='hidden_remark' value='"+remark_ls+"'><input type='hidden' id='hidden_track_responsible_id' value=''><input type='hidden' id='hidden_reminder_date' value=''><input type='hidden' id='hidden_reminder_time' value=''><input type='hidden' id='hidden_lang' value='"+lang_ls+"'>");
     }
 });
 
