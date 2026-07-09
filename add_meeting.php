@@ -1261,8 +1261,6 @@ function redirectUrl(meeting_id){
     const rowParam = url.searchParams.get('row');
 	
 	let iteration = $('#iteration').val();
-	if($('#iteration').val() == '')
-		iteration = 1;
 	
     if(meeting_id.includes('inserted_')) 
 		meeting_id = meeting_id.replace('inserted_','');
