@@ -21,7 +21,7 @@ else {
 	$blank = ' ';
 	$_today = date('Y-m-d');
 	$id_progress_status = @$_POST['id_progress_status'];
-	if($_POST['id_progress_status'] == 0) {
+	if(!is_numeric($_POST['id_progress_status']) || $_POST['id_progress_status'] == 0) {
 		$query = "SELECT * FROM dne_progress_status WHERE name = ? 
 		          AND id_project = ?";
 		$query = $mysqli->prepare($query);
@@ -78,8 +78,8 @@ else {
 	if(@$_POST['remark'] != '')
 		$log_remark = htmlspecialchars(@$_POST['remark']);
 	
-	if($_POST['id'] == 0){ 
-	    if($_POST['id_progress_status'] != 0){
+	if($_POST['id'] == 0){
+	    if(is_numeric($_POST['id_progress_status']) && $_POST['id_progress_status'] != 0){
 		   $query = "SELECT * FROM dne_progress_status WHERE id = ?";
 		   $query = $mysqli->prepare($query);
 		   $query->bind_param('i',$_POST['id_progress_status']);   
