@@ -4911,6 +4911,7 @@ $('#to_add_meeting_btn').click (function (e){
 		 
 		  if($('#id_rdv_report').val() > 0)
 			 url+= '&id_rdv='+$('#id_rdv_report').val();
+		  url+= '&lang='+$('#project_lang').val();
 		  location.href = url;
 		},
 	});        
