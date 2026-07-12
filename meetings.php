@@ -3183,9 +3183,8 @@ include 'menu_tasks.php';
 										<div class="row align-items-center justify-content-start" dir="rtl">
 											<div class="col-auto fontSize13 text-end">
 												<div><input type="radio" id="not_reminders" name="set_reminder_date_radio" value="0" onclick="setReminderDate(this.value)"> בלי תזכורת</div>
-												<div><input type="radio" id="reminder_after_three_days" name="set_reminder_date_radio" value="2" onclick="setReminderDate(this.value)"> בעוד 3 ימים</div>
-												<div><input type="radio" id="reminder_after_two_weeks" name="set_reminder_date_radio" value="4" onclick="setReminderDate(this.value)"> בעוד שבועיים</div>
-												<div><input type="radio" id="reminder_after_one_month" name="set_reminder_date_radio" value="5" onclick="setReminderDate(this.value)"> בעוד חודש</div>
+												<div><input type="radio" id="reminder_tomorrow" name="set_reminder_date_radio" value="1" onclick="setReminderDate(this.value)"> מחר</div>
+												<div><input type="radio" id="reminder_after_one_week" name="set_reminder_date_radio" value="3" onclick="setReminderDate(this.value)"> בעוד שבוע</div>
 											</div>
 											<div class="col-auto" id="date_col_wrapper" style="display:none;">
 												<div id="div_reminder_date">
@@ -3541,6 +3540,11 @@ $(document).ready(function(){
 	   recipient = localStorage.getItem("recipient");
 	   responsible_id = localStorage.getItem("responsible_id");
 	   remark = localStorage.getItem("remark");
+	   user_id = localStorage.getItem("user_id");
+	   track_responsible_id = localStorage.getItem("track_responsible_id");
+	   reminder_date = localStorage.getItem("reminder_date");
+	   reminder_time = localStorage.getItem("reminder_time");
+	   lang = localStorage.getItem("lang");
 	   track_type = parseInt($('#track_type_' + meeting_id).val()) || 0;
 	   is_priority = 1;
 
@@ -3571,7 +3575,7 @@ $(document).ready(function(){
 				setBellBcgColor(parseInt(task_details[22]) || 0);
 				setEmergencyTaskCSS(is_priority);
 				$('#modalContent input[type="hidden"]').remove();
-				$('#modalContent').append("<input type='hidden' id='hidden_meeting_id' value='"+meeting_id+"'><input type='hidden' id='hidden_iteration' value='"+iteration+"'><input type='hidden' id='hidden_project_id' value='"+project_id+"'><input type='hidden' id='hidden_user_id' value='"+user_id+"'><input type='hidden' id='hidden_chapter' value='"+chapter+"'><input type='hidden' id='hidden_name' value='"+subject+"'><input type='hidden' id='hidden_area' value='"+area+"'><input type='hidden' id='hidden_recipient' value='"+recipient+"'><input type='hidden' id='hidden_responsible_id' value='"+responsible_id+"'><input type='hidden' id='hidden_is_priority' value='"+is_priority+"'><input type='hidden' id='hidden_remark' value='"+remark+"'><input type='hidden' id='hidden_track_responsible_id' value='"+track_responsible_id+"'><input type='hidden' id='hidden_track_type' value='"+track_type+"'><input type='hidden' id='hidden_reminder_date' value='"+reminder_date+"'><input type='hidden' id='hidden_reminder_time' value='"+reminder_time+"'>");
+				$('#modalContent').append("<input type='hidden' id='hidden_meeting_id' value='"+meeting_id+"'><input type='hidden' id='hidden_iteration' value='"+iteration+"'><input type='hidden' id='hidden_project_id' value='"+project_id+"'><input type='hidden' id='hidden_user_id' value='"+user_id+"'><input type='hidden' id='hidden_chapter' value='"+chapter+"'><input type='hidden' id='hidden_name' value='"+subject+"'><input type='hidden' id='hidden_area' value='"+area+"'><input type='hidden' id='hidden_recipient' value='"+recipient+"'><input type='hidden' id='hidden_responsible_id' value='"+responsible_id+"'><input type='hidden' id='hidden_is_priority' value='"+is_priority+"'><input type='hidden' id='hidden_remark' value='"+remark+"'><input type='hidden' id='hidden_track_responsible_id' value='"+track_responsible_id+"'><input type='hidden' id='hidden_track_type' value='"+track_type+"'><input type='hidden' id='hidden_reminder_date' value='"+reminder_date+"'><input type='hidden' id='hidden_reminder_time' value='"+reminder_time+"'><input type='hidden' id='hidden_lang' value='"+lang+"'>");
 				$('#modalTaskFollowupActions').modal('show');
 				setProjectModalTitle(project_id, '#modalTaskFollowupActions', false);
 				setTimeout(function(){
@@ -4104,12 +4108,10 @@ $(document).ready(function(){
 		  $('#date_col_wrapper').hide();
 		  $('#not_reminders').prop('checked',true);
 	    }
-	    if($('#hidden_reminder_time').val() == 2)
-		  $('#reminder_after_three_days').prop('checked',true);
-	    if($('#hidden_reminder_time').val() == 4)
-		  $('#reminder_after_two_weeks').prop('checked',true);
-	    if($('#hidden_reminder_time').val() == 5)
-		  $('#reminder_after_one_month').prop('checked',true);
+	    if($('#hidden_reminder_time').val() == 1)
+		  $('#reminder_tomorrow').prop('checked',true);
+	    if($('#hidden_reminder_time').val() == 3)
+		  $('#reminder_after_one_week').prop('checked',true);
 	   
         let savedResp = parseInt($('#hidden_track_responsible_id').val()) || 0;
 	    $('#users option').each(function() {

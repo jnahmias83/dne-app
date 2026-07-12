@@ -1269,14 +1269,20 @@ function redirectUrl(meeting_id){
 	localStorage.setItem('project_id',$('#project_id').val());		
 	localStorage.setItem('meeting_id',meeting_id);	
 	localStorage.setItem('iteration',iteration);
-	localStorage.setItem('subject',$('#hidden_name').val());
-	localStorage.setItem('area',$('#hidden_area').val());
+	localStorage.setItem('subject',$('#subject_data').val());
+	localStorage.setItem('area',$('#area_data').val());
 	localStorage.setItem('recipient',$('#responsible_email').val());
-	localStorage.setItem('responsible_id',$('#hidden_responsible_id').val());
-	localStorage.setItem('is_priority',$('#hidden_is_priority').val());
-	localStorage.setItem('remark',$('#hidden_remark').val());
-	localStorage.setItem('track_type',$('#hidden_track_type').val());
+	localStorage.setItem('responsible_id',$('#responsible_id_data').val());
+	localStorage.setItem('is_priority',$('#is_priority_data').val());
+	localStorage.setItem('remark',$('#remark_data').val());
+	localStorage.setItem('track_type',$('#track_type_data').val());
 	localStorage.setItem('updated_id','meeting_'+meeting_id);
+	localStorage.setItem('chapter',$('#chapter_data').val());
+	localStorage.setItem('user_id',$('#user_id_data').val());
+	localStorage.setItem('track_responsible_id',$('#track_responsible_id_data').val());
+	localStorage.setItem('reminder_date',$('#reminder_date_data').val());
+	localStorage.setItem('reminder_time',$('#reminder_time_data').val());
+	localStorage.setItem('lang',$('#lang').val());
 	
 	if ($('#fromResumeRdvs').val() > 0){
 		let form_data = new FormData();

@@ -2050,9 +2050,8 @@ foreach($all_what_news as $wn){
 										    <div class="row align-items-center justify-content-start" dir="rtl">
 											    <div class="col-auto fontSize13 text-end">
 												    <div><input type="radio" id="not_reminders" name="set_reminder_date_radio" value="0" onclick="setReminderDate(this.value)"> בלי תזכורת</div>
-												    <div><input type="radio" id="reminder_after_three_days" name="set_reminder_date_radio" value="2" onclick="setReminderDate(this.value)"> בעוד 3 ימים</div>
-												    <div><input type="radio" id="reminder_after_two_weeks" name="set_reminder_date_radio" value="4" onclick="setReminderDate(this.value)"> בעוד שבועיים</div>
-												    <div><input type="radio" id="reminder_after_one_month" name="set_reminder_date_radio" value="5" onclick="setReminderDate(this.value)"> בעוד חודש</div>
+												    <div><input type="radio" id="reminder_tomorrow" name="set_reminder_date_radio" value="1" onclick="setReminderDate(this.value)"> מחר</div>
+												    <div><input type="radio" id="reminder_after_one_week" name="set_reminder_date_radio" value="3" onclick="setReminderDate(this.value)"> בעוד שבוע</div>
 											    </div>
 											    <div class="col-auto" id="date_col_wrapper" style="display:none;">
 												    <div id="div_reminder_date">
@@ -2586,11 +2585,12 @@ $(document).ready(function(){
 		localStorage.removeItem('bgcolor');
     });
 	
-	$('[id="tracking_btn"]').on('click', function(){		
-	    meeting_id = $('#hidden_meeting_id').val(); 
-		iteration = $('#hidden_iteration').val(); 
+	$('[id="tracking_btn"]').on('click', function(){
+	    meeting_id = $('#hidden_meeting_id').val();
+		iteration = $('#hidden_iteration').val();
 	    subject = $('#hidden_name').val();
 	    area = $('#hidden_area').val();
+	    chapter = $('#hidden_chapter').val();
 		
 		if(reminder_date != '0000-00-00') {
 		  $('#div_reminder_date').show();
@@ -2611,12 +2611,10 @@ $(document).ready(function(){
 		  $('#not_reminders').prop('checked',true);
 	    }
 	   
-		    if($('#hidden_reminder_time').val() == 2)
-	      $('#reminder_after_three_days').prop('checked',true);
-	    if($('#hidden_reminder_time').val() == 4)
-	      $('#reminder_after_two_weeks').prop('checked',true);
-	    if($('#hidden_reminder_time').val() == 5)
-	      $('#reminder_after_one_month').prop('checked',true);
+		    if($('#hidden_reminder_time').val() == 1)
+	      $('#reminder_tomorrow').prop('checked',true);
+	    if($('#hidden_reminder_time').val() == 3)
+	      $('#reminder_after_one_week').prop('checked',true);
 
         $('#users option').each(function(){			
 		    if($('#hidden_track_responsible_id').val() == 0){
@@ -2996,6 +2994,11 @@ $(window).on('load', function(){
 		let is_priority_ls = localStorage.getItem("is_priority") || '';
 		let remark_ls = localStorage.getItem("remark") || '';
 		let lang_ls = localStorage.getItem("lang") || '';
+		let user_id_ls = localStorage.getItem("user_id") || '';
+		let chapter_ls = localStorage.getItem("chapter") || '';
+		let track_responsible_id_ls = localStorage.getItem("track_responsible_id") || '';
+		let reminder_date_ls = localStorage.getItem("reminder_date") || '';
+		let reminder_time_ls = localStorage.getItem("reminder_time") || '';
 
 		let form_data = new FormData();
 		form_data.append('id_meeting', meeting_id);
@@ -3019,7 +3022,7 @@ $(window).on('load', function(){
 		setBellBcgColor(localStorage.getItem('track_type'));
 		setEmergencyTaskCSS(is_priority_ls);
 		$('#modalContent input[type="hidden"]').remove();
-		$('#modalContent').append("<input type='hidden' id='hidden_meeting_id' value='"+meeting_id+"'><input type='hidden' id='hidden_iteration' value='"+iteration+"'><input type='hidden' id='hidden_project_id' value='"+project_id+"'><input type='hidden' id='hidden_user_id' value=''><input type='hidden' id='hidden_chapter' value=''><input type='hidden' id='hidden_name' value='"+subject_ls+"'><input type='hidden' id='hidden_area' value='"+area_ls+"'><input type='hidden' id='hidden_recipient' value='"+recipient_ls+"'><input type='hidden' id='hidden_responsible_id' value='"+responsible_id_ls+"'><input type='hidden' id='hidden_is_priority' value='"+is_priority_ls+"'><input type='hidden' id='hidden_remark' value='"+remark_ls+"'><input type='hidden' id='hidden_track_responsible_id' value=''><input type='hidden' id='hidden_reminder_date' value=''><input type='hidden' id='hidden_reminder_time' value=''><input type='hidden' id='hidden_lang' value='"+lang_ls+"'>");
+		$('#modalContent').append("<input type='hidden' id='hidden_meeting_id' value='"+meeting_id+"'><input type='hidden' id='hidden_iteration' value='"+iteration+"'><input type='hidden' id='hidden_project_id' value='"+project_id+"'><input type='hidden' id='hidden_user_id' value='"+user_id_ls+"'><input type='hidden' id='hidden_chapter' value='"+chapter_ls+"'><input type='hidden' id='hidden_name' value='"+subject_ls+"'><input type='hidden' id='hidden_area' value='"+area_ls+"'><input type='hidden' id='hidden_recipient' value='"+recipient_ls+"'><input type='hidden' id='hidden_responsible_id' value='"+responsible_id_ls+"'><input type='hidden' id='hidden_is_priority' value='"+is_priority_ls+"'><input type='hidden' id='hidden_remark' value='"+remark_ls+"'><input type='hidden' id='hidden_track_responsible_id' value='"+track_responsible_id_ls+"'><input type='hidden' id='hidden_reminder_date' value='"+reminder_date_ls+"'><input type='hidden' id='hidden_reminder_time' value='"+reminder_time_ls+"'><input type='hidden' id='hidden_lang' value='"+lang_ls+"'>");
     }
 });
 
