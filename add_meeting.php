@@ -1278,7 +1278,7 @@ function redirectUrl(meeting_id){
 	localStorage.setItem('track_type',$('#track_type_data').val());
 	localStorage.setItem('updated_id','meeting_'+meeting_id);
 	localStorage.setItem('chapter',$('#chapter').val());
-	localStorage.setItem('user_id',$('#user_id_data').val());
+	localStorage.setItem('user_id',$('#user_id_data').val() || $('#id_connected_user').val());
 	localStorage.setItem('track_responsible_id',$('#track_responsible_id_data').val());
 	localStorage.setItem('reminder_date',$('#reminder_date_data').val());
 	localStorage.setItem('reminder_time',$('#reminder_time_data').val());
