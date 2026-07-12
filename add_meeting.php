@@ -600,7 +600,7 @@ include 'menu_tasks.php';
 									<br/>
                                     
 									<label for="image1" class="custom-file-upload"><?=@$choose_file_label?></label>
-                                    <input id="image1" name="image1" class="file-upload" type="file" accept=".jpg,.jpeg" hidden>		
+                                    <input id="image1" name="image1" class="file-upload" type="file" accept=".jpg,.jpeg,.png,.gif" style="position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;">
                                     
 									<div id="div-delete-image1" class="row marginTop20 <?php echo(!empty($meeting->image1))?"display-block":"display-none";?>">
 									    <div class="col-12">
@@ -630,7 +630,7 @@ include 'menu_tasks.php';
 									<br/>
 									
                                     <label for="image2" class="custom-file-upload"><?=@$choose_file_label?></label>
-                                    <input id="image2" name="image2" class="file-upload" type="file" accept=".jpg,.jpeg" hidden>		
+                                    <input id="image2" name="image2" class="file-upload" type="file" accept=".jpg,.jpeg,.png,.gif" style="position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;">
                                     
 									<div id="div-delete-image2" class="row marginTop20 <?php echo(!empty($meeting->image2))?"display-block":"display-none";?>">
 									    <div class="col-12">

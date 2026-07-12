@@ -230,32 +230,35 @@ function decryptIt($str) {
 }
 
 
-function compressImage($source, $destination, $quality) { 
-    // Get image info 
-    $imgInfo = getimagesize($source); 
-    $mime = $imgInfo['mime']; 
-     
-    // Create a new image from file 
-    switch($mime){ 
-        case 'image/jpeg': 
-            $image = imagecreatefromjpeg($source); 
+function compressImage($source, $destination, $quality) {
+    // Get image info
+    $imgInfo = @getimagesize($source);
+    if(!$imgInfo) return false;
+    $mime = $imgInfo['mime'];
+
+    // Create a new image from file
+    switch($mime){
+        case 'image/jpeg':
+            $image = @imagecreatefromjpeg($source);
+            if(!$image) return false;
             imagejpeg($image, $destination, $quality);
-            break; 
-        case 'image/png': 
-            $image = imagecreatefrompng($source); 
+            break;
+        case 'image/png':
+            $image = @imagecreatefrompng($source);
+            if(!$image) return false;
             imagepng($image, $destination, $quality);
-            break; 
-        case 'image/gif': 
-            $image = imagecreatefromgif($source); 
+            break;
+        case 'image/gif':
+            $image = @imagecreatefromgif($source);
+            if(!$image) return false;
             imagegif($image, $destination, $quality);
-            break; 
-        default: 
-            $image = imagecreatefromjpeg($source); 
-            imagejpeg($image, $destination, $quality);
-    } 
-     
-    // Return compressed image 
-    return $destination; 
+            break;
+        default:
+            return false;
+    }
+
+    // Return compressed image
+    return $destination;
 }
 
 function resizeImage($file, $max_width, $max_height, $outputFile) {

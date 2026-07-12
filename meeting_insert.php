@@ -93,26 +93,38 @@ else {
 		if(isset($_FILES['image1']['name'])){
 			$image1_name = $_FILES['image1']['name'];
 			$imageUploadPath = 'uploads/'.$image1_name;
-			$fileType = pathinfo($imageUploadPath, PATHINFO_EXTENSION); 
-			
-			$allowTypes = array('jpg','png','jpeg','gif'); 
-			if(in_array($fileType, $allowTypes)){ 
-				$imageTemp = $_FILES["image1"]["tmp_name"]; 
-				$compressedImage = compressImage($imageTemp,$imageUploadPath,75); 
-				list($image1_width,$image1_height) = getimagesize($imageUploadPath);
+			$fileType = pathinfo($imageUploadPath, PATHINFO_EXTENSION);
+
+			$allowTypes = array('jpg','png','jpeg','gif');
+			if(in_array($fileType, $allowTypes)){
+				$imageTemp = $_FILES["image1"]["tmp_name"];
+				$compressedImage = compressImage($imageTemp,$imageUploadPath,75);
+				if($compressedImage){
+					list($image1_width,$image1_height) = getimagesize($imageUploadPath);
+				} else {
+					$image1_name = '';
+				}
+			} else {
+				$image1_name = '';
 			}
 	    }
-		
+
 		if(isset($_FILES['image2']['name'])){
 			$image2_name = $_FILES['image2']['name'];
 			$imageUploadPath = 'uploads/'.$image2_name;
-			$fileType = pathinfo($imageUploadPath, PATHINFO_EXTENSION); 
-			
-			$allowTypes = array('jpg','png','jpeg','gif'); 
-			if(in_array($fileType, $allowTypes)){ 
-				$imageTemp = $_FILES["image2"]["tmp_name"]; 
-				$compressedImage = compressImage($imageTemp, $imageUploadPath,75); 
-				list($image2_width,$image2_height) = getimagesize($imageUploadPath);
+			$fileType = pathinfo($imageUploadPath, PATHINFO_EXTENSION);
+
+			$allowTypes = array('jpg','png','jpeg','gif');
+			if(in_array($fileType, $allowTypes)){
+				$imageTemp = $_FILES["image2"]["tmp_name"];
+				$compressedImage = compressImage($imageTemp, $imageUploadPath,75);
+				if($compressedImage){
+					list($image2_width,$image2_height) = getimagesize($imageUploadPath);
+				} else {
+					$image2_name = '';
+				}
+			} else {
+				$image2_name = '';
 			}
 		}
 		
@@ -240,33 +252,45 @@ else {
 		if(isset($_FILES['image1']['name'])) {
 			$image1_name = $_FILES['image1']['name'];
 			$imageUploadPath = 'uploads/'.$image1_name;
-			$fileType = pathinfo($imageUploadPath, PATHINFO_EXTENSION); 
-	 
-			$allowTypes = array('jpg','png','jpeg','gif'); 
-			if(in_array($fileType, $allowTypes)){ 
-				$imageTemp = $_FILES["image1"]["tmp_name"]; 
-				$compressedImage = compressImage($imageTemp,$imageUploadPath,75); 
-				list($image1_width,$image1_height) = getimagesize($imageUploadPath);
+			$fileType = pathinfo($imageUploadPath, PATHINFO_EXTENSION);
+
+			$allowTypes = array('jpg','png','jpeg','gif');
+			if(in_array($fileType, $allowTypes)){
+				$imageTemp = $_FILES["image1"]["tmp_name"];
+				$compressedImage = compressImage($imageTemp,$imageUploadPath,75);
+				if($compressedImage){
+					list($image1_width,$image1_height) = getimagesize($imageUploadPath);
+				} else {
+					$image1_name = '';
+				}
+			} else {
+				$image1_name = '';
 			}
-		
+
 			$query = "UPDATE dne_meetings SET image1 = ?,image1_width = ?,
 					  image1_height = ? WHERE id = ?";
 			$query = $mysqli->prepare($query);
 			$query->bind_param('siii',$image1_name,$image1_width,
-			                   $image1_height,$_POST['id']);	
+			                   $image1_height,$_POST['id']);
 			$query->execute();
 		}
-		
+
 		if(isset($_FILES['image2']['name'])){
 			$image2_name = $_FILES['image2']['name'];
 			$imageUploadPath = 'uploads/'.$image2_name;
-			$fileType = pathinfo($imageUploadPath, PATHINFO_EXTENSION); 
-		 
-			$allowTypes = array('jpg','png','jpeg','gif'); 
-			if(in_array($fileType, $allowTypes)){ 
-				$imageTemp = $_FILES["image2"]["tmp_name"]; 
-				$compressedImage = compressImage($imageTemp,$imageUploadPath,75); 
-				list($image2_width,$image2_height) = getimagesize($imageUploadPath);
+			$fileType = pathinfo($imageUploadPath, PATHINFO_EXTENSION);
+
+			$allowTypes = array('jpg','png','jpeg','gif');
+			if(in_array($fileType, $allowTypes)){
+				$imageTemp = $_FILES["image2"]["tmp_name"];
+				$compressedImage = compressImage($imageTemp,$imageUploadPath,75);
+				if($compressedImage){
+					list($image2_width,$image2_height) = getimagesize($imageUploadPath);
+				} else {
+					$image2_name = '';
+				}
+			} else {
+				$image2_name = '';
 			}
 			
 			$query = "UPDATE dne_meetings SET image2 = ?,image2_width = ?,
