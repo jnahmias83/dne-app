@@ -4084,11 +4084,12 @@ $(document).ready(function(){
 	});
 	
     $('[id="tracking_btn"]').on('click', function(){
-        meeting_id = $('#hidden_meeting_id').val(); 
-		iteration = $('#hidden_iteration').val(); 
+        meeting_id = $('#hidden_meeting_id').val();
+		iteration = $('#hidden_iteration').val();
 	    subject = $('#hidden_name').val();
 	    area = $('#hidden_area').val();
-		reminder_time = $('#hidden_reminder_time').val();	
+	    chapter = $('#hidden_chapter').val();
+		reminder_time = $('#hidden_reminder_time').val();
 	    reminder_date = $('#hidden_reminder_date').val();	
 	    
 		if(reminder_date != '0000-00-00') {
