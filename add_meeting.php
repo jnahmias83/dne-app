@@ -602,6 +602,7 @@ include 'menu_tasks.php';
 									<br/>
                                     
 									<label for="image1" class="custom-file-upload"><?=@$choose_file_label?></label>
+                                    <span id="camera-btn-image1" class="camera-btn" onclick="openCamera('image1')" style="display:none;">📷</span>
                                     <input id="image1" name="image1" class="file-upload" type="file" accept=".jpg,.jpeg,.png,.gif" hidden>
                                     <div id="dropzone-image1" class="drag-drop-zone <?php echo(!empty($meeting->image1))?"display-none":"";?>" data-target="image1"><?=@$drag_drop_label?></div>
 
@@ -633,6 +634,7 @@ include 'menu_tasks.php';
 									<br/>
 									
                                     <label for="image2" class="custom-file-upload"><?=@$choose_file_label?></label>
+                                    <span id="camera-btn-image2" class="camera-btn" onclick="openCamera('image2')" style="display:none;">📷</span>
                                     <input id="image2" name="image2" class="file-upload" type="file" accept=".jpg,.jpeg,.png,.gif" hidden>
                                     <div id="dropzone-image2" class="drag-drop-zone <?php echo(!empty($meeting->image2))?"display-none":"";?>" data-target="image2"><?=@$drag_drop_label?></div>
 
@@ -732,12 +734,33 @@ let image2_container = $('#image2-container');
 let div_rotations_image1 = $('#div-rotations-image1');
 let div_rotations_image2 = $('#div-rotations-image2');
 
+function openCamera(fieldId){
+	if(typeof AndroidNative !== 'undefined' && AndroidNative.openCamera){
+		AndroidNative.openCamera(fieldId);
+	}
+}
+
+function receiveCameraPhoto(fieldId, dataUrl){
+	fetch(dataUrl).then(function(r){ return r.blob(); }).then(function(blob){
+		let file = new File([blob], 'camera_photo.jpg', {type:'image/jpeg'});
+		let dt = new DataTransfer();
+		dt.items.add(file);
+		document.getElementById(fieldId).files = dt.files;
+		$('#'+fieldId).trigger('change');
+	});
+}
+
 $(document).ready(function(){
 	let meeting_id;
 	let iteration;
 	let subject;
 	let area;
 	let remark;
+
+	if(typeof AndroidNative !== 'undefined' && AndroidNative.openCamera){
+		$('#camera-btn-image1,#camera-btn-image2').show();
+		$('.drag-drop-zone').hide();
+	}
 
 	$('#subject').focus();
 
@@ -1483,6 +1506,13 @@ $('#cancel_btn').click(function(){
   height: 100px;
   width: 100%;
   resize: vertical;
+}
+
+.camera-btn {
+  cursor: pointer;
+  font-size: 22px;
+  margin-inline-start: 8px;
+  vertical-align: middle;
 }
 
 .drag-drop-zone {
