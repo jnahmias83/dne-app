@@ -4568,6 +4568,60 @@ function setToReadTask(){
 	});
 }
 
+const PORTRAIT_HIDE_COLUMNS = ['_task','pass on','task creation','destination date'];
+const PORTRAIT_HIDE_STORAGE_KEY = 'tablet_portrait_hidden_columns_snapshot';
+
+function isTabletWidth(){
+	let w = window.innerWidth;
+	return w > 600 && w <= 1024;
+}
+
+function applyPortraitColumnHiding(isPortrait){
+	if(!isTabletWidth()) return;
+
+	if(isPortrait){
+		if(localStorage.getItem(PORTRAIT_HIDE_STORAGE_KEY) !== null) return;
+		let snapshot = {};
+		let changed = false;
+		PORTRAIT_HIDE_COLUMNS.forEach(function(val){
+			let checkbox = $('#columns_list[value="'+val+'"]');
+			snapshot[val] = checkbox.is(':checked');
+			if(checkbox.is(':checked')){
+				checkbox.prop('checked', false);
+				changed = true;
+			}
+		});
+		localStorage.setItem(PORTRAIT_HIDE_STORAGE_KEY, JSON.stringify(snapshot));
+		if(changed) setReportData('table_view');
+	}
+	else {
+		let saved = localStorage.getItem(PORTRAIT_HIDE_STORAGE_KEY);
+		if(saved === null) return;
+		let snapshot = JSON.parse(saved);
+		let changed = false;
+		PORTRAIT_HIDE_COLUMNS.forEach(function(val){
+			if(snapshot[val]){
+				let checkbox = $('#columns_list[value="'+val+'"]');
+				if(!checkbox.is(':checked')){
+					checkbox.prop('checked', true);
+					changed = true;
+				}
+			}
+		});
+		localStorage.removeItem(PORTRAIT_HIDE_STORAGE_KEY);
+		if(changed) setReportData('table_view');
+	}
+}
+
+$(document).ready(function(){
+	if(window.matchMedia){
+		applyPortraitColumnHiding(window.matchMedia('(orientation: portrait)').matches);
+		window.matchMedia('(orientation: portrait)').addEventListener('change', function(e){
+			applyPortraitColumnHiding(e.matches);
+		});
+	}
+});
+
 function setReportData(field){
 	let form_data = new FormData();
 	form_data.append('is_specific_filter',$('#is_specific_filter').val());
@@ -5049,6 +5103,15 @@ td[id^="td_area_"] > div {
     font-size: <?=(@$lang=='HE') ? '12px' : '11px';?>;
 }
 
+#meetings_table tr.bgColor-cbddec td {
+    font-size: 14px;
+}
+
+#meetings_table td[id^="td_task_creation_date_"] input,
+#meetings_table td[id^="td_destination_date_"] input {
+    font-size: 12px;
+}
+
 #meetings_table td[id^="td_count_"] {
     width: 40px !important;
     max-width: 40px !important;
@@ -5102,6 +5165,10 @@ td[id^="td_description_"] span.sf-hl {
         padding: 3px 4px !important;
         font-size: 11px;
     }
+    #meetings_table td[id^="td_task_creation_date_"] input,
+    #meetings_table td[id^="td_destination_date_"] input {
+        font-size: 11px;
+    }
 }
 
 @media (max-width: 600px) {
@@ -5109,6 +5176,13 @@ td[id^="td_description_"] span.sf-hl {
     #meetings_table td {
         font-size: 10px;
         padding: 2px 3px !important;
+    }
+    #meetings_table td[id^="td_task_creation_date_"] input,
+    #meetings_table td[id^="td_destination_date_"] input {
+        font-size: 10px;
+    }
+    #meetings_table tr.bgColor-cbddec td {
+        font-size: 12px;
     }
 }
 
