@@ -1143,7 +1143,9 @@ function deleteTaskImage(image){
 		contentType: false,			
 		success: function(data){
 		    $('#div-'+image).hide();
-		    $('#dropzone-'+image).show();
+		    if(!(typeof AndroidNative !== 'undefined' && AndroidNative.openCamera)){
+		        $('#dropzone-'+image).show();
+		    }
 		},
 	});				
 }
