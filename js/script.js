@@ -1063,12 +1063,16 @@ async function shareImage(imageUrl,meeting_id,project_id,iteration,is_all_ids_to
 
         reader.onloadend = async function (){
             const project_details = await getProjectDetails(project_id);
+            const share_text = "שלום,\nשים לב בבקשה למשימה זו בפרוייקט:\n" + (project_details.name_he || '');
 
-            if(navigator.canShare && navigator.canShare({ files: [file] })){
+            if(typeof AndroidNative !== 'undefined' && AndroidNative.shareImage){
+                AndroidNative.shareImage(reader.result, share_text);
+            }
+            else if(navigator.canShare && navigator.canShare({ files: [file] })){
                 try {
                     await navigator.share({
                         title: "משימה חדשה",
-                        text: "שלום,\nשים לב בבקשה למשימה זו בפרוייקט:\n" + (project_details.name_he || ''),
+                        text: share_text,
                         files: [file]
                     });
                 } catch (shareError){
