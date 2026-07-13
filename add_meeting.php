@@ -66,6 +66,7 @@ if(@$lang == "HE"){
 	$image1_label = " תמונה 1";
 	$image2_label = "תמונה 2";
 	$choose_file_label = "בחר קובץ";
+	$drag_drop_label = "או גררו קובץ לכאן";
 	$delete_label = "מחק";
 	$save_label = "שמור";
     $cancel_label = "ביטול";
@@ -101,6 +102,7 @@ else {
 	$image1_label = "Image 1";
 	$image2_label = "Image 2";
 	$choose_file_label = "Choose File";
+	$drag_drop_label = "Or drag file here";
 	$delete_label = "Delete";
 	$save_label = "Save";
 	$cancel_label = "Cancel";
@@ -600,8 +602,9 @@ include 'menu_tasks.php';
 									<br/>
                                     
 									<label for="image1" class="custom-file-upload"><?=@$choose_file_label?></label>
-                                    <input id="image1" name="image1" class="file-upload" type="file" accept=".jpg,.jpeg,.png,.gif" style="position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;">
-                                    
+                                    <input id="image1" name="image1" class="file-upload" type="file" accept=".jpg,.jpeg,.png,.gif" hidden>
+                                    <div id="dropzone-image1" class="drag-drop-zone <?php echo(!empty($meeting->image1))?"display-none":"";?>" data-target="image1"><?=@$drag_drop_label?></div>
+
 									<div id="div-delete-image1" class="row marginTop20 <?php echo(!empty($meeting->image1))?"display-block":"display-none";?>">
 									    <div class="col-12">
 									        <img src="images/delete.svg" class="cursor-pointer" title="<?=@$delete_label?>" onclick="deleteTaskImage('image1');" />
@@ -630,8 +633,9 @@ include 'menu_tasks.php';
 									<br/>
 									
                                     <label for="image2" class="custom-file-upload"><?=@$choose_file_label?></label>
-                                    <input id="image2" name="image2" class="file-upload" type="file" accept=".jpg,.jpeg,.png,.gif" style="position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;">
-                                    
+                                    <input id="image2" name="image2" class="file-upload" type="file" accept=".jpg,.jpeg,.png,.gif" hidden>
+                                    <div id="dropzone-image2" class="drag-drop-zone <?php echo(!empty($meeting->image2))?"display-none":"";?>" data-target="image2"><?=@$drag_drop_label?></div>
+
 									<div id="div-delete-image2" class="row marginTop20 <?php echo(!empty($meeting->image2))?"display-block":"display-none";?>">
 									    <div class="col-12">
 									        <img src="images/delete.svg" class="cursor-pointer" title="<?=@$delete_label?>" onclick="deleteTaskImage('image2');" />
@@ -687,10 +691,11 @@ let image1_compressing = false, image2_compressing = false;
 function compressFile(file, maxDim, quality) {
     maxDim = maxDim || 1920;
     quality = quality || 0.85;
-    return new Promise(function(resolve) {
+    return new Promise(function(resolve, reject) {
         let reader = new FileReader();
         reader.onload = function(e) {
             let img = new Image();
+            img.onerror = function() { reject(); };
             img.onload = function() {
                 let w = img.width, h = img.height;
                 if (w > maxDim || h > maxDim) {
@@ -712,6 +717,7 @@ function compressFile(file, maxDim, quality) {
             };
             img.src = e.target.result;
         };
+        reader.onerror = function() { reject(); };
         reader.readAsDataURL(file);
     });
 }
@@ -819,6 +825,48 @@ $(document).ready(function(){
 		updateBg(fieldId);
 	});
 
+	$(document).on('dragover','.custom-file-upload', function (e){
+		e.preventDefault();
+		e.stopPropagation();
+	});
+
+	$(document).on('drop','.custom-file-upload', function (e){
+		e.preventDefault();
+		e.stopPropagation();
+		let inputId = $(this).attr('for');
+		let dt = e.originalEvent.dataTransfer;
+		if(dt && dt.files && dt.files.length > 0){
+			document.getElementById(inputId).files = dt.files;
+			$('#'+inputId).trigger('change');
+		}
+	});
+
+	document.querySelectorAll('.drag-drop-zone').forEach(function(zone){
+		zone.addEventListener('dragenter', function(e){
+			e.preventDefault();
+			e.stopPropagation();
+		});
+		zone.addEventListener('dragover', function(e){
+			e.preventDefault();
+			e.stopPropagation();
+		});
+		zone.addEventListener('drop', function(e){
+			e.preventDefault();
+			e.stopPropagation();
+			let inputId = zone.getAttribute('data-target');
+			let dt = e.dataTransfer;
+			if(dt && dt.files && dt.files.length > 0){
+				let droppedFile = dt.files[0];
+				if(!/\.(jpg|jpeg|png|gif)$/i.test(droppedFile.name)){
+					alert('Format non supporté. Utilisez un fichier .jpg, .jpeg, .png ou .gif');
+					return;
+				}
+				document.getElementById(inputId).files = dt.files;
+				$('#'+inputId).trigger('change');
+			}
+		});
+	});
+
 	$(document).on('change','#image1', function (){
 		let file = $('#image1')[0].files[0];
 		let image1_name = file.name;
@@ -834,6 +882,7 @@ $(document).ready(function(){
 		$('#is_appears_img1').prop('checked',true);
 		is_appears_img1 = 1;
 		$('#div-image1').show();
+		$('#dropzone-image1').hide();
 
 		image1_compressing = true;
 		compressFile(file).then(function(result) {
@@ -872,6 +921,7 @@ $(document).ready(function(){
 		$('#is_appears_img2').prop('checked',true);
 		is_appears_img2 = 1;
 		$('#div-image2').show();
+		$('#dropzone-image2').hide();
 
 		image2_compressing = true;
 		compressFile(file).then(function(result) {
@@ -1068,8 +1118,9 @@ function deleteTaskImage(image){
 		cache: false,
 		processData: false,
 		contentType: false,			
-		success: function(data){			
+		success: function(data){
 		    $('#div-'+image).hide();
+		    $('#dropzone-'+image).show();
 		},
 	});				
 }
@@ -1426,12 +1477,27 @@ $('#cancel_btn').click(function(){
 
 <style>
 .rtl-textarea {
-  direction: rtl;        
-  text-align: right;      
-  vertical-align: top;   
+  direction: rtl;
+  text-align: right;
+  vertical-align: top;
   height: 100px;
   width: 100%;
   resize: vertical;
+}
+
+.drag-drop-zone {
+  width: 150px;
+  height: 80px;
+  margin: 10px auto 0 auto;
+  border: 2px dashed #adb5bd;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 12px;
+  color: #6c757d;
+  padding: 5px;
 }
 
 .btn:hover {
