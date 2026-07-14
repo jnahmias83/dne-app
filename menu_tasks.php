@@ -18,6 +18,7 @@
   </a>
   <a href="budget.php?project_id=<?=@$_SESSION['id_project']?>&lang_screen=HE" class="btn-budget">
 	<i class="fa-solid fa-dollar-sign"></i>תקציב
+	<i class="fa-solid fa-share budget-btn-arrow"></i>
   </a>
 </div>
 
@@ -126,6 +127,19 @@
 
 .btn-budget i {
     margin-left: 10px;
+}
+
+.budget-btn-arrow {
+    color: #fff;
+    font-weight: bold;
+    margin-right: 8px;
+    transform: scaleX(-1);
+    display: inline-block;
+}
+
+.btn-budget:hover,
+.btn-attach-suppliers:hover {
+    color: rgba(255,255,255,0.55);
 }
 
 .menu-list a {

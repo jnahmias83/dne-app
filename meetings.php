@@ -874,9 +874,6 @@ include 'menu_tasks.php';
 												value="<?=htmlspecialchars(@$item->request_name)?>"
 												<?php if(@$item->id == @$id_custom_report) echo "style='background-color:#63d687;'"?>
 												onclick="setCurrentReportSession(<?=@$item->id?>);" />
-											<?php if(@$item->id == @$id_custom_report){ ?>
-												<span class="active-report-arrow">&larr;</span>
-											<?php } ?>
 										</div>
 									</div>
 								<?php } ?>
@@ -1920,7 +1917,7 @@ include 'menu_tasks.php';
 												<?php } 
 												
 												if(in_array('_task',$columns_list_array)){ ?>
-													<td id="td_task_<?=@$meeting_id?>" class="<?php if(end($columns_list_array) == "_task") echo $border_cell_table_end;?> cursor-pointer" style="<?=@$task_bgcolor?>;">
+													<td id="td_task_<?=@$meeting_id?>" class="<?php if(end($columns_list_array) == "_task") echo $border_cell_table_end;?> cursor-pointer col-w-task" style="<?=@$task_bgcolor?>;">
 														<div style="max-width:8ch;overflow:hidden;box-sizing:border-box;margin:0 auto;">
 														<select id="task_<?=@$meeting_id?>" class="form-control font-weight-bold fontSize12 border-none cursor-pointer alignCenter" style="direction:<?=@$dir?>;width:98%;<?=@$task_color?>;<?=@$task_bgcolor?>;" onchange="setData(<?=@$meeting_id?>,<?=@$iteration?>,'id_task',0,0,'screen');">
 															<?php
@@ -1955,7 +1952,7 @@ include 'menu_tasks.php';
 												<?php } 
 												
 												if(in_array('pass on',$columns_list_array)){ ?>
-													<td id="td_pass_on_<?=@$meeting_id?>" class="<?php if(end($columns_list_array) == "pass on") echo $border_cell_table_end;?> cursor-pointer" style="<?=@$pass_on_bgcolor?>;">
+													<td id="td_pass_on_<?=@$meeting_id?>" class="<?php if(end($columns_list_array) == "pass on") echo $border_cell_table_end;?> cursor-pointer col-w-passon" style="<?=@$pass_on_bgcolor?>;">
 														<select id="pass_on_<?=@$meeting_id?>" class="form-control fontSize12 border-none cursor-pointer alignCenter" style="direction:<?=@$dir?>;width:98%;<?=@$pass_on_bgcolor?>;" onchange="setData(<?=@$meeting_id?>,<?=@$iteration?>,'id_pass_on',0,0,'screen');">	
 															<?php 
 															foreach($responsibles as $item){
@@ -1971,13 +1968,13 @@ include 'menu_tasks.php';
 												<?php } 
 												
 												if(in_array('task creation',$columns_list_array)){ ?>
-													<td id="td_task_creation_date_<?=@$meeting_id?>" class="<?php if(end($columns_list_array) == "task creation") echo $border_cell_table_end;?> cursor-pointer alignCenter" style="text-align:center;<?=@$task_creation_date_bgcolor?>">
+													<td id="td_task_creation_date_<?=@$meeting_id?>" class="<?php if(end($columns_list_array) == "task creation") echo $border_cell_table_end;?> cursor-pointer alignCenter col-w-taskcr" style="text-align:center;<?=@$task_creation_date_bgcolor?>">
 														<input type="text" id="task_creation_date_<?=@$meeting_id?>" name="task_creation_date_<?=@$meeting_id?>" class="fontSize13 border-none width60 cursor-pointer alignCenter" style="direction:<?=@$dir?>;<?=@$task_creation_date_color?>;<?=@$task_creation_date_bgcolor?>;" value="<?=smartDate(@$task_creation_date, $lang)?>" data-meetingid="<?=@$meeting_id?>" data-iteration=<?=@$iteration?> data-taskcreationdate="<?=@$task_creation_date?>" />
 													</td>
 												<?php }
 												
 												if(in_array('destination date',$columns_list_array)){ ?>
-													<td id="td_destination_date_<?=@$meeting_id?>" class="<?php if(end($columns_list_array) == "destination date") echo $border_cell_table_end;?> cursor-pointer alignCenter" style="text-align:center;<?=@$padding?>:5px;<?=@$dest_date_color?>;<?=@$dest_date_bgcolor?>;">
+													<td id="td_destination_date_<?=@$meeting_id?>" class="<?php if(end($columns_list_array) == "destination date") echo $border_cell_table_end;?> cursor-pointer alignCenter col-w-dest" style="text-align:center;<?=@$padding?>:5px;<?=@$dest_date_color?>;<?=@$dest_date_bgcolor?>;">
 													   <input type="text" id="destination_date_<?=@$meeting_id?>" name="destination_date_<?=@$meeting_id?>" class="fontSize13 border-none width60 cursor-pointer alignCenter" style="direction:<?=@$dir?>;<?=@$dest_date_color?>;<?=@$dest_date_bgcolor?>;" value="<?=smartDate(@$destination_date, $lang)?>" data-meetingid="<?=@$meeting_id?>" data-iteration="<?=@$iteration?>" data-chapter="<?=@$chapter_name?>" data-name="<?=@$subject?>" data-area="<?=@$area?>" data-destinationdate="<?=@$destination_date?>" />
 													</td>
 												<?php }
@@ -4573,64 +4570,6 @@ function setToReadTask(){
 	});
 }
 
-const PORTRAIT_HIDE_COLUMNS = ['_task','pass on','task creation','destination date'];
-const PORTRAIT_HIDE_STORAGE_KEY = 'tablet_portrait_hidden_columns_snapshot';
-const PORTRAIT_HIDE_WIDTH_THRESHOLD = 1024;
-
-function shouldHideNarrowColumns(){
-	return window.innerWidth <= PORTRAIT_HIDE_WIDTH_THRESHOLD;
-}
-
-function applyPortraitColumnHiding(shouldHide){
-	if(shouldHide){
-		if(localStorage.getItem(PORTRAIT_HIDE_STORAGE_KEY) !== null) return;
-		let snapshot = {};
-		let changed = false;
-		PORTRAIT_HIDE_COLUMNS.forEach(function(val){
-			let checkbox = $('#columns_list[value="'+val+'"]');
-			snapshot[val] = checkbox.is(':checked');
-			if(checkbox.is(':checked')){
-				checkbox.prop('checked', false);
-				changed = true;
-			}
-		});
-		localStorage.setItem(PORTRAIT_HIDE_STORAGE_KEY, JSON.stringify(snapshot));
-		if(changed) setReportData('table_view');
-	}
-	else {
-		let saved = localStorage.getItem(PORTRAIT_HIDE_STORAGE_KEY);
-		if(saved === null) return;
-		let snapshot = JSON.parse(saved);
-		let changed = false;
-		PORTRAIT_HIDE_COLUMNS.forEach(function(val){
-			if(snapshot[val]){
-				let checkbox = $('#columns_list[value="'+val+'"]');
-				if(!checkbox.is(':checked')){
-					checkbox.prop('checked', true);
-					changed = true;
-				}
-			}
-		});
-		localStorage.removeItem(PORTRAIT_HIDE_STORAGE_KEY);
-		if(changed) setReportData('table_view');
-	}
-}
-
-let lastKnownHideState = null;
-function checkWidthBasedColumnHiding(){
-	let shouldHide = shouldHideNarrowColumns();
-	if(shouldHide === lastKnownHideState) return;
-	lastKnownHideState = shouldHide;
-	applyPortraitColumnHiding(shouldHide);
-}
-
-$(document).ready(function(){
-	lastKnownHideState = shouldHideNarrowColumns();
-	if(lastKnownHideState) applyPortraitColumnHiding(true);
-	window.addEventListener('resize', checkWidthBasedColumnHiding);
-	setInterval(checkWidthBasedColumnHiding, 500);
-});
-
 function setReportData(field){
 	let form_data = new FormData();
 	form_data.append('is_specific_filter',$('#is_specific_filter').val());
@@ -5147,6 +5086,15 @@ td[id^="td_area_"] > div {
     #meetings_table th.col-w-subject, #meetings_table td.col-w-subject { width: 20%; }
     #meetings_table th.col-w-area, #meetings_table td.col-w-area { width: 20%; }
     #meetings_table th.col-w-desc, #meetings_table td.col-w-desc { width: 60%; }
+}
+
+@media (max-width: 1200px) {
+    #meetings_table th.col-w-task, #meetings_table td.col-w-task,
+    #meetings_table th.col-w-passon, #meetings_table td.col-w-passon,
+    #meetings_table th.col-w-taskcr, #meetings_table td.col-w-taskcr,
+    #meetings_table th.col-w-dest, #meetings_table td.col-w-dest {
+        display: none;
+    }
 }
 
 @media (max-width: 600px) {
