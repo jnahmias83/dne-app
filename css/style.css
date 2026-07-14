@@ -1322,7 +1322,12 @@ a {
     min-width: 140px;
     max-width: 180px;
     margin: 5px;
+}
+
+.active-report-btn-wrap {
     position: relative;
+    display: block;
+    width: 100%;
 }
 
 .active-report-arrow {

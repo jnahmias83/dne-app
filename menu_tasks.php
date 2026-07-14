@@ -45,6 +45,10 @@
     padding: 0 10px;
 }
 
+.topbar.measuring {
+    flex-wrap: nowrap;
+}
+
 .menu-list.measuring {
     flex-wrap: nowrap;
 }
@@ -149,8 +153,10 @@ function checkTasksMenuOverflow(){
 	if(!topbar || !menuList) return;
 
 	topbar.classList.remove('topbar-collapsed');
+	topbar.classList.add('measuring');
 	menuList.classList.add('measuring');
 	let isOverflowing = topbar.scrollWidth > topbar.clientWidth + 1;
+	topbar.classList.remove('measuring');
 	menuList.classList.remove('measuring');
 
 	if(isOverflowing){

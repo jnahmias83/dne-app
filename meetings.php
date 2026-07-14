@@ -869,13 +869,15 @@ include 'menu_tasks.php';
 							<div class="flex flex-wrap alignCenter justify-content-center dir-rtl">
 								<?php foreach ($custom_reports as $item) { ?>
 									<div class="responsive-btn-container">
-										<input type="button" class="btn bgColor-579ecf font-weight-bold width120 fontSize12 borderRadius20"
-											value="<?=htmlspecialchars(@$item->request_name)?>"
-											<?php if(@$item->id == @$id_custom_report) echo "style='background-color:#63d687;'"?>
-											onclick="setCurrentReportSession(<?=@$item->id?>);" />
-										<?php if(@$item->id == @$id_custom_report){ ?>
-											<span class="active-report-arrow">&larr;</span>
-										<?php } ?>
+										<div class="active-report-btn-wrap">
+											<input type="button" class="btn bgColor-579ecf font-weight-bold width120 fontSize12 borderRadius20"
+												value="<?=htmlspecialchars(@$item->request_name)?>"
+												<?php if(@$item->id == @$id_custom_report) echo "style='background-color:#63d687;'"?>
+												onclick="setCurrentReportSession(<?=@$item->id?>);" />
+											<?php if(@$item->id == @$id_custom_report){ ?>
+												<span class="active-report-arrow">&larr;</span>
+											<?php } ?>
+										</div>
 									</div>
 								<?php } ?>
 
@@ -1233,40 +1235,40 @@ include 'menu_tasks.php';
 									<th id="th_count" class="border-top-white no-border-right alignCenter" style="width:40px;"></th>
 
 									<?php if(in_array('subject',$columns_list_array)){ ?>
-									    <th class="<?php if(end($columns_list_array) == "subject") echo $border_cell_table_end;?> border-top-white no-border-inline-end alignCenter" width="<?=$w_subject?>%"><?=@$subject_label?></th>
-									<?php } 
-									
-									if(in_array('area',$columns_list_array)){ ?>    
-									   <th class="<?php if(end($columns_list_array) == "area") echo $border_cell_table_end;?> border-top-white no-border-inline-end alignCenter" width="<?=$w_area?>%"><?=@$area_label?></th>
-									<?php } 
-									
-									if(in_array('description',$columns_list_array)){ ?>    
-									    <th class="<?php if(end($columns_list_array) == "description") echo $border_cell_table_end;?> border-top-white no-border-inline-end alignCenter" width="<?=$w_desc?>%"><?=@$description_label?></th>
-									<?php } 
-									
-									if(in_array('_task',$columns_list_array)){ ?>    
-									   <th class="<?php if(end($columns_list_array) == "_task") echo $border_cell_table_end;?> border-top-white no-border-inline-end alignCenter" width="<?=$w_task?>%"><?=@$task_type_label?></th>	
+									    <th class="<?php if(end($columns_list_array) == "subject") echo $border_cell_table_end;?> border-top-white no-border-inline-end alignCenter col-w-subject" width="<?=$w_subject?>%"><?=@$subject_label?></th>
 									<?php }
-									
-								    if(in_array('responsible',$columns_list_array)){ ?>    
-									   <th class="<?php if(end($columns_list_array) == "responsible") echo $border_cell_table_end;?> border-top-white no-border-inline-end alignCenter" width="<?=$w_responsible?>%"><?=@$responsible_label?><br/><a class="text-decoration-underline cursor-pointer" onclick="location.href='responsibles.php?project_id=<?=@$project_id?>'"><i class="fa-solid fa-user-plus fontSize9"></i></a></th>
+
+									if(in_array('area',$columns_list_array)){ ?>
+									   <th class="<?php if(end($columns_list_array) == "area") echo $border_cell_table_end;?> border-top-white no-border-inline-end alignCenter col-w-area" width="<?=$w_area?>%"><?=@$area_label?></th>
 									<?php }
-									
-									if(in_array('pass on',$columns_list_array)) { ?>   
-									   <th class="<?php if(end($columns_list_array) == "pass on") echo $border_cell_table_end;?> border-top-white no-border-inline-end alignCenter fontSize13" width="<?=$w_pass_on?>%"><?=@$pass_on_label?></th>
+
+									if(in_array('description',$columns_list_array)){ ?>
+									    <th class="<?php if(end($columns_list_array) == "description") echo $border_cell_table_end;?> border-top-white no-border-inline-end alignCenter col-w-desc" width="<?=$w_desc?>%"><?=@$description_label?></th>
 									<?php }
-									
-									if(in_array('task creation',$columns_list_array)){ ?>   
-								       <th class="<?php if(end($columns_list_array) == "task creation") echo $border_cell_table_end;?> border-top-white no-border-inline-end alignCenter" width="<?=$w_task_cr?>%" style="min-width:60px;max-width:80px;"><?=@$task_creation_date_label?></th>
+
+									if(in_array('_task',$columns_list_array)){ ?>
+									   <th class="<?php if(end($columns_list_array) == "_task") echo $border_cell_table_end;?> border-top-white no-border-inline-end alignCenter col-w-task" width="<?=$w_task?>%"><?=@$task_type_label?></th>
 									<?php }
-									
-									if(in_array('destination date',$columns_list_array)) { ?>   
-									   <th class="<?php if(end($columns_list_array) == "destination date") echo $border_cell_table_end;?> border-top-white no-border-inline-end alignCenter" width="<?=$w_dest?>%" style="min-width:60px;max-width:80px;"><?=@$target_date_label?></th>
+
+								    if(in_array('responsible',$columns_list_array)){ ?>
+									   <th class="<?php if(end($columns_list_array) == "responsible") echo $border_cell_table_end;?> border-top-white no-border-inline-end alignCenter col-w-responsible" width="<?=$w_responsible?>%"><?=@$responsible_label?><br/><a class="text-decoration-underline cursor-pointer" onclick="location.href='responsibles.php?project_id=<?=@$project_id?>'"><i class="fa-solid fa-user-plus fontSize9"></i></a></th>
 									<?php }
-									
-									if(in_array('progress status',$columns_list_array)){ ?>   
-									   <th class="<?php if(end($columns_list_array) == "progress status") echo $border_cell_table_end;?> border-top-white no-border-inline-end alignCenter" width="<?=$w_progress?>%"><?=@$status_label?></th>
-									<?php } ?>								
+
+									if(in_array('pass on',$columns_list_array)) { ?>
+									   <th class="<?php if(end($columns_list_array) == "pass on") echo $border_cell_table_end;?> border-top-white no-border-inline-end alignCenter fontSize13 col-w-passon" width="<?=$w_pass_on?>%"><?=@$pass_on_label?></th>
+									<?php }
+
+									if(in_array('task creation',$columns_list_array)){ ?>
+								       <th class="<?php if(end($columns_list_array) == "task creation") echo $border_cell_table_end;?> border-top-white no-border-inline-end alignCenter col-w-taskcr" width="<?=$w_task_cr?>%"><?=@$task_creation_date_label?></th>
+									<?php }
+
+									if(in_array('destination date',$columns_list_array)) { ?>
+									   <th class="<?php if(end($columns_list_array) == "destination date") echo $border_cell_table_end;?> border-top-white no-border-inline-end alignCenter col-w-dest" width="<?=$w_dest?>%"><?=@$target_date_label?></th>
+									<?php }
+
+									if(in_array('progress status',$columns_list_array)){ ?>
+									   <th class="<?php if(end($columns_list_array) == "progress status") echo $border_cell_table_end;?> border-top-white no-border-inline-end alignCenter col-w-status" width="<?=$w_progress?>%"><?=@$status_label?></th>
+									<?php } ?>
 								</tr>
 								<?php
 								if($id_custom_report > 0 || ($id_rdv_report > 0 && $is_specific_filter)){
@@ -4633,6 +4635,10 @@ $(document).ready(function(){
 	}
 	lastKnownPortraitState = window.innerWidth < window.innerHeight;
 	window.addEventListener('resize', checkOrientationFallback);
+	window.addEventListener('orientationchange', function(){
+		setTimeout(checkOrientationFallback, 300);
+	});
+	setInterval(checkOrientationFallback, 500);
 });
 
 function setReportData(field){
@@ -5134,6 +5140,29 @@ td[id^="td_area_"] > div {
 
 #meetings_table tr.bgColor-cbddec td {
     font-size: 14px;
+}
+
+#meetings_table th.col-w-task, #meetings_table td.col-w-task { width: 10ch; }
+#meetings_table th.col-w-responsible, #meetings_table td.col-w-responsible { width: 15ch; }
+#meetings_table th.col-w-passon, #meetings_table td.col-w-passon { width: 15ch; }
+#meetings_table th.col-w-taskcr, #meetings_table td.col-w-taskcr { width: 6ch; }
+#meetings_table th.col-w-dest, #meetings_table td.col-w-dest { width: 6ch; }
+#meetings_table th.col-w-status, #meetings_table td.col-w-status { width: 12ch; }
+#meetings_table th.col-w-subject, #meetings_table td.col-w-subject { width: 15%; }
+#meetings_table th.col-w-area, #meetings_table td.col-w-area { width: 15%; }
+#meetings_table th.col-w-desc, #meetings_table td.col-w-desc { width: 70%; }
+
+@media (max-width: 1024px) {
+    #meetings_table th.col-w-passon, #meetings_table td.col-w-passon { width: 10ch; }
+    #meetings_table th.col-w-subject, #meetings_table td.col-w-subject { width: 20%; }
+    #meetings_table th.col-w-area, #meetings_table td.col-w-area { width: 20%; }
+    #meetings_table th.col-w-desc, #meetings_table td.col-w-desc { width: 60%; }
+}
+
+@media (max-width: 600px) {
+    #meetings_table th.col-w-subject, #meetings_table td.col-w-subject { width: 15ch; }
+    #meetings_table th.col-w-area, #meetings_table td.col-w-area { width: 15ch; }
+    #meetings_table th.col-w-desc, #meetings_table td.col-w-desc { width: auto; }
 }
 
 #meetings_table td[id^="td_task_creation_date_"] input,
