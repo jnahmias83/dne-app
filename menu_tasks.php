@@ -153,13 +153,9 @@ function checkTasksMenuOverflow(){
 	if(!topbar || !menuList) return;
 
 	topbar.classList.remove('topbar-collapsed');
-	topbar.classList.add('measuring');
-	menuList.classList.add('measuring');
-	let isOverflowing = topbar.scrollWidth > topbar.clientWidth + 1;
-	topbar.classList.remove('measuring');
-	menuList.classList.remove('measuring');
+	let isWrapped = topbar.scrollHeight > 64;
 
-	if(isOverflowing){
+	if(isWrapped){
 		topbar.classList.add('topbar-collapsed');
 	}
 	else {
@@ -170,6 +166,7 @@ function checkTasksMenuOverflow(){
 window.addEventListener('load', checkTasksMenuOverflow);
 window.addEventListener('resize', checkTasksMenuOverflow);
 document.addEventListener('DOMContentLoaded', checkTasksMenuOverflow);
+setInterval(checkTasksMenuOverflow, 500);
 
 document.addEventListener('click', function(e){
 	let hamburger = document.getElementById('tasks_hamburger_btn');

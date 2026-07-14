@@ -4575,16 +4575,14 @@ function setToReadTask(){
 
 const PORTRAIT_HIDE_COLUMNS = ['_task','pass on','task creation','destination date'];
 const PORTRAIT_HIDE_STORAGE_KEY = 'tablet_portrait_hidden_columns_snapshot';
+const PORTRAIT_HIDE_WIDTH_THRESHOLD = 1024;
 
-function isTabletWidth(){
-	let w = window.innerWidth;
-	return w > 600 && w <= 1024;
+function shouldHideNarrowColumns(){
+	return window.innerWidth <= PORTRAIT_HIDE_WIDTH_THRESHOLD;
 }
 
-function applyPortraitColumnHiding(isPortrait){
-	if(!isTabletWidth()) return;
-
-	if(isPortrait){
+function applyPortraitColumnHiding(shouldHide){
+	if(shouldHide){
 		if(localStorage.getItem(PORTRAIT_HIDE_STORAGE_KEY) !== null) return;
 		let snapshot = {};
 		let changed = false;
@@ -4618,27 +4616,19 @@ function applyPortraitColumnHiding(isPortrait){
 	}
 }
 
-let lastKnownPortraitState = null;
-function checkOrientationFallback(){
-	let isPortrait = window.innerWidth < window.innerHeight;
-	if(isPortrait === lastKnownPortraitState) return;
-	lastKnownPortraitState = isPortrait;
-	applyPortraitColumnHiding(isPortrait);
+let lastKnownHideState = null;
+function checkWidthBasedColumnHiding(){
+	let shouldHide = shouldHideNarrowColumns();
+	if(shouldHide === lastKnownHideState) return;
+	lastKnownHideState = shouldHide;
+	applyPortraitColumnHiding(shouldHide);
 }
 
 $(document).ready(function(){
-	if(window.matchMedia){
-		applyPortraitColumnHiding(window.matchMedia('(orientation: portrait)').matches);
-		window.matchMedia('(orientation: portrait)').addEventListener('change', function(e){
-			applyPortraitColumnHiding(e.matches);
-		});
-	}
-	lastKnownPortraitState = window.innerWidth < window.innerHeight;
-	window.addEventListener('resize', checkOrientationFallback);
-	window.addEventListener('orientationchange', function(){
-		setTimeout(checkOrientationFallback, 300);
-	});
-	setInterval(checkOrientationFallback, 500);
+	lastKnownHideState = shouldHideNarrowColumns();
+	if(lastKnownHideState) applyPortraitColumnHiding(true);
+	window.addEventListener('resize', checkWidthBasedColumnHiding);
+	setInterval(checkWidthBasedColumnHiding, 500);
 });
 
 function setReportData(field){
