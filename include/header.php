@@ -183,27 +183,13 @@ $projects_list_array = explode(',',@$_SESSION['projects_list']);
 			font-size: 13px;
 		}
 		
-		@media (max-width: 1024px) {
+		.nav-link {
+			font-size: 14px;
+		}
+
+		@media (max-width: 600px) {
 			.nav-link {
 				font-size: 12px;
 			}
-		}
-
-		@media (max-width: 850px) {
-			.nav-link {
-				font-size: 10px;
-			}
-		}
-
-		@media (max-width: 768px) {
-			.nav-link {
-				font-size: 9px;
-			}
-		}
-
-		@media (max-width: 620px) {
-			.nav-link {
-				font-size: 8px;
-			}		
 		}
 		</style>

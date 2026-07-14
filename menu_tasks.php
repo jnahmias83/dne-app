@@ -1,5 +1,6 @@
-<div class="topbar bgColorBrown alignCenter" dir="rtl">
-  <ul class="menu-list">   
+<div class="topbar bgColorBrown alignCenter" dir="rtl" id="tasks_topbar">
+  <button type="button" id="tasks_hamburger_btn" class="hamburger-btn" aria-label="menu">&#9776;</button>
+  <ul class="menu-list" id="tasks_menu_list">
     <li><a class="font-weight-bold" href="custom_reports.php?project_id=<?=@$_SESSION['id_project']?>&task_filter=<?=@$task_filter?>&progress_status_filter=<?=@$progress_status_filter?>&supplier_filter=<?=@$_GET['supplier_filter']?>&period_new_task_filter=<?=@$period_new_task_filter?>&period_late_filter=<?=@$period_late_filter?>">הדוח''ות שלי</a></li>
 	<li class="separator">|</li>
 	<li><a class="font-weight-bold" href="responsibles.php?project_id=<?=@$_SESSION['id_project']?>&task_filter=<?=@$task_filter?>&progress_status_filter=<?=@$progress_status_filter?>&supplier_filter=<?=@$_GET['supplier_filter']?>&period_new_task_filter=<?=@$period_new_task_filter?>&period_late_filter=<?=@$period_late_filter?>&is_specific_filter=<?=@$is_specific_filter?>">צוות הפרוייקט</a></li>
@@ -30,6 +31,49 @@
     background-color: #4d7380;
     color: white;
     flex-wrap: wrap;
+    position: relative;
+}
+
+.hamburger-btn {
+    display: none;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 26px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0 10px;
+}
+
+.menu-list.measuring {
+    flex-wrap: nowrap;
+}
+
+.topbar-collapsed .menu-list {
+    display: none;
+}
+
+.topbar-collapsed .hamburger-btn {
+    display: inline-block;
+}
+
+.topbar-collapsed .menu-list.open {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    background-color: #4d7380;
+    z-index: 1000;
+    padding: 10px 15px;
+    border-radius: 0 0 10px 10px;
+    gap: 8px;
+    flex-wrap: nowrap;
+}
+
+.topbar-collapsed .menu-list.open li.separator {
+    display: none;
 }
 
 .menu-list {
@@ -80,41 +124,57 @@
     margin-left: 10px;
 }
 
-@media (max-width: 1024px) {
-    .menu-list a {
-        font-size: 11px;
-    }
+.menu-list a {
+    font-size: 14px;
 }
 
-@media (max-width: 850px) {
+@media (max-width: 600px) {
     .menu-list a {
-        font-size: 10px;
+        font-size: 12px;
     }
-}
 
-@media (max-width: 768px) {
-    .menu-list a {
-        font-size: 9px;
-    }
-	
-	.btn-budget,
-    .btn-attach-suppliers {
-        padding: 5px 7px;
-        margin-left: 5px;
-		font-size: 10px;
-    }
-}
-
-@media (max-width: 620px) {
-	.menu-list a {
-        font-size: 8px;
-    }
-	
 	.btn-budget,
     .btn-attach-suppliers {
         padding: 5px 5px;
         margin-left: 5px;
-		font-size: 7px;
+		font-size: 10px;
     }
 }
 </style>
+
+<script>
+function checkTasksMenuOverflow(){
+	let topbar = document.getElementById('tasks_topbar');
+	let menuList = document.getElementById('tasks_menu_list');
+	if(!topbar || !menuList) return;
+
+	topbar.classList.remove('topbar-collapsed');
+	menuList.classList.add('measuring');
+	let isOverflowing = topbar.scrollWidth > topbar.clientWidth + 1;
+	menuList.classList.remove('measuring');
+
+	if(isOverflowing){
+		topbar.classList.add('topbar-collapsed');
+	}
+	else {
+		menuList.classList.remove('open');
+	}
+}
+
+window.addEventListener('load', checkTasksMenuOverflow);
+window.addEventListener('resize', checkTasksMenuOverflow);
+document.addEventListener('DOMContentLoaded', checkTasksMenuOverflow);
+
+document.addEventListener('click', function(e){
+	let hamburger = document.getElementById('tasks_hamburger_btn');
+	let menuList = document.getElementById('tasks_menu_list');
+	if(!hamburger || !menuList) return;
+
+	if(e.target === hamburger || hamburger.contains(e.target)){
+		menuList.classList.toggle('open');
+	}
+	else if(!menuList.contains(e.target)){
+		menuList.classList.remove('open');
+	}
+});
+</script>

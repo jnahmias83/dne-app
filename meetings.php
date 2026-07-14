@@ -869,11 +869,14 @@ include 'menu_tasks.php';
 							<div class="flex flex-wrap alignCenter justify-content-center dir-rtl">
 								<?php foreach ($custom_reports as $item) { ?>
 									<div class="responsive-btn-container">
-										<input type="button" class="btn bgColor-579ecf font-weight-bold width120 fontSize12 borderRadius20" 
-											value="<?=htmlspecialchars(@$item->request_name)?>" 
-											<?php if(@$item->id == @$id_custom_report) echo "style='background-color:#63d687;'"?> 
+										<input type="button" class="btn bgColor-579ecf font-weight-bold width120 fontSize12 borderRadius20"
+											value="<?=htmlspecialchars(@$item->request_name)?>"
+											<?php if(@$item->id == @$id_custom_report) echo "style='background-color:#63d687;'"?>
 											onclick="setCurrentReportSession(<?=@$item->id?>);" />
-									</div>	
+										<?php if(@$item->id == @$id_custom_report){ ?>
+											<span class="active-report-arrow">&larr;</span>
+										<?php } ?>
+									</div>
 								<?php } ?>
 
 								<a class="marginTop5 cursor-pointer text-decoration-none" onclick="location.href='add_custom_report.php?id=0&project_id=<?=@$project_id?>'">
@@ -4613,6 +4616,14 @@ function applyPortraitColumnHiding(isPortrait){
 	}
 }
 
+let lastKnownPortraitState = null;
+function checkOrientationFallback(){
+	let isPortrait = window.innerWidth < window.innerHeight;
+	if(isPortrait === lastKnownPortraitState) return;
+	lastKnownPortraitState = isPortrait;
+	applyPortraitColumnHiding(isPortrait);
+}
+
 $(document).ready(function(){
 	if(window.matchMedia){
 		applyPortraitColumnHiding(window.matchMedia('(orientation: portrait)').matches);
@@ -4620,6 +4631,8 @@ $(document).ready(function(){
 			applyPortraitColumnHiding(e.matches);
 		});
 	}
+	lastKnownPortraitState = window.innerWidth < window.innerHeight;
+	window.addEventListener('resize', checkOrientationFallback);
 });
 
 function setReportData(field){
@@ -5116,7 +5129,7 @@ td[id^="td_area_"] > div {
 }
 
 #meetings_table th {
-    font-size: <?=(@$lang=='HE') ? '12px' : '11px';?>;
+    font-size: <?=(@$lang=='HE') ? '14px' : '13px';?>;
 }
 
 #meetings_table tr.bgColor-cbddec td {
@@ -5176,7 +5189,9 @@ td[id^="td_description_"] span.sf-hl {
     #meetings_table {
         font-size: 11px;
     }
-    #meetings_table th,
+    #meetings_table th {
+        padding: 3px 4px !important;
+    }
     #meetings_table td {
         padding: 3px 4px !important;
         font-size: 11px;
@@ -5188,7 +5203,10 @@ td[id^="td_description_"] span.sf-hl {
 }
 
 @media (max-width: 600px) {
-    #meetings_table th,
+    #meetings_table th {
+        font-size: <?=(@$lang=='HE') ? '12px' : '11px';?>;
+        padding: 2px 3px !important;
+    }
     #meetings_table td {
         font-size: 10px;
         padding: 2px 3px !important;

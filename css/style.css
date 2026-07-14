@@ -1322,6 +1322,18 @@ a {
     min-width: 140px;
     max-width: 180px;
     margin: 5px;
+    position: relative;
+}
+
+.active-report-arrow {
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    pointer-events: none;
 }
 
 .btn-container {
