@@ -4955,9 +4955,11 @@ function toAddRdv(from){
 	url += '&full_short='+full_short;
 	let isSorted = $('#div_sort').is(':visible');
 	url += '&is_sorted='+(isSorted ? 1 : 0);
-	url += '&sort_select_1='+$('#sort_select_1').val();
-	url += '&sort_select_2='+$('#sort_select_2').val();
-	url += '&sort_select_3='+$('#sort_select_3').val();
+	if(isSorted){
+		url += '&sort_select_1='+$('#sort_select_1').val();
+		url += '&sort_select_2='+$('#sort_select_2').val();
+		url += '&sort_select_3='+$('#sort_select_3').val();
+	}
 
 	location.href = url;
 }

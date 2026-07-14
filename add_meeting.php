@@ -1143,6 +1143,7 @@ function deleteTaskImage(image){
 		contentType: false,			
 		success: function(data){
 		    $('#div-'+image).hide();
+		    $('#div-delete-'+image).hide();
 		    if(!(typeof AndroidNative !== 'undefined' && AndroidNative.openCamera)){
 		        $('#dropzone-'+image).show();
 		    }
