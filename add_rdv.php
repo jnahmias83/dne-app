@@ -8,6 +8,15 @@ $id = @$_GET['id'];
 $all_ids_to_edit = @$_GET['all_ids_to_edit'];
 $from = @$_GET['from'];
 $lang_get = @$_GET['lang'];
+$is_colors_get = @$_GET['is_colors'];
+$is_images_get = @$_GET['is_images'];
+$period_new_tasks_get = @$_GET['period_new_tasks'];
+$columns_list_get = @$_GET['columns_list'];
+$full_short_get = @$_GET['full_short'];
+$sort_select_1_get = @$_GET['sort_select_1'];
+$sort_select_2_get = @$_GET['sort_select_2'];
+$sort_select_3_get = @$_GET['sort_select_3'];
+$is_sorted_get = @$_GET['is_sorted'];
 
 $query = $mysqli->prepare("SELECT id,rdv_name,rdv_date FROM dne_rdv 
                           WHERE id_project = ? ORDER BY rdv_date DESC");
@@ -69,6 +78,15 @@ include 'menu_tasks.php';
 			<input type="hidden" id="empty_bgcolor" value="<?=@$empty_bgcolor?>" />
 			<input type="hidden" id="default_bgcolor" value="<?=@$default_bgcolor?>" />
 			<input type="hidden" id="filled_bgcolor" value="<?=@$filled_bgcolor?>" />
+			<input type="hidden" id="is_colors" value="<?=@$is_colors_get?>" />
+			<input type="hidden" id="is_images" value="<?=@$is_images_get?>" />
+			<input type="hidden" id="period_new_tasks" value="<?=@$period_new_tasks_get?>" />
+			<input type="hidden" id="columns_list" value="<?=htmlspecialchars(@$columns_list_get)?>" />
+			<input type="hidden" id="full_short" value="<?=@$full_short_get?>" />
+			<input type="hidden" id="sort_select_1" value="<?=@$sort_select_1_get?>" />
+			<input type="hidden" id="sort_select_2" value="<?=@$sort_select_2_get?>" />
+			<input type="hidden" id="sort_select_3" value="<?=@$sort_select_3_get?>" />
+			<input type="hidden" id="is_sorted" value="<?=@$is_sorted_get?>" />
 
             <div class="container">
 			    <div class="row alignCenter marginTop25">
@@ -320,7 +338,11 @@ $('#save_btn').click (function (e){
 	form_data.append('rdv_date',$('#rdv_date').val());
 	form_data.append('rdv_lang',rdv_lang);
 	form_data.append('all_ids_to_edit',$('#all_ids_to_edit').val());
-	
+	form_data.append('is_colors',$('#is_colors').val());
+	form_data.append('is_images',$('#is_images').val());
+	form_data.append('period_new_tasks',$('#period_new_tasks').val());
+	form_data.append('columns_list',$('#columns_list').val());
+
 	$.ajax({
 		type: 'POST',
 		url: 'rdv_insert.php',
@@ -340,18 +362,41 @@ $('#save_btn').click (function (e){
 				}
 			}, 200);
 			$("#progress-popup").data("interval", interval);
-		},		
-		success: function(data){  
+		},
+		success: function(data){
 			if(data == 'empty')	{
-				if($('#rdv_name').val().length == 0)			
+				if($('#rdv_name').val().length == 0)
 					$('#rdv_name').css('border-color','red');
 				else if(!($('#rdv_name').val().length == 0))
 					$('#rdv_name').css('border-color','initial');
-				
-				$('#div_message_alert_down').html("<span style=color:red;font-size:13px;>Please fill all the mandatory fields</span>"); 
+
+				$('#div_message_alert_down').html("<span style=color:red;font-size:13px;>Please fill all the mandatory fields</span>");
 			}
-			else 
-				location.href = "meetings.php?project_id="+$('#project_id').val();	
+			else if(data.indexOf('inserted|') === 0){
+				let newRdvId = data.split('|')[1];
+				let fullShort = $('#full_short').val();
+				if(fullShort)
+					localStorage.setItem('full_short_resumeRdv_'+newRdvId, fullShort);
+
+				let isSorted = $('#is_sorted').val() == '1';
+				localStorage.setItem('is_data_sorted_resumeRdv_'+newRdvId, isSorted ? 'true' : 'false');
+				if(isSorted){
+					localStorage.setItem('sort_select_1_resumeRdv_'+newRdvId, $('#sort_select_1').val());
+					localStorage.setItem('sort_select_2_resumeRdv_'+newRdvId, $('#sort_select_2').val());
+					localStorage.setItem('sort_select_3_resumeRdv_'+newRdvId, $('#sort_select_3').val());
+				}
+
+				let url = "meetings.php?project_id="+$('#project_id').val();
+				if($('#sort_select_1').val())
+					url += '&sort_select_1='+$('#sort_select_1').val();
+				if($('#sort_select_2').val())
+					url += '&sort_select_2='+$('#sort_select_2').val();
+				if($('#sort_select_3').val())
+					url += '&sort_select_3='+$('#sort_select_3').val();
+				location.href = url;
+			}
+			else
+				location.href = "meetings.php?project_id="+$('#project_id').val();
 		}
 	});									       			   
 });

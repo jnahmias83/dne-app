@@ -7,14 +7,18 @@ if(empty($_POST['rdv_name']) || strlen($_POST['rdv_persons']) == 0) {
 }
 else {
 	if($_POST['id'] == 0){
-		$columns_list = 'subject,area,description,_task,responsible,pass on,task creation,destination date,progress status';
+		$columns_list = @$_POST['columns_list'] ?: 'subject,area,description,_task,responsible,pass on,task creation,destination date,progress status';
+		$is_colors = @$_POST['is_colors'] ? 1 : 0;
+		$is_images = @$_POST['is_images'] ? 1 : 0;
+		$period_new_tasks = @$_POST['period_new_tasks'] ?: '0';
 		$query = "INSERT INTO dne_rdv (id_project,rdv_name,id_meetings_types,
-		          rdv_persons,rdv_date,rdv_lang,columns_list) 
-			      VALUES(?,?,?,?,?,?,?)";
+		          rdv_persons,rdv_date,rdv_lang,columns_list,is_colors,period_new_tasks,is_images)
+			      VALUES(?,?,?,?,?,?,?,?,?,?)";
 	    $query = $mysqli->prepare($query);
-	    $query->bind_param('isissss',$_POST['id_project'],$_POST['rdv_name'],
+	    $query->bind_param('isissssisi',$_POST['id_project'],$_POST['rdv_name'],
 		                   $_POST['id_meetings_types'],$_POST['rdv_persons'],
-						   $_POST['rdv_date'],$_POST['rdv_lang'],$columns_list);   
+						   $_POST['rdv_date'],$_POST['rdv_lang'],$columns_list,
+						   $is_colors,$period_new_tasks,$is_images);
 	    $query->execute();
 		$inserted_rdv = $query->insert_id;
 		
@@ -47,7 +51,7 @@ else {
 			}
 		}
 		
-	    echo "inserted";
+	    echo "inserted|".$inserted_rdv;
 	}
 	else {
 		$query = "UPDATE dne_rdv SET rdv_name = ?,id_meetings_types = ?,rdv_persons = ? ,rdv_date = ?, 

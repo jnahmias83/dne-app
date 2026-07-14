@@ -4944,8 +4944,22 @@ function toAddRdv(from){
 	let all_ids_to_edit = $('input[name="meetings_to_update_cbx[]"]:checked').map(function() {
 		return $(this).val();
     }).get().join(',');
-	
-	location.href='add_rdv.php?project_id='+$('#project_id').val()+'&id=0&is_specific_filter='+$('#is_specific_filter').val()+'&all_ids_to_edit='+all_ids_to_edit+'&from='+from+'&lang='+$('#lang').val();
+
+	let full_short = localStorage.getItem('full_short_' + reportId) || 'full';
+
+	let url = 'add_rdv.php?project_id='+$('#project_id').val()+'&id=0&is_specific_filter='+$('#is_specific_filter').val()+'&all_ids_to_edit='+all_ids_to_edit+'&from='+from+'&lang='+$('#lang').val();
+	url += '&is_colors='+$('#is_colors').val();
+	url += '&is_images='+$('#is_images').val();
+	url += '&period_new_tasks='+$('#period_new_tasks').val();
+	url += '&columns_list='+encodeURIComponent($('#columns_list').val());
+	url += '&full_short='+full_short;
+	let isSorted = $('#div_sort').is(':visible');
+	url += '&is_sorted='+(isSorted ? 1 : 0);
+	url += '&sort_select_1='+$('#sort_select_1').val();
+	url += '&sort_select_2='+$('#sort_select_2').val();
+	url += '&sort_select_3='+$('#sort_select_3').val();
+
+	location.href = url;
 }
 
 $('#to_add_meeting_btn').click (function (e){  
