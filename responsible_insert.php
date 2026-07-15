@@ -7,7 +7,7 @@ $query->execute();
 $query->store_result();
 $responsibles_num_rows = $query->num_rows;
 
-if(empty($_POST['name'])){
+if(empty($_POST['name']) || empty($_POST['firstname'])){
 	echo "empty";
 }
 else if($_POST['for'] == 'admingroup' && $responsibles_num_rows == 0 && $_POST['role'] == 'inspector'){
@@ -23,14 +23,15 @@ else {
 		
 		if($query->num_rows == 0){
 			$query = "INSERT INTO dne_responsibles (id_project,role,id_user,
-		             id_projects_suppliers,name,color,bgcolor,email,phone) 
-	                 VALUES(?,?,?,?,?,?,?,?,?)";
+		             id_projects_suppliers,name,firstname,lastname,color,bgcolor,email,phone)
+	                 VALUES(?,?,?,?,?,?,?,?,?,?,?)";
 			$query = $mysqli->prepare($query);
-			$query->bind_param('isiisssss',$_POST['id_project'],
+			$query->bind_param('isiisssssss',$_POST['id_project'],
 			                  $_POST['role'],$_POST['id_user'],
 							  $_POST['id_projects_suppliers'],$_POST['name'],
+							  $_POST['firstname'],$_POST['lastname'],
 							  $_POST['color'],$_POST['bgcolor'],
-							  $_POST['email'],$_POST['phone']);   
+							  $_POST['email'],$_POST['phone']);
 			$query->execute();
 			$inserted_responsible = $query->insert_id;
 		
@@ -110,11 +111,12 @@ else {
 			$id_user = 0;
 		
 	    $query = "UPDATE dne_responsibles SET role = ?,id_user = ?,
-		          id_projects_suppliers = ?,name = ?,color = ?,bgcolor = ?,
+		          id_projects_suppliers = ?,name = ?,firstname = ?,lastname = ?,color = ?,bgcolor = ?,
 	              email = ?,phone = ? WHERE id = ?";
 		$query = $mysqli->prepare($query);
-		$query->bind_param('siisssssi',$_POST['role'],$id_user,$_POST['id_projects_suppliers'],$_POST['name'],
-						   $_POST['color'],$_POST['bgcolor'],$_POST['email'],$_POST['phone'],$_POST['id']);	
+		$query->bind_param('siisssssssi',$_POST['role'],$id_user,$_POST['id_projects_suppliers'],$_POST['name'],
+						   $_POST['firstname'],$_POST['lastname'],
+						   $_POST['color'],$_POST['bgcolor'],$_POST['email'],$_POST['phone'],$_POST['id']);
 		$query->execute();
 		echo 'updated';
 	}

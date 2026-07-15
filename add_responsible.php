@@ -68,7 +68,13 @@ $query->execute();
 $query->store_result();
 $project = fetch_unique($query);
 
-$query = $mysqli->prepare("SELECT ps.id AS id,s.name_he AS name_he
+$query = $mysqli->prepare("SELECT default_bgcolor FROM dne_inputs_colors LIMIT 1");
+$query->execute();
+$query->store_result();
+$bg_color_inputs = fetch_unique($query);
+$default_bgcolor = @$bg_color_inputs->default_bgcolor;
+
+$query = $mysqli->prepare("SELECT ps.id AS id,s.name_he AS name_he,IF(s.nickname<>'',s.nickname,s.nickname_he) AS nickname_he
                           FROM dne_projects_suppliers ps
 						  LEFT JOIN dne_projects p ON ps.id_project = p.id
 						  LEFT JOIN dne_suppliers s ON ps.id_supplier = s.id
@@ -79,7 +85,7 @@ $query->execute();
 $query->store_result();
 $suppliers = fetch($query);
 
-$query = $mysqli->prepare("SELECT ps.id AS id,s.name_he AS name_he
+$query = $mysqli->prepare("SELECT ps.id AS id,s.name_he AS name_he,IF(s.nickname<>'',s.nickname,s.nickname_he) AS nickname_he
                           FROM dne_projects_suppliers ps
 						  LEFT JOIN dne_projects p ON ps.id_project = p.id
 						  LEFT JOIN dne_suppliers s ON ps.id_supplier = s.id
@@ -90,7 +96,7 @@ $query->execute();
 $query->store_result();
 $designers = fetch($query);
 
-$query = $mysqli->prepare("SELECT ps.id AS id,s.name_he AS name_he
+$query = $mysqli->prepare("SELECT ps.id AS id,s.name_he AS name_he,IF(s.nickname<>'',s.nickname,s.nickname_he) AS nickname_he
                           FROM dne_projects_suppliers ps
 						  LEFT JOIN dne_projects p ON ps.id_project = p.id
 						  LEFT JOIN dne_suppliers s ON ps.id_supplier = s.id
@@ -101,7 +107,7 @@ $query->store_result();
 $entrepreneur = fetch_unique($query);
 $id_entr = @$entrepreneur->id;
 
-$query = $mysqli->prepare("SELECT ps.id AS id,s.name_he AS name_he
+$query = $mysqli->prepare("SELECT ps.id AS id,s.name_he AS name_he,IF(s.nickname<>'',s.nickname,s.nickname_he) AS nickname_he
                           FROM dne_projects_suppliers ps
 						  LEFT JOIN dne_projects p ON ps.id_project = p.id 
 						  LEFT JOIN dne_suppliers s ON ps.id_supplier = s.id
@@ -132,7 +138,9 @@ include 'menu_tasks.php';
             <input type="hidden" id="id_entr" value="<?=@$id_entr?>" />
             <input type="hidden" id="id_manager" value="<?=@$id_manager?>" />				
             <input type="hidden" id="color_entr" value="<?=@$color_entr?>" />
-            <input type="hidden" id="bgcolor_entr" value="<?=@$bgcolor_entr?>" />			
+            <input type="hidden" id="bgcolor_entr" value="<?=@$bgcolor_entr?>" />
+            <input type="hidden" id="project_nickname" value="<?=htmlspecialchars(@$project->nickname)?>" />
+            <input type="hidden" id="default_bgcolor" value="<?=@$default_bgcolor?>" />			
 
 		    <div class="container">
 			    <div class="row alignCenter marginTop25">
@@ -192,21 +200,22 @@ include 'menu_tasks.php';
 											<option value="0">--- משרד/חברה ---</option>
 											<optgroup label="חברה">
 											<?php foreach($suppliers as $item){ ?>
-												<option value="<?=@$item->id?>" <?php if(($item->id == @$responsible->id_projects_suppliers) || ($item->id == $ps_id)) echo 'selected';?>><?=@$item->name_he?></option>
+												<option value="<?=@$item->id?>" data-nickname="<?=htmlspecialchars(@$item->nickname_he)?>" <?php if(($item->id == @$responsible->id_projects_suppliers) || ($item->id == $ps_id)) echo 'selected';?>><?=@$item->name_he?></option>
 											<?php } ?>
 											</optgroup>
 											<optgroup label="משרד">
 											<?php foreach($designers as $item){ ?>
-												<option value="<?=@$item->id?>" <?php if(($item->id == @$responsible->id_projects_suppliers) || ($item->id == $ps_id)) echo 'selected';?>><?=@$item->name_he?></option>
+												<option value="<?=@$item->id?>" data-nickname="<?=htmlspecialchars(@$item->nickname_he)?>" <?php if(($item->id == @$responsible->id_projects_suppliers) || ($item->id == $ps_id)) echo 'selected';?>><?=@$item->name_he?></option>
 											<?php } ?>
 											</optgroup>
-											<optgroup label="ניהול">										
-												<option value="<?=@$id_manager?>" <?php if(($id_manager == @$responsible->id_projects_suppliers) || ($id_manager == $ps_id)) echo 'selected';?>><?=@$manager->name_he?></option>
+											<optgroup label="ניהול">
+												<option value="<?=@$id_manager?>" data-nickname="<?=htmlspecialchars(@$manager->nickname_he)?>" <?php if(($id_manager == @$responsible->id_projects_suppliers) || ($id_manager == $ps_id)) echo 'selected';?>><?=@$manager->name_he?></option>
 											</optgroup>
-											<optgroup label="יזם">										
-												<option value="<?=@$id_entr?>" <?php if(($id_entr == @$responsible->id_projects_suppliers) || ($id_entr == $ps_id)) echo 'selected';?>><?=@$entrepreneur->name_he?></option>
-											</optgroup>						
+											<optgroup label="יזם">
+												<option value="<?=@$id_entr?>" data-nickname="<?=htmlspecialchars(@$entrepreneur->nickname_he)?>" <?php if(($id_entr == @$responsible->id_projects_suppliers) || ($id_entr == $ps_id)) echo 'selected';?>><?=@$entrepreneur->name_he?></option>
+											</optgroup>
 										</select>
+										<strong id="supplier_nickname_display" class="marginRight10"></strong>
 									</div>
 								</div>
 							<?php } ?>
@@ -247,43 +256,56 @@ include 'menu_tasks.php';
 							</div>
 						
 							<div class="row marginTop5 alignCenter dir-rtl">
-								<div class="col-12">	
-									<strong>שם</strong>
-									<br/>	
-									<input type="text" class="paddingRight10 marginTop5" name="name" id="name" placeholder="*שם" value="<?=@$responsible->name?>" />	
+								<div class="col-12 d-flex justify-content-center" style="gap:15px;">
+									<div>
+										<strong>שם פרטי</strong>
+										<br/>
+										<input type="text" class="paddingRight10 marginTop5" name="firstname" id="firstname" placeholder="*שם פרטי" value="<?=@$responsible->firstname?>" />
+									</div>
+									<div>
+										<strong>שם משפחה</strong>
+										<br/>
+										<input type="text" class="paddingRight10 marginTop5" name="lastname" id="lastname" placeholder="שם משפחה" value="<?=@$responsible->lastname?>" />
+									</div>
+								</div>
+							</div>
+
+							<div class="row marginTop5 alignCenter dir-rtl">
+								<div class="col-12">
+									<strong>My Project</strong>
+									<br/>
+									<input type="text" dir="rtl" class="paddingRight10 marginTop5" name="name" id="name" placeholder="*שם" <?php if($id > 0) { ?>style="background-color:<?=@$default_bgcolor?>"<?php } ?> value="<?=@$responsible->name?>" />
 								</div>
 							</div>
 							
 							<div class="row marginTop5 alignCenter dir-rtl">
-								<div class="col-12">	
-									<strong>דוא''ל</strong>
-									<br/>	
-									<input type="email" class="paddingRight10 marginTop5" name="email" id="email" placeholder="דוא''ל" value="<?=@$responsible->email?>" />	
-								</div>
-							</div>
-							
-							<div class="row marginTop5 alignCenter dir-rtl">
-								<div class="col-12">	
-									<strong>טלפון</strong>
-									<br/>	
-									<input type="text" class="paddingRight10 marginTop5" name="phone" id="phone" placeholder="טלפון" value="<?=@$responsible->phone?>" />	
+								<div class="col-12 d-flex justify-content-center" style="gap:15px;">
+									<div>
+										<strong>דוא''ל</strong>
+										<br/>
+										<input type="email" class="paddingRight10 marginTop5" name="email" id="email" placeholder="דוא''ל" value="<?=@$responsible->email?>" />
+									</div>
+									<div>
+										<strong>טלפון</strong>
+										<br/>
+										<input type="text" class="paddingRight10 marginTop5" name="phone" id="phone" placeholder="טלפון" value="<?=@$responsible->phone?>" />
+									</div>
 								</div>
 							</div>
 						
 							<?php if(@$from != 'project_data') { ?>
 								<div class="row marginTop5 alignCenter dir-rtl">
-									<div class="col-12">
-										<strong>צבע גופן</strong>
-										<br/>						
-										<input type="color" class="marginTop5 width200" name="color" id="color" placeholder="צבע גופן" value="<?=@$responsible->color?>" />
-									</div>
-								</div>
-
-								<div class="row marginTop5 alignCenter dir-rtl">
-									<div class="col-12">
-										<strong>צבע רקע</strong>
-										<br/>					
-										<input type="color" class="marginTop5 width200" name="bgcolor" id="bgcolor" placeholder="צבע רקע" value="<?php if($id == 0) echo '#ffffff';else echo @$responsible->bgcolor;?>" />
+									<div class="col-12 d-flex justify-content-center" style="gap:15px;">
+										<div>
+											<strong>צבע גופן</strong>
+											<br/>
+											<input type="color" class="marginTop5" style="width:40px;height:40px;border-radius:50%;overflow:hidden;padding:0;" name="color" id="color" placeholder="צבע גופן" value="<?php if($id == 0) echo '#000000';else echo @$responsible->color;?>" />
+										</div>
+										<div>
+											<strong>צבע רקע</strong>
+											<br/>
+											<input type="color" class="marginTop5" style="width:40px;height:40px;border-radius:50%;overflow:hidden;padding:0;" name="bgcolor" id="bgcolor" placeholder="צבע רקע" value="<?php if($id == 0) echo '#ffffff';else echo @$responsible->bgcolor;?>" />
+										</div>
 									</div>
 								</div>
 							<?php } ?>						
@@ -371,6 +393,8 @@ include 'menu_tasks.php';
 
 <script>
 $(document).ready(function (){
+	$('#supplier_nickname_display').text($('#suppliers option:selected').data('nickname') || '');
+
 	let form_data = new FormData();
 	if($('#for').val() == 'admingroup')
 		form_data.append('id_projects_suppliers',$('#id_manager').val());
@@ -411,18 +435,35 @@ $('#suppliers').change(function(){
 		contentType: false,			
 		success: function(data){
 		    data = JSON.parse(data);
-			$('#name').val(data.name_he);
 			$('#email').val(data.email);
 			$('#phone').val(data.phone);
 		},
-	});						
+	});
 });
 
 $('#roles').change(function(){
     if($(this).val() == 'project_manager' || $(this).val() == 'inspector')
        $('#div_users').css('display','block');
-    else 
+    else
 	   $('#div_users').css('display','none');
+});
+
+function updateNameFromSupplierAndFirstname(){
+	let nickname = $('#suppliers option:selected').data('nickname');
+	let firstname = $('#firstname').val();
+	if(nickname && firstname){
+		$('#name').val(firstname+'-'+nickname);
+		$('#name').css('background-color', $('#default_bgcolor').val());
+	}
+}
+
+$('#suppliers').on('change', function(){
+	$('#supplier_nickname_display').text($(this).find('option:selected').data('nickname') || '');
+	updateNameFromSupplierAndFirstname();
+});
+
+$('#firstname').on('change', function(){
+	updateNameFromSupplierAndFirstname();
 });
 
 function functionsOnForm(){	
@@ -436,15 +477,29 @@ function functionsOnForm(){
 		cache: false,
 		processData: false,
 		contentType: false,			
-		success: function(data){     			
-		   if(data == 'S') 
-		      $('#roles').val('supplier_contractor')
-           
-		   if(data == 'D') 
-		      $('#roles').val('programmer')  		  
+		success: function(data){
+		   $('#roles option').show();
+		   if(data == 'S')
+		      $('#roles').val('supplier_contractor');
+		   else if(data == 'D')
+		      $('#roles').val('programmer');
+		   else if(data == 'M'){
+		      $('#roles option').each(function(){
+		         let val = $(this).val();
+		         if(val != '0' && val != 'project_manager' && val != 'inspector') $(this).hide();
+		      });
+		      $('#roles').val('0');
+		   }
+		   else if(data == 'E'){
+		      $('#roles option').each(function(){
+		         let val = $(this).val();
+		         if(val != '0' && val != 'entrepreneur' && val != 'entrepreneur_team') $(this).hide();
+		      });
+		      $('#roles').val('0');
+		   }
 		},
-	});				
-	
+	});
+
 	$.ajax({
 		type: 'POST',
 		url: 'fill_responsible_color_data.php',
@@ -460,6 +515,13 @@ function functionsOnForm(){
 }
 
 $('#save_btn').click(function (e){
+    $('#firstname').css('border-color', 'initial');
+    if ($('#firstname').val().trim() == ''){
+        $('#firstname').css('border-color', 'red');
+        $('#div_message_alert_down').html("<span style='color:red;font-size:13px;'>נא למלה את כל השדות החובות</span>");
+        return false;
+    }
+
     let form_data = new FormData();
     form_data.append('for', $('#for').val());
 
@@ -490,6 +552,8 @@ $('#save_btn').click(function (e){
     form_data.append('id_project', $('#project_id').val());
     form_data.append('id_user', $('#users').val());
     form_data.append('name', $('#name').val());
+    form_data.append('firstname', $('#firstname').val());
+    form_data.append('lastname', $('#lastname').val());
     form_data.append('email', $('#email').val());
     form_data.append('phone', $('#phone').val());
 
@@ -519,6 +583,11 @@ $('#save_btn').click(function (e){
                     $('#name').css('border-color', 'red');
                 } else {
                     $('#name').css('border-color', 'initial');
+                }
+                if ($('#firstname').val().length == 0){
+                    $('#firstname').css('border-color', 'red');
+                } else {
+                    $('#firstname').css('border-color', 'initial');
                 }
                 $('#div_message_alert_down').html("<span style='color:red;font-size:13px;'>נא למלה את כל השדות החובות</span>");
             } else if (data == 'firstnotinspector'){

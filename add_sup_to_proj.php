@@ -416,9 +416,14 @@ $('#save_sup_btn').click (function (e){
 		data: form_data,
 		cache: false,
 		processData: false,
-		contentType: false,			
+		contentType: false,
 		success: function(data){
-			location.href = 'add_responsible.php?id=0&project_id='+$('#id').val()+'&from=addProject&for=projectgroup&ps_id='+data;
+			let url;
+			if($('#from').val() == 'addResponsible')
+				url = 'add_responsible.php?id=0&project_id='+$('#id').val()+'&from=addProject&for=projectgroup&ps_id='+data;
+			else
+				url = 'add_sup_to_proj.php?id='+$('#id').val();
+			location.href = url;
 		},
 	});
 });
@@ -435,9 +440,14 @@ $('#save_des_btn').click (function (e){
 		processData: false,
 		contentType: false,
 		success: function(data){
-			location.href = 'add_responsible.php?id=0&project_id='+$('#id').val()+'&from=addProject&for=projectgroup&ps_id='+data;
+			let url;
+			if($('#from').val() == 'addResponsible')
+				url = 'add_responsible.php?id=0&project_id='+$('#id').val()+'&from=addProject&for=projectgroup&ps_id='+data;
+			else
+				url = 'add_sup_to_proj.php?id='+$('#id').val();
+			location.href = url;
 		},
-	});												       			   
+	});
 });
 </script>
 
