@@ -512,8 +512,8 @@ if(@$lang == 'HE'){
    $margin_between_images = 'marginLeft10';
    $participants_label = 'משתתפים';
    $image_concentration_label = 'ריכוז משימות עם תמונות';
-   $subject_label = 'נושא/תחום';
-   $area_label = 'איזור/נושא';
+   $subject_label = 'נושא';
+   $area_label = 'איזור';
    $description_label = 'תאור';
    $task_type_label = 'משימה';
    $responsible_label = 'אחראי';
@@ -552,8 +552,8 @@ else {
 	$margin_between_images = 'marginRight10';
 	$participants_label = 'Participants';
 	$image_concentration_label = 'Concentration of tasks with images';
-	$subject_label = 'Subject/Domain';
-	$area_label = 'Area/Subject';
+	$subject_label = 'Subject';
+	$area_label = 'Area';
 	$description_label = 'Description';
 	$task_type_label = 'Task Type';
 	$responsible_label = 'Responsible';
@@ -870,9 +870,14 @@ include 'menu_tasks.php';
 								<?php foreach ($custom_reports as $item) { ?>
 									<div class="responsive-btn-container">
 										<div class="active-report-btn-wrap">
-											<input type="button" class="btn bgColor-579ecf font-weight-bold width120 fontSize12 borderRadius20"
+											<input type="button" class="btn bgColor-f5f4fe custom-report-btn width120 fontSize12 borderRadius20"
 												value="<?=htmlspecialchars(@$item->request_name)?>"
-												<?php if(@$item->id == @$id_custom_report) echo "style='background-color:#63d687;'"?>
+												<?php
+													$extra_style = '';
+													if(@$item->id == @$id_custom_report) $extra_style .= 'background-color:#63d687;';
+													if(@$item->is_project_status_report == 1) $extra_style .= 'border:1px solid '.@$bg_color_inputs->e_bgcolor.';';
+													if($extra_style) echo 'style="'.$extra_style.'"';
+												?>
 												onclick="setCurrentReportSession(<?=@$item->id?>);" />
 										</div>
 									</div>
@@ -1054,10 +1059,11 @@ include 'menu_tasks.php';
 									<span class="fontSize14 font-weight-bold"><?=@$all_label?></span>	
 								</div>
 								<div class="d-flex align-items-center gap-2" style="direction:<?=@$inverse_dir?>;">							
-									<div>
-										<select id="select_lang" name="lang" class="marginTop10 marginBottom10 border-color-initial">
+									<div class="d-flex flex-column align-items-center">
+										<i class="fa-solid fa-globe fontSize14" style="margin-bottom:5px;"></i>
+										<select id="select_lang" name="lang" class="marginBottom10 border-color-initial borderRadius10">
 											<option value="HE" <?php if($lang == 'HE') echo 'selected'?>>עברית</option>
-											<option value="EN" <?php if($lang == 'EN') echo 'selected'?>>English</option>					   
+											<option value="EN" <?php if($lang == 'EN') echo 'selected'?>>English</option>
 										</select>
                                     </div> |
 									<div class="alignCenter">
@@ -1165,18 +1171,18 @@ include 'menu_tasks.php';
 										</div>
 									</div> |
 									<div class="alignCenter">
-										<strong class="fontSize10"><?= $lang == 'HE' ? 'להדגיש' : 'Highlight' ?></strong>
+										<i class="fa-solid fa-highlighter fontSize14" style="color:#e91e63;margin-bottom:5px;"></i>
 										<br/>
-										<select id="period_new_tasks_toolbar" class="height26" style="width:auto;" dir="<?= $lang == 'HE' ? 'rtl' : 'ltr' ?>">
-											<option value="0"          <?= @$period_new_tasks == 0            ? 'selected' : '' ?>><?= $lang == 'HE' ? 'לא'       : 'Off'      ?></option>
-											<option value="today"      <?= @$period_new_tasks == 'today'      ? 'selected' : '' ?>><?= $lang == 'HE' ? 'היום'     : 'Today'    ?></option>
-											<option value="three_days" <?= @$period_new_tasks == 'three_days' ? 'selected' : '' ?>><?= $lang == 'HE' ? '3 ימים'   : '3 days'   ?></option>
-											<option value="one_week"   <?= @$period_new_tasks == 'one_week'   ? 'selected' : '' ?>><?= $lang == 'HE' ? 'שבוע'     : '1 week'   ?></option>
-											<option value="two_weeks"  <?= @$period_new_tasks == 'two_weeks'  ? 'selected' : '' ?>><?= $lang == 'HE' ? 'שבועיים'  : '2 weeks'  ?></option>
-											<option value="one_month"  <?= @$period_new_tasks == 'one_month'  ? 'selected' : '' ?>><?= $lang == 'HE' ? 'חודש'     : '1 month'  ?></option>
-											<option value="two_months" <?= @$period_new_tasks == 'two_months' ? 'selected' : '' ?>><?= $lang == 'HE' ? 'חדשיים'   : '2 months' ?></option>
-											<option value="one_year"   <?= @$period_new_tasks == 'one_year'   ? 'selected' : '' ?>><?= $lang == 'HE' ? 'שנה'      : '1 year'   ?></option>
-											<option value="two_years"  <?= @$period_new_tasks == 'two_years'  ? 'selected' : '' ?>><?= $lang == 'HE' ? 'שנתיים'   : '2 years'  ?></option>
+										<select id="period_new_tasks_toolbar" class="borderRadius10" style="width:auto;<?= (string)@$period_new_tasks !== '0' && @$period_new_tasks !== '' ? ' background-color:'.@$global_bgcolor_new_task->bgcolor.';' : '' ?>" dir="<?= $lang == 'HE' ? 'rtl' : 'ltr' ?>">
+											<option value="0"          style="background-color:#fff;" <?= @$period_new_tasks == 0            ? 'selected' : '' ?>><?= $lang == 'HE' ? 'לא'       : 'Off'      ?></option>
+											<option value="today"      style="background-color:<?=@$global_bgcolor_new_task->bgcolor?>;" <?= @$period_new_tasks == 'today'      ? 'selected' : '' ?>><?= $lang == 'HE' ? 'היום'     : 'Today'    ?></option>
+											<option value="three_days" style="background-color:<?=@$global_bgcolor_new_task->bgcolor?>;" <?= @$period_new_tasks == 'three_days' ? 'selected' : '' ?>><?= $lang == 'HE' ? '3 ימים'   : '3 days'   ?></option>
+											<option value="one_week"   style="background-color:<?=@$global_bgcolor_new_task->bgcolor?>;" <?= @$period_new_tasks == 'one_week'   ? 'selected' : '' ?>><?= $lang == 'HE' ? 'שבוע'     : '1 week'   ?></option>
+											<option value="two_weeks"  style="background-color:<?=@$global_bgcolor_new_task->bgcolor?>;" <?= @$period_new_tasks == 'two_weeks'  ? 'selected' : '' ?>><?= $lang == 'HE' ? 'שבועיים'  : '2 weeks'  ?></option>
+											<option value="one_month"  style="background-color:<?=@$global_bgcolor_new_task->bgcolor?>;" <?= @$period_new_tasks == 'one_month'  ? 'selected' : '' ?>><?= $lang == 'HE' ? 'חודש'     : '1 month'  ?></option>
+											<option value="two_months" style="background-color:<?=@$global_bgcolor_new_task->bgcolor?>;" <?= @$period_new_tasks == 'two_months' ? 'selected' : '' ?>><?= $lang == 'HE' ? 'חדשיים'   : '2 months' ?></option>
+											<option value="one_year"   style="background-color:<?=@$global_bgcolor_new_task->bgcolor?>;" <?= @$period_new_tasks == 'one_year'   ? 'selected' : '' ?>><?= $lang == 'HE' ? 'שנה'      : '1 year'   ?></option>
+											<option value="two_years"  style="background-color:<?=@$global_bgcolor_new_task->bgcolor?>;" <?= @$period_new_tasks == 'two_years'  ? 'selected' : '' ?>><?= $lang == 'HE' ? 'שנתיים'   : '2 years'  ?></option>
 										</select>
 									</div> |
 									<div class="btn-group btn-group-toggle width70" data-toggle="buttons">
@@ -1248,7 +1254,7 @@ include 'menu_tasks.php';
 									<?php }
 
 								    if(in_array('responsible',$columns_list_array)){ ?>
-									   <th class="<?php if(end($columns_list_array) == "responsible") echo $border_cell_table_end;?> border-top-white no-border-inline-end alignCenter col-w-responsible" width="<?=$w_responsible?>%"><?=@$responsible_label?><br/><a class="text-decoration-underline cursor-pointer" onclick="location.href='responsibles.php?project_id=<?=@$project_id?>'"><i class="fa-solid fa-user-plus fontSize9"></i></a></th>
+									   <th class="<?php if(end($columns_list_array) == "responsible") echo $border_cell_table_end;?> border-top-white no-border-inline-end alignCenter col-w-responsible" width="<?=$w_responsible?>%"><?=@$responsible_label?></th>
 									<?php }
 
 									if(in_array('pass on',$columns_list_array)) { ?>
@@ -1969,13 +1975,13 @@ include 'menu_tasks.php';
 												
 												if(in_array('task creation',$columns_list_array)){ ?>
 													<td id="td_task_creation_date_<?=@$meeting_id?>" class="<?php if(end($columns_list_array) == "task creation") echo $border_cell_table_end;?> cursor-pointer alignCenter col-w-taskcr" style="text-align:center;<?=@$task_creation_date_bgcolor?>">
-														<input type="text" id="task_creation_date_<?=@$meeting_id?>" name="task_creation_date_<?=@$meeting_id?>" class="fontSize13 border-none width60 cursor-pointer alignCenter" style="direction:<?=@$dir?>;<?=@$task_creation_date_color?>;<?=@$task_creation_date_bgcolor?>;" value="<?=smartDate(@$task_creation_date, $lang)?>" data-meetingid="<?=@$meeting_id?>" data-iteration=<?=@$iteration?> data-taskcreationdate="<?=@$task_creation_date?>" />
+														<input type="text" id="task_creation_date_<?=@$meeting_id?>" name="task_creation_date_<?=@$meeting_id?>" class="fontSize13 border-none cursor-pointer alignCenter" style="width:100%;direction:<?=@$dir?>;<?=@$task_creation_date_color?>;<?=@$task_creation_date_bgcolor?>;" value="<?=smartDate(@$task_creation_date, $lang)?>" data-meetingid="<?=@$meeting_id?>" data-iteration=<?=@$iteration?> data-taskcreationdate="<?=@$task_creation_date?>" />
 													</td>
 												<?php }
 												
 												if(in_array('destination date',$columns_list_array)){ ?>
 													<td id="td_destination_date_<?=@$meeting_id?>" class="<?php if(end($columns_list_array) == "destination date") echo $border_cell_table_end;?> cursor-pointer alignCenter col-w-dest" style="text-align:center;<?=@$padding?>:5px;<?=@$dest_date_color?>;<?=@$dest_date_bgcolor?>;">
-													   <input type="text" id="destination_date_<?=@$meeting_id?>" name="destination_date_<?=@$meeting_id?>" class="fontSize13 border-none width60 cursor-pointer alignCenter" style="direction:<?=@$dir?>;<?=@$dest_date_color?>;<?=@$dest_date_bgcolor?>;" value="<?=smartDate(@$destination_date, $lang)?>" data-meetingid="<?=@$meeting_id?>" data-iteration="<?=@$iteration?>" data-chapter="<?=@$chapter_name?>" data-name="<?=@$subject?>" data-area="<?=@$area?>" data-destinationdate="<?=@$destination_date?>" />
+													   <input type="text" id="destination_date_<?=@$meeting_id?>" name="destination_date_<?=@$meeting_id?>" class="fontSize13 border-none cursor-pointer alignCenter" style="width:100%;direction:<?=@$dir?>;<?=@$dest_date_color?>;<?=@$dest_date_bgcolor?>;" value="<?=smartDate(@$destination_date, $lang)?>" data-meetingid="<?=@$meeting_id?>" data-iteration="<?=@$iteration?>" data-chapter="<?=@$chapter_name?>" data-name="<?=@$subject?>" data-area="<?=@$area?>" data-destinationdate="<?=@$destination_date?>" />
 													</td>
 												<?php }
 												
@@ -5071,12 +5077,22 @@ td[id^="td_area_"] > div {
     font-size: 14px;
 }
 
+.btn-group-toggle .btn-primary {
+    background-color: #cdeed7;
+    color: #2d5a3a;
+}
+
+.btn-group-toggle .btn-primary.active {
+    background-color: #4CAF50;
+    color: #fff;
+}
+
 #meetings_table th.col-w-task, #meetings_table td.col-w-task { width: 10ch; }
 #meetings_table th.col-w-responsible, #meetings_table td.col-w-responsible { width: 15ch; }
 #meetings_table th.col-w-passon, #meetings_table td.col-w-passon { width: 15ch; }
 #meetings_table th.col-w-taskcr, #meetings_table td.col-w-taskcr { width: 6ch; }
 #meetings_table th.col-w-dest, #meetings_table td.col-w-dest { width: 6ch; }
-#meetings_table th.col-w-status, #meetings_table td.col-w-status { width: 12ch; }
+#meetings_table th.col-w-status, #meetings_table td.col-w-status { width: 14ch; }
 #meetings_table th.col-w-subject, #meetings_table td.col-w-subject { width: 15%; }
 #meetings_table th.col-w-area, #meetings_table td.col-w-area { width: 15%; }
 #meetings_table th.col-w-desc, #meetings_table td.col-w-desc { width: 70%; }

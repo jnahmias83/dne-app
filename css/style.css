@@ -1324,6 +1324,11 @@ a {
     margin: 5px;
 }
 
+.custom-report-btn {
+    border: 1px solid green;
+    font-weight: normal;
+}
+
 .active-report-btn-wrap {
     position: relative;
     display: block;

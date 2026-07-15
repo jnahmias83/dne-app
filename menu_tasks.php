@@ -13,13 +13,15 @@
 	<li class="separator">|</li>
 	<li><a href="progress_status.php?project_id=<?=@$_SESSION['id_project']?>&task_filter=<?=@$task_filter?>&progress_status_filter=<?=@$progress_status_filter?>&supplier_filter=<?=@$_GET['supplier_filter']?>&period_new_task_filter=<?=@$period_new_task_filter?>&period_late_filter=<?=@$period_late_filter?>&is_specific_filter=<?=@$is_specific_filter?>">סטטוסים</a></li>
   </ul>
-  <a href="add_sup_to_proj.php?id=<?=@$_SESSION['id_project']?>" class="btn-attach-suppliers">
-	ספקים
-  </a>
-  <a href="budget.php?project_id=<?=@$_SESSION['id_project']?>&lang_screen=HE" class="btn-budget">
-	<i class="fa-solid fa-dollar-sign"></i>תקציב
-	<i class="fa-solid fa-share budget-btn-arrow"></i>
-  </a>
+  <div class="topbar-actions">
+	  <a href="add_sup_to_proj.php?id=<?=@$_SESSION['id_project']?>" class="btn-attach-suppliers">
+		ספקים
+	  </a>
+	  <a href="budget.php?project_id=<?=@$_SESSION['id_project']?>&lang_screen=HE" class="btn-budget">
+		<i class="fa-solid fa-dollar-sign"></i>תקציב
+		<i class="fa-solid fa-share budget-btn-arrow"></i>
+	  </a>
+  </div>
 </div>
 
 <style>
@@ -105,18 +107,27 @@
     user-select: none;
 }
 
+.topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-left: 8px;
+    margin-right: auto;
+}
+
 .btn-budget,
 .btn-attach-suppliers {
     background-color: #6b804d;
     color: #fff;
     padding: 5px 15px;
     border-radius: 10px;
-	border: 1px solid white; 
+	border: 1px solid white;
     display: inline-flex;
     align-items: center;
     white-space: nowrap;
     text-decoration: none;
-    margin-left: 15px;
+    margin-left: 0;
+    font-size: 14px;
     flex-shrink: 0;
     cursor: pointer;
 }
@@ -155,7 +166,6 @@
     .btn-attach-suppliers {
         padding: 5px 5px;
         margin-left: 5px;
-		font-size: 10px;
     }
 }
 </style>
@@ -167,7 +177,7 @@ function checkTasksMenuOverflow(){
 	if(!topbar || !menuList) return;
 
 	topbar.classList.remove('topbar-collapsed');
-	let isWrapped = topbar.scrollHeight > 64;
+	let isWrapped = topbar.scrollHeight > 64 || window.innerWidth <= 850;
 
 	if(isWrapped){
 		topbar.classList.add('topbar-collapsed');
