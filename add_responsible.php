@@ -276,9 +276,9 @@ include 'menu_tasks.php';
 							<div class="row marginTop5 alignCenter dir-rtl">
 								<div class="col-12 d-flex justify-content-center" style="gap:15px;">
 									<div>
-										<strong>שם פרטי</strong> <i class="fa fa-address-book cursor-pointer marginRight5" title="בחר מהאנשי קשר" onclick="pickContactForFirstname()"></i>
+										<strong>שם פרטי</strong>
 										<br/>
-										<input type="text" class="paddingRight10 marginTop5" name="firstname" id="firstname" placeholder="*שם פרטי" value="<?=@$responsible->firstname?>" />
+										<i id="pick_contact_icon" class="fa fa-address-book cursor-pointer marginLeft5" style="display:none;" title="בחר מהאנשי קשר" onclick="pickContactForFirstname()"></i><input type="text" class="paddingRight10 marginTop5" name="firstname" id="firstname" placeholder="*שם פרטי" value="<?=@$responsible->firstname?>" />
 									</div>
 									<div>
 										<strong>שם משפחה</strong>
@@ -431,6 +431,10 @@ include 'menu_tasks.php';
 
 <script>
 $(document).ready(function (){
+	if (typeof AndroidNative !== 'undefined' && AndroidNative.pickContact) {
+		$('#pick_contact_icon').show();
+	}
+
 	let initialNickname = $('#suppliers').is('select') ? $('#suppliers option:selected').data('nickname') : $('#suppliers').data('nickname');
 	$('#supplier_nickname_display').text(initialNickname || '');
 	if($('#suppliers').is('input') && $('#suppliers').val() > 0 && $('#id').val() == 0){
