@@ -422,7 +422,7 @@ $('#save_sup_btn').click (function (e){
 			if($('#from').val() == 'addResponsible')
 				url = 'add_responsible.php?id=0&project_id='+$('#id').val()+'&from=addProject&for=projectgroup&ps_id='+data;
 			else
-				url = 'add_sup_to_proj.php?id='+$('#id').val();
+				url = 'add_responsible.php?id=0&project_id='+$('#id').val()+'&from=addSupToProj&for=projectgroup&ps_id='+data;
 			location.href = url;
 		},
 	});
@@ -444,7 +444,7 @@ $('#save_des_btn').click (function (e){
 			if($('#from').val() == 'addResponsible')
 				url = 'add_responsible.php?id=0&project_id='+$('#id').val()+'&from=addProject&for=projectgroup&ps_id='+data;
 			else
-				url = 'add_sup_to_proj.php?id='+$('#id').val();
+				url = 'add_responsible.php?id=0&project_id='+$('#id').val()+'&from=addSupToProj&for=projectgroup&ps_id='+data;
 			location.href = url;
 		},
 	});

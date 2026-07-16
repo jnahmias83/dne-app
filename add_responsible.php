@@ -20,10 +20,11 @@ $query->store_result();
 $responsible = fetch_unique($query);
 
 if(@$ps_id > 0){
-	$query = $mysqli->prepare("SELECT ps.id AS id,s.name_he AS s_name_he,s.type AS s_type
+	$query = $mysqli->prepare("SELECT ps.id AS id,s.name_he AS s_name_he,s.type AS s_type,IF(s.nickname<>'',s.nickname,s.nickname_he) AS nickname_he,sfow.name_he AS sfow_name_he
                                FROM dne_projects_suppliers ps
 						       LEFT JOIN dne_projects p ON ps.id_project = p.id
 						       LEFT JOIN dne_suppliers s ON ps.id_supplier = s.id
+						       LEFT JOIN dne_sup_field_of_work sfow ON s.id_field_of_work = sfow.id
 						       WHERE ps.id = ?");
 	$query->bind_param("i",$ps_id);
 	$query->execute();
@@ -31,7 +32,7 @@ if(@$ps_id > 0){
 	$ps = fetch_unique($query);
 }
 
-if($from == 'addProject'){
+if($from == 'addProject' || $from == 'addSupToProj'){
 	if($for == 'admingroup'){
 		$title = 'הוסף אחראי לצוות ניהול';
 		$title_card = 'בחירת צוות ניהול הפרוייקט';
@@ -41,12 +42,18 @@ if($from == 'addProject'){
 		$title_card = 'בחירת צוות יזם הפרוייקט';
 	}
 	else if($for == 'projectgroup'){
-		$title = 'הוסף אחראי לצוות הפרוייקט';
-		$title_card = 'בחירת צוות הפרוייקט';
-		
-		if(@$ps_id > 0){
-			$title = 'הוסף אחראי ל'.$ps->s_name_he;
+		if($from == 'addSupToProj'){
+			$title_card = 'הוסף/עדכון אחראי';
+			$title = @$ps->s_name_he;
+		}
+		else {
+			$title = 'הוסף אחראי לצוות הפרוייקט';
 			$title_card = 'בחירת צוות הפרוייקט';
+
+			if(@$ps_id > 0){
+				$title = 'הוסף אחראי ל'.$ps->s_name_he;
+				$title_card = 'בחירת צוות הפרוייקט';
+			}
 		}
 	}
 }
@@ -159,20 +166,23 @@ include 'menu_tasks.php';
 			    </div>
 				
 				<div class="row marginTop15">
-					<div class="col-1"></div>
-					<div class="col-10 card bg-f2f6f9 border-frame borderRadius15 padding0">		
+					<div class="col-3"></div>
+					<div class="col-6 card bg-f2f6f9 border-frame borderRadius15 padding0">
 			            <div class="card-header bgColor-1a5276 colorWhite alignCenter fontSize20" style="border-top-left-radius:15px;border-top-right-radius:15px;"><strong><i class="fa fa-user"></i><span class="marginRight10 marginLeft10"><?=@$title_card?></span><i class="fa fa-user"></i></strong></div>	   
 				        <div class="card-body">	   
-							<div class="row title dir-rtl">	
+							<?php if(!(@$for == 'projectgroup' && @$ps_id > 0 && @$id == 0)){ ?>
+							<div class="row title dir-rtl">
 								<div class="col-12">
 									<strong class="fontSize20"><?=@$title?></strong>
 								</div>
 							</div>
+							<?php } ?>
 
 							<?php if(@$for == 'admingroup'){ ?>
 									<div class="row marginTop5 alignCenter dir-rtl">
 										<div class="col-12">
 											<strong>חברת ניהול:</strong> <?=@$manager->name_he?>
+											<input type="hidden" id="current_nickname" value="<?=htmlspecialchars(@$manager->nickname_he)?>" />
 										</div>
 									</div>
 							<?php }
@@ -180,14 +190,22 @@ include 'menu_tasks.php';
 									<div class="row marginTop5 alignCenter dir-rtl">
 										<div class="col-12">
 											<strong>חברת יזם:</strong> <?=@$entrepreneur->name_he?>
+											<input type="hidden" id="current_nickname" value="<?=htmlspecialchars(@$entrepreneur->nickname_he)?>" />
 										</div>
 									</div>
 							<?php }
 							else if(@$for == 'projectgroup'){
 								if(@$ps_id > 0){ ?>
+									<div class="row alignCenter dir-rtl" style="margin-top:-10px;">
+										<div class="col-12">
+											<strong style="color:#349feb;font-size:18px;"><?=@$ps->s_name_he?></strong>
+											<input type="hidden" id="suppliers" value="<?=@$ps_id?>" data-nickname="<?=htmlspecialchars(@$ps->nickname_he)?>" onchange="functionsOnForm()" />
+											<strong id="supplier_nickname_display" class="marginRight10" style="display:none;"></strong>
+										</div>
+									</div>
 									<div class="row marginTop5 alignCenter dir-rtl">
 										<div class="col-12">
-											 <?=@$ps->s_name_he?>
+											<strong style="font-size:18px;"><?=@$ps->sfow_name_he?></strong>
 										</div>
 									</div>
 							<?php }}
@@ -258,7 +276,7 @@ include 'menu_tasks.php';
 							<div class="row marginTop5 alignCenter dir-rtl">
 								<div class="col-12 d-flex justify-content-center" style="gap:15px;">
 									<div>
-										<strong>שם פרטי</strong>
+										<strong>שם פרטי</strong> <i class="fa fa-address-book cursor-pointer marginRight5" title="בחר מהאנשי קשר" onclick="pickContactForFirstname()"></i>
 										<br/>
 										<input type="text" class="paddingRight10 marginTop5" name="firstname" id="firstname" placeholder="*שם פרטי" value="<?=@$responsible->firstname?>" />
 									</div>
@@ -328,8 +346,8 @@ include 'menu_tasks.php';
 
 										else if(@$for == 'projectgroup'){										
 											$url = 'add_sup_to_proj.php?id='.@$project_id.'&from=addResponsible';
-											$btn_save = 'המשך נחירת צוות פרוייקט';
-											$btn_next_step_val = "<i class='fa fa-plus'></i> ספק לצוות הפרוייקט";
+											$btn_save = '+ איש צוות נוסף';
+											$btn_next_step_val = "<i class='fa fa-plus'></i> ספק נוסף";
 										}
 									}
                                     else {
@@ -338,30 +356,50 @@ include 'menu_tasks.php';
 									?>
 									
 									<?php if($from == 'addProject'){ ?>
-										<div class="row text-center justify-content-center">
-											<div class="col-12 col-md-4 mb-2"></div>
-											<div class="col-12 col-md-4 d-flex justify-content-center">
+										<div style="position:relative;">
+											<div class="d-flex justify-content-center align-items-center" style="gap:10px;flex-wrap:wrap;">
+												<?php if(@$for == 'projectgroup'){ ?>
+												<a id="save_btn" class="btn fontSize14 bgColorBlue colorWhite" style="white-space:nowrap;">
+													<i class="fa fa-plus"></i> איש צוות נוסף
+												</a>
+												<?php } else { ?>
 												<input type="button"
 													   id="save_btn"
 													   name="save_btn"
-													   class="btn fontSize14 bgColorBlue colorWhite"
-													   value="<?=@$btn_save?>" />		
-											</div> 
-											<div class="col-12 col-md-4 alignLeft d-flex justify-content-center">							
-												<a class="btn marginRight10 fontSize14 bgColorBlue colorWhite"
+													   class="btn fontSize14 bgColorBlue colorWhite" style="white-space:nowrap;"
+													   value="<?=@$btn_save?>" />
+												<?php } ?>
+												<a class="btn fontSize14 bgColorBlue colorWhite" style="white-space:nowrap;"
 												   onclick="location.href='<?=@$url?>'">
 													<?=@$btn_next_step_val?>
-												</a>			
-
-												<?php if(@$ps_id != ''){ ?>
-													<a class="btn marginRight10 fontSize14 bgColorBlue colorWhite"
-													   onclick="location.href='add_chapter.php?id=0&project_id=<?=@$project_id?>&from=addProject'">
-														הבא : הגדרות
-													</a>	
-												<?php } ?>
+												</a>
 											</div>
+
+											<?php if(@$ps_id != ''){ ?>
+												<a class="btn fontSize14 bgColorBlue colorWhite" style="white-space:nowrap;position:absolute;left:10px;top:50%;transform:translateY(-50%);"
+												   onclick="location.href='add_chapter.php?id=0&project_id=<?=@$project_id?>&from=addProject'">
+													<i class="fa fa-arrow-left"></i> הבא : הגדרות
+												</a>
+											<?php } ?>
 										</div>
 									<?php }
+                                    else if($from == 'addSupToProj'){ ?>
+										<div class="d-flex justify-content-center align-items-center" style="gap:10px;">
+											<input type="button"
+														   id="save_btn"
+														   name="save_btn"
+														   class="btn fontSize14 bgColorBlue colorWhite" style="white-space:nowrap;flex-shrink:0;"
+														   value="<?=@$btn_save?>" />
+											<a class="btn fontSize14 bgColorBlue colorWhite" style="white-space:nowrap;flex-shrink:0;"
+											   onclick="location.href='add_responsible.php?id=0&project_id=<?=@$project_id?>&from=addSupToProj&for=projectgroup&ps_id=<?=@$ps_id?>'">
+												<i class='fa fa-plus'></i> הוסף אחראי נוסף
+											</a>
+											<a class="btn fontSize14 bgColorBlack colorWhite"
+											   onclick="location.href='add_sup_to_proj.php?id=<?=@$project_id?>'">
+												סגור
+											</a>
+										</div>
+								    <?php }
                                     else { ?>
 										<input type="button"
 													   id="save_btn"
@@ -377,9 +415,9 @@ include 'menu_tasks.php';
 							</div>
 						</div>
 					</div>
-					<div class="col-1"></div>
+					<div class="col-3"></div>
 				</div>
-            </div>			
+            </div>
 		</form>
 
         <div id="progress-popup">
@@ -393,8 +431,14 @@ include 'menu_tasks.php';
 
 <script>
 $(document).ready(function (){
-	$('#supplier_nickname_display').text($('#suppliers option:selected').data('nickname') || '');
+	let initialNickname = $('#suppliers').is('select') ? $('#suppliers option:selected').data('nickname') : $('#suppliers').data('nickname');
+	$('#supplier_nickname_display').text(initialNickname || '');
+	if($('#suppliers').is('input') && $('#suppliers').val() > 0 && $('#id').val() == 0){
+		autoFillRole();
+		autoFillColors();
+	}
 
+	if($('#id').val() == 0){
 	let form_data = new FormData();
 	if($('#for').val() == 'admingroup')
 		form_data.append('id_projects_suppliers',$('#id_manager').val());
@@ -402,7 +446,7 @@ $(document).ready(function (){
 		form_data.append('id_projects_suppliers',$('#id_entr').val());
     if($('#for').val() == 'projectgroup')
 		form_data.append('id_projects_suppliers',$('#ps_id').val());
-	
+
 	$.ajax({
 		type: 'POST',
 		url: 'fill_data_sup_inputs.php',
@@ -412,7 +456,9 @@ $(document).ready(function (){
 		contentType: false,
 		success: function (data){
 			data = JSON.parse(data);
-			$('#name').val(data.name_he);
+			if($('#for').val() != 'admingroup' && $('#for').val() != 'entrepreneurgroup' && $('#for').val() != 'projectgroup'){
+				$('#name').val(data.name_he);
+			}
 			$('#email').val(data.email);
 			$('#phone').val(data.phone);
 		},
@@ -420,6 +466,7 @@ $(document).ready(function (){
 			console.error('Erreur AJAX');
 		}
 	});
+	}
 });
 
 $('#suppliers').change(function(){
@@ -449,7 +496,12 @@ $('#roles').change(function(){
 });
 
 function updateNameFromSupplierAndFirstname(){
-	let nickname = $('#suppliers option:selected').data('nickname');
+	let nickname;
+	if($('#suppliers').length){
+		nickname = $('#suppliers').is('select') ? $('#suppliers option:selected').data('nickname') : $('#suppliers').data('nickname');
+	} else {
+		nickname = $('#current_nickname').val();
+	}
 	let firstname = $('#firstname').val();
 	if(nickname && firstname){
 		$('#name').val(firstname+'-'+nickname);
@@ -458,7 +510,8 @@ function updateNameFromSupplierAndFirstname(){
 }
 
 $('#suppliers').on('change', function(){
-	$('#supplier_nickname_display').text($(this).find('option:selected').data('nickname') || '');
+	let nickname = $(this).is('select') ? $(this).find('option:selected').data('nickname') : $(this).data('nickname');
+	$('#supplier_nickname_display').text(nickname || '');
 	updateNameFromSupplierAndFirstname();
 });
 
@@ -466,10 +519,23 @@ $('#firstname').on('change', function(){
 	updateNameFromSupplierAndFirstname();
 });
 
-function functionsOnForm(){	
-	let form_data = new FormData();	
+function pickContactForFirstname(){
+	if (typeof AndroidNative !== 'undefined' && AndroidNative.pickContact) {
+		AndroidNative.pickContact('firstname');
+	}
+}
+
+function receiveContactData(fieldId, firstname, lastname, phone, email){
+	$('#firstname').val(firstname).trigger('change');
+	$('#lastname').val(lastname);
+	$('#phone').val(phone);
+	$('#email').val(email);
+}
+
+function autoFillRole(){
+	let form_data = new FormData();
 	form_data.append('id_projects_suppliers',$('#suppliers').val());
-	
+
 	$.ajax({
 		type: 'POST',
 		url: 'getSupplierType.php',
@@ -499,6 +565,11 @@ function functionsOnForm(){
 		   }
 		},
 	});
+}
+
+function autoFillColors(){
+	let form_data = new FormData();
+	form_data.append('id_projects_suppliers',$('#suppliers').val());
 
 	$.ajax({
 		type: 'POST',
@@ -506,12 +577,17 @@ function functionsOnForm(){
 		data: form_data,
 		cache: false,
 		processData: false,
-		contentType: false,			
-		success: function(data){     			
+		contentType: false,
+		success: function(data){
 			$('#color').val(data.split(',')[0]);
-            $('#bgcolor').val(data.split(',')[1]);			
+            $('#bgcolor').val(data.split(',')[1]);
 		},
-	});				
+	});
+}
+
+function functionsOnForm(){
+	autoFillRole();
+	autoFillColors();
 }
 
 $('#save_btn').click(function (e){
@@ -604,6 +680,14 @@ $('#save_btn').click(function (e){
                             $('#for').val() == 'entrepreneurgroup' ||
                             ($('#for').val() == 'projectgroup' && $('#ps_id').val() == ''))){
                     window.location.reload();
+                } else if ($('#from').val() == 'addSupToProj'){
+                    if(data.indexOf('inserted') === 0){
+                        let newId = data.split(',')[1];
+                        window.location.href = 'add_responsible.php?id=' + newId + '&project_id=' + $('#project_id').val() +
+                                  '&from=addSupToProj&for=projectgroup&ps_id=' + $('#ps_id').val();
+                    } else {
+                        window.location.reload();
+                    }
                 } else if ($('#for').val() == 'projectgroup' && $('#ps_id').val() != '') {
                     let url = 'add_responsible.php?id=0&project_id=' + $('#project_id').val() +
                               '&from=addProject&for=projectgroup&ps_id=' + $('#ps_id').val();

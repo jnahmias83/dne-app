@@ -101,7 +101,7 @@ else {
 			   }
 			}
 			rebuild_supplier_doh_lists($mysqli, $_POST['id_project']);
-            echo "inserted";
+            echo "inserted,".$inserted_responsible;
 		}
 		else echo 'exists';
 	}

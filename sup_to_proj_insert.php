@@ -41,7 +41,8 @@ else if($supplier->type == "D") {
 
 $query = "INSERT INTO dne_projects_suppliers (id_project,id_supplier,code_ps,created_date) VALUES(?,?,?,?)";
 $query = $mysqli->prepare($query);
-$query->bind_param('ssss',$_POST['id_project'],$_POST['id_supplier'],$code,date('Y-m-d'));   
+$created_date = date('Y-m-d');
+$query->bind_param('ssss',$_POST['id_project'],$_POST['id_supplier'],$code,$created_date);
 $query->execute();
 
 $inserted_sup_to_proj = $query->insert_id;

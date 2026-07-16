@@ -148,7 +148,7 @@ if($_POST['report_type'] == 'generalTasksReport') {
 	echo "inserted";	
 }
 else if($_POST['report_type'] == 'myTasksReport') {
-	$is_project_status_report = 1;
+	$is_project_status_report = 0;
 	$request_name = "משימות שלי";
 	$pdf_name = "My Tasks Report";
 	$title = "משימות שלי";
