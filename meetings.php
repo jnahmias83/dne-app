@@ -5250,6 +5250,18 @@ span.sf-hl {
 }
 .modal.fade .modal-dialog { transition-duration: .15s !important; }
 .modal-backdrop.fade { transition-duration: .1s !important; }
+
+@media screen and (max-width: 600px) {
+    .top-minus-12 {
+        top: 0;
+    }
+}
+
+@media (orientation: landscape) and (max-height: 500px) {
+    .top-minus-12 {
+        top: 0;
+    }
+}
 </style>
 
 <script>

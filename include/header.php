@@ -191,5 +191,24 @@ $projects_list_array = explode(',',@$_SESSION['projects_list']);
 			.nav-link {
 				font-size: 12px;
 			}
+			#navbarSupportedContent {
+				flex-direction: column;
+				align-items: center !important;
+			}
+			#navbarSupportedContent > ul {
+				justify-content: center;
+				flex-wrap: wrap;
+			}
+		}
+
+		@media (orientation: landscape) and (max-height: 500px) {
+			#navbarSupportedContent {
+				flex-direction: column;
+				align-items: center !important;
+			}
+			#navbarSupportedContent > ul {
+				justify-content: center;
+				flex-wrap: wrap;
+			}
 		}
 		</style>

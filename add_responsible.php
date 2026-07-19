@@ -165,7 +165,7 @@ include 'menu_tasks.php';
 					</div>				
 			    </div>
 				
-				<div class="row marginTop15">
+				<div class="row marginTop15" id="add_responsible_form_row">
 					<div class="col-3"></div>
 					<div class="col-6 card bg-f2f6f9 border-frame borderRadius15 padding0">
 			            <div class="card-header bgColor-1a5276 colorWhite alignCenter fontSize20" style="border-top-left-radius:15px;border-top-right-radius:15px;"><strong><i class="fa fa-user"></i><span class="marginRight10 marginLeft10"><?=@$title_card?></span><i class="fa fa-user"></i></strong></div>	   
@@ -274,7 +274,7 @@ include 'menu_tasks.php';
 							</div>
 						
 							<div class="row marginTop5 alignCenter dir-rtl">
-								<div class="col-12 d-flex justify-content-center" style="gap:15px;">
+								<div class="col-12 d-flex justify-content-center form-flex-row" style="gap:15px;">
 									<div>
 										<strong>שם פרטי</strong>
 										<br/>
@@ -297,7 +297,7 @@ include 'menu_tasks.php';
 							</div>
 							
 							<div class="row marginTop5 alignCenter dir-rtl">
-								<div class="col-12 d-flex justify-content-center" style="gap:15px;">
+								<div class="col-12 d-flex justify-content-center form-flex-row" style="gap:15px;">
 									<div>
 										<strong>דוא''ל</strong>
 										<br/>
@@ -313,7 +313,7 @@ include 'menu_tasks.php';
 						
 							<?php if(@$from != 'project_data') { ?>
 								<div class="row marginTop5 alignCenter dir-rtl">
-									<div class="col-12 d-flex justify-content-center" style="gap:15px;">
+									<div class="col-12 d-flex justify-content-center form-flex-row" style="gap:15px;">
 										<div>
 											<strong>צבע גופן</strong>
 											<br/>
@@ -725,5 +725,33 @@ $('#cancel_btn').click(function(){
 
 #a_project_title:hover {
 	color: grey;
+}
+
+@media screen and (max-width: 600px) {
+	#add_responsible_form_row > .col-3 {
+		display: none;
+	}
+	#add_responsible_form_row > .col-6 {
+		width: 100%;
+		max-width: 100%;
+		flex: 0 0 100%;
+	}
+	.form-flex-row {
+		flex-wrap: wrap;
+	}
+}
+
+@media (orientation: landscape) and (max-height: 500px) {
+	#add_responsible_form_row > .col-3 {
+		display: none;
+	}
+	#add_responsible_form_row > .col-6 {
+		width: 100%;
+		max-width: 100%;
+		flex: 0 0 100%;
+	}
+	.form-flex-row {
+		flex-wrap: wrap;
+	}
 }
 </style>

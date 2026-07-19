@@ -116,6 +116,7 @@ if(isset($_SERVER['HTTP_REFERER'])){
 				<?php if($existing_des_proj_num_rows > 0) { ?>
 					<div class="row marginTop10 fontSize14 dir-rtl">
 						<div align="center" class="col-12 mx-2">
+							<div class="table-responsive">
 							<table id="designers_list" border="1" cellpadding="5" cellspacing="5">
 								<tr class="bgColorSilver">
 									<th class="th_domain alignCenter" width="130px;"></th>
@@ -139,9 +140,10 @@ if(isset($_SERVER['HTTP_REFERER'])){
 								</tr>
 								<?php } ?>
 							</table>
+							</div>
 						</div>
 					</div>
-					<div class="row alignCenter marginTop15 fontSize22 dir-rtl">	
+					<div class="row alignCenter marginTop15 fontSize22 dir-rtl">
 						<div class="col-12">
 						    <a class="text-decoration-none marginLeft8 cursor-pointer" onclick="toProjectSuppliersPdfReport('D')">
 						       <img src="images/file-pdf-solid.svg" width="70" height="40" />
@@ -195,6 +197,7 @@ if(isset($_SERVER['HTTP_REFERER'])){
 				<?php if($existing_sup_proj_num_rows > 0) { ?>
 					<div class="row marginTop10 fontSize14 dir-rtl">
 						<div align="center" class="col-12 mx-2">
+							<div class="table-responsive">
 							<table id="suppliers_list" border="1" cellpadding="5" cellspacing="5">
 								<tr class="bgColorSilver">
 									<th class="th_domain alignCenter" width="130px;"></th>
@@ -218,10 +221,11 @@ if(isset($_SERVER['HTTP_REFERER'])){
 								</tr>
 								<?php } ?>
 							</table>
+							</div>
 						</div>
 					</div>
-					
-					<div class="row marginTop15 alignCenter fontSize22 dir-rtl">	
+
+					<div class="row marginTop15 alignCenter fontSize22 dir-rtl">
 						<div class="col-12">
 							<a class="text-decoration-none marginLeft8 cursor-pointer" onclick="toProjectSuppliersPdfReport('S')">
 						       <img src="images/file-pdf-solid.svg" width="70" height="40" />
