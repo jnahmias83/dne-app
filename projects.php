@@ -474,10 +474,10 @@ foreach($all_what_news as $wn){
 							<div class="text-center flex-grow-1">
 								<span class="fontSize13 font-weight-bold">מיון לפי</span>
 							</div>
-							<div>
-								<input type="radio" id="by_project" name="user_tasks_filter" value="project" onclick="setFilterParam('project')" <?php if(@$filter_by == 'project') echo 'checked';?> />&nbsp;<span class="fontSize12">פרוייקט</span>
-								<input type="radio" id="by_task" name="user_tasks_filter" value="task" onclick="setFilterParam('task')" <?php if(@$filter_by == 'task') echo 'checked';?> />&nbsp;<span class="fontSize12">סוג משימה</span>
-								<input type="radio" id="by_responsible" name="user_tasks_filter" value="responsible" onclick="setFilterParam('responsible')" <?php if(@$filter_by == 'responsible') echo 'checked';?> />&nbsp;<span class="fontSize12">אחראי</span>
+							<div id="filter_user_tasks_radios">
+								<div class="filter-radio-row"><input type="radio" id="by_project" name="user_tasks_filter" value="project" onclick="setFilterParam('project')" <?php if(@$filter_by == 'project') echo 'checked';?> />&nbsp;<span class="fontSize12">פרוייקט</span></div>
+								<div class="filter-radio-row"><input type="radio" id="by_task" name="user_tasks_filter" value="task" onclick="setFilterParam('task')" <?php if(@$filter_by == 'task') echo 'checked';?> />&nbsp;<span class="fontSize12">סוג משימה</span></div>
+								<div class="filter-radio-row"><input type="radio" id="by_responsible" name="user_tasks_filter" value="responsible" onclick="setFilterParam('responsible')" <?php if(@$filter_by == 'responsible') echo 'checked';?> />&nbsp;<span class="fontSize12">אחראי</span></div>
 							</div>
 						</div>
 						
@@ -3212,6 +3212,18 @@ function toTasksList(id_project){
      vertical-align: middle;
      margin-left: 4px;
   }
+
+  #filter_user_tasks_radios {
+     display: flex;
+     flex-wrap: wrap;
+  }
+
+  .filter-radio-row {
+     width: 50%;
+     box-sizing: border-box;
+     margin-bottom: 8px;
+     text-align: right;
+  }
 }
 
 @media (min-width: 768px) and (max-width: 1024px) {
@@ -3263,6 +3275,18 @@ function toTasksList(id_project){
         accent-color: #1a5276;
         vertical-align: middle;
         margin-left: 4px;
+    }
+
+    #filter_user_tasks_radios {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .filter-radio-row {
+        width: 50%;
+        box-sizing: border-box;
+        margin-bottom: 8px;
+        text-align: right;
     }
 
     #div_top_buttons {
