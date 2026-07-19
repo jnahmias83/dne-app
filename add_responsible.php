@@ -282,6 +282,7 @@ include 'menu_tasks.php';
 											<i id="pick_contact_icon" class="fa fa-address-book cursor-pointer" style="display:none;flex-shrink:0;" title="בחר מהאנשי קשר" onclick="pickContactForFirstname()"></i>
 											<input type="text" class="paddingRight10 marginTop5" name="firstname" id="firstname" placeholder="*שם פרטי" value="<?=@$responsible->firstname?>" style="flex:1;min-width:0;" />
 										</div>
+										<div id="debug_android_native" style="font-size:11px;color:red;background:yellow;padding:2px;"></div>
 									</div>
 									<div>
 										<strong>שם משפחה</strong>
@@ -434,6 +435,9 @@ include 'menu_tasks.php';
 
 <script>
 $(document).ready(function (){
+	let debugAndroidNativeType = typeof AndroidNative;
+	let debugPickContactType = (debugAndroidNativeType !== 'undefined') ? typeof AndroidNative.pickContact : 'n/a';
+	$('#debug_android_native').text('DEBUG AndroidNative=' + debugAndroidNativeType + ' pickContact=' + debugPickContactType);
 	if (typeof AndroidNative !== 'undefined' && AndroidNative.pickContact) {
 		$('#pick_contact_icon').show();
 	}
