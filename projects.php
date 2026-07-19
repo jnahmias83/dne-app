@@ -547,7 +547,7 @@ foreach($all_what_news as $wn){
 													<?php } ?>
 												</div>
 												<div class="width85Percents">
-													<div class="flex flex-wrap justify-content-center" style="line-height:0.1">
+													<div class="flex flex-wrap justify-content-center task-title-row" style="line-height:0.1">
 														<div class="width65Percents align-items-center">
 															<span class="color-19bf42 font-weight-bold"><?=@$chapter_name?></span>
 															<!--<span class="color-1A5276 font-weight-bold">|</span>
@@ -675,7 +675,7 @@ foreach($all_what_news as $wn){
 													</span>
 												</div>
 												<div class="width85Percents">
-													<div class="flex flex-wrap justify-content-center" style="line-height:0.1">
+													<div class="flex flex-wrap justify-content-center task-title-row" style="line-height:0.1">
 														<div class="marginTop5 width65Percents align-items-center">
 															<span class="color-19bf42 font-weight-bold"><?=@$chapter_name?></span>
 															<!--<span class="color-1A5276 font-weight-bold">|</span>
@@ -1169,7 +1169,7 @@ foreach($all_what_news as $wn){
 																		</a>		
 																	</div>
 																	<div class="width90Percents">
-																		<div class="flex flex-wrap justify-content-center" style="line-height:0.1">
+																		<div class="flex flex-wrap justify-content-center task-title-row" style="line-height:0.1">
 																			<div class="width65Percents align-items-center">
 																				<span class="color-19bf42 font-weight-bold"><?=@$chapter_name?></span>
 																				<!--<span class="color-1A5276 font-weight-bold">|</span>
@@ -1319,7 +1319,7 @@ foreach($all_what_news as $wn){
 																		</a>																		
 																	</div>
 																	<div class="width90Percents">
-																		<div class="flex flex-wrap justify-content-center align-items-center" style="line-height:0.1">
+																		<div class="flex flex-wrap justify-content-center align-items-center task-title-row" style="line-height:0.1">
 																			<div class="width65Percents align-items-center">
 																				<span class="color-19bf42 font-weight-bold"><?=@$chapter_name?></span>
 																				<!--<span class="color-1A5276 font-weight-bold">|</span>
@@ -3196,8 +3196,21 @@ function toTasksList(id_project){
      width: 100% !important;
   }
 
+  .task_name .width10Percents,
+  .task_name .width90Percents {
+     width: 100% !important;
+  }
+
   .task-title-row {
      line-height: 1.3 !important;
+  }
+
+  #div_filter_user_tasks input[name="user_tasks_filter"] {
+     width: 16px;
+     height: 16px;
+     accent-color: #1a5276;
+     vertical-align: middle;
+     margin-left: 4px;
   }
 }
 
@@ -3235,8 +3248,21 @@ function toTasksList(id_project){
         width: 100% !important;
     }
 
+    .task_name .width10Percents,
+    .task_name .width90Percents {
+        width: 100% !important;
+    }
+
     .task-title-row {
         line-height: 1.3 !important;
+    }
+
+    #div_filter_user_tasks input[name="user_tasks_filter"] {
+        width: 16px;
+        height: 16px;
+        accent-color: #1a5276;
+        vertical-align: middle;
+        margin-left: 4px;
     }
 
     #div_top_buttons {
