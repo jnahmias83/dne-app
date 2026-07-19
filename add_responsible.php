@@ -739,6 +739,13 @@ $('#cancel_btn').click(function(){
 	.form-flex-row {
 		flex-wrap: wrap;
 	}
+	#firstname, #lastname, #email, #phone, #name {
+		width: 100%;
+		box-sizing: border-box;
+	}
+	.form-flex-row > div {
+		width: 100%;
+	}
 }
 
 @media (orientation: landscape) and (max-height: 500px) {
@@ -752,6 +759,13 @@ $('#cancel_btn').click(function(){
 	}
 	.form-flex-row {
 		flex-wrap: wrap;
+	}
+	#firstname, #lastname, #email, #phone, #name {
+		width: 100%;
+		box-sizing: border-box;
+	}
+	.form-flex-row > div {
+		width: 100%;
 	}
 }
 </style>
