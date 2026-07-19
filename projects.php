@@ -3203,6 +3203,7 @@ function toTasksList(id_project){
 
   .task-title-row {
      line-height: 1.3 !important;
+     margin-bottom: 6px;
   }
 
   #div_filter_user_tasks input[name="user_tasks_filter"] {
@@ -3219,10 +3220,15 @@ function toTasksList(id_project){
   }
 
   .filter-radio-row {
-     width: 50%;
+     width: 100%;
      box-sizing: border-box;
      margin-bottom: 8px;
      text-align: right;
+  }
+
+  .task_name .width15Percents,
+  .task_name .width10Percents {
+     margin-bottom: 8px;
   }
 }
 
@@ -3267,6 +3273,7 @@ function toTasksList(id_project){
 
     .task-title-row {
         line-height: 1.3 !important;
+        margin-bottom: 6px;
     }
 
     #div_filter_user_tasks input[name="user_tasks_filter"] {
@@ -3283,10 +3290,15 @@ function toTasksList(id_project){
     }
 
     .filter-radio-row {
-        width: 50%;
+        width: 100%;
         box-sizing: border-box;
         margin-bottom: 8px;
         text-align: right;
+    }
+
+    .task_name .width15Percents,
+    .task_name .width10Percents {
+        margin-bottom: 8px;
     }
 
     #div_top_buttons {
