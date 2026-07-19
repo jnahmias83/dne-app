@@ -2005,6 +2005,7 @@ foreach($all_what_news as $wn){
 		</div>
 
         <input type="hidden" id="default_bgcolor_tracking" value="<?=@$bg_color_inputs->default_bgcolor?>">
+        <input type="hidden" id="filled_bgcolor_tracking" value="<?=@$bg_color_inputs->filled_bgcolor?>">
 <div class="modal fade dir-rtl" id="modalTaskTracking" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
 				<div class="modal-content">
@@ -2017,8 +2018,7 @@ foreach($all_what_news as $wn){
 					        <div class="container">
 								<form>
 								    <div class="row" dir="rtl">
-									    <div class="col-2"></div>
-									    <div class="col-10">
+									    <div class="col-12">
 										    <div class='marginTop5 subtitle color-19bf42 fontSize18 font-weight-bold alignCenter'></div>
 									    </div>
 								    </div>
@@ -2047,15 +2047,20 @@ foreach($all_what_news as $wn){
 										    <img src="images/bell-solid.svg" width="20" height="20" />
 									    </div>
 									    <div class="col-10 p-2 text-end d-flex flex-column justify-content-center align-items-center">
-										    <div class="row align-items-center justify-content-start" dir="rtl">
-											    <div class="col-auto fontSize13 text-end">
+										    <div class="row align-items-start justify-content-start flex-nowrap gx-2" dir="rtl">
+											    <div class="col-auto fontSize13 text-end" style="margin-left:6px;">
 												    <div><input type="radio" id="not_reminders" name="set_reminder_date_radio" value="0" onclick="setReminderDate(this.value)"> בלי תזכורת</div>
-												    <div><input type="radio" id="reminder_tomorrow" name="set_reminder_date_radio" value="1" onclick="setReminderDate(this.value)"> מחר</div>
-												    <div><input type="radio" id="reminder_after_one_week" name="set_reminder_date_radio" value="3" onclick="setReminderDate(this.value)"> בעוד שבוע</div>
+											    </div>
+											    <div class="col-auto fontSize13 text-end">
+												    <div><input type="radio" id="reminder_tomorrow" name="set_reminder_date_radio" value="1" onclick="setReminderDate(this.value);$('#date_col_wrapper').hide();$('#div_reminder_date').hide();"> מחר</div>
+												    <div><input type="radio" id="reminder_after_one_week" name="set_reminder_date_radio" value="3" onclick="setReminderDate(this.value);$('#date_col_wrapper').hide();$('#div_reminder_date').hide();"> בעוד שבוע</div>
+											    </div>
+											    <div class="col-auto fontSize13 text-end">
+												    <div><input type="radio" id="reminder_after_selected_date" name="set_reminder_date_radio" value="6" onclick="setReminderDate(this.value);$('#reminder_date').val(formatDate(new Date()));"> בתאריך</div>
 											    </div>
 											    <div class="col-auto" id="date_col_wrapper" style="display:none;">
 												    <div id="div_reminder_date">
-													    <input type="date" class="text-center" id="reminder_date" style="font-size:11px;" />
+													    <input type="date" class="text-center" id="reminder_date" style="font-size:11px;width:85px;" />
 												    </div>
 											    </div>
 										    </div>
@@ -2092,17 +2097,16 @@ foreach($all_what_news as $wn){
 
 		   
 									<div class="row marginTop15" dir="rtl">
-										<div class="col-2"></div>
-										<div class="col-10 d-flex justify-content-center gap-3">
-											<button type="button" class="btn font-weight-bold px-3 text-nowrap" style="background-color:#1a5276; color:white;"
+										<div class="col-12 d-flex justify-content-center align-items-center gap-3">
+											<button type="button" class="btn font-weight-bold px-3 text-nowrap alignCenter" style="color:#212529;"
 													onclick="fillLogTaskTracking($('#hidden_meeting_id').val(),'','for_closing',1)">
-												<i class="fas fa-bullseye" style="color:#e74c3c;"></i> שמור מעקב
+												<i class="fas fa-bullseye" style="color:#e74c3c;"></i><br/>שמור מעקב
 											</button>
-											<button type="button" class="btn font-weight-bold px-3 bg-dark text-white text-nowrap"
+											<button type="button" class="btn font-weight-bold px-3 text-nowrap alignCenter" style="color:#212529;"
 													onclick="fillLogTaskTracking($('#hidden_meeting_id').val(),'','for_closing',0)">
-												<i class="fas fa-bullseye" style="color:#95a5a6;"></i> בטל מעקב
+												<i class="fas fa-bullseye" style="color:#95a5a6;"></i><br/>בטל מעקב
 											</button>
-											<input type="button" class="btn bg-dark text-white font-weight-bold px-3" value="סגור"
+											<input type="button" id="close_tracking_btn" class="btn bg-dark text-white font-weight-bold px-3 fontSize14" value="סגור" style="padding-top:2px!important;padding-bottom:2px!important;"
 												   onclick="hidePopup('modalTaskTracking','',$('#hidden_meeting_id').val(),'fromProjects')" />
 										</div>
 									</div>
@@ -2591,7 +2595,9 @@ $(document).ready(function(){
 	    subject = $('#hidden_name').val();
 	    area = $('#hidden_area').val();
 	    chapter = $('#hidden_chapter').val();
-		
+		reminder_time = $('#hidden_reminder_time').val();
+		reminder_date = $('#hidden_reminder_date').val();
+
 		if(reminder_date != '0000-00-00') {
 		  $('#div_reminder_date').show();
 		  $('#date_col_wrapper').show();
@@ -2602,7 +2608,8 @@ $(document).ready(function(){
 		  $('#date_col_wrapper').hide();
 		}
 
-	    $('#modalTaskTracking .modal-title').html("<i class='fas fa-bullseye' style='font-size:22px;color:#e74c3c;'></i>&nbsp;&nbsp;מעקב אקטיבי&nbsp;&nbsp;<i class='fas fa-bullseye' style='font-size:22px;color:#e74c3c;'></i>");
+	    let trackTitleColor = $('#hidden_track_type').val() == 1 ? '#e74c3c' : '#95a5a6';
+	    $('#modalTaskTracking .modal-title').html("<i class='fas fa-bullseye' style='font-size:22px;color:"+trackTitleColor+";'></i>&nbsp;&nbsp;מעקב אקטיבי&nbsp;&nbsp;<i class='fas fa-bullseye' style='font-size:22px;color:"+trackTitleColor+";'></i>");
 		$('.subtitle').html(chapter+"<br/>"+subject+"&nbsp;|&nbsp;"+area).css('line-height','1.1em');
 
 	    if($('#hidden_reminder_time').val() == 0){
@@ -2610,11 +2617,18 @@ $(document).ready(function(){
 		  $('#date_col_wrapper').hide();
 		  $('#not_reminders').prop('checked',true);
 	    }
-	   
-		    if($('#hidden_reminder_time').val() == 1)
+	    else if($('#hidden_reminder_time').val() == 1){
+		  $('#div_reminder_date').hide();
+		  $('#date_col_wrapper').hide();
 	      $('#reminder_tomorrow').prop('checked',true);
-	    if($('#hidden_reminder_time').val() == 3)
+	    }
+	    else if($('#hidden_reminder_time').val() == 3){
+		  $('#div_reminder_date').hide();
+		  $('#date_col_wrapper').hide();
 	      $('#reminder_after_one_week').prop('checked',true);
+	    }
+	    else if($('#hidden_reminder_time').val() == 6)
+	      $('#reminder_after_selected_date').prop('checked',true);
 
         $('#users option').each(function(){			
 		    if($('#hidden_track_responsible_id').val() == 0){
@@ -2626,8 +2640,9 @@ $(document).ready(function(){
 				$(this).prop('selected', true);  
 	    });
 	   
-	    $('#modalTaskTracking').find('[id="users"]').css('background-color', $('#default_bgcolor_tracking').val());
-	    let form_data = new FormData();  
+	    $('#modalTaskTracking').find('[id="users"]').css('background-color',
+	        $('#hidden_track_responsible_id').val() > 0 ? $('#filled_bgcolor_tracking').val() : $('#default_bgcolor_tracking').val());
+	    let form_data = new FormData();
 		form_data.append('id_meeting',meeting_id);
 		form_data.append('isTracking',1);
 		
@@ -2648,7 +2663,7 @@ $(document).ready(function(){
     });
 	
 	$('[id="users"]').on('change', function(){
-		$(this).css('background-color', $(this).val() == '0' ? $('#default_bgcolor_tracking').val() : '');
+		$(this).css('background-color', $(this).val() == '0' ? $('#default_bgcolor_tracking').val() : $('#filled_bgcolor_tracking').val());
 		setData($('#hidden_meeting_id').val(),0,'track_responsible_id',0,0,'popup');
 	});
 	
@@ -2999,6 +3014,7 @@ $(window).on('load', function(){
 		let track_responsible_id_ls = localStorage.getItem("track_responsible_id") || '';
 		let reminder_date_ls = localStorage.getItem("reminder_date") || '';
 		let reminder_time_ls = localStorage.getItem("reminder_time") || '';
+		let track_type_ls = localStorage.getItem("track_type") || '';
 
 		let form_data = new FormData();
 		form_data.append('id_meeting', meeting_id);
@@ -3022,7 +3038,7 @@ $(window).on('load', function(){
 		setBellBcgColor(localStorage.getItem('track_type'));
 		setEmergencyTaskCSS(is_priority_ls);
 		$('#modalContent input[type="hidden"]').remove();
-		$('#modalContent').append("<input type='hidden' id='hidden_meeting_id' value='"+meeting_id+"'><input type='hidden' id='hidden_iteration' value='"+iteration+"'><input type='hidden' id='hidden_project_id' value='"+project_id+"'><input type='hidden' id='hidden_user_id' value='"+user_id_ls+"'><input type='hidden' id='hidden_chapter' value='"+chapter_ls+"'><input type='hidden' id='hidden_name' value='"+subject_ls+"'><input type='hidden' id='hidden_area' value='"+area_ls+"'><input type='hidden' id='hidden_recipient' value='"+recipient_ls+"'><input type='hidden' id='hidden_responsible_id' value='"+responsible_id_ls+"'><input type='hidden' id='hidden_is_priority' value='"+is_priority_ls+"'><input type='hidden' id='hidden_remark' value='"+remark_ls+"'><input type='hidden' id='hidden_track_responsible_id' value='"+track_responsible_id_ls+"'><input type='hidden' id='hidden_reminder_date' value='"+reminder_date_ls+"'><input type='hidden' id='hidden_reminder_time' value='"+reminder_time_ls+"'><input type='hidden' id='hidden_lang' value='"+lang_ls+"'>");
+		$('#modalContent').append("<input type='hidden' id='hidden_meeting_id' value='"+meeting_id+"'><input type='hidden' id='hidden_iteration' value='"+iteration+"'><input type='hidden' id='hidden_project_id' value='"+project_id+"'><input type='hidden' id='hidden_user_id' value='"+user_id_ls+"'><input type='hidden' id='hidden_chapter' value='"+chapter_ls+"'><input type='hidden' id='hidden_name' value='"+subject_ls+"'><input type='hidden' id='hidden_area' value='"+area_ls+"'><input type='hidden' id='hidden_recipient' value='"+recipient_ls+"'><input type='hidden' id='hidden_responsible_id' value='"+responsible_id_ls+"'><input type='hidden' id='hidden_is_priority' value='"+is_priority_ls+"'><input type='hidden' id='hidden_remark' value='"+remark_ls+"'><input type='hidden' id='hidden_track_responsible_id' value='"+track_responsible_id_ls+"'><input type='hidden' id='hidden_track_type' value='"+track_type_ls+"'><input type='hidden' id='hidden_reminder_date' value='"+reminder_date_ls+"'><input type='hidden' id='hidden_reminder_time' value='"+reminder_time_ls+"'><input type='hidden' id='hidden_lang' value='"+lang_ls+"'>");
     }
 });
 

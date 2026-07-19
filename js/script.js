@@ -802,10 +802,15 @@ function fillLogTaskTracking(id_meeting,iteration,screen_type,track_type){
 				localStorage.setItem('iteration', $('#hidden_iteration').val());
 				localStorage.setItem('subject', $('#hidden_name').val());
 				localStorage.setItem('area', $('#hidden_area').val());
+				localStorage.setItem('chapter', $('#hidden_chapter').val());
 				localStorage.setItem('recipient', $('#hidden_recipient').val());
 				localStorage.setItem('responsible_id', $('#hidden_responsible_id').val());
 				localStorage.setItem('is_priority', $('#hidden_is_priority').val());
 				localStorage.setItem('remark', $('#hidden_remark').val());
+				localStorage.setItem('user_id', $('#hidden_user_id').val());
+				localStorage.setItem('track_responsible_id', $('#users').val());
+				localStorage.setItem('reminder_date', $('#reminder_date').val());
+				localStorage.setItem('reminder_time', reminder_time);
 				localStorage.setItem('track_type', track_type !== undefined ? track_type : 1);
 				localStorage.setItem('updated_id','meeting_'+id_meeting);
 				if(iteration === '') localStorage.setItem('highlight_after_reload', 'true');
@@ -956,11 +961,16 @@ function hidePopup(modal,iteration,meeting_id,from){
 		localStorage.setItem('iteration',$('#hidden_iteration').val());
 		localStorage.setItem('subject',$('#hidden_name').val());
 		localStorage.setItem('area',$('#hidden_area').val());
+		localStorage.setItem('chapter',$('#hidden_chapter').val());
 		localStorage.setItem('recipient',$('#hidden_recipient').val());
 		localStorage.setItem('responsible_id',$('#hidden_responsible_id').val());
 		localStorage.setItem('is_priority',$('#hidden_is_priority').val());
 		localStorage.setItem('remark',$('#hidden_remark').val());
 		localStorage.setItem('lang',$('#hidden_lang').val());
+		localStorage.setItem('user_id',$('#hidden_user_id').val());
+		localStorage.setItem('track_responsible_id',$('#hidden_track_responsible_id').val());
+		localStorage.setItem('reminder_date',$('#hidden_reminder_date').val());
+		localStorage.setItem('reminder_time',$('#hidden_reminder_time').val());
 		if(modal != 'modalTaskTracking')
 			localStorage.setItem('track_type',0);
 	}		
