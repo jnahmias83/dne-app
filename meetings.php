@@ -1566,7 +1566,6 @@ include 'menu_tasks.php';
 											$description = html_entity_decode($description);
 											$description = str_ireplace(['<div>','</div>'], '<br>', $description);
 											$description = preg_replace('/(<br\s*\/?>\s*){2,}/i', '<br>', $description);
-											$description = preg_replace('/(?<!<br>)(\d+\s*[\.\-]\s*)/u', '<br>$1', $description);
 
 											$id_track_responsible = @$item->id_track_responsible;
 											$query = $mysqli->prepare("SELECT nickname FROM dne_users WHERE id = ?");
@@ -2185,7 +2184,6 @@ include 'menu_tasks.php';
 												$description = html_entity_decode($description);
 												$description = str_ireplace(['<div>','</div>'], '<br>', $description);
 												$description = preg_replace('/(<br\s*\/?>\s*){2,}/i', '<br>', $description);
-												$description = preg_replace('/(?<!<br>)(\d+\s*[\.\-]\s*)/u', '<br>$1', $description);
 
 												$id_track_responsible = @$item->id_track_responsible;
 												$query = $mysqli->prepare("SELECT nickname FROM dne_users WHERE id = ?");
