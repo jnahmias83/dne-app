@@ -3229,7 +3229,7 @@ function toTasksList(id_project){
   .task_name .width15Percents,
   .task_name .width10Percents {
      margin-bottom: 8px;
-     justify-content: flex-end !important;
+     justify-content: flex-start !important;
   }
 }
 
@@ -3312,7 +3312,7 @@ function toTasksList(id_project){
     .task_name .width15Percents,
     .task_name .width10Percents {
         margin-bottom: 8px;
-        justify-content: flex-end !important;
+        justify-content: flex-start !important;
     }
 
     #div_top_buttons {
