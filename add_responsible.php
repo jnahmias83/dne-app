@@ -278,7 +278,10 @@ include 'menu_tasks.php';
 									<div>
 										<strong>שם פרטי</strong>
 										<br/>
-										<i id="pick_contact_icon" class="fa fa-address-book cursor-pointer marginLeft5" style="display:none;" title="בחר מהאנשי קשר" onclick="pickContactForFirstname()"></i><input type="text" class="paddingRight10 marginTop5" name="firstname" id="firstname" placeholder="*שם פרטי" value="<?=@$responsible->firstname?>" />
+										<div class="d-flex align-items-center" style="gap:4px;">
+											<i id="pick_contact_icon" class="fa fa-address-book cursor-pointer" style="display:none;flex-shrink:0;" title="בחר מהאנשי קשר" onclick="pickContactForFirstname()"></i>
+											<input type="text" class="paddingRight10 marginTop5" name="firstname" id="firstname" placeholder="*שם פרטי" value="<?=@$responsible->firstname?>" style="flex:1;min-width:0;" />
+										</div>
 									</div>
 									<div>
 										<strong>שם משפחה</strong>
