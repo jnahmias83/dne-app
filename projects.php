@@ -3194,7 +3194,7 @@ function toTasksList(id_project){
     .task-container > .flex-row,
     .task-container > .width15Percents,
     .task-container > .width85Percents {
-        flex-direction: column !important; 
+        flex-direction: column !important;
         width: 100% !important;
     }
 
@@ -3205,6 +3205,7 @@ function toTasksList(id_project){
 
     #div_top_buttons {
         flex-direction: row !important;
+        width: 100% !important;
     }
 
     span, .color-1A5276, .colorRed {
