@@ -3181,7 +3181,7 @@ function toTasksList(id_project){
 
 @media (orientation: landscape) and (max-height: 500px) {
   #div_top_buttons {
-     max-width: 420px;
+     width: fit-content;
      margin-left: auto;
      margin-right: auto;
   }
