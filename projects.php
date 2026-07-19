@@ -469,7 +469,7 @@ foreach($all_what_news as $wn){
 						</div>							  
 					</div>
 					
-					<div class="row dir-rtl">
+					<div class="row dir-rtl" id="user_tasks_filter_row">
 						<div id="div_filter_user_tasks" class="col-6 alignCenter">
 							<div class="text-center flex-grow-1">
 								<span class="fontSize13 font-weight-bold">מיון לפי</span>
@@ -760,8 +760,8 @@ foreach($all_what_news as $wn){
                 <div id="div_what_news" class="display-none border-black dir-rtl">
 					<div class="row fontSize16 position-relative">
 						<div class="col-12 position-relative">
-							<strong class="d-block text-center" style="color:<?=@$bg_color_inputs->h_bgcolor?>">מה חדש</strong>
-							<div class="d-flex align-items-center position-absolute" style="top:0;right:13;gap:8px;">
+							<strong class="d-block text-center what-news-title" style="color:<?=@$bg_color_inputs->h_bgcolor?>">מה חדש</strong>
+							<div class="d-flex align-items-center position-absolute what-news-header-actions" style="top:0;right:13;gap:8px;">
 								<button type="button" class="btn btn-primary btn-sm fontSize12 whats-new-mark-seen-btn" data-panel="#left_new_content" onclick="markCheckedWhatsNewSeen('#left_new_content')" disabled>תודה על העדכון</button>
 								<input type="button" id="btn-close-what-news" class="borderRadius10 fontSize16 font-weight-bold" style="color:<?=@$bg_color_inputs->h_bgcolor?>;border:1px solid <?=@$bg_color_inputs->h_bgcolor?>" value="X" />
 							</div>
@@ -3229,6 +3229,7 @@ function toTasksList(id_project){
   .task_name .width15Percents,
   .task_name .width10Percents {
      margin-bottom: 8px;
+     justify-content: flex-end !important;
   }
 }
 
@@ -3266,6 +3267,12 @@ function toTasksList(id_project){
         width: 100% !important;
     }
 
+    #user_tasks_filter_row > div {
+        width: 100% !important;
+        max-width: 100% !important;
+        flex: 0 0 100% !important;
+    }
+
     .task_name .width10Percents,
     .task_name .width90Percents {
         width: 100% !important;
@@ -3289,6 +3296,12 @@ function toTasksList(id_project){
         flex-wrap: wrap;
     }
 
+    .what-news-header-actions {
+        position: static !important;
+        justify-content: center !important;
+        margin-top: 8px;
+    }
+
     .filter-radio-row {
         width: 100%;
         box-sizing: border-box;
@@ -3299,6 +3312,7 @@ function toTasksList(id_project){
     .task_name .width15Percents,
     .task_name .width10Percents {
         margin-bottom: 8px;
+        justify-content: flex-end !important;
     }
 
     #div_top_buttons {
