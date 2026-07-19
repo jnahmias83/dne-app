@@ -1563,9 +1563,10 @@ include 'menu_tasks.php';
 
 											$description_popup = nl2br(@$item->description);
 											$description = @$item->description;
-											$description = preg_replace('/&lt;div\b.*?&gt;/i', ' ', $description);
-											$description = str_ireplace('&lt;/div&gt;', '', $description);
-											$description = preg_replace('/&lt;br\s*\/?&gt;/i', ' ', $description);
+											$description = html_entity_decode($description);
+											$description = str_ireplace(['<div>','</div>'], '<br>', $description);
+											$description = preg_replace('/(<br\s*\/?>\s*){2,}/i', '<br>', $description);
+											$description = preg_replace('/(?<!<br>)(\d+\s*[\.\-]\s*)/u', '<br>$1', $description);
 
 											$id_track_responsible = @$item->id_track_responsible;
 											$query = $mysqli->prepare("SELECT nickname FROM dne_users WHERE id = ?");
@@ -1917,7 +1918,7 @@ include 'menu_tasks.php';
 												if(in_array('description',$columns_list_array)){ ?>
 												    <td id="td_description_<?=@$meeting_id?>" class="<?php if(end($columns_list_array) == "description") echo $border_cell_table_end;?>" style="<?=@$text_align?>;<?=@$padding?>:5px;<?=@$description_bgcolor?>;">
 														<div class="height-auto fontSize12 cursor-pointer overflow-y-scroll" name="description_<?=@$meeting_id?>" id="description_<?=@$meeting_id?>" style="direction:<?=@$dir?>;width:100%;<?=@$padding?>:5px;<?=@$description_bgcolor?>;" contenteditable="true" data-meetingid="<?=@$meeting_id?>" data-iteration=<?=@$iteration?> data-chapter="<?=@$chapter_name?>" data-name="<?=@$subject?>" data-area="<?=@$area?>" data-description="<?=htmlspecialchars($description_popup,ENT_QUOTES)?>">
-															<?=html_entity_decode($description)?>
+															<?=$description?>
 														</div>
 													</td>
 												<?php } 
@@ -2181,9 +2182,10 @@ include 'menu_tasks.php';
 												$updated_date = @$item->updated_date;
 
 												$description = @$item->description;
-												$description = preg_replace('/&lt;div\b.*?&gt;/i', ' ', $description);
-												$description = str_ireplace('&lt;/div&gt;', '', $description);
-												$description = preg_replace('/&lt;br\s*\/?&gt;/i', ' ', $description);
+												$description = html_entity_decode($description);
+												$description = str_ireplace(['<div>','</div>'], '<br>', $description);
+												$description = preg_replace('/(<br\s*\/?>\s*){2,}/i', '<br>', $description);
+												$description = preg_replace('/(?<!<br>)(\d+\s*[\.\-]\s*)/u', '<br>$1', $description);
 
 												$id_track_responsible = @$item->id_track_responsible;
 												$query = $mysqli->prepare("SELECT nickname FROM dne_users WHERE id = ?");
@@ -2489,7 +2491,7 @@ include 'menu_tasks.php';
 													<?php } 
 													
 													if(in_array('description',$columns_list_array)) { ?>
-														<td style="<?=@$text_align?>;<?=@$padding?>:5px;<?=@$description_bgcolor?>"><?=html_entity_decode($description)?></td>
+														<td style="<?=@$text_align?>;<?=@$padding?>:5px;<?=@$description_bgcolor?>"><?=$description?></td>
 													<?php } 
 													
 													if(in_array('_task',$columns_list_array)) { ?>
