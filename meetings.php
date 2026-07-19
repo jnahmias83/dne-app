@@ -2475,7 +2475,7 @@ include 'menu_tasks.php';
 												}
 												
 												if($image1 != '' && $is_appears_img1) { ?>
-												<tr>
+												<tr class="meeting_<?=@$meeting_id?>">
 													<?php if(in_array('subject',$columns_list_array)) { ?>
 														<td style="<?=@$text_align?>;<?=@$padding?>:5px;<?=@$subject_bgcolor?>;">
 															<?=html_entity_decode(@$subject)?>
@@ -3529,7 +3529,8 @@ $(document).ready(function(){
 		const _iter = localStorage.getItem('iteration');
 		if(_mid){
 			$('tr.task-row-highlight').removeClass('task-row-highlight');
-			const $_r = _iter ? $('#row_' + _iter) : $('#meetings_table tr.meeting_' + _mid);
+			let $_r = _iter ? $('#row_' + _iter) : $();
+			if(!$_r.length) $_r = $('#meetings_table tr.meeting_' + _mid);
 			if($_r.length){
 				$_r.addClass('task-row-highlight');
 				setTimeout(function(){
@@ -3591,7 +3592,8 @@ $(document).ready(function(){
 				$('#modalTaskFollowupActions').modal('show');
 				setProjectModalTitle(project_id, '#modalTaskFollowupActions', false);
 				setTimeout(function(){
-				    let $row = iteration ? $('#row_' + iteration) : $('#meetings_table tr.meeting_' + meeting_id);
+				    let $row = iteration ? $('#row_' + iteration) : $();
+				    if (!$row.length) $row = $('#meetings_table tr.meeting_' + meeting_id);
 				    if ($row.length) $row[0].scrollIntoView({block: 'center'});
 				}, 400);
 			},
