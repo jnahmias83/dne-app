@@ -1734,7 +1734,7 @@ foreach($all_what_news as $wn){
 															</div>
 															<div class="width85Percents">
 																<?php if(@$list_from == 'reminders' || @$list_from == 'active_tracking'){ ?>
-																	<div class="flex flex-wrap justify-content-center align-items-center" style="line-height:0.5">
+																	<div class="flex flex-wrap justify-content-center align-items-center task-title-row" style="line-height:0.5">
 																		<div class="width65Percents align-items-center">
 																			<span class="color-19bf42 font-weight-bold"><?=@$chapter_name?></span>
 																			<!--<span class="color-1A5276 font-weight-bold">|</span>
@@ -1790,7 +1790,7 @@ foreach($all_what_news as $wn){
 																	<?php } 
 																}
 																else if(@$list_from == 'user_tasks'){ ?>
-																	<div class="flex flex-wrap justify-content-center" style="line-height:0.5">
+																	<div class="flex flex-wrap justify-content-center task-title-row" style="line-height:0.5">
 																		<div class="width65Percents align-items-center">
 																			<span class="color-63d687 font-weight-bold"><?=@$chapter_name?></span>
 																			<span class="color-1A5276 font-weight-bold">|</span>
@@ -3185,6 +3185,20 @@ function toTasksList(id_project){
      margin-left: auto;
      margin-right: auto;
   }
+
+  .task_name .width15Percents,
+  .task_name .width85Percents {
+     width: 100% !important;
+  }
+
+  .task_name .width65Percents,
+  .task_name .width35Percents {
+     width: 100% !important;
+  }
+
+  .task-title-row {
+     line-height: 1.3 !important;
+  }
 }
 
 @media (min-width: 768px) and (max-width: 1024px) {
@@ -3209,6 +3223,20 @@ function toTasksList(id_project){
     .task-container .width65Percents,
     .task-container .width35Percents {
         width: 100% !important;
+    }
+
+    .task_name .width15Percents,
+    .task_name .width85Percents {
+        width: 100% !important;
+    }
+
+    .task_name .width65Percents,
+    .task_name .width35Percents {
+        width: 100% !important;
+    }
+
+    .task-title-row {
+        line-height: 1.3 !important;
     }
 
     #div_top_buttons {
