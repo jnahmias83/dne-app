@@ -742,7 +742,7 @@ $('#cancel_btn').click(function(){
 	.form-flex-row {
 		flex-wrap: wrap;
 	}
-	#firstname, #lastname, #email, #phone, #name {
+	#lastname, #email, #phone, #name {
 		width: 100%;
 		box-sizing: border-box;
 	}
@@ -763,7 +763,7 @@ $('#cancel_btn').click(function(){
 	.form-flex-row {
 		flex-wrap: wrap;
 	}
-	#firstname, #lastname, #email, #phone, #name {
+	#lastname, #email, #phone, #name {
 		width: 100%;
 		box-sizing: border-box;
 	}
