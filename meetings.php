@@ -5141,6 +5141,17 @@ td[id^="td_area_"] > div {
     #meetings_table th.col-w-desc, #meetings_table td.col-w-desc { width: auto; }
 }
 
+@media (max-width: 700px) {
+    .report-container {
+        padding-top: 22px;
+    }
+    .badge-top-right {
+        right: 10px;
+        max-width: calc(100% - 20px);
+        white-space: nowrap;
+    }
+}
+
 #meetings_table td[id^="td_task_creation_date_"] input,
 #meetings_table td[id^="td_destination_date_"] input {
     font-size: 12px;
