@@ -1,4 +1,4 @@
-<?php 
+﻿<?php 
 include 'functions/functions.php';
 session_start();
 
@@ -151,9 +151,7 @@ if($_POST['from'] == 'projects'){
 									  LEFT JOIN dne_responsibles r ON m.id_responsible = r.id
 									  LEFT JOIN dne_progress_status ps ON m.id_progress_status = ps.id
 									  LEFT JOIN dne_projects p ON m.id_project = p.id
-									  WHERE ps.name_he <> ?  
-									  AND ps.name_he <> ?
-									  AND ps.name_he <> ?
+						  WHERE (ps.name_he IS NULL OR (ps.name_he <> ? AND ps.name_he <> ? AND ps.name_he <> ?))
 									  AND p.is_project_active = ?  
 									  AND lmu.id_user <> ?
 									  AND lmu.is_remark_appears_log = ?
@@ -266,9 +264,7 @@ if($_POST['from'] == 'projects'){
 								       LEFT JOIN dne_chapters c ON m.id_chapter = c.id
 									   LEFT JOIN dne_tasks t ON m.id_task = t.id
 									   LEFT JOIN dne_responsibles r ON m.id_responsible = r.id
-									   LEFT JOIN dne_progress_status ps ON m.id_progress_status = ps.id 
-									   LEFT JOIN dne_projects p ON m.id_project = p.id
-								       WHERE ps.name_he <> ?          						   
+					   WHERE (ps.name_he IS NULL OR (ps.name_he <> ? AND ps.name_he <> ? AND ps.name_he <> ?))
 									   AND ps.name_he <> ?
 									   AND ps.name_he <> ?
 								       AND m.id_project = ?

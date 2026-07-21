@@ -207,10 +207,8 @@ $query = $mysqli->prepare("SELECT lmu.id AS lmu_id,lmu.updated_users,m.id AS id_
 						  LEFT JOIN dne_responsibles r ON m.id_responsible = r.id
 						  LEFT JOIN dne_progress_status ps ON m.id_progress_status = ps.id
 						  LEFT JOIN dne_projects p ON m.id_project = p.id
-						  WHERE ps.name_he <> ?  
-						  AND ps.name_he <> ?
-						  AND ps.name_he <> ?
-					      AND p.is_project_active = ?  
+						  WHERE (ps.name_he IS NULL OR (ps.name_he <> ? AND ps.name_he <> ? AND ps.name_he <> ?))
+					      AND p.is_project_active = ?
 						  AND lmu.id_user <> ?
 						  AND lmu.is_remark_appears_log = ?
 						  AND EXISTS (
@@ -315,9 +313,10 @@ $query = $mysqli->prepare("SELECT ln.id_log_meeting_updates AS id_log_meeting_up
                            ln.id_log_meeting_tracking AS id_log_meeting_tracking,
                            lmu.id AS lmu_id,lmu.action_date AS lmu_action_date,
 						   lmu.updated_users AS lmu_updated_users,
+						   lmu.action AS lmu_action,
 						   COALESCE(TRIM(lmu.remark),'') AS lmu_remark,
                            lmt.id AS lmt_id,lmt.action_date AS lmt_action_date,
-						   COALESCE(TRIM(lmt.remark),'') AS lmt_remark,						   
+						   COALESCE(TRIM(lmt.remark),'') AS lmt_remark,
 						   m.id AS id,m.id_user AS id_user,
 						   p.id AS p_id,p.nickname AS p_nickname,
 						   p.lang AS  p_lang,
@@ -335,7 +334,9 @@ $query = $mysqli->prepare("SELECT ln.id_log_meeting_updates AS id_log_meeting_up
 						   m.reminder_date AS reminder_date,
 						   m.id_track_responsible AS id_track_responsible,
 					   u.nickname AS user_nickname,
-					(SELECT lmu2.remark FROM dne_log_meeting_updates lmu2 WHERE lmu2.id_meeting = m.id AND TRIM(lmu2.remark) <> '' ORDER BY lmu2.id DESC LIMIT 1) AS latest_lmu_remark
+					(SELECT lmu2.remark FROM dne_log_meeting_updates lmu2 WHERE lmu2.id_meeting = m.id AND TRIM(lmu2.remark) <> '' ORDER BY lmu2.id DESC LIMIT 1) AS latest_lmu_remark,
+					(SELECT ps2.name_he FROM dne_log_meeting_updates lmu3 LEFT JOIN dne_progress_status ps2 ON ps2.id = lmu3.id_progress_status WHERE lmu3.id_meeting = m.id AND lmu3.id_progress_status <> 0 AND lmu3.id_user <> ? ORDER BY lmu3.id DESC LIMIT 1) AS lmu_progress_status_name,
+					(SELECT lmu4.destination_date FROM dne_log_meeting_updates lmu4 WHERE lmu4.id_meeting = m.id AND lmu4.destination_date <> '0000-00-00' AND lmu4.id_user <> ? ORDER BY lmu4.id DESC LIMIT 1) AS lmu_destination_date
                            FROM dne_log_news ln
                            LEFT JOIN dne_log_meeting_updates lmu ON ln.id_log_meeting_updates = lmu.id
                            LEFT JOIN dne_users u ON lmu.id_user = u.id
@@ -346,10 +347,8 @@ $query = $mysqli->prepare("SELECT ln.id_log_meeting_updates AS id_log_meeting_up
 						   LEFT JOIN dne_responsibles r ON m.id_responsible = r.id
 						   LEFT JOIN dne_progress_status ps ON m.id_progress_status = ps.id
 				           LEFT JOIN dne_projects p ON m.id_project = p.id
-						   WHERE ps.name_he <> ?  
-						   AND ps.name_he <> ?
-						   AND ps.name_he <> ?
-					       AND p.is_project_active = ?  
+						   WHERE (ps.name_he IS NULL OR (ps.name_he <> ? AND ps.name_he <> ? AND ps.name_he <> ?))
+					       AND p.is_project_active = ?
 						   AND lmu.id_user <> ?
 						   AND lmu.is_remark_appears_log = ?
 						   AND NOT FIND_IN_SET(?,lmu.updated_users)
@@ -359,9 +358,9 @@ $query = $mysqli->prepare("SELECT ln.id_log_meeting_updates AS id_log_meeting_up
 									WHERE r.id_project = p.id
 									AND r.id_user = ?
 						   )
-					       ORDER BY lmu_id");
-$query->bind_param('sssiiiii',$ps1,$ps2,$ps3,$is_active_project,$_SESSION['id_user'],$is_remark_appears_log,$_SESSION['id_user'],$_SESSION['id_user']);	
-$query->execute(); 
+					       ORDER BY lmu_id DESC");
+$query->bind_param('iisssiiiii',$_SESSION['id_user'],$_SESSION['id_user'],$ps1,$ps2,$ps3,$is_active_project,$_SESSION['id_user'],$is_remark_appears_log,$_SESSION['id_user'],$_SESSION['id_user']);
+$query->execute();
 $query->store_result();
 $all_what_news_num_rows = $query->num_rows;
 $all_what_news = fetch($query);
@@ -547,7 +546,7 @@ foreach($all_what_news as $wn){
 													<?php } ?>
 												</div>
 												<div class="width85Percents">
-													<div class="flex flex-wrap justify-content-center task-title-row" style="line-height:0.1">
+													<div class="flex flex-wrap justify-content-center task-title-row marginTop5" style="line-height:0.1">
 														<div class="width65Percents align-items-center">
 															<span class="color-19bf42 font-weight-bold"><?=@$chapter_name?></span>
 															<!--<span class="color-1A5276 font-weight-bold">|</span>
@@ -582,7 +581,7 @@ foreach($all_what_news as $wn){
 															?>
 															<div class="marginTop5 fontSize9 text-end" style="line-height:1">
 																<span class="border-black padding-2x-2y fontSize9 borderRadius20 align-items-center justify-content-center colorWhite bgColorBlack" style="display:inline-flex;line-height:1;"><?=@$tr_item->user_nickname?></span>
-																<span class="marginRight5 dir-rtl unicode-bidi-embed"><?=smartDate(@$tr_item->action_date)?> -</span>
+																<span class="marginRight2 log-date-grey dir-rtl unicode-bidi-embed"><?=smartDate(@$tr_item->action_date)?> -</span>
 																<span class="colorRed dir-rtl unicode-bidi-embed display-inline-block"><?=html_entity_decode(@$tr_remark)?></span>
 															</div>
 															<?php } ?>
@@ -704,8 +703,11 @@ foreach($all_what_news as $wn){
 																			$remark = mb_substr($remark,0,30,'UTF-8').'...';
 																?>
 																	<div class="marginTop5 fontSize9 text-end" style="line-height:1">
-																			<span class="dir-rtl unicode-bidi-embed">
-																				[<?php
+																			<span class="border-black padding-2x-2y fontSize9 borderRadius20 align-items-center justify-content-center colorWhite bgColorBlack" style="display:inline-flex;line-height:1;">
+																				<?=@$item->user_nickname?>
+																			</span>
+																			<span class="marginRight2 log-date-grey dir-rtl unicode-bidi-embed">
+																				<?php
 																				$formatter = new IntlDateFormatter(
 																					'he_IL',
 																					IntlDateFormatter::NONE,
@@ -715,12 +717,9 @@ foreach($all_what_news as $wn){
 																					'd MMM'
 																				);
 																				$action_date = new DateTime(@$item->action_date);
-																				echo $formatter->format($action_date)?>]
+																				echo $formatter->format($action_date)?>
 																			</span>
-																			<span class="dir-rtl unicode-bidi-embed">
-																				<?=@$item->user_nickname?>
-																			</span>
-																			- <span class="dir-rtl unicode-bidi-embed">מעקב</span> :
+																			-
 																			<span class="colorRed dir-rtl unicode-bidi-embed display-inline-block">
 																				<?=html_entity_decode(@$remark)?>
 																			</span>
@@ -857,7 +856,7 @@ foreach($all_what_news as $wn){
 												<div class="width85Percents">
 													<div class="flex flex-wrap justify-content-center align-items-center" style="line-height:1.3;flex-wrap:nowrap;">
 														<div class="width65Percents align-items-center">
-															<span class="color-19bf42 font-weight-bold"><?=@$chapter_name?></span>
+															<span class="marginRight5 color-19bf42 font-weight-bold"><?=@$chapter_name?></span>
 															<!--<span class="color-1A5276 font-weight-bold">|</span>
 															<span><?=@$task_name?></span>!-->
 														</div>
@@ -882,40 +881,45 @@ foreach($all_what_news as $wn){
 															if(mb_strlen(@$remark,'UTF-8') > 50)
 																$remark = mb_substr($remark,0,50,'UTF-8').'...';
 													?>
-															<div class="marginTop5 fontSize9 flex flex-wrap justify-content-center">
-																<div class="width100Percents">
-																	<span class="border-black padding-4x-4y borderRadius20 align-items-center justify-content-center font-weight-bold colorWhite bg-19bf42" style="display:inline-flex;line-height:1;">
+															<div class="marginTop5 fontSize9 text-end" style="position:relative;padding-right:26px;box-sizing:border-box;">
+																	<span class="badge-nickname-green" style="display:inline-flex;line-height:1;position:absolute;right:0;top:0;">
 																		<?=@$wn->user_nickname?>
 																	</span>
-																	<span class="color-19bf42 dir-rtl font-weight-bold unicode-bidi-embed">
-																		<?php 
+																	<span class="log-date-grey dir-rtl unicode-bidi-embed" style="font-weight:normal;">
+																		<?php
 																		echo smartDate(@$wn->lmu_action_date)?>
-																	</span>		
-																	<?php if(strlen($progress_status_name) > 2){ ?>
+																	</span>
+																	<?php if(@$wn->lmu_action == 'חדשה'){ ?>
 																		&nbsp;-
-																		<span class="color-1A5276 dir-rtl unicode-bidi-embed">
-																			<?=@$progress_status_name?>
-																		</span> 
-																	<?php }	
-																	    if(@$remark != '') echo ' : <span class="color-19bf42 dir-rtl unicode-bidi-embed">'.$remark.'</span>';
-																	    if($destination_date != '0000-00-00'){ ?>
-																		  &nbsp;-
-																			<span class="dir-rtl unicode-bidi-embed color-19bf42 font-weight-bold">
-																				<?php echo '(יעד - '.smartDate($destination_date).')'?>
-																			</span> 
-																	<?php } ?>															
-																</div>
+																		<span class="color-19bf42 dir-rtl unicode-bidi-embed" style="font-weight:bold;">
+																			המשימה נוצרה בתאריך <?=smartDate(@$wn->lmu_action_date)?>
+																		</span>
+																	<?php } else { ?>
+																		<?php if(trim(@$wn->lmu_progress_status_name) != ''){ ?>
+																			&nbsp;-
+																			<span class="color-19bf42 dir-rtl unicode-bidi-embed" style="font-weight:bold;font-size:11px;">
+																				<?=@$wn->lmu_progress_status_name?>
+																			</span>
+																		<?php }
+																		    if(@$remark != '') echo ' - <span class="color-19bf42 dir-rtl unicode-bidi-embed" style="font-weight:normal;">'.$remark.'</span>';
+																		    if(@$wn->lmu_destination_date != '' && @$wn->lmu_destination_date != '0000-00-00'){ ?>
+																			  &nbsp;-
+																				<span class="dir-rtl unicode-bidi-embed color-19bf42 font-weight-bold">
+																					תאריך יעד חדש : <?=smartDate(@$wn->lmu_destination_date)?>
+																				</span>
+																		<?php } ?>
+																	<?php } ?>
 															</div>
 													<?php }
 													      if($log_meeting_tracking_num_rows_wn > 0){ ?>
-													<div class="d-flex flex-column">
+													<div style="display:block;width:100%;">
 														<?php foreach($log_meeting_tracking_wn as $tr_item){
 															$tr_remark = @$tr_item->remark;
 															if(mb_strlen(@$tr_remark,'UTF-8') > 30) $tr_remark = mb_substr($tr_remark,0,30,'UTF-8').'...';
 														?>
-														<div class="marginTop5 fontSize9 text-end" style="line-height:1.4;">
-															<span class="border-black padding-2x-2y fontSize9 borderRadius20 align-items-center justify-content-center colorWhite bgColorBlack" style="display:inline-flex;line-height:1;margin-left:5px;"><?=@$tr_item->user_nickname?></span>
-															<span class="marginRight5 dir-rtl unicode-bidi-embed"><?=smartDate(@$tr_item->action_date)?> -</span>
+														<div class="marginTop5 fontSize9 text-end" style="line-height:1.4;position:relative;padding-right:26px;box-sizing:border-box;">
+															<span class="border-black padding-2x-2y fontSize9 borderRadius20 align-items-center justify-content-center colorWhite bgColorBlack" style="display:inline-flex;line-height:1;position:absolute;right:0;top:0;"><?=@$tr_item->user_nickname?></span>
+															<span class="marginRight2 log-date-grey dir-rtl unicode-bidi-embed"><?=smartDate(@$tr_item->action_date)?> -</span>
 															<span class="colorRed dir-rtl unicode-bidi-embed" style="word-wrap:break-word;overflow-wrap:break-word;"><?=html_entity_decode(@$tr_remark)?></span>
 														</div>
 														<?php } ?>
@@ -1026,6 +1030,7 @@ foreach($all_what_news as $wn){
 								                           ln.id_log_meeting_tracking AS id_log_meeting_tracking,
 								                           lmu.id AS lmu_id,lmu.action_date AS lmu_action_date,
 														   lmu.updated_users AS lmu_updated_users,
+														   lmu.action AS lmu_action,
 														   lmu.remark as lmu_remark,
 														   lmt.action_date AS lmt_action_date,
 														   lmt.remark as lmt_remark,
@@ -1046,7 +1051,9 @@ foreach($all_what_news as $wn){
 														   m.reminder_date AS reminder_date,
 														   m.id_track_responsible AS id_track_responsible,
 														   u.nickname AS user_nickname,
-														   (SELECT lmu2.remark FROM dne_log_meeting_updates lmu2 WHERE lmu2.id_meeting = m.id AND TRIM(lmu2.remark) <> '' ORDER BY lmu2.id DESC LIMIT 1) AS latest_lmu_remark
+														   (SELECT lmu2.remark FROM dne_log_meeting_updates lmu2 WHERE lmu2.id_meeting = m.id AND TRIM(lmu2.remark) <> '' ORDER BY lmu2.id DESC LIMIT 1) AS latest_lmu_remark,
+														   (SELECT ps2.name_he FROM dne_log_meeting_updates lmu3 LEFT JOIN dne_progress_status ps2 ON ps2.id = lmu3.id_progress_status WHERE lmu3.id_meeting = m.id AND lmu3.id_progress_status <> 0 AND lmu3.id_user <> ? ORDER BY lmu3.id DESC LIMIT 1) AS lmu_progress_status_name,
+														   (SELECT lmu4.destination_date FROM dne_log_meeting_updates lmu4 WHERE lmu4.id_meeting = m.id AND lmu4.destination_date <> '0000-00-00' AND lmu4.id_user <> ? ORDER BY lmu4.id DESC LIMIT 1) AS lmu_destination_date
 														   FROM dne_log_news ln
 														   LEFT JOIN dne_log_meeting_updates lmu ON ln.id_log_meeting_updates = lmu.id
 														   LEFT JOIN dne_users u ON lmu.id_user = u.id
@@ -1057,18 +1064,16 @@ foreach($all_what_news as $wn){
 														   LEFT JOIN dne_responsibles r ON m.id_responsible = r.id
 														   LEFT JOIN dne_progress_status ps ON m.id_progress_status = ps.id 
 														   LEFT JOIN dne_projects p ON m.id_project = p.id
-														   WHERE ps.name_he <> ?          						   
-														   AND ps.name_he <> ?
-														   AND ps.name_he <> ?
+														   WHERE (ps.name_he IS NULL OR (ps.name_he <> ? AND ps.name_he <> ? AND ps.name_he <> ?))
 														   AND m.id_project = ?
 														   AND lmu.id_user <> ?
 														   AND lmu.is_remark_appears_log = ?
 														   AND NOT FIND_IN_SET(?,lmu.updated_users)
-														   ORDER BY lmu_id");
-								$query->bind_param('sssiiii',$ps1,$ps2,$ps3,$pr->id,$_SESSION['id_user'],$is_remark_appears_log,$_SESSION['id_user']);	
-								$query->execute(); 
+														   ORDER BY lmu_id DESC");
+								$query->bind_param('iisssiiii',$_SESSION['id_user'],$_SESSION['id_user'],$ps1,$ps2,$ps3,$pr->id,$_SESSION['id_user'],$is_remark_appears_log,$_SESSION['id_user']);
+								$query->execute();
 								$query->store_result();
-								$what_news_num_rows = $query->num_rows;	
+								$what_news_num_rows = $query->num_rows;
 								$what_news = fetch($query);
 							?>
 				
@@ -1203,7 +1208,7 @@ foreach($all_what_news as $wn){
 																			?>
 																			<div class="marginTop5 fontSize9 text-end" style="line-height:1">
 																				<span class="border-black padding-2x-2y fontSize9 borderRadius20 align-items-center justify-content-center colorWhite bgColorBlack" style="display:inline-flex;line-height:1;"><?=@$tr_item->user_nickname?></span>
-																				<span class="marginRight5 dir-rtl unicode-bidi-embed"><?=smartDate(@$tr_item->action_date)?> -</span>
+																				<span class="marginRight2 log-date-grey dir-rtl unicode-bidi-embed"><?=smartDate(@$tr_item->action_date)?> -</span>
 																				<span class="colorRed dir-rtl unicode-bidi-embed display-inline-block"><?=html_entity_decode(@$tr_remark)?></span>
 																			</div>
 																			<?php } ?>
@@ -1531,32 +1536,38 @@ foreach($all_what_news as $wn){
 																	        $lmu_remark_s2 = trim(strip_tags(html_entity_decode($lmu_remark_s2)));
 																 	        if(mb_strlen(@$lmu_remark_s2,'UTF-8') > 50) $lmu_remark_s2 = mb_substr($lmu_remark_s2,0,50,'UTF-8').'...';
 								                                         ?>
-																			<div class="marginRight5 marginTop5 flex flex-wrap justify-content-center">
-																				<div class="width100Percents">
-																					<span class="dir-rtl colorGreen unicode-bidi-embed">
-																						[<?=smartDate(@$wn->lmu_action_date)?>]
-																					</span> 
-																					<span class="colorGreen dir-rtl unicode-bidi-embed">
+																			<div class="marginTop5 fontSize9 text-end" style="position:relative;padding-right:26px;box-sizing:border-box;">
+																					<span class="badge-nickname-green" style="position:absolute;right:0;top:0;">
 																						<?=@$wn->user_nickname?>
-																					</span>					
-																					<?php if($progress_status_name != ' '){ ?>
-																						<span class="colorGreen dir-rtl unicode-bidi-embed">
-																							<?=@$progress_status_name?>
-																						</span> 
-																					<?php }
-																					if(@$lmu_remark_s2 != '') echo ' : <span class="colorGreen dir-rtl unicode-bidi-embed">'.$lmu_remark_s2.'</span>'?>
+																					</span>
+																					<span class="marginRight2 dir-rtl log-date-grey unicode-bidi-embed" style="font-weight:normal;">
+																						<?=smartDate(@$wn->lmu_action_date)?>
+																					</span>
+																					<?php if(@$wn->lmu_action == 'חדשה'){ ?>
+																						<span class="color-19bf42 dir-rtl unicode-bidi-embed" style="font-weight:bold;">
+																							המשימה נוצרה בתאריך <?=smartDate(@$wn->lmu_action_date)?>
+																						</span>
+																					<?php } else { ?>
+																						<?php if(trim(@$wn->lmu_progress_status_name) != ''){ ?>
+																							<span class="color-19bf42 dir-rtl unicode-bidi-embed" style="font-weight:bold;font-size:11px;">
+																								<?=' '.@$wn->lmu_progress_status_name?>
+																							</span>
+																						<?php }
+																						if(@$lmu_remark_s2 != '') echo ' - <span class="color-19bf42 dir-rtl unicode-bidi-embed" style="font-weight:normal;">'.$lmu_remark_s2.'</span>';
+																						if(@$wn->lmu_destination_date != '' && @$wn->lmu_destination_date != '0000-00-00') echo ' - <span class="color-19bf42 dir-rtl unicode-bidi-embed" style="font-weight:bold;">תאריך יעד חדש : '.smartDate(@$wn->lmu_destination_date).'</span>';
+																						?>
+																					<?php } ?>
 																				</div>
-																			</div>
 																		<?php }
 																			if($log_meeting_tracking_num_rows_wn > 0){ ?>
-																				<div class="d-flex flex-column">
+																				<div style="display:block;width:100%;">
 																					<?php foreach($log_meeting_tracking_wn as $tr_item){
 																						$tr_remark = @$tr_item->remark;
 																						if(mb_strlen(@$tr_remark,'UTF-8') > 30) $tr_remark = mb_substr($tr_remark,0,30,'UTF-8').'...';
 																					?>
-																					<div class="marginTop5 fontSize9 text-end" style="line-height:1">
-																						<span class="border-black padding-2x-2y fontSize9 borderRadius20 align-items-center justify-content-center colorWhite bgColorBlack" style="display:inline-flex;line-height:1;"><?=@$tr_item->user_nickname?></span>
-																						<span class="marginRight5 dir-rtl unicode-bidi-embed"><?=smartDate(@$tr_item->action_date)?> -</span>
+																					<div class="marginTop5 fontSize9 text-end" style="line-height:1.4;position:relative;padding-right:26px;box-sizing:border-box;">
+																						<span class="border-black padding-2x-2y fontSize9 borderRadius20 align-items-center justify-content-center colorWhite bgColorBlack" style="display:inline-flex;line-height:1;position:absolute;right:0;top:0;"><?=@$tr_item->user_nickname?></span>
+																						<span class="marginRight2 log-date-grey dir-rtl unicode-bidi-embed"><?=smartDate(@$tr_item->action_date)?> -</span>
 																						<span class="colorRed dir-rtl unicode-bidi-embed display-inline-block"><?=html_entity_decode(@$tr_remark)?></span>
 																					</div>
 																					<?php } ?>
@@ -1763,9 +1774,12 @@ foreach($all_what_news as $wn){
 																					if(mb_strlen(@$remark,'UTF-8') > 50)
 																						$remark = mb_substr($remark,0,50,'UTF-8').'...';
 																				?>
-																	<div class="marginTop5 fontSize9 text-end">
-																			<span class="dir-rtl unicode-bidi-embed">
-																				[<?php
+																	<div class="marginTop5 fontSize9 text-end" style="position:relative;padding-right:26px;box-sizing:border-box;">
+																			<span class="border-black padding-2x-2y fontSize9 borderRadius20 align-items-center justify-content-center colorWhite bgColorBlack" style="display:inline-flex;line-height:1;position:absolute;right:0;top:0;">
+																				<?=@$item->user_nickname?>
+																			</span>
+																			<span class="marginRight2 log-date-grey dir-rtl unicode-bidi-embed">
+																				<?php
 																				$formatter = new IntlDateFormatter(
 																					'he_IL',
 																					IntlDateFormatter::NONE,
@@ -1775,12 +1789,9 @@ foreach($all_what_news as $wn){
 																					'd MMM'
 																				);
 																				$action_date = new DateTime(@$item->action_date);
-																				echo $formatter->format($action_date)?>]
+																				echo $formatter->format($action_date)?>
 																			</span>
-																			<span class="dir-rtl unicode-bidi-embed font-weight-bold">
-																				<?=@$item->user_nickname?>
-																			</span>
-																			- <span class="dir-rtl unicode-bidi-embed font-weight-bold">מעקב</span> :
+																			-
 																			<span class="colorRed dir-rtl unicode-bidi-embed display-inline-block font-weight-bold">
 																				<?=html_entity_decode(@$remark)?>
 																			</span>
@@ -1819,7 +1830,7 @@ foreach($all_what_news as $wn){
 																		?>
 																		<div class="marginTop5 fontSize9 text-end" style="line-height:1">
 																			<span class="border-black padding-2x-2y fontSize9 borderRadius20 align-items-center justify-content-center colorWhite bgColorBlack" style="display:inline-flex;line-height:1;"><?=@$tr_item->user_nickname?></span>
-																			<span class="marginRight5 dir-rtl unicode-bidi-embed"><?=smartDate(@$tr_item->action_date)?> -</span>
+																			<span class="marginRight2 log-date-grey dir-rtl unicode-bidi-embed"><?=smartDate(@$tr_item->action_date)?> -</span>
 																			<span class="colorRed dir-rtl unicode-bidi-embed display-inline-block"><?=html_entity_decode(@$tr_remark)?></span>
 																		</div>
 																		<?php } ?>
@@ -3177,6 +3188,10 @@ function toTasksList(id_project){
      text-align: right;
      margin-top: 5px;
   }
+}
+
+.filter-radio-row {
+  display: inline-block;
 }
 
 @media (orientation: landscape) and (max-height: 500px) {
