@@ -201,9 +201,9 @@ $query->store_result();
 $all_not_approved_accounts_num_rows = $query->num_rows; 
 $all_not_approved_accounts = fetch($query);
 
-$query = $mysqli->prepare("SELECT lmu.id AS lmu_id,lmu.updated_users,m.id AS id_meeting 
+$query = $mysqli->prepare("SELECT lmu.id AS lmu_id,lmu.updated_users,m.id AS id_meeting
                           FROM dne_log_meeting_updates lmu
-						  LEFT JOIN dne_meetings m ON lmu.id_meeting = m.id 
+						  INNER JOIN dne_meetings m ON lmu.id_meeting = m.id
 						  LEFT JOIN dne_responsibles r ON m.id_responsible = r.id
 						  LEFT JOIN dne_progress_status ps ON m.id_progress_status = ps.id
 						  LEFT JOIN dne_projects p ON m.id_project = p.id
@@ -341,7 +341,7 @@ $query = $mysqli->prepare("SELECT ln.id_log_meeting_updates AS id_log_meeting_up
                            LEFT JOIN dne_log_meeting_updates lmu ON ln.id_log_meeting_updates = lmu.id
                            LEFT JOIN dne_users u ON lmu.id_user = u.id
 						   LEFT JOIN dne_log_meeting_tracking lmt ON ln.id_log_meeting_tracking = lmt.id
-						   LEFT JOIN dne_meetings m ON ln.id_meeting = m.id  
+						   INNER JOIN dne_meetings m ON ln.id_meeting = m.id  
 						   LEFT JOIN dne_chapters c ON m.id_chapter = c.id
 						   LEFT JOIN dne_tasks t ON m.id_task = t.id
 						   LEFT JOIN dne_responsibles r ON m.id_responsible = r.id
@@ -358,7 +358,7 @@ $query = $mysqli->prepare("SELECT ln.id_log_meeting_updates AS id_log_meeting_up
 									WHERE r.id_project = p.id
 									AND r.id_user = ?
 						   )
-					       ORDER BY lmu_id DESC");
+					       ORDER BY GREATEST(COALESCE(lmu.action_date,'1970-01-01'), COALESCE(lmt.action_date,'1970-01-01')) DESC");
 $query->bind_param('iisssiiiii',$_SESSION['id_user'],$_SESSION['id_user'],$ps1,$ps2,$ps3,$is_active_project,$_SESSION['id_user'],$is_remark_appears_log,$_SESSION['id_user'],$_SESSION['id_user']);
 $query->execute();
 $query->store_result();
@@ -891,23 +891,18 @@ foreach($all_what_news as $wn){
 																	</span>
 																	<?php if(@$wn->lmu_action == 'חדשה'){ ?>
 																		&nbsp;-
-																		<span class="color-19bf42 dir-rtl unicode-bidi-embed" style="font-weight:bold;">
+																		<span class="colorGreenDark dir-rtl unicode-bidi-embed" style="font-weight:bold;">
 																			המשימה נוצרה בתאריך <?=smartDate(@$wn->lmu_action_date)?>
 																		</span>
 																	<?php } else { ?>
 																		<?php if(trim(@$wn->lmu_progress_status_name) != ''){ ?>
 																			&nbsp;-
-																			<span class="color-19bf42 dir-rtl unicode-bidi-embed" style="font-weight:bold;font-size:11px;">
+																			<span class="color-status-green-darker dir-rtl unicode-bidi-embed" style="font-weight:bold;">
 																				<?=@$wn->lmu_progress_status_name?>
 																			</span>
 																		<?php }
-																		    if(@$remark != '') echo ' - <span class="color-19bf42 dir-rtl unicode-bidi-embed" style="font-weight:normal;">'.$remark.'</span>';
-																		    if(@$wn->lmu_destination_date != '' && @$wn->lmu_destination_date != '0000-00-00'){ ?>
-																			  &nbsp;-
-																				<span class="dir-rtl unicode-bidi-embed color-19bf42 font-weight-bold">
-																					תאריך יעד חדש : <?=smartDate(@$wn->lmu_destination_date)?>
-																				</span>
-																		<?php } ?>
+																		    if(@$remark != '') echo ' - <span class="colorGreenDark dir-rtl unicode-bidi-embed" style="font-weight:normal;">'.$remark.'</span>';
+																		    ?>
 																	<?php } ?>
 															</div>
 													<?php }
@@ -1058,7 +1053,7 @@ foreach($all_what_news as $wn){
 														   LEFT JOIN dne_log_meeting_updates lmu ON ln.id_log_meeting_updates = lmu.id
 														   LEFT JOIN dne_users u ON lmu.id_user = u.id
 														   LEFT JOIN dne_log_meeting_tracking lmt ON ln.id_log_meeting_tracking = lmt.id
-														   LEFT JOIN dne_meetings m ON ln.id_meeting = m.id  
+														   INNER JOIN dne_meetings m ON ln.id_meeting = m.id  
 														   LEFT JOIN dne_chapters c ON m.id_chapter = c.id
 														   LEFT JOIN dne_tasks t ON m.id_task = t.id
 														   LEFT JOIN dne_responsibles r ON m.id_responsible = r.id
@@ -1069,7 +1064,7 @@ foreach($all_what_news as $wn){
 														   AND lmu.id_user <> ?
 														   AND lmu.is_remark_appears_log = ?
 														   AND NOT FIND_IN_SET(?,lmu.updated_users)
-														   ORDER BY lmu_id DESC");
+														   ORDER BY GREATEST(COALESCE(lmu.action_date,'1970-01-01'), COALESCE(lmt.action_date,'1970-01-01')) DESC");
 								$query->bind_param('iisssiiii',$_SESSION['id_user'],$_SESSION['id_user'],$ps1,$ps2,$ps3,$pr->id,$_SESSION['id_user'],$is_remark_appears_log,$_SESSION['id_user']);
 								$query->execute();
 								$query->store_result();
@@ -1544,17 +1539,16 @@ foreach($all_what_news as $wn){
 																						<?=smartDate(@$wn->lmu_action_date)?>
 																					</span>
 																					<?php if(@$wn->lmu_action == 'חדשה'){ ?>
-																						<span class="color-19bf42 dir-rtl unicode-bidi-embed" style="font-weight:bold;">
+																						<span class="colorGreenDark dir-rtl unicode-bidi-embed" style="font-weight:bold;">
 																							המשימה נוצרה בתאריך <?=smartDate(@$wn->lmu_action_date)?>
 																						</span>
 																					<?php } else { ?>
 																						<?php if(trim(@$wn->lmu_progress_status_name) != ''){ ?>
-																							<span class="color-19bf42 dir-rtl unicode-bidi-embed" style="font-weight:bold;font-size:11px;">
+																							<span class="color-status-green-darker dir-rtl unicode-bidi-embed" style="font-weight:bold;">
 																								<?=' '.@$wn->lmu_progress_status_name?>
 																							</span>
 																						<?php }
-																						if(@$lmu_remark_s2 != '') echo ' - <span class="color-19bf42 dir-rtl unicode-bidi-embed" style="font-weight:normal;">'.$lmu_remark_s2.'</span>';
-																						if(@$wn->lmu_destination_date != '' && @$wn->lmu_destination_date != '0000-00-00') echo ' - <span class="color-19bf42 dir-rtl unicode-bidi-embed" style="font-weight:bold;">תאריך יעד חדש : '.smartDate(@$wn->lmu_destination_date).'</span>';
+																						if(@$lmu_remark_s2 != '') echo ' - <span class="colorGreenDark dir-rtl unicode-bidi-embed" style="font-weight:normal;">'.$lmu_remark_s2.'</span>';
 																						?>
 																					<?php } ?>
 																				</div>
@@ -1931,8 +1925,8 @@ foreach($all_what_news as $wn){
 								<div class="row marginTop5 dir-rtl">
 								    <div class="col-12 alignCenter">
 									   <div class="col-12 alignCenter">
-											<a id="link_next_task"><i class="fa-solid fa-forward marginLeft10 fontSize33 color-349feb cursor-pointer"></i></a>																																	
-											<a id="link_prev_task"><i class="fa-solid fa-backward fontSize33 color-349feb cursor-pointer"></i></a>
+											<a id="link_next_task" title="הבא"><i class="fa-solid fa-forward marginLeft10 fontSize33 color-349feb cursor-pointer"></i></a>
+											<a id="link_prev_task" title="הקודם"><i class="fa-solid fa-backward fontSize33 color-349feb cursor-pointer"></i></a>
 								        </div>
 								    </div>
 								</div>
@@ -2253,6 +2247,7 @@ $(document).ready(function(){
 		if(mid){
 			const $rowReload = $('.task_name[data-meetingid="'+mid+'"]').closest('tr');
 			if($rowReload.length){
+				$('tr.task-row-highlight').removeClass('task-row-highlight');
 				$rowReload.addClass('task-row-highlight');
 				setTimeout(function(){
 					const $vL = $('#left_new_content .task_name[data-meetingid="'+mid+'"]').closest('tr');
@@ -2741,16 +2736,17 @@ $(document).ready(function(){
     });
 	
 	$('[id="link_prev_task"]').on('click', function(){
+		if(taskDetailsLoading) return;
 	  	let form_data = new FormData();
         form_data.append('from','projects');
 		form_data.append('currentBadgeTarget',currentBadgeTarget);
 		form_data.append('currentProject',currentProject);
 		form_data.append('filter_by',$('#filter_by').val());
 		form_data.append('list_user_tasks',$('#list_user_tasks').val());
-		
+
 		if($('#hidden_is_to_do_today').val() == 1)
 		   form_data.append('is_to_do_today',1);
-		
+
 		$.ajax({
 			type: 'POST',
 			url: 'fill_meeting_ids.php',
@@ -2761,11 +2757,12 @@ $(document).ready(function(){
 			success: function(data){
 				let meeting_ids = data;
 				navigateTasks(meeting_ids,'prev');
-			}, 
-		});		   
+			},
+		});
 	});
 	
 	$('[id="link_next_task"]').on('click', function(){
+		if(taskDetailsLoading) return;
 		let form_data = new FormData();
         form_data.append('from','projects');
 		form_data.append('currentBadgeTarget',currentBadgeTarget);
@@ -2823,7 +2820,10 @@ $(document).ready(function(){
 	    }
     });
 	
+	let taskDetailsLoading = false;
+
 	$(document).on('click','.task_name', function (){
+		taskDetailsLoading = true;
 		project_id = $(this).data('projectid');
 		project_nickname = $(this).data('projectnickname');
         lang = $(this).data('lang') || 'HE';
@@ -2845,10 +2845,34 @@ $(document).ready(function(){
 		reminder_time = $(this).data('remindertime');
 		is_to_do_today = $(this).data('istodotoday');
 
+		let form_data_nav = new FormData();
+		form_data_nav.append('from','projects');
+		form_data_nav.append('currentBadgeTarget',currentBadgeTarget);
+		form_data_nav.append('currentProject',currentProject);
+		form_data_nav.append('filter_by',$('#filter_by').val());
+		form_data_nav.append('list_user_tasks',$('#list_user_tasks').val());
+		if(is_to_do_today == 1)
+			form_data_nav.append('is_to_do_today',1);
+
+		$.ajax({
+			type: 'POST',
+			url: 'fill_meeting_ids.php',
+			data: form_data_nav,
+			cache: false,
+			processData: false,
+			contentType: false,
+			success: function(nav_data){
+				let nav_ids_array = $.trim(nav_data).split(',');
+				let nav_index = nav_ids_array.indexOf(String(meeting_id));
+				$('#link_prev_task').toggle(nav_index !== 0);
+				$('#link_next_task').toggle(nav_index !== nav_ids_array.length - 1);
+			}
+		});
+
 		let form_data = new FormData();
 		form_data.append('id_meeting',meeting_id);
 		form_data.append('wn_meeting_ids',$('#wn_meeting_ids').val());
-	   
+
 		$.ajax({
 			type: 'POST',
 			url: 'task_details.php',
@@ -2860,9 +2884,12 @@ $(document).ready(function(){
 				let task_details = data.split('|~|');
 				let content = fillContentTaskDetails(meeting_id,'',task_details,true);
 				$('#div_content_task_details').html(content);
+				taskDetailsLoading = false;
+				$('#modalTaskFollowupActions').modal('show');
+				setProjectModalTitle(project_id, '#modalTaskFollowupActions', false);
 			},
 		});
-	   
+
 		setBellBcgColor(track_type);
 		setEmergencyTaskCSS(is_priority);
 			
@@ -2892,8 +2919,6 @@ $(document).ready(function(){
 		$('tr.task-row-highlight').removeClass('task-row-highlight');
 		const $highlightRow = $('.task_name[data-meetingid="'+meeting_id+'"]').closest('tr');
 		if($highlightRow.length){ $highlightRow.addClass('task-row-highlight'); }
-		$('#modalTaskFollowupActions').modal('show');
-		setProjectModalTitle(project_id, '#modalTaskFollowupActions', false);
 	});
 	
 	$(document).on('click','#save_update_task_btn', function (){

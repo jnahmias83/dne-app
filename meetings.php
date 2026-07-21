@@ -1639,7 +1639,7 @@ include 'menu_tasks.php';
 																	.@$item->user_nickname
 																	."</span> "
 																	."<span class='log-date-grey' style='direction:".@$dir.";unicode-bidi:embed;'>"
-																	."[".smartDate(@$action_date, $lang)."]"
+																	.smartDate(@$action_date, $lang)
 																	."</span>";
 
 													if(preg_match('/\p{L}/u', $progress_status_log_updates)){
@@ -1687,7 +1687,7 @@ include 'menu_tasks.php';
 												if(@$track_type && @$remark != ''){
 													$track_initials = mb_strtoupper(mb_substr(@$item->user_nickname, 0, 2, 'UTF-8'));
 													$description .= "<div id='div-tracking-remarks-'".@$meeting_id."' class='marginTop5 display-block ".@$dir_log_meeting_tracking."' style='line-height:1.8;'>"
-																  . "<span class='badge-circle' style='display:inline-flex;align-items:center;justify-content:center;background-color:#333;width:15px;height:15px;padding:2px;box-sizing:border-box;font-size:8px;vertical-align:middle;'>".$track_initials."</span>"
+																  . "<span class='badge-circle' style='display:inline-flex;align-items:center;justify-content:center;background-color:#333;width:22px;height:22px;padding:2px;box-sizing:border-box;font-size:10px;vertical-align:middle;'>".$track_initials."</span>"
 																  . " <span class='colorGrey ".(@$lang=='HE' ? 'dir-rtl' : 'dir-ltr')." unicode-bidi-embed' style='vertical-align:top;'>".smartDate(@$item->action_date, $lang)."</span>"
 																  . " : <span class='colorRed ".(@$lang=='HE' ? 'dir-rtl' : 'dir-ltr')." unicode-bidi-embed'>".nl2br(html_entity_decode(@$item->remark))."</span>"
 																  . (@$tracking_data != '' ? " <span class='colorRed ".(@$lang=='HE' ? 'dir-rtl' : 'dir-ltr')." unicode-bidi-embed'>".@$tracking_data."</span>" : "")
@@ -2240,7 +2240,7 @@ include 'menu_tasks.php';
 																	    .@$item->user_nickname
 																	    ."</span> "
 																	    ."<span class='log-date-grey' style='direction:".@$dir.";unicode-bidi:embed;'>"
-																		."[".smartDate(@$action_date, $lang)."]"
+																		.smartDate(@$action_date, $lang)
 																		."</span> - "
 																		.html_entity_decode(@$remark)
 																		 ."</div>";
@@ -2276,7 +2276,7 @@ include 'menu_tasks.php';
 													if(@$track_type && @$remark != ''){
 														$track_initials2 = mb_strtoupper(mb_substr(@$item->user_nickname, 0, 2, 'UTF-8'));
 														$description .= "<div id='div-tracking-remarks-'".@$meeting_id."' class='marginTop5 display-block ".@$dir_log_meeting_tracking."' style='line-height:1.8;'>"
-																	  . "<span class='badge-circle' style='display:inline-flex;background-color:#333;width:15px;height:15px;font-size:8px;vertical-align:middle;'>".$track_initials2."</span>"
+																	  . "<span class='badge-circle' style='display:inline-flex;background-color:#333;width:22px;height:22px;font-size:10px;vertical-align:middle;'>".$track_initials2."</span>"
 																	  . " <span class='colorGrey ".(@$lang=='HE' ? 'dir-rtl' : 'dir-ltr')." unicode-bidi-embed' style='vertical-align:top;'>".smartDate(@$item->action_date, $lang)."</span>"
 																	  . " : <span class='colorRed ".(@$lang=='HE' ? 'dir-rtl' : 'dir-ltr')." unicode-bidi-embed'>".nl2br(html_entity_decode(@$item->remark))."</span>"
 																	  . (@$tracking_data != '' ? " <span class='colorRed ".(@$lang=='HE' ? 'dir-rtl' : 'dir-ltr')." unicode-bidi-embed'>".@$tracking_data."</span>" : "")
@@ -3035,8 +3035,8 @@ include 'menu_tasks.php';
 							    </div>
 								<div class="row marginTop5 dir-rtl">
 								    <div class="col-12 alignCenter">
-									    <a id="link_next_task"><i class="fa-solid fa-forward marginLeft10 fontSize33 color-349feb cursor-pointer"></i></a>		   
-									    <a id="link_prev_task"><i class="fa-solid fa-backward fontSize33 color-349feb cursor-pointer"></i></a>
+									    <a id="link_next_task" title="הבא"><i class="fa-solid fa-forward marginLeft10 fontSize33 color-349feb cursor-pointer"></i></a>		   
+									    <a id="link_prev_task" title="הקודם"><i class="fa-solid fa-backward fontSize33 color-349feb cursor-pointer"></i></a>
 								    </div>
 								</div>
 						   </form>
@@ -3370,6 +3370,7 @@ $(document).ready(function(){
 				behavior: 'instant'
 			});
 
+			$('tr.task-row-highlight').removeClass('task-row-highlight');
 			element.classList.add('row-darken');
 			element.classList.add('task-row-highlight');
 			localStorage.setItem('scroll_Y_<?=$project_id?>', Math.round(targetY));
@@ -4023,6 +4024,14 @@ $(document).ready(function(){
 	   $('#modalContent').append("<input type='hidden' id='hidden_meeting_id' value='"+meeting_id+"'><input type='hidden' id='hidden_iteration' value='"+iteration+"'><input type='hidden' id='hidden_project_id' value='"+project_id+"'><input type='hidden' id='hidden_lang' value='"+lang+"'><input type='hidden' id='hidden_user_id' value='"+user_id+"'><input type='hidden' id='hidden_chapter' value='"+chapter+"'><input type='hidden' id='hidden_name' value='"+subject+"'><input type='hidden' id='hidden_area' value='"+area+"'><input type='hidden' id='hidden_recipient' value='"+recipient+"'><input type='hidden' id='hidden_responsible_id' value='"+responsible_id+"'><input type='hidden' id='hidden_destination_date' value='"+destination_date+"'><input type='hidden' id='hidden_progress_status_id' value='"+progress_status_id+"'><input type='hidden' id='hidden_is_priority' value='"+is_priority+"'><input type='hidden' id='hidden_remark' value='"+remark+"'><input type='hidden' id='hidden_track_responsible_id' value='"+track_responsible_id+"'><input type='hidden' id='hidden_track_type' value='"+track_type+"'><input type='hidden' id='hidden_reminder_date' value='"+reminder_date+"'><input type='hidden' id='hidden_reminder_time' value='"+reminder_time+"'>");
 	   $('tr.task-row-highlight').removeClass('task-row-highlight');
 	   $('#meetings_table tr.meeting_' + meeting_id).addClass('task-row-highlight');
+	   let $highlightedRow = $('#meetings_table tr.meeting_' + meeting_id);
+	   if($highlightedRow.length) $highlightedRow[0].scrollIntoView({block:'center'});
+
+	   let table_meeting_ids = $('#meetings_table [id^="task_actions_"]').map(function(){ return String($(this).data('meetingid')); }).get();
+	   let table_index = table_meeting_ids.indexOf(String(meeting_id));
+	   $('#link_prev_task').toggle(table_index !== 0);
+	   $('#link_next_task').toggle(table_index !== table_meeting_ids.length - 1);
+
 	   $('#modalTaskFollowupActions').modal('show');
 	   setProjectModalTitle(project_id, '#modalTaskFollowupActions', false);
     });
@@ -4274,43 +4283,13 @@ $(document).ready(function(){
      });
 	
 	 $('[id="link_prev_task"]').on('click', function(){
-	   	let form_data = new FormData();
-        form_data.append('from','meetings');
-        form_data.append('id_project',$('#hidden_project_id').val());
-		form_data.append('sql',$('#sql').val());
-		
-		$.ajax({
-			type: 'POST',
-			url: 'fill_meeting_ids.php',
-			data: form_data,
-			cache: false,
-			processData: false,
-			contentType: false,
-			success: function(data) {
-				let meeting_ids = data;
-				navigateTasks(meeting_ids,'prev');
-			}, 
-		});		   
+		let meeting_ids = $('#meetings_table [id^="task_actions_"]').map(function(){ return String($(this).data('meetingid')); }).get().join(',');
+		navigateTasks(meeting_ids,'prev');
 	});
-	
+
 	$('[id="link_next_task"]').on('click', function(){
-	   	let form_data = new FormData();
-        form_data.append('from','meetings');
-        form_data.append('id_project',$('#hidden_project_id').val());
-		form_data.append('sql',$('#sql').val());
-		
-		$.ajax({
-			type: 'POST',
-			url: 'fill_meeting_ids.php',
-			data: form_data,
-			cache: false,
-			processData: false,
-			contentType: false,
-			success: function(data) {
-				let meeting_ids = data;
-				navigateTasks(meeting_ids,'next');
-			}, 
-		});		   
+		let meeting_ids = $('#meetings_table [id^="task_actions_"]').map(function(){ return String($(this).data('meetingid')); }).get().join(',');
+		navigateTasks(meeting_ids,'next');
 	});
 	
 	let modalFilterBySupplier = $('#modalFilterBySupplier');
@@ -4477,35 +4456,21 @@ $(document).on('click', 'tr[id*="row_"]', function(){
 
 $(document).on('click','#save_update_task_btn', function (){
 	_updateTaskSaving = true;
-	let form_data = new FormData();
-	form_data.append('from','meetings');
-	form_data.append('id_project',$('#hidden_project_id').val());
-	form_data.append('sql',$('#sql').val());
-	
-	$.ajax({
-		type: 'POST',
-		url: 'fill_meeting_ids.php',
-		data: form_data,
-		cache: false,
-		processData: false,
-		contentType: false,
-		success: function(data){		
-			let meeting_ids_array = data.split(',');			
-			let current_meeting_id = $('#hidden_meeting_id').val();			
-			let index = meeting_ids_array.indexOf(current_meeting_id);			
-				   
-			if($('#progress_status_update option:selected').text().trim() == 'ארכיון' ||
-				$('#progress_status_update option:selected').text().trim() == 'בוצע/נמסר'){
-					index++;
-					if(index >= meeting_ids_array.length) 
-						index = 0;
-			}
-			
-			let next_meeting_id = meeting_ids_array[index];				
-			localStorage.setItem('next_meeting_id',next_meeting_id);
-			setData(current_meeting_id,$('#hidden_iteration').val(),'update_task',1,0,'for_closing');
-		}
-   });
+
+	let meeting_ids_array = $('#meetings_table [id^="task_actions_"]').map(function(){ return String($(this).data('meetingid')); }).get();
+	let current_meeting_id = $('#hidden_meeting_id').val();
+	let index = meeting_ids_array.indexOf(current_meeting_id);
+
+	if($('#progress_status_update option:selected').text().trim() == 'ארכיון' ||
+		$('#progress_status_update option:selected').text().trim() == 'בוצע/נמסר'){
+			index++;
+			if(index >= meeting_ids_array.length)
+				index = 0;
+	}
+
+	let next_meeting_id = meeting_ids_array[index];
+	localStorage.setItem('next_meeting_id',next_meeting_id);
+	setData(current_meeting_id,'','update_task',1,0,'for_closing');
 });
 
 function checkAllItems(){

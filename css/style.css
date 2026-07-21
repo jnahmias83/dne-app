@@ -273,6 +273,10 @@ th,td,table {
 	color: #2d7a52 !important;
 }
 
+.color-status-green-darker {
+	color: #143d29 !important;
+}
+
 .log-date-grey {
 	color: #706f6c !important;
 }

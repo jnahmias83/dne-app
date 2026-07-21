@@ -69,7 +69,7 @@ if(@$_POST['all_ids_to_edit'] == '') {
 		$action_date = @$item->action_date;
 		$user_nickname = @$item->user_nickname;
 		
-		$all_remarks .= "<div class='marginTop5'>".@$user_nickname." - [".smartDate(@$action_date, @$meeting->p_lang).'] - '.html_entity_decode(@$remark).'</div>';
+		$all_remarks .= "<div class='marginTop5'>".@$user_nickname." - ".smartDate(@$action_date, @$meeting->p_lang).' - '.html_entity_decode(@$remark).'</div>';
 		
 		$progress_status_log_updates = @$item->ps_name_he;
 		if(@$meeting->p_lang == 'EN')
@@ -78,7 +78,7 @@ if(@$_POST['all_ids_to_edit'] == '') {
 		if(@$remark != '')
 			$description .= "<div class='marginTop5 fontSize13 colorGreen' style='text-align:right;padding-right:8px;'>"
 							."<span class='dir-rtl unicode-bidi-embed'>"
-							."[".smartDate(@$action_date, @$meeting->p_lang)."]"
+							.smartDate(@$action_date, @$meeting->p_lang)
 							."</span> "
 							."<span class='dir-rtl unicode-bidi-embed'>"
 							.@$user_nickname
@@ -87,9 +87,9 @@ if(@$_POST['all_ids_to_edit'] == '') {
 				$description .= " - <span class='dir-rtl unicode-bidi-embed'>"
 								.@$progress_status_log_updates
 								."</span> ";
-			}				
-							
-			$description .=	 ": <span class='dir-rtl unicode-bidi-embed'>"
+			}
+
+			$description .=	 " - <span class='dir-rtl unicode-bidi-embed'>"
 							.html_entity_decode(@$remark)
 							."</span>"
 							."</div>";

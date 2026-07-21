@@ -85,10 +85,10 @@ if(@$_POST['isTracking'] == 1){
 			$content .=      "</div>";
 			$content .=      "<div id='div_log_meeting_tracking_{$item->id}' dir='".@$dir_attr."' class='".@$padding." fontSize13 width90Percents colorGrey border-black ".$align." display-block' style='line-height:1.8; padding:5px;'>";
 			$content .=           "<span style='display:inline-flex;align-items:center;gap:4px;vertical-align:top;'>";
-			$content .=                "<span class='badge-circle' style='display:inline-flex;align-items:center;justify-content:center;background-color:#333;width:15px;height:15px;font-size:8px;'>".$tracking_initials."</span>";
+			$content .=                "<span class='badge-circle' style='display:inline-flex;align-items:center;justify-content:center;background-color:#333;width:22px;height:22px;font-size:10px;'>".$tracking_initials."</span>";
 			$content .=                "<span class='dir-rtl unicode-bidi-embed'>".smartDate(@$item->action_date, @$_POST['lang'])."</span>";
 			$content .=           "</span>";
-			$content .= " : <span class='dir-rtl unicode-bidi-embed'>".html_entity_decode(@$tracking_remark)."</span>
+			$content .= " - <span class='dir-rtl unicode-bidi-embed'>".html_entity_decode(@$tracking_remark)."</span>
 			              </div></div>";
 		}
 
@@ -125,7 +125,7 @@ else {
 
 			$content .=   "<div id='div_log_meeting_updates_{$item->id}' dir='".@$dir_attr."' class='".@$padding." fontSize13 width90Percents colorGrey border-black ".@$align." display-block' style='line-height:1.8; padding:5px;'>";
 			$content .=   "<span style='display:inline-flex;align-items:center;gap:4px;vertical-align:top;'>";
-			$content .=        "<span class='badge-circle' style='display:inline-flex;align-items:center;justify-content:center;background-color:#333;width:15px;height:15px;font-size:8px;'>".$update_initials."</span>";
+			$content .=        "<span class='badge-circle' style='display:inline-flex;align-items:center;justify-content:center;background-color:#333;width:22px;height:22px;font-size:10px;'>".$update_initials."</span>";
 			$content .=        "<span class='dir-rtl unicode-bidi-embed'>".smartDate(@$item->action_date, @$_POST['lang'])."</span>";
 			$content .=   "</span>";
 

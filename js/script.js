@@ -1,4 +1,27 @@
-﻿function redirectToAddTaskForThisChapter(chapter_id){
+﻿(function(){
+	const activeRowClasses = ['task-row-highlight', 'row-darken'];
+	let lastActiveRow = null;
+	const observer = new MutationObserver(function(mutations){
+		mutations.forEach(function(m){
+			const el = m.target;
+			if(!el.classList) return;
+			const hasActiveClass = activeRowClasses.some(function(c){ return el.classList.contains(c); });
+			if(hasActiveClass){
+				if(lastActiveRow && lastActiveRow !== el){
+					activeRowClasses.forEach(function(c){ lastActiveRow.classList.remove(c); });
+				}
+				lastActiveRow = el;
+			}
+		});
+	});
+	function startObserver(){
+		if(document.body) observer.observe(document.body, {attributes:true, attributeFilter:['class'], subtree:true});
+		else setTimeout(startObserver, 50);
+	}
+	startObserver();
+})();
+
+function redirectToAddTaskForThisChapter(chapter_id){
 	let form_data = new FormData();		
 	form_data.append('id_chapter',chapter_id);
 	form_data.append('report_date',$('#report_date').val());
@@ -238,7 +261,7 @@ function setData(meeting_id,iteration,field,isRemark,forShare,screen_type){
 			if(field == 'update_task'){
 				let form_data1 = new FormData();
 				form_data1.append('id_meeting', localStorage.getItem('next_meeting_id'));
-				
+
 				$.ajax({
 					type: 'POST',
 					url: 'get_meeting_item.php',
@@ -246,7 +269,7 @@ function setData(meeting_id,iteration,field,isRemark,forShare,screen_type){
 					cache: false,
 					processData: false,
 					contentType: false,
-					success: function(data1){		
+					success: function(data1){
 						let data_array = data1.split('-');
 						$('#hidden_is_priority').val(data_array[0]);
 						$('#hidden_track_type').val(data_array[1]);
@@ -264,7 +287,7 @@ function setData(meeting_id,iteration,field,isRemark,forShare,screen_type){
 							cache: false,
 							processData: false,
 							contentType: false,
-							success: function(data2){	
+							success: function(data2){
 								let task_details = data2.split('|~|');
 								let content = fillContentTaskDetails(localStorage.getItem('next_meeting_id'), '', task_details, true);
 								$('#div_content_task_details').html(content);
@@ -287,7 +310,7 @@ function setData(meeting_id,iteration,field,isRemark,forShare,screen_type){
 			}		
 			
 	        if(screen_type != 'popup' && screen_type != 'popup2' && (iteration != ''))
-				location.href = url;	
+				location.href = url;
 		}
 	});	
 }
@@ -471,6 +494,10 @@ function removeAccountPayment(ap_type,record_id){
 }
 
 function fillContentTaskDetails(meeting_id,iteration,task_details,forShare,withProjectHeader){
+	task_details = task_details.slice();
+	while(task_details.length < 31) task_details.push('');
+	for(let i=0;i<task_details.length;i++) if(task_details[i] === undefined || task_details[i] === null) task_details[i] = '';
+
 	let content = '<table dir="rtl" width="100%" style="border-collapse:collapse;">';
 	if(withProjectHeader && task_details[1])
 		content += '<tr class="alignCenter height26"><td colspan="3" style="text-decoration:none;" class="bgColorBlue2 colorWhite font-weight-bold alignCenter paddingTop2 paddingBottom5 border-blue2">'+task_details[1]+'</td></tr>';
@@ -1126,7 +1153,7 @@ async function shareImage(imageUrl,meeting_id,project_id,iteration,is_all_ids_to
 }
 
 function navigateTasks(meeting_ids, action){
-	let meeting_ids_array = meeting_ids.split(',');
+	let meeting_ids_array = $.trim(meeting_ids).split(',');
 	let current_meeting_id = $('#hidden_meeting_id').val();
 	let index = meeting_ids_array.indexOf(current_meeting_id);
 
@@ -1139,6 +1166,9 @@ function navigateTasks(meeting_ids, action){
 	}
 
 	let meeting_id = meeting_ids_array[index];
+
+	$('#link_prev_task').toggle(index !== 0);
+	$('#link_next_task').toggle(index !== meeting_ids_array.length - 1);
 
 	if (!meeting_id || $.trim(meeting_id) === ''){
 		$('#modalTaskFollowupActions').modal('hide');

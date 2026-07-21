@@ -1,4 +1,4 @@
-﻿<?php 
+<?php 
 include 'functions/functions.php';
 session_start();
 
@@ -14,9 +14,10 @@ if($_POST['from'] == 'projects'){
 	$empty_remark ='';
 	$is_remark_appears_log = 1;
 	$zero_int = 0;
+	$empty_date = '0000-00-00';
 	
-	if($_POST['is_to_do_today'] == 0){
-		if($_POST['currentProject'] == 0){
+	if(@$_POST['is_to_do_today'] == 0){
+		if(@$_POST['currentProject'] == 0){
 			$is_user_active = 1;
 
 			if(@$_POST['list_user_tasks'] == 'me')
@@ -145,7 +146,7 @@ if($_POST['from'] == 'projects'){
 									  LEFT JOIN dne_log_meeting_updates lmu ON ln.id_log_meeting_updates = lmu.id
 									  LEFT JOIN dne_users u ON lmu.id_user = u.id
 									  LEFT JOIN dne_log_meeting_tracking lmt ON ln.id_log_meeting_tracking = lmt.id
-									  LEFT JOIN dne_meetings m ON ln.id_meeting = m.id  
+									  INNER JOIN dne_meetings m ON ln.id_meeting = m.id  
 									  LEFT JOIN dne_chapters c ON m.id_chapter = c.id
 									  LEFT JOIN dne_tasks t ON m.id_task = t.id
 									  LEFT JOIN dne_responsibles r ON m.id_responsible = r.id
@@ -162,7 +163,7 @@ if($_POST['from'] == 'projects'){
 											WHERE r.id_project = p.id
 											AND r.id_user = ?
 									  )
-									  ORDER BY lmu_id");
+									  ORDER BY GREATEST(COALESCE(lmu.action_date,'1970-01-01'), COALESCE(lmt.action_date,'1970-01-01')) DESC");
             $query->bind_param('sssiiiii',$ps1,$ps2,$ps3,$is_active_project,$_SESSION['id_user'],$is_remark_appears_log,$_SESSION['id_user'],$_SESSION['id_user']);
 			$query->execute(); 
 			$query->store_result();
@@ -260,18 +261,18 @@ if($_POST['from'] == 'projects'){
 									   LEFT JOIN dne_log_meeting_updates lmu ON ln.id_log_meeting_updates = lmu.id
 									   LEFT JOIN dne_users u ON lmu.id_user = u.id
 									   LEFT JOIN dne_log_meeting_tracking lmt ON ln.id_log_meeting_tracking = lmt.id
-									   LEFT JOIN dne_meetings m ON ln.id_meeting = m.id  
+									   INNER JOIN dne_meetings m ON ln.id_meeting = m.id  
 								       LEFT JOIN dne_chapters c ON m.id_chapter = c.id
 									   LEFT JOIN dne_tasks t ON m.id_task = t.id
 									   LEFT JOIN dne_responsibles r ON m.id_responsible = r.id
+						   LEFT JOIN dne_progress_status ps ON m.id_progress_status = ps.id
+						   LEFT JOIN dne_projects p ON m.id_project = p.id
 					   WHERE (ps.name_he IS NULL OR (ps.name_he <> ? AND ps.name_he <> ? AND ps.name_he <> ?))
-									   AND ps.name_he <> ?
-									   AND ps.name_he <> ?
-								       AND m.id_project = ?
-							           AND lmu.id_user <> ?
+					   AND m.id_project = ?
+					   AND lmu.id_user <> ?
 									   AND lmu.is_remark_appears_log = ?
 									   AND NOT FIND_IN_SET(?,lmu.updated_users)
-					                   ORDER BY lmu_id");
+					                   ORDER BY GREATEST(COALESCE(lmu.action_date,'1970-01-01'), COALESCE(lmt.action_date,'1970-01-01')) DESC");
 			$query->bind_param('sssiiii',$ps1,$ps2,$ps3,$_POST['currentProject'],$_SESSION['id_user'],$is_remark_appears_log,$_SESSION['id_user']);
 			$query->execute(); 
 			$query->store_result();
@@ -395,5 +396,5 @@ else if($_POST['from'] == 'meetings'){
 
 $meeting_ids_array = array_unique($meeting_ids_array);
 $meeting_ids = implode(',',$meeting_ids_array);
-echo $meeting_ids;
+echo trim($meeting_ids);
 ?>
