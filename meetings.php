@@ -1634,21 +1634,23 @@ include 'menu_tasks.php';
 													$progress_status_log_updates = @$item->ps_name;
 											    
 												if(@$remark != ''){
-													$description .= "<div class='marginTop5 colorGreen display-block".@$dir_log_meeting_updates."'>"
-																	."<span style='direction:".@$dir.";unicode-bidi:embed;'>"
-																	."[".smartDate(@$action_date, $lang)."]"
+													$description .= "<div class='marginTop5 colorGreenDark display-block".@$dir_log_meeting_updates."'>"
+																	."<span class='badge-nickname-green'>"
+																	.@$item->user_nickname
 																	."</span> "
-																	." <span style='direction:".@$dir.";unicode-bidi:embed;'>"
-																	.@$item->user_nickname;
-													
+																	."<span class='log-date-grey' style='direction:".@$dir.";unicode-bidi:embed;'>"
+																	."[".smartDate(@$action_date, $lang)."]"
+																	."</span>";
+
 													if(preg_match('/\p{L}/u', $progress_status_log_updates)){
 														$description .=  " - "
-																		."<span style='direction:".@$dir.";unicode-bidi:embed;'>"
+																		."<span style='direction:".@$dir.";unicode-bidi:embed;font-weight:bold;'>"
+																		." "
 																		.@$progress_status_log_updates
 																		."</span>";
 													}
-													
-													$description .=  " : "
+
+													$description .=  " - "
 																	."<span style='direction:".@$dir.";unicode-bidi:embed;white-space:nowrap;'>"
 																	.html_entity_decode(@$remark)
 																	."</span>"
@@ -2233,11 +2235,13 @@ include 'menu_tasks.php';
 													$action_date = @$item->action_date;
 													
 													if(@$remark != '')
-														$description .= "<div class='marginTop5 colorGreen display-block ".@$dir_log_meeting_updates."'>"
-																	    .@$item->user_nickname." "
-																	    ."<span style='direction:".@$dir.";unicode-bidi:embed;'>"
+														$description .= "<div class='marginTop5 colorGreenDark display-block ".@$dir_log_meeting_updates."'>"
+																	    ."<span class='badge-nickname-green'>"
+																	    .@$item->user_nickname
+																	    ."</span> "
+																	    ."<span class='log-date-grey' style='direction:".@$dir.";unicode-bidi:embed;'>"
 																		."[".smartDate(@$action_date, $lang)."]"
-																		."</span> : "
+																		."</span> - "
 																		.html_entity_decode(@$remark)
 																		 ."</div>";
 												}

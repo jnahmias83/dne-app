@@ -269,6 +269,33 @@ th,td,table {
 	color: #5bbd8d !important;
 }
 
+.colorGreenDark, .colorGreenDark *:not(.badge-circle):not(.badge-nickname-green):not(.log-date-grey) {
+	color: #2d7a52 !important;
+}
+
+.log-date-grey {
+	color: #706f6c !important;
+}
+
+.badge-nickname-green,
+.border-black.padding-2x-2y.fontSize9.borderRadius20.bgColorBlack {
+	min-width: 22px;
+	text-align: center;
+}
+
+.badge-nickname-green {
+	border: 1px solid black;
+	background-color: #2d7a52;
+	color: white !important;
+	padding: 2px 2px;
+	border-radius: 20px;
+	font-size: 9px;
+	align-items: center;
+	justify-content: center;
+	display: inline-flex;
+	line-height: 1;
+}
+
 .colorGreen2 {
 	color: #72D06C;
 }
