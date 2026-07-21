@@ -1634,7 +1634,7 @@ include 'menu_tasks.php';
 													$progress_status_log_updates = @$item->ps_name;
 											    
 												if(@$remark != ''){
-													$description .= "<div class='marginTop5 colorGreenDark display-block".@$dir_log_meeting_updates."'>"
+													$description .= "<div class='marginTop5 colorGreenDark display-block ".@$dir_log_meeting_updates."'>"
 																	."<span class='badge-nickname-green'>"
 																	.@$item->user_nickname
 																	."</span> "
@@ -3120,15 +3120,15 @@ include 'menu_tasks.php';
 														$progress_status_name_for_update = @$item->name;
 												}
 											?>
-												<option value="<?=@$item->id?>">
+												<option value="<?=@$item->id?>" data-name-en="<?=@$item->name?>">
 													<strong>
 														<?=@$progress_status_name_for_update?>
 													</strong>
 												</option>
 												<?php
 											}
-										?>				
-									</select> 
+										?>
+									</select>
 								</div>
 							</div>
                             <hr class="colorGrey mb-1 mt-1"/>							
@@ -4461,8 +4461,8 @@ $(document).on('click','#save_update_task_btn', function (){
 	let current_meeting_id = $('#hidden_meeting_id').val();
 	let index = meeting_ids_array.indexOf(current_meeting_id);
 
-	if($('#progress_status_update option:selected').text().trim() == 'ארכיון' ||
-		$('#progress_status_update option:selected').text().trim() == 'בוצע/נמסר'){
+	let selectedStatusNameEn = $('#progress_status_update option:selected').data('name-en');
+	if(selectedStatusNameEn == 'Archive' || selectedStatusNameEn == 'Done'){
 			index++;
 			if(index >= meeting_ids_array.length)
 				index = 0;
@@ -4470,6 +4470,7 @@ $(document).on('click','#save_update_task_btn', function (){
 
 	let next_meeting_id = meeting_ids_array[index];
 	localStorage.setItem('next_meeting_id',next_meeting_id);
+	localStorage.setItem('meeting_id',next_meeting_id);
 	setData(current_meeting_id,'','update_task',1,0,'for_closing');
 });
 

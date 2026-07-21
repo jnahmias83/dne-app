@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 include 'include/header.php';
 include 'functions/functions.php';
 
@@ -579,8 +579,8 @@ foreach($all_what_news as $wn){
 																$tr_remark = @$tr_item->remark;
 																if(mb_strlen(@$tr_remark,'UTF-8') > 30) $tr_remark = mb_substr($tr_remark,0,30,'UTF-8').'...';
 															?>
-															<div class="marginTop5 fontSize9 text-end" style="line-height:1">
-																<span class="border-black padding-2x-2y fontSize9 borderRadius20 align-items-center justify-content-center colorWhite bgColorBlack" style="display:inline-flex;line-height:1;"><?=@$tr_item->user_nickname?></span>
+															<div class="marginTop5 fontSize11 text-end" style="line-height:1">
+																<span class="border-black padding-2x-2y fontSize9 borderRadius20 align-items-center justify-content-center colorWhite bgColorBlack" style="display:inline-flex;line-height:1;background-color:#f2f6f9;color:#c0392b;font-weight:bold;"><?=@$tr_item->user_nickname?></span>
 																<span class="marginRight2 log-date-grey dir-rtl unicode-bidi-embed"><?=smartDate(@$tr_item->action_date)?> -</span>
 																<span class="colorRed dir-rtl unicode-bidi-embed display-inline-block"><?=html_entity_decode(@$tr_remark)?></span>
 															</div>
@@ -702,8 +702,8 @@ foreach($all_what_news as $wn){
 																		if(mb_strlen(@$remark,'UTF-8') > 30)
 																			$remark = mb_substr($remark,0,30,'UTF-8').'...';
 																?>
-																	<div class="marginTop5 fontSize9 text-end" style="line-height:1">
-																			<span class="border-black padding-2x-2y fontSize9 borderRadius20 align-items-center justify-content-center colorWhite bgColorBlack" style="display:inline-flex;line-height:1;">
+																	<div class="marginTop5 fontSize11 text-end" style="line-height:1">
+																			<span class="border-black padding-2x-2y fontSize9 borderRadius20 align-items-center justify-content-center colorWhite bgColorBlack" style="display:inline-flex;line-height:1;background-color:#f2f6f9;color:#c0392b;font-weight:bold;">
 																				<?=@$item->user_nickname?>
 																			</span>
 																			<span class="marginRight2 log-date-grey dir-rtl unicode-bidi-embed">
@@ -881,8 +881,8 @@ foreach($all_what_news as $wn){
 															if(mb_strlen(@$remark,'UTF-8') > 50)
 																$remark = mb_substr($remark,0,50,'UTF-8').'...';
 													?>
-															<div class="marginTop5 fontSize9 text-end" style="position:relative;padding-right:26px;box-sizing:border-box;">
-																	<span class="badge-nickname-green" style="display:inline-flex;line-height:1;position:absolute;right:0;top:0;">
+															<div class="marginTop5 fontSize11 text-end" style="position:relative;padding-right:26px;box-sizing:border-box;">
+																	<span class="badge-nickname-green" style="display:inline-flex;line-height:1;position:absolute;right:0;top:0;background-color:#f2f6f9;color:#2d7a52 !important;font-weight:bold;">
 																		<?=@$wn->user_nickname?>
 																	</span>
 																	<span class="log-date-grey dir-rtl unicode-bidi-embed" style="font-weight:normal;">
@@ -912,8 +912,8 @@ foreach($all_what_news as $wn){
 															$tr_remark = @$tr_item->remark;
 															if(mb_strlen(@$tr_remark,'UTF-8') > 30) $tr_remark = mb_substr($tr_remark,0,30,'UTF-8').'...';
 														?>
-														<div class="marginTop5 fontSize9 text-end" style="line-height:1.4;position:relative;padding-right:26px;box-sizing:border-box;">
-															<span class="border-black padding-2x-2y fontSize9 borderRadius20 align-items-center justify-content-center colorWhite bgColorBlack" style="display:inline-flex;line-height:1;position:absolute;right:0;top:0;"><?=@$tr_item->user_nickname?></span>
+														<div class="marginTop5 fontSize11 text-end" style="line-height:1.4;position:relative;padding-right:26px;box-sizing:border-box;">
+															<span class="border-black padding-2x-2y fontSize9 borderRadius20 align-items-center justify-content-center colorWhite bgColorBlack" style="display:inline-flex;line-height:1;position:absolute;right:0;top:0;background-color:#f2f6f9;color:#c0392b;font-weight:bold;"><?=@$tr_item->user_nickname?></span>
 															<span class="marginRight2 log-date-grey dir-rtl unicode-bidi-embed"><?=smartDate(@$tr_item->action_date)?> -</span>
 															<span class="colorRed dir-rtl unicode-bidi-embed" style="word-wrap:break-word;overflow-wrap:break-word;"><?=html_entity_decode(@$tr_remark)?></span>
 														</div>
@@ -1201,8 +1201,8 @@ foreach($all_what_news as $wn){
 																				$tr_remark = @$tr_item->remark;
 																				if(mb_strlen(@$tr_remark,'UTF-8') > 30) $tr_remark = mb_substr($tr_remark,0,30,'UTF-8').'...';
 																			?>
-																			<div class="marginTop5 fontSize9 text-end" style="line-height:1">
-																				<span class="border-black padding-2x-2y fontSize9 borderRadius20 align-items-center justify-content-center colorWhite bgColorBlack" style="display:inline-flex;line-height:1;"><?=@$tr_item->user_nickname?></span>
+																			<div class="marginTop5 fontSize11 text-end" style="line-height:1">
+																				<span class="border-black padding-2x-2y fontSize9 borderRadius20 align-items-center justify-content-center colorWhite bgColorBlack" style="display:inline-flex;line-height:1;background-color:#f2f6f9;color:#c0392b;font-weight:bold;"><?=@$tr_item->user_nickname?></span>
 																				<span class="marginRight2 log-date-grey dir-rtl unicode-bidi-embed"><?=smartDate(@$tr_item->action_date)?> -</span>
 																				<span class="colorRed dir-rtl unicode-bidi-embed display-inline-block"><?=html_entity_decode(@$tr_remark)?></span>
 																			</div>
@@ -1342,25 +1342,20 @@ foreach($all_what_news as $wn){
 																		</div>
 																		<?php if($log_meeting_tracking_num_rows > 0){ ?>
 																				<div class="d-flex flex-column">
-																					<?php foreach($log_meeting_tracking as $item){ ?>
-																						<div class="marginTop5 fontSize9 text-end">
-																							<span class="colorGrey dir-rtl unicode-bidi-embed">
-																								[<?=smartDate(@$item->action_date)?>]
-																							</span>
-                                                                                            <span class="colorGrey dir-rtl unicode-bidi-embed">
-																								<?=@$item->user_nickname ?>
-																							</span>
-                                                                                            <span class="colorGrey dir-rtl unicode-bidi-embed">																							
-																								 : 	
-                                                                                            </span>																								
-																							<span class="colorRed dir-rtl unicode-bidi-embed display-inline-block">
-																								<?=html_entity_decode(@$item->remark) ?>
-																							</span>
-																							<span class="marginRight5 colorRed dir-rtl unicode-bidi-embed display-inline-block">
-																								<?=@$tracking_data ?>
-																							</span>
-																						</div>
-																					<?php } ?>
+													<?php foreach($log_meeting_tracking as $item){ ?>
+														<div class="marginTop5 fontSize11 text-end" style="line-height:1">
+															<span class="border-black padding-2x-2y fontSize9 borderRadius20 align-items-center justify-content-center colorWhite bgColorBlack" style="display:inline-flex;line-height:1;background-color:#f2f6f9;color:#c0392b;font-weight:bold;">
+																<?=@$item->user_nickname?>
+															</span>
+															<span class="marginRight2 log-date-grey dir-rtl unicode-bidi-embed"><?=smartDate(@$item->action_date)?> -</span>
+															<span class="colorRed dir-rtl unicode-bidi-embed display-inline-block">
+																<?=html_entity_decode(@$item->remark) ?>
+															</span>
+															<span class="marginRight5 colorRed dir-rtl unicode-bidi-embed display-inline-block">
+																<?=@$tracking_data ?>
+															</span>
+														</div>
+													<?php } ?>
 																				</div>
 																		<?php } ?>
 																	</div>										
@@ -1531,8 +1526,8 @@ foreach($all_what_news as $wn){
 																	        $lmu_remark_s2 = trim(strip_tags(html_entity_decode($lmu_remark_s2)));
 																 	        if(mb_strlen(@$lmu_remark_s2,'UTF-8') > 50) $lmu_remark_s2 = mb_substr($lmu_remark_s2,0,50,'UTF-8').'...';
 								                                         ?>
-																			<div class="marginTop5 fontSize9 text-end" style="position:relative;padding-right:26px;box-sizing:border-box;">
-																					<span class="badge-nickname-green" style="position:absolute;right:0;top:0;">
+																			<div class="marginTop5 fontSize11 text-end" style="position:relative;padding-right:26px;box-sizing:border-box;">
+																					<span class="badge-nickname-green" style="position:absolute;right:0;top:0;background-color:#f2f6f9;color:#2d7a52 !important;font-weight:bold;">
 																						<?=@$wn->user_nickname?>
 																					</span>
 																					<span class="marginRight2 dir-rtl log-date-grey unicode-bidi-embed" style="font-weight:normal;">
@@ -1559,8 +1554,8 @@ foreach($all_what_news as $wn){
 																						$tr_remark = @$tr_item->remark;
 																						if(mb_strlen(@$tr_remark,'UTF-8') > 30) $tr_remark = mb_substr($tr_remark,0,30,'UTF-8').'...';
 																					?>
-																					<div class="marginTop5 fontSize9 text-end" style="line-height:1.4;position:relative;padding-right:26px;box-sizing:border-box;">
-																						<span class="border-black padding-2x-2y fontSize9 borderRadius20 align-items-center justify-content-center colorWhite bgColorBlack" style="display:inline-flex;line-height:1;position:absolute;right:0;top:0;"><?=@$tr_item->user_nickname?></span>
+																					<div class="marginTop5 fontSize11 text-end" style="line-height:1.4;position:relative;padding-right:26px;box-sizing:border-box;">
+																						<span class="border-black padding-2x-2y fontSize9 borderRadius20 align-items-center justify-content-center colorWhite bgColorBlack" style="display:inline-flex;line-height:1;position:absolute;right:0;top:0;background-color:#f2f6f9;color:#c0392b;font-weight:bold;"><?=@$tr_item->user_nickname?></span>
 																						<span class="marginRight2 log-date-grey dir-rtl unicode-bidi-embed"><?=smartDate(@$tr_item->action_date)?> -</span>
 																						<span class="colorRed dir-rtl unicode-bidi-embed display-inline-block"><?=html_entity_decode(@$tr_remark)?></span>
 																					</div>
@@ -1768,8 +1763,8 @@ foreach($all_what_news as $wn){
 																					if(mb_strlen(@$remark,'UTF-8') > 50)
 																						$remark = mb_substr($remark,0,50,'UTF-8').'...';
 																				?>
-																	<div class="marginTop5 fontSize9 text-end" style="position:relative;padding-right:26px;box-sizing:border-box;">
-																			<span class="border-black padding-2x-2y fontSize9 borderRadius20 align-items-center justify-content-center colorWhite bgColorBlack" style="display:inline-flex;line-height:1;position:absolute;right:0;top:0;">
+																	<div class="marginTop5 fontSize11 text-end" style="position:relative;padding-right:26px;box-sizing:border-box;">
+																			<span class="border-black padding-2x-2y fontSize9 borderRadius20 align-items-center justify-content-center colorWhite bgColorBlack" style="display:inline-flex;line-height:1;position:absolute;right:0;top:0;background-color:#f2f6f9;color:#c0392b;font-weight:bold;">
 																				<?=@$item->user_nickname?>
 																			</span>
 																			<span class="marginRight2 log-date-grey dir-rtl unicode-bidi-embed">
@@ -1822,8 +1817,8 @@ foreach($all_what_news as $wn){
 																			$tr_remark = @$tr_item->remark;
 																			if(mb_strlen(@$tr_remark,'UTF-8') > 30) $tr_remark = mb_substr($tr_remark,0,30,'UTF-8').'...';
 																		?>
-																		<div class="marginTop5 fontSize9 text-end" style="line-height:1">
-																			<span class="border-black padding-2x-2y fontSize9 borderRadius20 align-items-center justify-content-center colorWhite bgColorBlack" style="display:inline-flex;line-height:1;"><?=@$tr_item->user_nickname?></span>
+																		<div class="marginTop5 fontSize11 text-end" style="line-height:1">
+																			<span class="border-black padding-2x-2y fontSize9 borderRadius20 align-items-center justify-content-center colorWhite bgColorBlack" style="display:inline-flex;line-height:1;background-color:#f2f6f9;color:#c0392b;font-weight:bold;"><?=@$tr_item->user_nickname?></span>
 																			<span class="marginRight2 log-date-grey dir-rtl unicode-bidi-embed"><?=smartDate(@$tr_item->action_date)?> -</span>
 																			<span class="colorRed dir-rtl unicode-bidi-embed display-inline-block"><?=html_entity_decode(@$tr_remark)?></span>
 																		</div>

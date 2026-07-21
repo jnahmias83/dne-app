@@ -278,7 +278,7 @@ function setData(meeting_id,iteration,field,isRemark,forShare,screen_type){
 
 						let form_data2 = new FormData();
 						form_data2.append('id_meeting', localStorage.getItem('next_meeting_id'));
-						form_data2.append('all_ids_to_edit', '');						
+						form_data2.append('all_ids_to_edit', '');
 
 						$.ajax({
 							type: 'POST',
@@ -289,8 +289,11 @@ function setData(meeting_id,iteration,field,isRemark,forShare,screen_type){
 							contentType: false,
 							success: function(data2){
 								let task_details = data2.split('|~|');
+								$('#hidden_meeting_id').val(localStorage.getItem('next_meeting_id'));
+								if(task_details[0]) $('#hidden_project_id').val(task_details[0]);
 								let content = fillContentTaskDetails(localStorage.getItem('next_meeting_id'), '', task_details, true);
 								$('#div_content_task_details').html(content);
+
 								$('#modalUpdateTask').modal('hide');
 								if(localStorage.getItem('is_to_do_today') == '1'){
 									localStorage.removeItem('is_to_do_today');
@@ -305,9 +308,9 @@ function setData(meeting_id,iteration,field,isRemark,forShare,screen_type){
 							},
 							error: function(xhr, status, error) {}
 						});
-					},					
-				});	
-			}		
+					},
+				});
+			}
 			
 	        if(screen_type != 'popup' && screen_type != 'popup2' && (iteration != ''))
 				location.href = url;
