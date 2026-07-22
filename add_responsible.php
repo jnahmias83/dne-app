@@ -750,25 +750,4 @@ $('#cancel_btn').click(function(){
 		width: 100%;
 	}
 }
-
-@media (orientation: landscape) and (max-height: 500px) {
-	#add_responsible_form_row > .col-3 {
-		display: none;
-	}
-	#add_responsible_form_row > .col-6 {
-		width: 100%;
-		max-width: 100%;
-		flex: 0 0 100%;
-	}
-	.form-flex-row {
-		flex-wrap: wrap;
-	}
-	#lastname, #email, #phone, #name {
-		width: 100%;
-		box-sizing: border-box;
-	}
-	.form-flex-row > div {
-		width: 100%;
-	}
-}
 </style>
