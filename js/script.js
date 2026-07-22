@@ -21,6 +21,30 @@
 	startObserver();
 })();
 
+(function(){
+	if(typeof AndroidNative !== 'undefined' && document.body){
+		document.body.classList.add('native-app');
+	}
+})();
+
+(function(){
+	let touchStartX = 0, touchStartY = 0;
+	document.addEventListener('touchstart', function(e){
+		if(!e.target.closest('#modalTaskFollowupActions')) return;
+		touchStartX = e.changedTouches[0].screenX;
+		touchStartY = e.changedTouches[0].screenY;
+	}, {passive:true});
+	document.addEventListener('touchend', function(e){
+		if(!e.target.closest('#modalTaskFollowupActions')) return;
+		let diffX = e.changedTouches[0].screenX - touchStartX;
+		let diffY = e.changedTouches[0].screenY - touchStartY;
+		if(Math.abs(diffX) > 50 && Math.abs(diffX) > Math.abs(diffY) * 1.5){
+			if(diffX < 0) $('#link_next_task').click();
+			else $('#link_prev_task').click();
+		}
+	}, {passive:true});
+})();
+
 function redirectToAddTaskForThisChapter(chapter_id){
 	let form_data = new FormData();		
 	form_data.append('id_chapter',chapter_id);
@@ -673,6 +697,24 @@ function setReminderDate (reminder_type){
     }
 }
 
+function computeIndependentReminderDate(daysFromToday){
+	let d = new Date();
+	d.setDate(d.getDate() + daysFromToday);
+	$('#computed_reminder_date').val(formatDate(d));
+}
+
+function updateReminderBellIcon(value){
+	if(value == '0'){
+		$('#reminder_bell_icon').removeClass('fa-bell').addClass('fa-bell-slash').css('color','#888');
+	} else {
+		$('#reminder_bell_icon').removeClass('fa-bell-slash').addClass('fa-bell').css('color','red');
+	}
+}
+
+$(document).on('change', 'input[name="set_reminder_date_radio"]', function(){
+	updateReminderBellIcon($(this).val());
+});
+
 function formatDate(date){
 	let year = date.getFullYear();
 	let month = String(date.getMonth() + 1).padStart(2, '0');
@@ -799,10 +841,19 @@ function fillLogTaskTracking(id_meeting,iteration,screen_type,track_type){
 		reminder_time = $('input[name="set_reminder_date_radio"]:checked').val();
 
 	let form_data = new FormData();
+	let reminder_date_to_send = $('#reminder_date').val();
+	if(reminder_time == '1' || reminder_time == '3'){
+		let d = new Date();
+		d.setDate(d.getDate() + (reminder_time == '1' ? 1 : 7));
+		reminder_date_to_send = formatDate(d);
+	} else if(reminder_time == '0'){
+		reminder_date_to_send = '0000-00-00';
+	}
+
 	form_data.append('id_user', $('#users').val());
 	form_data.append('meeting_id', id_meeting);
 	form_data.append('remark', $('#new_remark').html());
-	form_data.append('reminder_date', $('#reminder_date').val());
+	form_data.append('reminder_date', reminder_date_to_send);
 	form_data.append('reminder_time', reminder_time);
 	form_data.append('ids_remark_tracking_checked', ids_remark_tracking_checked);
 	form_data.append('track_type', track_type !== undefined ? track_type : 1);

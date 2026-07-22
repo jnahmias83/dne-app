@@ -2025,8 +2025,8 @@ foreach($all_what_news as $wn){
 
 								    <div class="row marginTop5" dir="rtl">
 									    <div class="col-2 p-2 text-center d-flex flex-column align-items-center justify-content-center">
-										    <div class="fw-bold fontSize13 marginBottom5 text-nowrap">אחראי מעקב</div>
 										    <i class="fa fa-user" style="font-size:20px;"></i>
+										    <div class="fw-bold fontSize13 marginTop5 text-nowrap">אחראי מעקב</div>
 									    </div>
 									    <div class="col-10 p-2 text-end d-flex flex-column justify-content-center align-items-center">
 										    <select id="users" class="paddingRight8 fontSize13 marginBottom10">
@@ -2041,31 +2041,36 @@ foreach($all_what_news as $wn){
 									    </div>
 								    </div>
 
+								    <div class="row" dir="rtl"><div class="col-12"><hr class="marginTop5" style="border:none;border-top:2px solid #999;opacity:1;margin-left:-35px;margin-right:-35px;" /></div></div>
+
 								    <div class="row marginTop5" dir="rtl">
 									    <div class="col-2 p-2 text-center d-flex flex-column align-items-center justify-content-center">
-										    <div class="fw-bold fontSize13 marginBottom5 text-nowrap">תזכורת מעקב</div>
 										    <img src="images/bell-solid.svg" width="20" height="20" />
+										    <div class="fw-bold fontSize13 marginTop5 text-nowrap">תזכורת מעקב</div>
 									    </div>
 									    <div class="col-10 p-2 text-end d-flex flex-column justify-content-center align-items-center">
 										    <div class="row align-items-start justify-content-start flex-nowrap gx-2" dir="rtl">
 											    <div class="col-auto fontSize13 text-end" style="margin-left:6px;">
-												    <div><input type="radio" id="not_reminders" name="set_reminder_date_radio" value="0" onclick="setReminderDate(this.value)"> בלי תזכורת</div>
+												    <div><input type="radio" id="not_reminders" name="set_reminder_date_radio" value="0" > <i id="reminder_bell_icon" class="fa-solid fa-bell-slash" style="color:#888;font-size:16px;"></i></div>
 											    </div>
 											    <div class="col-auto fontSize13 text-end">
-												    <div><input type="radio" id="reminder_tomorrow" name="set_reminder_date_radio" value="1" onclick="setReminderDate(this.value);$('#date_col_wrapper').hide();$('#div_reminder_date').hide();"> מחר</div>
-												    <div><input type="radio" id="reminder_after_one_week" name="set_reminder_date_radio" value="3" onclick="setReminderDate(this.value);$('#date_col_wrapper').hide();$('#div_reminder_date').hide();"> בעוד שבוע</div>
+												    <div><input type="radio" id="reminder_tomorrow" name="set_reminder_date_radio" value="1" > מחר</div>
+												    <div><input type="radio" id="reminder_after_one_week" name="set_reminder_date_radio" value="3" > בעוד שבוע</div>
 											    </div>
 											    <div class="col-auto fontSize13 text-end">
-												    <div><input type="radio" id="reminder_after_selected_date" name="set_reminder_date_radio" value="6" onclick="setReminderDate(this.value);$('#reminder_date').val(formatDate(new Date()));"> בתאריך</div>
+												    <div><input type="radio" id="reminder_after_selected_date" name="set_reminder_date_radio" value="6" onclick="setReminderDate(this.value);"> בתאריך</div>
 											    </div>
 											    <div class="col-auto" id="date_col_wrapper" style="display:none;">
 												    <div id="div_reminder_date">
 													    <input type="date" class="text-center" id="reminder_date" style="font-size:11px;width:85px;" />
+												    <input type="hidden" id="computed_reminder_date" />
 												    </div>
 											    </div>
 										    </div>
 									    </div>
 								    </div>
+
+								    <div class="row" dir="rtl"><div class="col-12"><hr class="marginTop5" style="border:none;border-top:2px solid #999;opacity:1;margin-left:-35px;margin-right:-35px;" /></div></div>
 
 								    <div class="row" dir="rtl">
 									    <div class="col-2"></div>
@@ -2076,8 +2081,8 @@ foreach($all_what_news as $wn){
 
 								    <div class="row marginTop5" dir="rtl">
 									    <div class="col-2 p-2 text-center d-flex flex-column align-items-center justify-content-center">
-										    <div class="fw-bold fontSize13 marginBottom5">עדכון</div>
 										    <img src="images/edit-button.svg" width="20" height="20" />
+										    <div class="fw-bold fontSize13 marginTop5">עדכון</div>
 									    </div>
 									    <div class="col-10 ps-1 pe-2 d-flex flex-column justify-content-center align-items-center">
 										    <div class="d-flex justify-content-between marginBottom5 w-100">
@@ -2599,14 +2604,13 @@ $(document).ready(function(){
 		reminder_time = $('#hidden_reminder_time').val();
 		reminder_date = $('#hidden_reminder_date').val();
 
-		if(reminder_date != '0000-00-00') {
-		  $('#div_reminder_date').show();
-		  $('#date_col_wrapper').show();
+		$('#date_col_wrapper').show();
+		$('#div_reminder_date').show();
+		if(reminder_time == 6 && reminder_date != '0000-00-00') {
 	      $('#reminder_date').val(reminder_date);
 	    }
 	    else {
-		  $('#div_reminder_date').hide();
-		  $('#date_col_wrapper').hide();
+		  $('#reminder_date').val(formatDate(new Date()));
 		}
 
 	    let trackTitleColor = $('#hidden_track_type').val() == 1 ? '#e74c3c' : '#95a5a6';
@@ -2614,22 +2618,21 @@ $(document).ready(function(){
 		$('.subtitle').html(chapter+"<br/>"+subject+"&nbsp;|&nbsp;"+area).css('line-height','1.1em');
 
 	    if($('#hidden_reminder_time').val() == 0){
-		  $('#div_reminder_date').hide();
-		  $('#date_col_wrapper').hide();
 		  $('#not_reminders').prop('checked',true);
 	    }
 	    else if($('#hidden_reminder_time').val() == 1){
-		  $('#div_reminder_date').hide();
-		  $('#date_col_wrapper').hide();
 	      $('#reminder_tomorrow').prop('checked',true);
 	    }
-	    else if($('#hidden_reminder_time').val() == 3){
-		  $('#div_reminder_date').hide();
-		  $('#date_col_wrapper').hide();
+	    else if($('#hidden_reminder_time').val() == 3 || $('#hidden_reminder_time').val() == 2){
 	      $('#reminder_after_one_week').prop('checked',true);
 	    }
-	    else if($('#hidden_reminder_time').val() == 6)
+	    else if($('#hidden_reminder_time').val() == 6){
+		  $('#date_col_wrapper').show();
+		  $('#div_reminder_date').show();
 	      $('#reminder_after_selected_date').prop('checked',true);
+		}
+
+		updateReminderBellIcon($('#hidden_reminder_time').val() == 0 ? '0' : '1');
 
         $('#users option').each(function(){			
 		    if($('#hidden_track_responsible_id').val() == 0){

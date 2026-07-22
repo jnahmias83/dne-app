@@ -278,7 +278,7 @@ include 'menu_tasks.php';
 									<div>
 										<strong>שם פרטי</strong>
 										<br/>
-										<div class="d-flex align-items-center" style="gap:4px;">
+										<div class="d-flex align-items-center justify-content-center" style="gap:4px;">
 											<i id="pick_contact_icon" class="fa fa-address-book cursor-pointer" style="display:none;flex-shrink:0;" title="בחר מהאנשי קשר" onclick="pickContactForFirstname()"></i>
 											<input type="text" class="paddingRight10 marginTop5" name="firstname" id="firstname" placeholder="*שם פרטי" value="<?=@$responsible->firstname?>" style="flex:1;min-width:0;" />
 										</div>
@@ -308,7 +308,7 @@ include 'menu_tasks.php';
 
 							<?php if(@$from != 'project_data') { ?>
 								<div class="row marginTop5 alignCenter dir-rtl">
-									<div class="col-12 d-flex justify-content-center form-flex-row" style="gap:15px;">
+									<div class="col-12 d-flex justify-content-center" style="gap:15px;">
 										<div>
 											<strong>צבע גופן</strong>
 											<br/>
@@ -730,20 +730,26 @@ $('#cancel_btn').click(function(){
 	color: grey;
 }
 
-@media screen and (max-width: 600px) {
+#firstname, #lastname, #email, #phone {
+	max-width: 220px;
+}
+
+@media screen and (max-width: 900px) {
 	#add_responsible_form_row > .col-3 {
 		display: none;
 	}
 	#add_responsible_form_row > .col-6 {
-		width: 100%;
-		max-width: 100%;
+		width: 80%;
+		max-width: 450px;
 		flex: 0 0 100%;
+		margin: 0 auto;
 	}
 	.form-flex-row {
 		flex-wrap: wrap;
 	}
-	#lastname, #email, #phone, #name {
-		width: 100%;
+	#firstname, #lastname, #email, #phone, #name {
+		width: 90%;
+		max-width: 280px;
 		box-sizing: border-box;
 	}
 	.form-flex-row > div {

@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 include 'include/header.php';
 include 'functions/functions.php';
 include "functions/PHPMailer/PHPMailer.php";
@@ -1896,7 +1896,7 @@ include 'menu_tasks.php';
 												</td>
 												<td id="td_count_<?=@$meeting_id?>" class="alignCenter <?=@$border_cell_number?>" style="<?=@$td_count_bgcolor?>;">
 													<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:5px;height:100%;width:40px;max-width:40px;overflow:hidden;box-sizing:border-box;margin:0 auto;">
-														<a id="task_actions_<?=@$meeting_id?>" data-projectid="<?=@$project_id?>" data-lang="<?=@$lang?>" data-meetingid="<?=@$meeting_id?>" data-iteration=<?=@$iteration?> data-userid="<?=@$user_id?>" data-ispriority="<?=@$is_priority?>" data-remark="<?=@$remark?>" data-chapter="<?=@$chapter_name?>" data-name="<?=@$subject?>" data-area="<?=@$area?>" data-recipient="<?=@$responsible_email?>" data-responsibleid="<?=@$responsible_id?>" data-destinationdate="<?=@$destination_date?>" data-progresstatusid="<?=@$progress_status_id?>" data-trackresponsibleid="<?=@$id_track_responsible?>" data-tracktype="<?=@$track_type?>" data-reminderdate="<?=@$reminder_date?>" data-remindertime="<?=@$reminder_time?>" class="text-decoration-none cursor-pointer fontSize12 padding-7x-3y font-weight-bold borderRadius10" style="<?=@$num_bgcolor?>!important;<?=@$num_border_color?>;display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;box-sizing:border-box;line-height:1;text-align:center;"><?=@$count?></a><?php if(@$track_type && @$track_responsible_name != ''): ?><span class="badge-circle badge-circle-track" style="background-color:#e53935;width:18px;height:18px;font-size:9px;display:inline-flex;align-items:center;justify-content:center;box-shadow:none;margin-bottom:4px;" title="<?=htmlspecialchars(@$track_responsible_name)?>"><?=mb_strtoupper(mb_substr(@$track_responsible_name, 0, 2, 'UTF-8'))?></span><?php endif; ?>
+														<a id="task_actions_<?=@$meeting_id?>" data-projectid="<?=@$project_id?>" data-lang="<?=@$lang?>" data-meetingid="<?=@$meeting_id?>" data-iteration=<?=@$iteration?> data-userid="<?=@$user_id?>" data-ispriority="<?=@$is_priority?>" data-remark="<?=@$remark?>" data-chapter="<?=@$chapter_name?>" data-name="<?=@$subject?>" data-area="<?=@$area?>" data-recipient="<?=@$responsible_email?>" data-responsibleid="<?=@$responsible_id?>" data-destinationdate="<?=@$destination_date?>" data-progresstatusid="<?=@$progress_status_id?>" data-trackresponsibleid="<?=@$id_track_responsible?>" data-tracktype="<?=@$track_type?>" data-reminderdate="<?=@$reminder_date?>" data-remindertime="<?=@$reminder_time?>" class="text-decoration-none cursor-pointer fontSize12 padding-7x-3y font-weight-bold borderRadius10" style="<?=@$num_bgcolor?>!important;<?=@$num_border_color?>;display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;box-sizing:border-box;line-height:1;text-align:center;"><?=@$count?></a><?php if(@$track_type && @$track_responsible_name != ''): ?><span class="badge-circle badge-circle-track" onclick="openTrackingPopupForMeeting(<?=@$meeting_id?>)" style="background-color:#e53935;width:18px;height:18px;font-size:9px;display:inline-flex;align-items:center;justify-content:center;box-shadow:none;margin-bottom:4px;cursor:pointer;" title="<?=htmlspecialchars(@$track_responsible_name)?>"><?=mb_strtoupper(mb_substr(@$track_responsible_name, 0, 2, 'UTF-8'))?></span><?php endif; ?>
 													</div>
 												</td>
 												
@@ -3171,8 +3171,8 @@ include 'menu_tasks.php';
 
 								<div class="row marginTop5" dir="rtl">
 									<div class="col-2 p-2 text-center d-flex flex-column align-items-center justify-content-center">
-										<div class="fw-bold fontSize13 marginBottom5 text-nowrap">אחראי מעקב</div>
 										<i class="fa fa-user" style="font-size:20px;"></i>
+										<div class="fw-bold fontSize13 marginTop5 text-nowrap">אחראי מעקב</div>
 									</div>
 									<div class="col-10 p-2 text-end d-flex flex-column justify-content-center align-items-center">
 										<select id="users" class="paddingRight8 fontSize13 marginBottom10">
@@ -3186,31 +3186,36 @@ include 'menu_tasks.php';
 									</div>
 								</div>
 
+								<div class="row" dir="rtl"><div class="col-12"><hr class="marginTop5" style="border:none;border-top:2px solid #999;opacity:1;margin-left:-35px;margin-right:-35px;" /></div></div>
+
 								<div class="row marginTop5" dir="rtl">
 									<div class="col-2 p-2 text-center d-flex flex-column align-items-center justify-content-center">
-										<div class="fw-bold fontSize13 marginBottom5 text-nowrap">תזכורת מעקב</div>
 										<img src="images/bell-solid.svg" width="20" height="20" />
+										<div class="fw-bold fontSize13 marginTop5 text-nowrap">תזכורת מעקב</div>
 									</div>
 									<div class="col-10 p-2 text-end d-flex flex-column justify-content-center align-items-center">
 										<div class="row align-items-start justify-content-start flex-nowrap gx-2" dir="rtl">
 											<div class="col-auto fontSize13 text-end" style="margin-left:6px;">
-												<div><input type="radio" id="not_reminders" name="set_reminder_date_radio" value="0" onclick="setReminderDate(this.value)"> בלי תזכורת</div>
+												<div><input type="radio" id="not_reminders" name="set_reminder_date_radio" value="0" > <i id="reminder_bell_icon" class="fa-solid fa-bell-slash" style="color:#888;font-size:16px;"></i></div>
 											</div>
 											<div class="col-auto fontSize13 text-end">
-												<div><input type="radio" id="reminder_tomorrow" name="set_reminder_date_radio" value="1" onclick="setReminderDate(this.value);$('#date_col_wrapper').hide();$('#div_reminder_date').hide();"> מחר</div>
-												<div><input type="radio" id="reminder_after_one_week" name="set_reminder_date_radio" value="3" onclick="setReminderDate(this.value);$('#date_col_wrapper').hide();$('#div_reminder_date').hide();"> בעוד שבוע</div>
+												<div><input type="radio" id="reminder_tomorrow" name="set_reminder_date_radio" value="1" > מחר</div>
+												<div><input type="radio" id="reminder_after_one_week" name="set_reminder_date_radio" value="3" > בעוד שבוע</div>
 											</div>
 											<div class="col-auto fontSize13 text-end">
-												<div><input type="radio" id="reminder_after_selected_date" name="set_reminder_date_radio" value="6" onclick="setReminderDate(this.value);$('#reminder_date').val(formatDate(new Date()));"> בתאריך</div>
+												<div><input type="radio" id="reminder_after_selected_date" name="set_reminder_date_radio" value="6" onclick="setReminderDate(this.value);"> בתאריך</div>
 											</div>
 											<div class="col-auto" id="date_col_wrapper" style="display:none;">
 												<div id="div_reminder_date">
 													<input type="date" class="text-center" id="reminder_date" style="font-size:11px;width:85px;" />
+												<input type="hidden" id="computed_reminder_date" />
 												</div>
 											</div>
 										</div>
 									</div>
 								</div>
+
+								<div class="row" dir="rtl"><div class="col-12"><hr class="marginTop5" style="border:none;border-top:2px solid #999;opacity:1;margin-left:-35px;margin-right:-35px;" /></div></div>
 
 								<div class="row" dir="rtl">
 									<div class="col-2"></div>
@@ -3221,8 +3226,8 @@ include 'menu_tasks.php';
 
 								<div class="row marginTop5" dir="rtl">
 									<div class="col-2 p-2 text-center d-flex flex-column align-items-center justify-content-center">
-										<div class="fw-bold fontSize13 marginBottom5">עדכון</div>
 										<img src="images/edit-button.svg" width="20" height="20" />
+										<div class="fw-bold fontSize13 marginTop5">עדכון</div>
 									</div>
 									<div class="col-10 ps-1 pe-2 d-flex flex-column justify-content-center align-items-center">
 										<div class="d-flex justify-content-between marginBottom5 w-100">
@@ -4109,7 +4114,7 @@ $(document).ready(function(){
 	    $('#modalTaskFollowupActions').modal('hide');
 	    $('#modalUpdateTask').modal('show');
 	});
-	
+
     $('[id="tracking_btn"]').on('click', function(){
         meeting_id = $('#hidden_meeting_id').val();
 		iteration = $('#hidden_iteration').val();
@@ -4119,38 +4124,34 @@ $(document).ready(function(){
 		reminder_time = $('#hidden_reminder_time').val();
 	    reminder_date = $('#hidden_reminder_date').val();	
 	    
-		if(reminder_date != '0000-00-00') {
-		  $('#date_col_wrapper').show();
-		  $('#div_reminder_date').show();
+		$('#date_col_wrapper').show();
+		$('#div_reminder_date').show();
+		if(reminder_time == 6 && reminder_date != '0000-00-00') {
 	      $('#reminder_date').val(reminder_date);
 	    }
 	    else {
-		  $('#date_col_wrapper').hide();
-		  $('#div_reminder_date').hide();
+		  $('#reminder_date').val(formatDate(new Date()));
 		}
-	 
+
 	    let trackTitleColor = $('#hidden_track_type').val() == 1 ? '#e74c3c' : '#95a5a6';
 	    $('#modalTaskTracking .modal-title').html("<i class='fas fa-bullseye' style='font-size:22px;color:"+trackTitleColor+";'></i>&nbsp;&nbsp;מעקב אקטיבי&nbsp;&nbsp;<i class='fas fa-bullseye' style='font-size:22px;color:"+trackTitleColor+";'></i>");
 		$('.subtitle').html(chapter+"<br/>"+subject+"&nbsp;|&nbsp;"+area).css('line-height','1.1em');
-	  
+
 	    if($('#hidden_reminder_time').val() == 0) {
-		  $('#date_col_wrapper').hide();
-		  $('#div_reminder_date').hide();
 		  $('#not_reminders').prop('checked',true);
 	    }
 	    else if($('#hidden_reminder_time').val() == 1) {
-		  $('#date_col_wrapper').hide();
-		  $('#div_reminder_date').hide();
 		  $('#reminder_tomorrow').prop('checked',true);
 	    }
-	    else if($('#hidden_reminder_time').val() == 3) {
-		  $('#date_col_wrapper').hide();
-		  $('#div_reminder_date').hide();
+	    else if($('#hidden_reminder_time').val() == 3 || $('#hidden_reminder_time').val() == 2) {
 		  $('#reminder_after_one_week').prop('checked',true);
 	    }
-	    else if($('#hidden_reminder_time').val() == 6)
+	    else if($('#hidden_reminder_time').val() == 6){
 		  $('#reminder_after_selected_date').prop('checked',true);
-	   
+		}
+
+		updateReminderBellIcon($('#hidden_reminder_time').val() == 0 ? '0' : '1');
+
         let savedResp = parseInt($('#hidden_track_responsible_id').val()) || 0;
 	    $('#users option').each(function() {
 	        if(savedResp === 0){
@@ -4473,6 +4474,13 @@ $(document).on('click','#save_update_task_btn', function (){
 	localStorage.setItem('meeting_id',next_meeting_id);
 	setData(current_meeting_id,'','update_task',1,0,'for_closing');
 });
+
+function openTrackingPopupForMeeting(meeting_id){
+	$('#task_actions_' + meeting_id).trigger('click');
+	setTimeout(function(){
+		$('#tracking_btn').trigger('click');
+	}, 400);
+}
 
 function checkAllItems(){
 	if($('#check_all').is(':checked')){
