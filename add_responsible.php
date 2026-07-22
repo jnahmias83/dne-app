@@ -292,14 +292,6 @@ include 'menu_tasks.php';
 							</div>
 
 							<div class="row marginTop5 alignCenter dir-rtl">
-								<div class="col-12">
-									<strong>My Project</strong>
-									<br/>
-									<input type="text" dir="rtl" class="paddingRight10 marginTop5" name="name" id="name" placeholder="*שם" <?php if($id > 0) { ?>style="background-color:<?=@$default_bgcolor?>"<?php } ?> value="<?=@$responsible->name?>" />
-								</div>
-							</div>
-							
-							<div class="row marginTop5 alignCenter dir-rtl">
 								<div class="col-12 d-flex justify-content-center form-flex-row" style="gap:15px;">
 									<div>
 										<strong>דוא''ל</strong>
@@ -313,7 +305,7 @@ include 'menu_tasks.php';
 									</div>
 								</div>
 							</div>
-						
+
 							<?php if(@$from != 'project_data') { ?>
 								<div class="row marginTop5 alignCenter dir-rtl">
 									<div class="col-12 d-flex justify-content-center form-flex-row" style="gap:15px;">
@@ -329,8 +321,16 @@ include 'menu_tasks.php';
 										</div>
 									</div>
 								</div>
-							<?php } ?>						
-								
+							<?php } ?>
+
+							<div class="row marginTop5 alignCenter dir-rtl">
+								<div class="col-12">
+									<strong>My Project</strong>
+									<br/>
+									<input type="text" dir="rtl" class="paddingRight10 marginTop5" name="name" id="name" placeholder="*שם" <?php if($id > 0) { ?>style="background-color:<?=@$default_bgcolor?>"<?php } ?> value="<?=@$responsible->name?>" />
+								</div>
+							</div>
+
 							<div class="row marginTop15 alignCenter dir-rtl">
 								<div class="col-12">
 									<div id="div_message_alert_down"></div>					
