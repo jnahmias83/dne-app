@@ -255,15 +255,16 @@ function toTasksReport(){
 				  +'&sort_select_1='+$('#sort_select_1').val()
 				  +'&sort_select_2='+$('#sort_select_2').val()
 				  +'&sort_select_3='+$('#sort_select_3').val()
-            window.open(baseUrl+params+'&mode=I','_blank');
-			
+            let isNativeApp = (typeof AndroidNative !== 'undefined');
+            if(!isNativeApp) window.open(baseUrl+params+'&mode=I','_blank');
+
 			setTimeout(function (){
 					$('#pdf_project_id').val($('#project_id').val());
 					$('#pdf_is_specific_filter').val($('#is_specific_filter').val());
 					$('#pdf_all_ids_to_print').val($('#all_ids_to_print').val());
-					$('#pdf_direction').val(pdf_direction);			
+					$('#pdf_direction').val(pdf_direction);
 					$('#pdfDownloadForm').submit();
-				}, 1000);
+				}, isNativeApp ? 0 : 1000);
 			},
 	});
 }
