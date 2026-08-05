@@ -318,6 +318,18 @@ function setData(meeting_id,iteration,field,isRemark,forShare,screen_type){
 								let content = fillContentTaskDetails(localStorage.getItem('next_meeting_id'), '', task_details, true);
 								$('#div_content_task_details').html(content);
 
+								let $oldHighlight = $('tr.task-row-highlight');
+								let $highlightScope = $oldHighlight.length ? $oldHighlight.closest('[id]') : $(document);
+								let $newHighlightRow = $highlightScope.find('tr.meeting_' + localStorage.getItem('next_meeting_id'));
+								if(!$newHighlightRow.length){
+									$newHighlightRow = $highlightScope.find('.task_name[data-meetingid="' + localStorage.getItem('next_meeting_id') + '"]').closest('tr');
+								}
+								$('tr.task-row-highlight').removeClass('task-row-highlight');
+								if($newHighlightRow.length){
+									$newHighlightRow.addClass('task-row-highlight');
+									$newHighlightRow[0].scrollIntoView({block:'center'});
+								}
+
 								$('#modalUpdateTask').modal('hide');
 								if(localStorage.getItem('is_to_do_today') == '1'){
 									localStorage.removeItem('is_to_do_today');
@@ -1285,6 +1297,18 @@ function navigateTasks(meeting_ids, action){
 			let task_details = data.split('|~|');
 			let content = fillContentTaskDetails(meeting_id, '', task_details, true);
 			$('#div_content_task_details').html(content);
+
+			let $oldHighlight = $('tr.task-row-highlight');
+			let $highlightScope = $oldHighlight.length ? $oldHighlight.closest('[id]') : $(document);
+			let $newHighlightRow = $highlightScope.find('tr.meeting_' + meeting_id);
+			if(!$newHighlightRow.length){
+				$newHighlightRow = $highlightScope.find('.task_name[data-meetingid="' + meeting_id + '"]').closest('tr');
+			}
+			$('tr.task-row-highlight').removeClass('task-row-highlight');
+			if($newHighlightRow.length){
+				$newHighlightRow.addClass('task-row-highlight');
+				$newHighlightRow[0].scrollIntoView({block:'center'});
+			}
 		}
 	});
 

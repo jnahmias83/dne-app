@@ -324,10 +324,10 @@ if($_POST['from'] == 'projects'){
 								   AND ps.name_he <> ?
 								   AND ps.name_he <> ?
 								   AND tdt.id_user = ?
-						           AND (m.id_track_responsible = ? OR m.id_track_responsible = ?)
-						           AND (DATE(reminder_date) <= CURDATE() OR reminder_date = ?)
+						           AND (tdt.is_reminder = 0 OR m.id_track_responsible = ? OR m.id_track_responsible = ?)
+						           AND (tdt.is_reminder = 0 OR DATE(reminder_date) <= CURDATE() OR reminder_date = ?)
 								   ORDER BY tdt.is_reminder DESC,tdt.pin_date");
-		$query->bind_param('sssiiis',$ps1,$ps2,$ps3,$_SESSION['id_user'],$zero_int,$_SESSION['id_user'],$empty_date);			   
+		$query->bind_param('sssiiis',$ps1,$ps2,$ps3,$_SESSION['id_user'],$zero_int,$_SESSION['id_user'],$empty_date);
 		$query->execute(); 
 		$query->store_result();
 		$to_do_today_num_rows = $query->num_rows;

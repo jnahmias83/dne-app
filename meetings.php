@@ -3872,7 +3872,10 @@ $(document).ready(function(){
 	   setTimeout(function(){ $('#modalTaskFollowupDelayTargetDate').modal('show'); }, 350);
     });
 
-    $('[id^="_progress_status"]').on('change', function(){	
+    var allowed_progress_status_ids = "<?=@$progress_status_ids?>";
+
+    $('[id^="_progress_status"]').on('change', function(){
+		let changed_progress_status_id = $(this).val();
 		meeting_id = $(this).data('meetingid');
 	    iteration = $(this).data('iteration');
 	    progress_status_id = $(this).data('progresstatusid');
@@ -3920,7 +3923,7 @@ $(document).ready(function(){
 	   	
 	   $('#new_destination_date').val(destination_date);
 	   $('#modalContent input[type="hidden"]').remove();
-	   $('#modalContent').append("<input type='hidden' id='hidden_meeting_id' value='"+meeting_id+"'><input type='hidden' id='hidden_iteration' value='"+iteration+"'><input type='hidden' id='hidden_remark' value='"+remark+"'>");
+	   $('#modalContent').append("<input type='hidden' id='hidden_meeting_id' value='"+meeting_id+"'><input type='hidden' id='hidden_iteration' value='"+iteration+"'><input type='hidden' id='hidden_remark' value='"+remark+"'><input type='hidden' id='hidden_project_id' value='"+$('#project_id').val()+"'>");
 	   
 	   let form_data3 = new FormData();
 	   form_data3.append('id_progress_status',$(this).val());
@@ -3939,17 +3942,35 @@ $(document).ready(function(){
 					return $(this).val();
 				}).get().join(',');				
 			
-				if(data.progress_status_name_he == 'ארכיון' || data.progress_status_name_he == 'בהמתנה'){					
-					setData($('#hidden_meeting_id').val(), $('#hidden_iteration').val(),'id_progress_status',1,0,'for_closing');  
+				if(data.progress_status_name_he == 'ארכיון' || data.progress_status_name_he == 'בהמתנה'){
+					let status_save_iteration = (data.progress_status_name_he == 'ארכיון') ? '' : $('#hidden_iteration').val();
+					setData($('#hidden_meeting_id').val(), status_save_iteration,'id_progress_status',1,0,'for_closing');
 
 					const meetingId = $('#hidden_meeting_id').val();
 					const row = $('#meetings_table tr.meeting_' + meetingId);
 
 					row.find('.status-cell')
 					   .text(data.progress_status_name_he)
-					   .css({'color': data.progress_status_color, 'background-color': data.progress_status_bgcolor});		
-                    		
+					   .css({'color': data.progress_status_color, 'background-color': data.progress_status_bgcolor});
+
 					setlocalStorage(meetingId, $('#hidden_iteration').val());
+
+					if(data.progress_status_name_he == 'ארכיון'){
+						let dropdown_meeting_ids_array = $('#meetings_table [id^="task_actions_"]').map(function(){ return String($(this).data('meetingid')); }).get();
+						let dropdown_index = dropdown_meeting_ids_array.indexOf(String(meeting_id));
+						if(dropdown_index !== -1){
+							dropdown_index++;
+							if(dropdown_index >= dropdown_meeting_ids_array.length) dropdown_index = 0;
+							let dropdown_next_meeting_id = dropdown_meeting_ids_array[dropdown_index];
+							localStorage.setItem('next_meeting_id', dropdown_next_meeting_id);
+							localStorage.setItem('meeting_id', dropdown_next_meeting_id);
+							setData(meeting_id, '', 'update_task', 1, 0, 'for_closing');
+						}
+					}
+
+					if(allowed_progress_status_ids !== '' && allowed_progress_status_ids.split(',').indexOf(String(changed_progress_status_id)) === -1){
+						row.remove();
+					}
 				}
 				else {
 					if(all_ids_to_edit == "")
