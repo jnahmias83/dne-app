@@ -533,10 +533,10 @@ function pickContactForFirstname(){
 }
 
 function receiveContactData(fieldId, firstname, lastname, phone, email){
-	$('#firstname').val(firstname).trigger('change');
-	$('#lastname').val(lastname);
-	$('#phone').val(phone);
-	$('#email').val(email);
+	if(firstname) $('#firstname').val(firstname).trigger('change');
+	if(lastname) $('#lastname').val(lastname);
+	if(phone) $('#phone').val(phone);
+	if(email) $('#email').val(email);
 }
 
 function autoFillRole(){
