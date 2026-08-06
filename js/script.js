@@ -1242,6 +1242,7 @@ function navigateTasks(meeting_ids, action){
 	}
 
 	$('#hidden_meeting_id').val(meeting_id);
+	setlocalStorage(meeting_id, $('#hidden_iteration').val());
 
 	let form_data1 = new FormData();
 	form_data1.append('id_meeting', meeting_id);

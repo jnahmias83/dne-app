@@ -71,8 +71,8 @@ include 'menu_tasks.php';
 									<th width="160px;" class="alignCenter">משרד/חברה</th>
 									<th width="60px;" class="alignCenter">גופן</th>
 									<th width="60px;" class="alignCenter">רקע</th>
-									<th width="220px;" class="alignCenter">דוא''ל</th>
-									<th width="120px;" class="alignCenter"><i class="fa fa-user"></i><br/>טלפון</th>
+									<th width="60px;" class="alignCenter">דוא''ל</th>
+									<th width="60px;" class="alignCenter"><i class="fa fa-user"></i><br/>טלפון</th>
 									<th width="120px;" class="alignCenter">תפקיד</th>
 									<th width="40px;" class="alignCenter">&nbsp;</th>
 									<th width="40px;" class="alignCenter">&nbsp;</th>
@@ -110,8 +110,8 @@ include 'menu_tasks.php';
 										<td class="alignRight paddingRight5"><?=@$supplier->name_he?></td>
 										<td class="alignRight paddingRight5"><input type="color" class="width60" disabled="true" value="<?=@$item->color?>" /></td>
 										<td class="alignRight paddingRight5"><input type="color" class="width60" disabled="true" value="<?=@$item->bgcolor?>" /></td>
-										<td class="alignRight paddingRight5"><?=@$item->email?></td>
-										<td class="alignRight paddingRight5"><?=@$item->phone?></td>
+										<td class="alignCenter"><?php if(trim(@$item->email) !== '') { ?><i class="fa-solid fa-check colorGreen"></i><?php } ?></td>
+										<td class="alignCenter"><?php if(trim(@$item->phone) !== '') { ?><i class="fa-solid fa-check colorGreen"></i><?php } ?></td>
 										<td class="alignRight paddingRight5"><?=@$role?></td>
 										<td class="alignCenter"><img src="images/edit-button.svg" class="cursor-pointer" title="עדכן" onclick="location.href='add_responsible.php?id=<?=@$item->id?>&project_id=<?=@$project_id?>'" /></td>									
 										<td class="alignCenter"><img src="images/delete.svg" class="cursor-pointer" title="מחק" onclick="return removeResponsible(<?=@$item->id?>);" /></td>	

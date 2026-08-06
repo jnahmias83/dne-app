@@ -1521,7 +1521,7 @@ include 'menu_tasks.php';
 									if($meetings_num_rows > 0){ ?>
 										<tr class="bgColor-cbddec height40">
 										  <td class="<?=@$border_cell_table_start?> <?=@$border_cell_table_end?>" colspan="<?=sizeof($columns_list_array)+2?>" style="<?=@$text_align?>;<?=@$padding?>:5px;">
-											<a class="text-decoration-underline cursor-pointer" onclick="redirectToAddTaskForThisChapter(<?=@$chapter_id?>);"><strong><?=@$chapter_name?></strong></a>
+											<a class="text-decoration-underline cursor-pointer" onclick="redirectToAddTaskForThisChapter(<?=@$chapter_id?>);"><strong><?=stripNbspArtifact(@$chapter_name)?></strong></a>
 										  </td>
 										</tr>
 										<?php 	
@@ -1990,7 +1990,7 @@ include 'menu_tasks.php';
 												if(in_array('progress status',$columns_list_array)){ ?>
 													<td id="td_progress_status_<?=@$meeting_id?>" class="<?php if(end($columns_list_array) == "progress status") echo $border_cell_table_end;?> cursor-pointer" style="<?=@$text_align?>;<?=@$padding?>:5px;<?=@$progress_status_color?>;<?=@$progress_status_bgcolor?>;">
 														<div style="max-width:8ch;overflow:hidden;box-sizing:border-box;margin:0 auto;">
-														<select id="_progress_status_<?=@$meeting_id?>" class="form-control fontSize12 font-weight-bold border-none cursor-pointer alignCenter" style="direction:<?=@$dir?>;width:98%;<?=@$progress_status_bgcolor?>;" data-meetingid="<?=@$meeting_id?>" data-iteration=<?=@$iteration?> data-chapter="<?=@$chapter_name?>" data-name="<?=@$subject?>" data-area="<?=@$area?>" data-destinationdate="<?=@$destination_date?>">
+														<select id="_progress_status_<?=@$meeting_id?>" class="form-control fontSize12 font-weight-bold border-none cursor-pointer alignCenter<?php if(trim(@$progress_status_he) === '') echo ' status-blank-when-empty'; ?>" style="direction:<?=@$dir?>;width:98%;<?=@$progress_status_bgcolor?>;" data-meetingid="<?=@$meeting_id?>" data-iteration=<?=@$iteration?> data-chapter="<?=@$chapter_name?>" data-name="<?=@$subject?>" data-area="<?=@$area?>" data-destinationdate="<?=@$destination_date?>">
 															<option>---סטטוס---</option>
 															<?php 
 															foreach($progress_status_s as $item){
@@ -2156,7 +2156,7 @@ include 'menu_tasks.php';
 										?>
 											<tr class="bgColor-cbddec height40">
 											  <td colspan="14" style="<?=@$text_align?>;<?=@$padding?>:5px;">
-												 <strong><?=@$chapter_name?></strong>
+												 <strong><?=stripNbspArtifact(@$chapter_name)?></strong>
 											  </td>
 											</tr>
 											<?php 
@@ -3874,7 +3874,14 @@ $(document).ready(function(){
 
     var allowed_progress_status_ids = "<?=@$progress_status_ids?>";
 
+    $(document).on('change', '#progress_status_update', function(){
+		let selectedText = $(this).find('option:selected').text().trim();
+		$(this).toggleClass('status-blank-when-empty', selectedText === '(ללא)' || selectedText === '(Without)');
+	});
+
     $('[id^="_progress_status"]').on('change', function(){
+		let selectedStatusText = $(this).find('option:selected').text().trim();
+		$(this).toggleClass('status-blank-when-empty', selectedStatusText === '(ללא)' || selectedStatusText === '(Without)');
 		let changed_progress_status_id = $(this).val();
 		meeting_id = $(this).data('meetingid');
 	    iteration = $(this).data('iteration');
@@ -4131,6 +4138,8 @@ $(document).ready(function(){
 		
 		let selectedId = $('#hidden_progress_status_id').val();
         $('#progress_status_update').val(selectedId);
+		let selectedStatusUpdateText = $('#progress_status_update option:selected').text().trim();
+		$('#progress_status_update').toggleClass('status-blank-when-empty', selectedStatusUpdateText === '(ללא)' || selectedStatusUpdateText === '(Without)');
 		
 	    $('#modalTaskFollowupActions').modal('hide');
 	    $('#modalUpdateTask').modal('show');
@@ -4965,6 +4974,10 @@ $('#to_add_meeting_btn').click (function (e){
 [id^="td_pass_on_"] select,
 [id^="td_progress_status_"] select {
     border-radius: 10px;
+}
+
+.status-blank-when-empty {
+    color: transparent;
 }
 
 .row-darken [id^="td_task_"] select,

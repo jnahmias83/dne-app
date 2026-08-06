@@ -337,6 +337,10 @@ function getLang2($lang,$code){
 	return $query->result;
 }
 
+function stripNbspArtifact($str){
+    return str_replace(['&amp;nbsp;','&nbsp;'], '', (string)$str);
+}
+
 function isEffectivelyEmpty($field) {
     $text = strip_tags($field); 
     $text = str_replace(["\xc2\xa0","&nbsp;","\xE2\x80\x8B"],'',$text);

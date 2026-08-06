@@ -136,9 +136,9 @@ foreach($chapters as $item) {
 			
 			$meeting_id = @$item->id;
 			$id_rdv = @$item->id_rdv;
-			$subject = @$item->subject;
-			$area = @$item->area;
-			$description = @$item->description;
+			$subject = stripNbspArtifact(@$item->subject);
+			$area = stripNbspArtifact(@$item->area);
+			$description = stripNbspArtifact(@$item->description);
 			$task_id = @$item->id_task;
 			$responsible_id = @$item->id_responsible;
 			$pass_on_id = @$item->id_pass_on;
@@ -333,9 +333,9 @@ foreach($chapters as $item) {
 			
 			$meeting_id = @$item->id;
 			$id_rdv = @$item->id_rdv;
-			$subject = @$item->subject;
-			$area = @$item->area;
-			$description = @$item->description;
+			$subject = stripNbspArtifact(@$item->subject);
+			$area = stripNbspArtifact(@$item->area);
+			$description = stripNbspArtifact(@$item->description);
 			$task_id = @$item->id_task;
 			$responsible_id = @$item->id_responsible;
 			$pass_on_id = @$item->id_pass_on;

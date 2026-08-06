@@ -32,7 +32,7 @@ $project = fetch_unique($query);
 $title = 'הוסף פרק';
 
 if(@$id > 0)
-	$title = @$chapter->name;
+	$title = stripNbspArtifact(@$chapter->name);
 
 $dir = 'dir-rtl';
 $name_label = "שם";
@@ -72,7 +72,7 @@ include 'menu_tasks.php';
 								<div class="col-12">	
 									<strong><?=@$name_label?></strong>
 									<br/>	
-									<input type="text" class="paddingRight10 marginTop5" name="name" id="name" placeholder="*<?=@$name_label?>" value="<?=@$chapter->name?>" />	
+									<input type="text" class="paddingRight10 marginTop5" name="name" id="name" placeholder="*<?=@$name_label?>" value="<?=stripNbspArtifact(@$chapter->name)?>" />
 								</div>
 							</div>
 						

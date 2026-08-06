@@ -110,7 +110,7 @@ foreach($chapters as $item) {
 	
 	if($meetings_num_rows >0) {
 		$html1_body.='<tr style="background-color:#a3def0;font-size:11px;">';
-		$html1_body.='<td colspan="12" style="text-align:right;padding-right:5px;border:1px solid black;"><strong>'.@$item->name.'</strong></td>';
+		$html1_body.='<td colspan="12" style="text-align:right;padding-right:5px;border:1px solid black;"><strong>'.stripNbspArtifact(@$item->name).'</strong></td>';
 		$html1_body.='</tr>';
 		
 		$count1 = 0;
@@ -118,9 +118,9 @@ foreach($chapters as $item) {
 			$count1++;
 			
 			$meeting_id = @$item->id;
-			$subject = @$item->subject;
-			$area = @$item->area;
-			$description = @$item->description;
+			$subject = stripNbspArtifact(@$item->subject);
+			$area = stripNbspArtifact(@$item->area);
+			$description = stripNbspArtifact(@$item->description);
 			$task_id = @$item->id_task;
 			$responsible_id = @$item->id_responsible;
 			$pass_on_id = @$item->id_pass_on;

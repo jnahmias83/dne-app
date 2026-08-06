@@ -764,7 +764,7 @@ $count1 = 0;
 
 foreach($chapters as $item){	
 	$chapter_id = $item->id;
-	$chapter_name = $item->name;
+	$chapter_name = stripNbspArtifact($item->name);
 	
 	if($id_custom_report > 0 || ($id_rdv_report > 0 && $is_specific_filter)){
 		$sql_array = explode(' AND ',$sql);
@@ -1358,7 +1358,7 @@ $count2 = 0;
 
 foreach($chapters as $item) {	
 	$chapter_id = @$item->id;
-	$chapter_name = @$item->name;
+	$chapter_name = stripNbspArtifact(@$item->name);
 	
 	if($id_custom_report > 0 || ($id_rdv_report > 0 && $is_specific_filter)) {
 		$sql_array = explode(' AND ',$sql);

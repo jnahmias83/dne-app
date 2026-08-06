@@ -145,9 +145,9 @@ else {
 				  track_type,reminder_date,is_agrees,is_reminds,updated_date) 
 				  VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		$query = $mysqli->prepare($query);
-		$_subject = htmlspecialchars($_POST['subject']);
-		$_area    = htmlspecialchars($_POST['area']);
-		$_descr   = htmlspecialchars($_POST['description']);
+		$_subject = htmlspecialchars(stripNbspArtifact($_POST['subject']));
+		$_area    = htmlspecialchars(stripNbspArtifact($_POST['area']));
+		$_descr   = htmlspecialchars(stripNbspArtifact($_POST['description']));
 		$query->bind_param('iiissssiiissiiisiiisiiiisisiis',
 		                   $_SESSION['id_user'],$_POST['id_project'],
 						   $_POST['id_chapter'],$_POST['id_rdv'],
@@ -427,9 +427,9 @@ else {
 						 track_type = ?,reminder_date = ?,
 						 is_agrees = ?,is_reminds = ? WHERE id = ?";
 				$query = $mysqli->prepare($query);
-				$_loop_subject = htmlspecialchars($subject);
-				$_loop_area    = htmlspecialchars($area);
-				$_loop_descr   = htmlspecialchars($description);
+				$_loop_subject = htmlspecialchars(stripNbspArtifact($subject));
+				$_loop_area    = htmlspecialchars(stripNbspArtifact($area));
+				$_loop_descr   = htmlspecialchars(stripNbspArtifact($description));
 				$query->bind_param('issssiiissiiiiisisiii',
 								   $id_chapter,$ids_rdv,
 								   $_loop_subject,
@@ -523,9 +523,9 @@ else {
 					  is_appears_img2 = ?,lang = ?,track_type = ?,reminder_date = ?,
 					  is_agrees = ?,is_reminds = ? WHERE id = ?";
 			$query = $mysqli->prepare($query);
-			$_subject = htmlspecialchars($_POST['subject']);
-			$_area    = htmlspecialchars($_POST['area']);
-			$_descr   = htmlspecialchars($_POST['description']);
+			$_subject = htmlspecialchars(stripNbspArtifact($_POST['subject']));
+			$_area    = htmlspecialchars(stripNbspArtifact($_POST['area']));
+			$_descr   = htmlspecialchars(stripNbspArtifact($_POST['description']));
 			$query->bind_param('issssiiissiiiiisisiii',
 			                   $_POST['id_chapter'],
 							   $_POST['ids_rdv_checked'],

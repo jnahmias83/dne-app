@@ -507,24 +507,24 @@ foreach($all_what_news as $wn){
 								$id_track_responsible = @$ut->id_track_responsible;
 								$track_type = @$ut->track_type;			
 						
-								$chapter_name = @$ut->chapter_name;
+								$chapter_name = stripNbspArtifact(@$ut->chapter_name);
 								if(strlen(@$chapter_name) > 50)
 								   $chapter_name = mb_substr($chapter_name,0,50,'UTF-8');
-							        							
+
 							    $responsible_email = @$ut->responsible_email;
-							    
+
 							    $task_name = @$ut->task_name;
 								if(strlen(@$task_name) > 50)
 								   $task_name = mb_substr($task_name,0,50,'UTF-8');
-						   
-								$subject = @$ut->subject;
+
+								$subject = stripNbspArtifact(@$ut->subject);
 								if(mb_strlen($subject,'UTF-8') > 30)
 								   $subject = mb_substr(trim(preg_replace('/[\x{00A0}\x{200B}]+/u',' ',strip_tags($subject))),0,30,'UTF-8').'...';
-							   
-								$area = @$ut->area;
+
+								$area = stripNbspArtifact(@$ut->area);
 								if(mb_strlen($area,'UTF-8') > 30)
-								   $area = mb_substr(trim(preg_replace('/[\x{00A0}\x{200B}]+/u',' ',strip_tags($area))),0,30,'UTF-8').'...';									   									
-								
+								   $area = mb_substr(trim(preg_replace('/[\x{00A0}\x{200B}]+/u',' ',strip_tags($area))),0,30,'UTF-8').'...';
+
 								$user_nickname = @$ut->user_nickname;
 								?>
 								<tr class="task-row fontSize13">	
@@ -623,26 +623,26 @@ foreach($all_what_news as $wn){
 								
 								$track_type = @$at->track_type;			
 						
-								$chapter_name = @$at->chapter_name;
+								$chapter_name = stripNbspArtifact(@$at->chapter_name);
 								if(strlen(@$chapter_name) > 50)
 								   $chapter_name = mb_substr($chapter_name,0,50,'UTF-8');
-							   
+
 							    $responsible_name = @$at->responsible_name;
 								if(mb_strlen(@$responsible_name,'UTF-8') > 20)
 									$responsible_name = mb_substr($responsible_name,0,20,'UTF-8').'...';
 								$responsible_email = @$at->responsible_email;
-						   
+
 						        $task_name = @$at->task_name;
 								if(strlen(@$task_name) > 50)
 								   $task_name = mb_substr($task_name,0,50,'UTF-8');
-						   
-								$subject = @$at->subject;
+
+								$subject = stripNbspArtifact(@$at->subject);
 								if(mb_strlen($subject,'UTF-8') > 30)
 								   $subject = mb_substr(trim(preg_replace('/[\x{00A0}\x{200B}]+/u',' ',strip_tags($subject))),0,30,'UTF-8').'...';
-							   
-								$area = @$at->area;
+
+								$area = stripNbspArtifact(@$at->area);
 								if(mb_strlen($area,'UTF-8') > 30)
-								   $area = mb_substr(trim(preg_replace('/[\x{00A0}\x{200B}]+/u',' ',strip_tags($area))),0,30,'UTF-8').'...';								   	
+								   $area = mb_substr(trim(preg_replace('/[\x{00A0}\x{200B}]+/u',' ',strip_tags($area))),0,30,'UTF-8').'...';
                                  																						
 								$one = 1;
 								$empty_remark ='';
@@ -778,26 +778,26 @@ foreach($all_what_news as $wn){
 								$id_track_responsible = @$wn->id_track_responsible;
 								$track_type = @$wn->track_type;			
 						
-								$chapter_name = @$wn->chapter_name;
+								$chapter_name = stripNbspArtifact(@$wn->chapter_name);
 								if(strlen(@$chapter_name) > 50)
 								   $chapter_name = mb_substr($chapter_name,0,50,'UTF-8');
-							   
+
 							    $responsible_name = @$wn->responsible_name;
 								if(mb_strlen(@$responsible_name,'UTF-8') > 20)
 									$responsible_name = mb_substr($responsible_name,0,20,'UTF-8').'...';
 								$responsible_email = @$wn->responsible_email;
-							   
+
 							    $task_name = @$wn->task_name;
 								if(strlen(@$task_name) > 50)
 								   $task_name = mb_substr($task_name,0,50,'UTF-8');
-						   
-								$subject = @$wn->subject;
+
+								$subject = stripNbspArtifact(@$wn->subject);
 								if(mb_strlen(@$subject,'UTF-8') > 30)
 								   $subject = mb_substr(trim(preg_replace('/[\x{00A0}\x{200B}]+/u',' ',strip_tags($subject))),0,30,'UTF-8').'...';
-							   
-								$area = @$wn->area;
+
+								$area = stripNbspArtifact(@$wn->area);
 								if(mb_strlen(@$area,'UTF-8') > 30)
-								   $area = mb_substr(trim(preg_replace('/[\x{00A0}\x{200B}]+/u',' ',strip_tags($area))),0,30,'UTF-8').'...';									   	
+								   $area = mb_substr(trim(preg_replace('/[\x{00A0}\x{200B}]+/u',' ',strip_tags($area))),0,30,'UTF-8').'...';
 								
 								$query = $mysqli->prepare("SELECT ps.name_he AS ps_name_he,
 								                           lmu.destination_date AS lmu_destination_date
@@ -1121,23 +1121,23 @@ foreach($all_what_news as $wn){
 													$id_track_responsible = @$ut->id_track_responsible;
 													$track_type = @$ut->track_type;			
 											
-													$chapter_name = @$ut->chapter_name;
+													$chapter_name = stripNbspArtifact(@$ut->chapter_name);
 													if(strlen(@$chapter_name) > 50)
 													   $chapter_name = mb_substr($chapter_name,0,50,'UTF-8');
-												   
+
 												    $responsible_email = @$ut->responsible_email;
-													
+
 													$task_name = @$ut->task_name;
 													if(strlen(@$task_name) > 50)
 													   $task_name = mb_substr($task_name,0,50,'UTF-8');
-											   
-													$subject = @$ut->subject;
+
+													$subject = stripNbspArtifact(@$ut->subject);
 													if(mb_strlen(@$subject,'UTF-8') > 30)
 													   $subject = mb_substr(trim(preg_replace('/[\x{00A0}\x{200B}]+/u',' ',strip_tags($subject))),0,30,'UTF-8').'...';
-												   
-													$area = @$ut->area;
+
+													$area = stripNbspArtifact(@$ut->area);
 													if(mb_strlen(@$area,'UTF-8') > 30)
-													   $area = mb_substr(trim(preg_replace('/[\x{00A0}\x{200B}]+/u',' ',strip_tags($area))),0,30,'UTF-8').'...';									   	
+													   $area = mb_substr(trim(preg_replace('/[\x{00A0}\x{200B}]+/u',' ',strip_tags($area))),0,30,'UTF-8').'...';
 
 													$align_txt = 'alignRight';
 													$padding_txt = 'paddingRight5';														
@@ -1253,26 +1253,26 @@ foreach($all_what_news as $wn){
 													
 													$track_type = @$at->track_type;			
 											
-													$chapter_name = @$at->chapter_name;
+													$chapter_name = stripNbspArtifact(@$at->chapter_name);
 													if(strlen(@$chapter_name) > 50)
 													   $chapter_name = mb_substr($chapter_name,0,50,'UTF-8');
-												    
+
 													$responsible_name = @$at->responsible_name;
 													if(mb_strlen(@$responsible_name,'UTF-8') > 20)
 														$responsible_name = mb_substr($responsible_name,0,20,'UTF-8').'...';
 													$responsible_email = @$at->responsible_email;
-												   
+
 													$task_name = @$at->task_name;
 													if(strlen(@$task_name) > 50)
 													   $task_name = mb_substr($task_name,0,50,'UTF-8');
-											   
-													$subject = @$at->subject;
+
+													$subject = stripNbspArtifact(@$at->subject);
 													if(mb_strlen(@$subject,'UTF-8') > 30)
 													   $subject = mb_substr(trim(preg_replace('/[\x{00A0}\x{200B}]+/u',' ',strip_tags($subject))),0,30,'UTF-8').'...';
-												   
-													$area = @$at->area;
+
+													$area = stripNbspArtifact(@$at->area);
 													if(mb_strlen(@$area,'UTF-8') > 30)
-													   $area = mb_substr(trim(preg_replace('/[\x{00A0}\x{200B}]+/u',' ',strip_tags($area))),0,30,'UTF-8').'...';								   	
+													   $area = mb_substr(trim(preg_replace('/[\x{00A0}\x{200B}]+/u',' ',strip_tags($area))),0,30,'UTF-8').'...';
 										
 													$align_txt = 'alignRight';
 													$padding_txt = 'paddingRight5';	    										
@@ -1425,26 +1425,26 @@ foreach($all_what_news as $wn){
 								                    $id_track_responsible = @$wn->id_track_responsible;
 													$track_type = @$wn->track_type;			
 											
-													$chapter_name = @$wn->chapter_name;
+													$chapter_name = stripNbspArtifact(@$wn->chapter_name);
 													if(strlen(@$chapter_name) > 50)
 													   $chapter_name = mb_substr($chapter_name,0,50,'UTF-8');
-												   
+
 												    $responsible_name = @$wn->responsible_name;
 													if(mb_strlen(@$responsible_name,'UTF-8') > 20)
 														$responsible_name = mb_substr($responsible_name,0,20,'UTF-8').'...';
 													$responsible_email = @$wn->responsible_email;
-													
+
 													$task_name = @$wn->task_name;
 													if(strlen(@$task_name) > 50)
 													   $task_name = mb_substr($task_name,0,50,'UTF-8');
-											   
-													$subject = @$wn->subject;
+
+													$subject = stripNbspArtifact(@$wn->subject);
 													if(mb_strlen(@$subject,'UTF-8') > 30)
 													   $subject = mb_substr(trim(preg_replace('/[\x{00A0}\x{200B}]+/u',' ',strip_tags($subject))),0,30,'UTF-8').'...';
-												   
-													$area = @$wn->area;
+
+													$area = stripNbspArtifact(@$wn->area);
 													if(mb_strlen(@$area,'UTF-8') > 30)
-													   $area = mb_substr(trim(preg_replace('/[\x{00A0}\x{200B}]+/u',' ',strip_tags($area))),0,30,'UTF-8').'...';									   	
+													   $area = mb_substr(trim(preg_replace('/[\x{00A0}\x{200B}]+/u',' ',strip_tags($area))),0,30,'UTF-8').'...';
 														
 												    if($reminder_date != '0000-00-00' || @$track_responsible_name != '')
 														$tracking_data = '(';
@@ -1635,26 +1635,26 @@ foreach($all_what_news as $wn){
 											
 											$track_type = @$tdt->track_type;			
 									
-											$chapter_name = @$tdt->chapter_name;
+											$chapter_name = stripNbspArtifact(@$tdt->chapter_name);
 											if(strlen(@$chapter_name) > 50)
 											   $chapter_name = mb_substr($chapter_name,0,50,'UTF-8');
-							   
+
 							                $responsible_name = @$tdt->responsible_name;
 											if(strlen(@$responsible_name) > 20)
 												$responsible_name = mb_substr($responsible_name,0,20,'UTF-8').'...';
 											$responsible_email = @$tdt->responsible_email;
-							   
+
 											$task_name = @$tdt->task_name;
 											if(strlen(@$task_name) > 50)
 											   $task_name = mb_substr($task_name,0,50,'UTF-8');
-									   
-											$subject = @$tdt->subject;
+
+											$subject = stripNbspArtifact(@$tdt->subject);
 											if(strlen(@$subject) > 30)
 											   $subject = mb_substr(trim(preg_replace('/[\x{00A0}\x{200B}]+/u',' ',strip_tags($subject))),0,30,'UTF-8').'...';
-										   
-											$area = @$tdt->area;
+
+											$area = stripNbspArtifact(@$tdt->area);
 											if(strlen(@$area) > 30)
-											   $area = mb_substr(trim(preg_replace('/[\x{00A0}\x{200B}]+/u',' ',strip_tags($area))),0,30,'UTF-8').'...';									   	
+											   $area = mb_substr(trim(preg_replace('/[\x{00A0}\x{200B}]+/u',' ',strip_tags($area))),0,30,'UTF-8').'...';
 										   
 											$progress_status_name = @$tdt->ps_name_he;
 
@@ -2296,6 +2296,11 @@ $(document).ready(function(){
 	   $('#modalHistoryTasks .modal-title').html("הסטורי-ה");
 	});
 	
+	$(document).on('change', '#progress_status_update', function(){
+		let selectedText = $(this).find('option:selected').text().trim();
+		$(this).toggleClass('status-blank-when-empty', selectedText === '(ללא)' || selectedText === '(Without)');
+	});
+
 	$('[id="update_btn"]').on('click', function(){
 		meeting_id = $('#hidden_meeting_id').val();
 		project_id = $('#hidden_project_id').val();
@@ -2338,6 +2343,8 @@ $(document).ready(function(){
 			contentType: false,
 			success: function (data){
 				$('#progress_status_update').html(data);
+				let selectedStatusText = $('#progress_status_update option:selected').text().trim();
+				$('#progress_status_update').toggleClass('status-blank-when-empty', selectedStatusText === '(ללא)' || selectedStatusText === '(Without)');
 			}
         });
 		
@@ -3164,6 +3171,10 @@ function toTasksList(id_project){
 </script>
 
 <style>
+.status-blank-when-empty {
+	color: transparent;
+}
+
 .bgColor-cbddec { background-color: #9ef7b6 !important; }
 
 .padding-btn {

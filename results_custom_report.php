@@ -353,7 +353,7 @@ $count1 = 0;
 	
 foreach($chapters as $item) {	
 	$chapter_id = $item->id;
-	$chapter_name = $item->name;
+	$chapter_name = stripNbspArtifact($item->name);
 	
 	$sql_array = explode(' AND ',$sql);
 
@@ -385,8 +385,8 @@ foreach($chapters as $item) {
 			$meeting_id = @$item->id;
 			$is_priority = @$item->is_priority;
 			$id_rdv = @$item->id_rdv;
-			$subject = @$item->subject;
-			$area = @$item->area;
+			$subject = stripNbspArtifact(@$item->subject);
+			$area = stripNbspArtifact(@$item->area);
 			$description = html_entity_decode(@$item->description);
 			
 			$change_status_label = 'שינוי סטטוס';
@@ -426,7 +426,7 @@ foreach($chapters as $item) {
 			$query->execute();
 			$query->store_result();	
 			$query = fetch_unique($query);
-			$remark_changes_status = @$query->remark;	
+			$remark_changes_status = stripNbspArtifact(@$query->remark);
 			$action_date = @$query->action_date;
 											
 			$query = $mysqli->prepare("SELECT * FROM dne_tasks_followup 
@@ -438,7 +438,7 @@ foreach($chapters as $item) {
 			$query->execute();
 			$query->store_result();	
 			$query = fetch_unique($query);
-			$remark = @$query->remark;	
+			$remark = stripNbspArtifact(@$query->remark);
 			$action_date_remark = @$query->action_date;
 			
 			$color_remark_change_status = $color_remark = 'color:black';
@@ -736,7 +736,7 @@ $count2 = 0;
 
 foreach($chapters as $item) {	
 	$chapter_id = $item->id;
-	$chapter_name = $item->name;
+	$chapter_name = stripNbspArtifact($item->name);
 	
 	$sql_array = explode(' AND ',$sql);
 
@@ -778,8 +778,8 @@ foreach($chapters as $item) {
 			$meeting_id = @$item->id;
 			$is_priority = @$item->is_priority;
 			$id_rdv = @$item->id_rdv;
-			$subject = @$item->subject;
-			$area = @$item->area;
+			$subject = stripNbspArtifact(@$item->subject);
+			$area = stripNbspArtifact(@$item->area);
 			$description = html_entity_decode(@$item->description);
 			
 			$change_status_label = 'שינוי סטטוס';
@@ -819,7 +819,7 @@ foreach($chapters as $item) {
 			$query->execute();
 			$query->store_result();	
 			$query = fetch_unique($query);
-			$remark_changes_status = @$query->remark;	
+			$remark_changes_status = stripNbspArtifact(@$query->remark);
 			$action_date = @$query->action_date;
 											
 			$query = $mysqli->prepare("SELECT * FROM dne_tasks_followup 
@@ -831,7 +831,7 @@ foreach($chapters as $item) {
 			$query->execute();
 			$query->store_result();	
 			$query = fetch_unique($query);
-			$remark = @$query->remark;	
+			$remark = stripNbspArtifact(@$query->remark);
 			$action_date_remark = @$query->action_date;
 			
 			$color_remark_change_status = $color_remark = 'color:black';

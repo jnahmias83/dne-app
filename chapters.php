@@ -118,7 +118,7 @@ include 'menu_tasks.php';
 											   <a class="cursor-pointer text-decoration-none" onclick="mooveRecord(<?=@$item->id?>,<?=@$item->id_display?>,'up');">&uarr;</a>
 											<?php } ?>
 										</td>
-										<td class="alignRight paddingRight5"><?=@$item->name?></td>
+										<td class="alignRight paddingRight5"><?=stripNbspArtifact(@$item->name)?></td>
 										<td class="alignCenter"><img src="images/edit-button.svg" class="cursor-pointer" title="עדכן" onclick="location.href='add_chapter.php?id=<?=@$item->id?>&project_id=<?=@$project_id?>'" /></td>									
 										<td class="alignCenter"><img src="images/delete.svg" class="cursor-pointer" title="מחק" onclick="return removeChapter(<?=@$item->id?>);" /></td>	
 									</tr>

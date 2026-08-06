@@ -444,10 +444,10 @@ include 'menu_tasks.php';
 								}
 								
 								
-								foreach($chapters as $item) {	
+								foreach($chapters as $item) {
 									$chapter_id = $item->id;
-									$chapter_name = $item->name;
-									
+									$chapter_name = stripNbspArtifact($item->name);
+
 									if($id_custom_report > 0 || ($id_rdv_report > 0 && $is_specific_filter)) {
 									    $sql_array = explode(' AND ',$sql);
 								
@@ -528,8 +528,8 @@ include 'menu_tasks.php';
 											$id_rdv = @$item->id_rdv;
 											$id_chapter = @$item->id_chapter;
 											$id_task_type = @$item->id_task_type;
-											$subject = @$item->subject;
-											$area = @$item->area;
+											$subject = stripNbspArtifact(@$item->subject);
+											$area = stripNbspArtifact(@$item->area);
 											$description = @$item->description;
 											
 											$change_status_label = 'שינוי סטטוס';
@@ -853,9 +853,9 @@ include 'menu_tasks.php';
 									<?php
 									$iteration = 0;
 									
-									foreach($chapters as $item) {	
+									foreach($chapters as $item) {
 										$chapter_id = $item->id;
-										$chapter_name = $item->name;
+										$chapter_name = stripNbspArtifact($item->name);
 										
 										if($id_custom_report > 0 || ($id_rdv_report > 0 && $is_specific_filter)) {
 											$sql_array = explode(' AND ',$sql);							
@@ -936,8 +936,8 @@ include 'menu_tasks.php';
 												$id_rdv = @$item->id_rdv;
 												$id_chapter = @$item->id_chapter;
 												$id_task_type = @$item->id_task_type;
-												$subject = @$item->subject;
-												$area = @$item->area;
+												$subject = stripNbspArtifact(@$item->subject);
+												$area = stripNbspArtifact(@$item->area);
 												$description = @$item->description;
 												
 												$change_status_label = 'שינוי סטטוס';

@@ -446,7 +446,7 @@ include 'menu_tasks.php';
 								  $predecessor = fetch_unique($query);
 								  ?>
 								  <div class="row marginTop10 fontSize16 alignCenter <?=@$dir?>">
-								      <strong><?=@$predecessor_label?>:</strong><span class="<?=@$margin_8?>"><?=@$predecessor->subject?></span>
+								      <strong><?=@$predecessor_label?>:</strong><span class="<?=@$margin_8?>"><?=stripNbspArtifact(@$predecessor->subject)?></span>
 							      </div>	
 								  <?php  
 							} ?>

@@ -216,13 +216,13 @@ if(@$_POST['all_ids_to_edit'] == '') {
 	$task_details .= @$meeting->po_name.'|~|';
 	$task_details .= @$old_destination_date.'|~|';
 	$task_details .= @$meeting->destination_date.'|~|';
-	$task_details .= @$meeting->c_name.'|~|';
-	$task_details .= @$meeting->area.'|~|';
-	$task_details .= str_replace('&nbsp;','',@$description).'|~|';
+	$task_details .= stripNbspArtifact(@$meeting->c_name).'|~|';
+	$task_details .= stripNbspArtifact(@$meeting->area).'|~|';
+	$task_details .= stripNbspArtifact(@$description).'|~|';
 	$task_details .= @$meeting->image1.'|~|';
 	$task_details .= @$meeting->ps_id.'|~|';
 	$task_details .= @$meeting->ps_name_he.'|~|';
-	$task_details .= @$meeting->subject.'|~|';
+	$task_details .= stripNbspArtifact(@$meeting->subject).'|~|';
 	$task_details .= @$count_delay_dest_date.'|~|';
 	$task_details .= @$meeting->t_name_he.'|~|';
 	$task_details .= @$all_remarks.'|~|';
@@ -303,15 +303,15 @@ else {
 		$query->store_result();
 		$chapter = fetch_unique($query);											
 													
-		$chapter_name = @$chapter->name;
+		$chapter_name = stripNbspArtifact(@$chapter->name);
 		if(strlen(@$chapter->name) > 30)
-			$chapter_name = mb_substr($chapter->name,0,30,'UTF-8');
-												   
-		$subject = @$meeting->subject;
+			$chapter_name = mb_substr($chapter_name,0,30,'UTF-8');
+
+		$subject = stripNbspArtifact(@$meeting->subject);
 		if(strlen(@$meeting->subject) > 30)
 		    $subject = mb_substr(trim(preg_replace('/[\x{00A0}\x{200B}]+/u',' ',strip_tags($subject))),0,30,'UTF-8');
-												   
-		$area = @$meeting->area;
+
+		$area = stripNbspArtifact(@$meeting->area);
 		if(strlen(@$meeting->area) > 30)
 		   $area = mb_substr(trim(preg_replace('/[\x{00A0}\x{200B}]+/u',' ',strip_tags($area))),0,30,'UTF-8');
 	   
