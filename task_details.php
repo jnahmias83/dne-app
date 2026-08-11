@@ -55,7 +55,7 @@ if(@$_POST['all_ids_to_edit'] == '') {
                                AND lmu.action = ?							   
 							   AND lmu.is_remark_appears_log = ?
 							   AND lmu.remark <> ?
-							   ORDER BY lmu.id");
+							   ORDER BY lmu.id DESC");
 	$query->bind_param("isis",$id,$action_update_label,$one,$empty_remark);
 	$query->execute();
 	$query->store_result();	
@@ -83,23 +83,22 @@ if(@$_POST['all_ids_to_edit'] == '') {
 			$progress_status_log_updates = @$item->ps_name;
 
 		if(@$remark != ''){
-			$description .= "<div class='marginTop5 colorGreenDark display-block ".@$dir_log_meeting_updates."' style='padding-right:8px;'>"
-							."<span style='white-space:nowrap;'>"
+			$description .= "<div class='marginTop5 colorGreenDark ".@$dir_log_meeting_updates."' dir='".@$dir_updates."'>"
 							."<span class='badge-nickname-green'>"
 							.@$user_nickname
 							."</span> "
-							."<span class='log-date-grey' style='direction:".@$dir_updates.";unicode-bidi:embed;'>"
+							."<span class='log-date-grey'>"
 							.smartDate(@$action_date, @$meeting->p_lang)
-							."</span> -"
 							."</span>";
 
 			if(preg_match('/\p{L}/u', $progress_status_log_updates)){
-				$description .=  " <span style='direction:".@$dir_updates.";unicode-bidi:embed;font-weight:bold;'>"
+				$description .=  " - <span style='font-weight:bold;'>"
 								.@$progress_status_log_updates
-								."</span> -";
+								."</span>";
 			}
 
-			$description .=	 " <span style='direction:".@$dir_updates.";unicode-bidi:embed;'>"
+			$description .=  " - "
+							."<span>"
 							.html_entity_decode(@$remark)
 							."</span>"
 							."</div>";
@@ -142,7 +141,7 @@ if(@$_POST['all_ids_to_edit'] == '') {
 								   WHERE lmt.id_meeting = ?
 							       AND lmt.is_remark_appears_log = ?
 							       AND lmt.remark <> ?
-							       ORDER BY lmt.id");
+							       ORDER BY lmt.id DESC");
 	    $query->bind_param("iis",$id,$one,$empty_remark);
 	    $query->execute();
 	    $query->store_result();
@@ -184,7 +183,7 @@ if(@$_POST['all_ids_to_edit'] == '') {
 
 		$tracking_remarks .= "<tr><td colspan='3'>"
 							."<div class='bg-fceaea' style='position:relative;padding:0 38px 0 53px;min-height:44px;display:flex;align-items:center;'>"
-							."<div dir='rtl' style='width:100%;'>".$tracking_table."</div>"
+							."<div dir='rtl' style='width:100%;max-height:112px;overflow-y:auto;'>".$tracking_table."</div>"
 							."<div style='position:absolute;left:8px;top:0;bottom:0;width:45px;display:flex;align-items:center;justify-content:center;'>".$reminder_bell_html."</div>"
 							."<div style='position:absolute;right:4px;top:0;bottom:0;width:30px;display:flex;align-items:center;justify-content:center;'>".$red_badge_html."</div>"
 							."</div>"

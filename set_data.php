@@ -316,17 +316,19 @@ else if($_POST['field'] == "id_progress_status" || $_POST['field'] == "update_ta
     $log_meeting_updates_num_rows = $query->num_rows;
 	$log_meeting_updates = fetch($query);	
     
-	foreach($log_meeting_updates as $item){
-		$is_remark_appears_log = 0;
-		
-		if($_POST['isRemark'] && in_array(@$item->id,$ids_remark_checked_array)) 
-			$is_remark_appears_log = 1;
+	if(!empty($ids_remark_checked_array) && $ids_remark_checked_array[0] !== ''){
+		foreach($log_meeting_updates as $item){
+			$is_remark_appears_log = 0;
 
-		$query = "UPDATE dne_log_meeting_updates 
-		          SET is_remark_appears_log = ? WHERE id = ?";
-		$query = $mysqli->prepare($query);
-		$query->bind_param('si',$is_remark_appears_log,$item->id);	
-		$query->execute();
+			if($_POST['isRemark'] && in_array(@$item->id,$ids_remark_checked_array))
+				$is_remark_appears_log = 1;
+
+			$query = "UPDATE dne_log_meeting_updates
+			          SET is_remark_appears_log = ? WHERE id = ?";
+			$query = $mysqli->prepare($query);
+			$query->bind_param('si',$is_remark_appears_log,$item->id);
+			$query->execute();
+		}
 	}
 	
 	$query = "SELECT * FROM dne_progress_status WHERE id = ?";

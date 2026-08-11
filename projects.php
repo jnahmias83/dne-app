@@ -1986,7 +1986,6 @@ foreach($all_what_news as $wn){
 							    </div>								
 							</div>
 							<hr class="colorGrey mb-1 mt-1"/>
-							<div id="task_active_remarks_progress_status_update"></div>					   											
 							<div class="marginTop10 paddingRight10 alignRight height-auto bgColorWhite fontSize13 cursor-pointer border-black overflow-y-scroll dir-rtl">
 								<div name="remark_changes_status_update" id="remark_changes_status_update" contenteditable="true" class="editable green cursor-pointer" data-placeholder="ניתן להוסיף כאן הערה"></div>
 							</div>
@@ -2071,13 +2070,6 @@ foreach($all_what_news as $wn){
 								    </div>
 
 								    <div class="row" dir="rtl"><div class="col-12"><hr class="marginTop5" style="border:none;border-top:2px solid #999;opacity:1;margin-left:-35px;margin-right:-35px;" /></div></div>
-
-								    <div class="row" dir="rtl">
-									    <div class="col-2"></div>
-									    <div class="col-10">
-										    <div id="task_active_remarks_tracking"></div>
-									    </div>
-								    </div>
 
 								    <div class="row marginTop5" dir="rtl">
 									    <div class="col-2 p-2 text-center d-flex flex-column align-items-center justify-content-center">
@@ -2347,21 +2339,8 @@ $(document).ready(function(){
 				$('#progress_status_update').toggleClass('status-blank-when-empty', selectedStatusText === '(ללא)' || selectedStatusText === '(Without)');
 			}
         });
-		
-		$.ajax({
-			type: 'POST',
-			url: 'fill_task_active_remarks.php',
-			method: 'POST',
-			data: form_data,
-			cache: false,
-			processData: false,
-			contentType: false,
-			success: function(data){     				
-			    $('#task_active_remarks_progress_status_update').html(data);
-			},
-	    });
-		
-		$('#new_destination_date_update').val(destination_date);		
+
+		$('#new_destination_date_update').val(destination_date);
 	    $('#modalTaskFollowupActions').modal('hide');
 	    $('#modalUpdateTask').modal('show');
 	});
@@ -2653,22 +2632,7 @@ $(document).ready(function(){
 	   
 	    $('#modalTaskTracking').find('[id="users"]').css('background-color',
 	        $('#hidden_track_responsible_id').val() > 0 ? $('#filled_bgcolor_tracking').val() : $('#default_bgcolor_tracking').val());
-	    let form_data = new FormData();
-		form_data.append('id_meeting',meeting_id);
-		form_data.append('isTracking',1);
-		
-	    $.ajax({
-			type: 'POST',
-			url: 'fill_task_active_remarks.php',
-			data: form_data,
-			cache: false,
-			processData: false,
-			contentType: false,
-			success: function(data){
-                $('#task_active_remarks_tracking').html(data);
-			},
-	    });
-	   
+
 	    $('#modalTaskFollowupActions').modal('hide');
 	    $('#modalTaskTracking').modal('show');
     });

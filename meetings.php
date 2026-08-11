@@ -1616,42 +1616,44 @@ include 'menu_tasks.php';
 											                          WHERE lmu.id_meeting = ? 
 																	  AND lmu.is_remark_appears_log = ?
 																	  AND lmu.remark <> ?
-																	  ORDER BY lmu.id");
+																	  ORDER BY lmu.id DESC");
 											$query->bind_param("iis",$meeting_id,$one,$empty_remark);
 											$query->execute();
-											$query->store_result();	
+											$query->store_result();
 											$log_meeting_updates = fetch($query);
-											
+
 											$dir_log_meeting_updates = 'alignRight';
-												if(@$item->lang == 'EN')
+											$dir_lmu_local = 'rtl';
+												if(@$lang == 'EN'){
 													$dir_log_meeting_updates = 'alignLeft';
-		
+													$dir_lmu_local = 'ltr';
+												}
+
 											foreach($log_meeting_updates as $item){
-												$remark = @$item->remark;	
+												$remark = @$item->remark;
 												$action_date = @$item->action_date;
 												$progress_status_log_updates = @$item->ps_name_he;
 												if(@$lang == 'EN')
 													$progress_status_log_updates = @$item->ps_name;
-											    
+
 												if(@$remark != ''){
-													$description .= "<div class='marginTop5 colorGreenDark display-block ".@$dir_log_meeting_updates."'>"
+													$description .= "<div class='marginTop5 colorGreenDark ".@$dir_log_meeting_updates."'>"
 																	."<span class='badge-nickname-green'>"
 																	.@$item->user_nickname
 																	."</span> "
-																	."<span class='log-date-grey' style='direction:".@$dir.";unicode-bidi:embed;'>"
+																	."<span class='log-date-grey'>"
 																	.smartDate(@$action_date, $lang)
 																	."</span>";
 
 													if(preg_match('/\p{L}/u', $progress_status_log_updates)){
 														$description .=  " - "
-																		."<span style='direction:".@$dir.";unicode-bidi:embed;font-weight:bold;'>"
-																		." "
+																		."<span style='font-weight:bold;'>"
 																		.@$progress_status_log_updates
 																		."</span>";
 													}
 
 													$description .=  " - "
-																	."<span style='direction:".@$dir.";unicode-bidi:embed;white-space:nowrap;'>"
+																	."<span>"
 																	.html_entity_decode(@$remark)
 																	."</span>"
 																	."</div>";
@@ -1666,7 +1668,7 @@ include 'menu_tasks.php';
 											                           WHERE lmt.id_meeting = ? 
 																	   AND lmt.is_remark_appears_log = ?
 																	   AND lmt.remark <> ?
-																	   ORDER BY lmt.id");
+																	   ORDER BY lmt.id DESC");
 											$query->bind_param("iis",$meeting_id,$one,$empty_remark);
 											$query->execute();
 											$query->store_result();	
@@ -3131,8 +3133,7 @@ include 'menu_tasks.php';
 									</select>
 								</div>
 							</div>
-                            <hr class="colorGrey mb-1 mt-1"/>							
-							<div id="task_active_remarks_progress_status_update" style="direction:<?=$_pd?>"></div>
+                            <hr class="colorGrey mb-1 mt-1"/>
 							<div class="marginTop10 <?=($_pl=='HE') ? 'paddingRight10' : 'paddingLeft10'?> <?=($_pl=='HE') ? 'alignRight' : 'alignLeft'?> height-auto bgColorWhite fontSize13 cursor-pointer border-black overflow-y-scroll" style="direction:<?=$_pd?>">
 								<div name="remark_changes_status_update" id="remark_changes_status_update" contenteditable="true" class="editable green cursor-pointer" data-placeholder="<?=($_pl=='HE') ? 'ניתן להוסיף כאן הערה' : 'You can add a comment here'?>"></div>
 							</div>
@@ -3216,13 +3217,6 @@ include 'menu_tasks.php';
 								</div>
 
 								<div class="row" dir="rtl"><div class="col-12"><hr class="marginTop5" style="border:none;border-top:2px solid #999;opacity:1;margin-left:-35px;margin-right:-35px;" /></div></div>
-
-								<div class="row" dir="rtl">
-									<div class="col-2"></div>
-									<div class="col-10">
-										<div id="task_active_remarks_tracking"></div>
-									</div>
-								</div>
 
 								<div class="row marginTop5" dir="rtl">
 									<div class="col-2 p-2 text-center d-flex flex-column align-items-center justify-content-center">
@@ -4109,31 +4103,13 @@ $(document).ready(function(){
 		project_id = $('#hidden_project_id').val();
         destination_date = 	$('#hidden_destination_date').val();	
 	
-		let form_data = new FormData();
-        form_data.append('id_meeting',meeting_id);
-		form_data.append('id_project',project_id);
-		form_data.append('is_updates',1);
-		form_data.append('lang',$('#project_lang').val());
-
 		if($('#project_lang').val() == "HE")
 			$('#modalUpdateTask .modal-title').html("<img src='images/status-icon.png' alt='status icon' width='20' height='20'>&nbsp;&nbsp;עדכון&nbsp;&nbsp;<img src='images/status-icon.png' alt='status icon' width='20' height='20'>");
         else
 		    $('#modalUpdateTask .modal-title').html("Update");
 
-        $('#modalUpdateTask .subtitle').html(chapter+"<br/>"+subject+"&nbsp;|&nbsp;"+area).css('line-height','1.1em');		
-		
-	    $.ajax({
-			type: 'POST',
-			url: 'fill_task_active_remarks.php',
-			data: form_data,
-			cache: false,
-			processData: false,
-			contentType: false,
-			success: function(data){     				
-			    $('#task_active_remarks_progress_status_update').html(data);
-			},
-	    });
-		
+        $('#modalUpdateTask .subtitle').html(chapter+"<br/>"+subject+"&nbsp;|&nbsp;"+area).css('line-height','1.1em');
+
 	    $('#new_destination_date_update').val(destination_date);
 		
 		let selectedId = $('#hidden_progress_status_id').val();
@@ -4195,22 +4171,6 @@ $(document).ready(function(){
 	    $('#modalTaskTracking').find('[id="users"]').css('background-color',
 	        savedResp > 0 ? $('#filled_bgcolor_tracking').val() : $('#default_bgcolor_tracking').val());
 
-	    let form_data = new FormData();
-		form_data.append('id_meeting',meeting_id);
-		form_data.append('isTracking',1);
-		
-	    $.ajax({
-			type: 'POST',
-			url: 'fill_task_active_remarks.php',
-			data: form_data,
-			cache: false,
-			processData: false,
-			contentType: false,
-			success: function(data){
-				$('#task_active_remarks_tracking').html(data);
-			},
-	    });
-	   
 	    $('#modalTaskFollowupActions').modal('hide');
 	    $('#modalTaskTracking').modal('show');
     });

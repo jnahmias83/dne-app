@@ -567,7 +567,7 @@ function fillContentTaskDetails(meeting_id,iteration,task_details,forShare,withP
 	
 	content += '<tr class="alignCenter bgColor-ebf4f5 height26"><td colspan="3" class="border-bottom-white paddingTop5 alignCenter"><strong>'+task_details[6]+'</strong></td></tr>';
 	content += '<tr class="alignCenter bgColor-ebf4f5 height26"><td colspan="3" class="border-bottom-white"><strong>'+decodeHtmlAndNl2br(task_details[12]).replace(/<br\s*\/?>|<\/?div[^>]*>/gi, '').trim()+'&nbsp;<span class="fontSize20 colorRed">|</span>&nbsp;'+decodeHtmlAndNl2br(task_details[7]).replace(/<br\s*\/?>|<\/?div[^>]*>/gi, '').trim()+'</strong></td></tr>';
-	content += '<tr class="alignCenter bgColor-ebf4f5"><td colspan="3"><p>'+decodeHtmlAndNl2br(task_details[8])+'</p></td></tr>';
+	content += '<tr class="alignRight bgColor-ebf4f5"><td colspan="3" style="padding-right:10px;"><p>'+decodeHtmlAndNl2br(task_details[8])+'</p></td></tr>';
 	
 	if(forShare && task_details[22] == 1){
 		content += task_details[23];
