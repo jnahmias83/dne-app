@@ -935,8 +935,6 @@ foreach($chapters as $item){
 			$query->store_result();
 			$log_meeting_updates = fetch($query);
 			
-			$remark_color = @$is_colors ? 'color:green;' : 'color:black;';   
-            
 			if($query->num_rows > 0)
 				$description .= '<br/>';			
 
@@ -956,10 +954,18 @@ foreach($chapters as $item){
 					$progress_status_log_updates = @$item->ps_name;				
 
 				if(trim($remark) != '') {
-					$description .= '<div dir="'.@$dir_table.'" style="'.$remark_color.';'.@$text_align.'">';
-					$description .= '<span dir="'.@$dir_table.'">['.smartDate($action_date, $lang).']</span>';
-					$description .= ' <span dir="'.@$dir_table.'">'.@$progress_status_log_updates.'</span>';
-					$description .= ' <span dir="'.@$dir_table.'">'.@$item->user_nickname.'</span> : <span dir="'.@$dir_table.'">'.$remark.'</span>';
+					$status_text = trim(@$progress_status_log_updates);
+					$show_status = preg_match('/\p{L}/u', $status_text) && $status_text != 'ללא' && $status_text != 'Without';
+
+					$description .= '<div dir="'.@$dir_table.'" style="'.@$text_align.'">';
+					$description .= '<span dir="'.@$dir_table.'" style="background-color:#2d7a52;color:white;font-weight:bold;padding:1px 4px;">'.@$item->user_nickname.'</span>';
+					$description .= ' <span dir="'.@$dir_table.'" style="color:#706f6c;">'.smartDate($action_date, $lang).'</span>';
+					$description .= ' <span dir="'.@$dir_table.'" style="color:#2d7a52;">-</span>';
+					if($show_status) {
+						$description .= ' <span dir="'.@$dir_table.'" style="color:#2d7a52;font-weight:bold;">'.@$progress_status_log_updates.'</span>';
+						$description .= ' <span dir="'.@$dir_table.'" style="color:#2d7a52;">-</span>';
+					}
+					$description .= ' <span dir="'.@$dir_table.'" style="color:#2d7a52;">'.$remark.'</span>';
 					$description .= '</div>';
 				}
 			}
@@ -1503,20 +1509,16 @@ foreach($chapters as $item) {
 			$query->store_result();	
 			$log_meeting_updates = fetch($query);
 			
-			$remark_color = 'color:black';
-			if(@$is_colors)
-				$remark_color = 'color:green';
-			
 			foreach($log_meeting_updates as $item){
 				$remark = html_entity_decode(@$item->remark);
 				$remark = str_ireplace(['<div>', '</div>'], '<br>', $remark);
 				$remark = preg_replace('/(<br\s*\/?>\s*){2,}/i', '<br>', $remark);
 				$remark = preg_replace('/^(<br\s*\/?>)+|(<br\s*\/?>)+$/i', '', $remark);
-							
+
 				$action_date = @$item->action_date;
-				
+
 				if($remark != '')
-					$description .= '<div style="'.@$remark_color.'"><span style="direction:rtl;unicode-bidi:embed;">['.smartDate(@$action_date, $lang).']</span> - <span style="direction:rtl;unicode-bidi:embed;">'.@$item->user_nickname.'</span><span style="direction:rtl;unicode-bidi:embed;"> - '.@$remark.'</span></div>';		
+					$description .= '<div><span style="direction:rtl;unicode-bidi:embed;background-color:#2d7a52;color:white;font-weight:bold;padding:1px 4px;">'.@$item->user_nickname.'</span> <span style="direction:rtl;unicode-bidi:embed;color:#706f6c;">'.smartDate(@$action_date, $lang).'</span><span style="direction:rtl;unicode-bidi:embed;color:#2d7a52;"> - '.@$remark.'</span></div>';
 			}
 
             $is_agrees = @$item->is_agrees;
