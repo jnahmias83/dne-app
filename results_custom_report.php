@@ -31,7 +31,7 @@ $query->execute();
 $query->store_result();
 $custom_report = fetch_unique($query); 
 
-$sql = @$custom_report->sql_str;
+$sql = str_replace('{CURRENT_USER_ID}', (int)@$_SESSION['id_user'], @$custom_report->sql_str);
 $is_images = @$custom_report->is_images;
 $is_colors = @$custom_report->is_colors;
 $lang = @$custom_report->lang;

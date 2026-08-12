@@ -269,7 +269,7 @@ else if($_POST['report_type'] == 'myTasksReport') {
 	if(sizeof(@$progress_status_array) > 0)
 	   $sql_str.= " AND m.id_progress_status IN(".@$progress_status_list.")";
    
-    $sql_str.= " AND r.id_user = ".@$_SESSION['id_user'];	
+    $sql_str.= " AND r.id_user = {CURRENT_USER_ID}";
 		
 	$is_all_chapters_checked = $is_all_responsibles_checked = $is_all_pass_ons_checked = 1;			
 	

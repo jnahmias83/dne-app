@@ -135,7 +135,7 @@ if($id_custom_report > 0){
 			$period_destination_date = @$custom_report->period_destination_date;
 			$destination_date_start = @$custom_report->destination_date_start;
 			$destination_date_end = @$custom_report->destination_date_end;
-			$sql = @$custom_report->sql_str;
+			$sql = str_replace('{CURRENT_USER_ID}', (int)@$_SESSION['id_user'], @$custom_report->sql_str);
 			$is_images = @$custom_report->is_images;
 			$is_colors = @$custom_report->is_colors;
 			$cr_lang = @$custom_report->lang;

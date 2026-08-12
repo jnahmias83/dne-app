@@ -60,7 +60,7 @@ if($id_custom_report > 0) {
 	if($query->num_rows > 0) {
 		$custom_report = fetch_unique($query);
 		if(!$is_specific_filter) {
-			$sql = @$custom_report->sql_str;
+			$sql = str_replace('{CURRENT_USER_ID}', (int)@$_SESSION['id_user'], @$custom_report->sql_str);
 			$is_images = @$custom_report->is_images;
 			$is_colors = @$custom_report->is_colors;
 			$lang = @$custom_report->lang;
