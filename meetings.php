@@ -90,9 +90,16 @@ if($id_rdv_report > 0){
   $rdv_lang = @$query->rdv_lang;
 }
 
-$query = $mysqli->prepare("SELECT * FROM dne_custom_reports 
-                          WHERE id_project = ? 
-						  ORDER BY is_project_status_report DESC");
+$query = $mysqli->prepare("SELECT * FROM dne_custom_reports
+                          WHERE id_project = ?
+						  ORDER BY CASE request_name
+						      WHEN 'כלל המשימות' THEN 1
+						      WHEN 'משימות שלי' THEN 2
+						      WHEN 'צוות ניהול' THEN 3
+						      WHEN 'צוות יזם' THEN 4
+						      WHEN 'במעקב' THEN 5
+						      ELSE 6
+						  END, id");
 $query->bind_param("i",$project_id);
 $query->execute();
 $query->store_result();

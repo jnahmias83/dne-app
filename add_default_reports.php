@@ -34,6 +34,42 @@ $mt_btn_disabled = '';
 if(@$my_tasks_num_rows > 0)
 	$mt_btn_disabled = 'disabled';
 
+$management_team = 'צוות ניהול';
+$query = $mysqli->prepare("SELECT * FROM dne_custom_reports
+                          WHERE id_project = ? AND request_name = ?");
+$query->bind_param("is",$project_id,$management_team);
+$query->execute();
+$query->store_result();
+$management_team_num_rows = @$query->num_rows;
+
+$mgt_btn_disabled = '';
+if(@$management_team_num_rows > 0)
+	$mgt_btn_disabled = 'disabled';
+
+$entrepreneur_team = 'צוות יזם';
+$query = $mysqli->prepare("SELECT * FROM dne_custom_reports
+                          WHERE id_project = ? AND request_name = ?");
+$query->bind_param("is",$project_id,$entrepreneur_team);
+$query->execute();
+$query->store_result();
+$entrepreneur_team_num_rows = @$query->num_rows;
+
+$et_btn_disabled = '';
+if(@$entrepreneur_team_num_rows > 0)
+	$et_btn_disabled = 'disabled';
+
+$tracking = 'במעקב';
+$query = $mysqli->prepare("SELECT * FROM dne_custom_reports
+                          WHERE id_project = ? AND request_name = ?");
+$query->bind_param("is",$project_id,$tracking);
+$query->execute();
+$query->store_result();
+$tracking_num_rows = @$query->num_rows;
+
+$tr_btn_disabled = '';
+if(@$tracking_num_rows > 0)
+	$tr_btn_disabled = 'disabled';
+
 $finish_btn_disabled = 'disabled';
 if(@$general_tasks_num_rows > 0 && @$my_tasks_num_rows > 0)
 	$finish_btn_disabled = '';
@@ -60,10 +96,13 @@ include 'menu_tasks.php';
 					</div>				
 			    </div>
 				
-				<div class="row marginTop15 alignCenter dir-rtl">	
-					<div class="col-12">
-						<input type="button" value="יצירת דו''ח כלל המשימות" class="btn marginLeft10 mb-2" onclick="addReport('generalTasksReport')" <?=@$gt_btn_disabled?> />
-						<input type="button" value="יצירת דו''ח משימות שלי" class="btn mb-2" onclick="addReport('myTasksReport')" <?=@$mt_btn_disabled?>  />
+				<div class="row marginTop15 alignCenter dir-rtl">
+					<div class="col-12 default-reports-buttons">
+						<input type="button" value="יצירת דו''ח כלל המשימות" class="btn mb-2" onclick="addReport('generalTasksReport')" <?=@$gt_btn_disabled?> />
+						<input type="button" value="יצירת דו''ח משימות שלי" class="btn mb-2" onclick="addReport('myTasksReport')" <?=@$mt_btn_disabled?> />
+						<input type="button" value="יצירת דו''ח צוות ניהול" class="btn mb-2" onclick="addReport('managementTeamReport')" <?=@$mgt_btn_disabled?> />
+						<input type="button" value="יצירת דו''ח צוות יזם" class="btn mb-2" onclick="addReport('entrepreneurTeamReport')" <?=@$et_btn_disabled?> />
+						<input type="button" value="יצירת דו''ח במעקב" class="btn mb-2" onclick="addReport('trackingReport')" <?=@$tr_btn_disabled?> />
 					</div>
 				</div>
 				
@@ -111,5 +150,19 @@ function addReport(report_name) {
 
 #a_project_title:hover {
 	color: grey;
+}
+
+.default-reports-buttons {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 12px;
+	max-width: 650px;
+	margin: 0 auto;
+}
+
+.default-reports-buttons .btn {
+	margin: 0;
+	flex: 0 1 200px;
 }
 </style>
