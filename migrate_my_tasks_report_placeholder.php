@@ -7,6 +7,7 @@ $query = $mysqli->prepare("SELECT id, sql_str FROM dne_custom_reports WHERE requ
 $query->bind_param('s', $request_name);
 $query->execute();
 $query->store_result();
+$total_reports = $query->num_rows;
 $reports = fetch($query);
 
 $updated = 0;
@@ -29,5 +30,5 @@ foreach($reports as $report){
 	}
 }
 
-echo "<br><strong>Terminé. $updated mis à jour, $skipped ignorés (sur ".sizeof($reports)." rapports 'משימות שלי').</strong>";
+echo "<br><strong>Terminé. $updated mis à jour, $skipped ignorés (sur $total_reports rapports 'משימות שלי').</strong>";
 ?>
