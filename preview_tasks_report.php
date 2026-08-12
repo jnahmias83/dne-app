@@ -791,7 +791,7 @@ include 'menu_tasks.php';
 												
 												if(in_array('progress status',$columns_list_array)) { ?>
 													<td style="<?=@$text_align?>;<?=@$padding?>:5px;color:<?=@$progress_status_color?>;background-color:<?=@$progress_status_bgcolor?>;">
-                                                        <?=@$progress_status?>
+                                                        <?=simplifyStatusLabel(@$progress_status)?>
 													</td>
 												<?php } ?>		
 											</tr>
@@ -1197,7 +1197,7 @@ include 'menu_tasks.php';
 													
 													if(in_array('progress status',$columns_list_array)) { ?>
 														<td style="<?=@$text_align?>;<?=@$padding?>:5px;color:<?=@$progress_status_color?>;background-color:<?=@$progress_status_bgcolor?>;">
-															<?=@$progress_status?>
+															<?=simplifyStatusLabel(@$progress_status)?>
 														</td>
 													<?php } ?>
 													

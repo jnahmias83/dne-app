@@ -16,7 +16,7 @@ foreach($progress_status as $item) {
 	$option = "<option value='".htmlspecialchars($item->id)."'";
 	if($item->id == $_POST['id_progress_status'])
 	   $option.= " selected";
-	$option .= ">".$item->name_he."</option>";
+	$option .= ">".simplifyStatusLabel($item->name_he)."</option>";
 	echo $option;
 }
 echo '</select>';

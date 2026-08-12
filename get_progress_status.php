@@ -8,6 +8,8 @@ $progress_status = fetch_unique($query);
 $progress_status_name_he = @$progress_status->name_he;
 if($progress_status_name_he == ' ')
 	$progress_status_name_he = '(ללא)';
+else
+	$progress_status_name_he = simplifyStatusLabel($progress_status_name_he);
 
 echo json_encode([
 	'progress_status_name_he' => $progress_status_name_he,

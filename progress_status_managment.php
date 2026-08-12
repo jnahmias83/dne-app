@@ -55,7 +55,7 @@ $progress_status = fetch($query);
 										?>
 										<tr class="height30 fontSize14">
 											<td class="alignLeft paddingLeft5"><?=@$item->name?></td>
-											<td class="alignRight paddingRight5"><?=@$item->name_he?></td>
+											<td class="alignRight paddingRight5"><?=simplifyStatusLabel(@$item->name_he)?></td>
 											<td class="alignRight paddingRight5"><input type="color" class="width90" disabled="true" value="<?=@$item->color?>" /></td>
 											<td class="alignRight paddingRight5"><input type="color" class="width90" disabled="true" value="<?=@$item->bgcolor?>" /></td>
 											<td class="alignCenter"><img src="images/edit-button.svg" class="cursor-pointer" title="עדכן" onclick="location.href='add_global_progress_status.php?id=<?=@$item->id?>'" /></td>									

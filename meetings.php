@@ -783,7 +783,7 @@ if(@$supplier_filter != 'undefined' || @$period_new_task_filter != 'undefined'
 		if(@$query->name_he == ' ')
 			$filter_by_progress_status = 'סטטוס(ללא)';
 		else 
-			$filter_by_progress_status = 'סטטוס('.@$query->name_he.')';
+			$filter_by_progress_status = 'סטטוס('.simplifyStatusLabel(@$query->name_he).')';
 		array_push($filters_array,$filter_by_progress_status);
 	}
 	
@@ -1632,7 +1632,7 @@ include 'menu_tasks.php';
 											foreach($log_meeting_updates as $item){
 												$remark = @$item->remark;
 												$action_date = @$item->action_date;
-												$progress_status_log_updates = @$item->ps_name_he;
+												$progress_status_log_updates = simplifyStatusLabel(@$item->ps_name_he);
 												if(@$lang == 'EN')
 													$progress_status_log_updates = @$item->ps_name;
 
@@ -1641,7 +1641,7 @@ include 'menu_tasks.php';
 																	."<span class='badge-nickname-green'>"
 																	.@$item->user_nickname
 																	."</span> "
-																	."<span class='log-date-grey'>"
+																	."<span class='log-date-grey' style='unicode-bidi:isolate;'>"
 																	.smartDate(@$action_date, $lang)
 																	."</span>";
 
@@ -1653,7 +1653,7 @@ include 'menu_tasks.php';
 													}
 
 													$description .=  " - "
-																	."<span>"
+																	."<span style='unicode-bidi:isolate;'>"
 																	.html_entity_decode(@$remark)
 																	."</span>"
 																	."</div>";
@@ -1997,15 +1997,15 @@ include 'menu_tasks.php';
 															<?php 
 															foreach($progress_status_s as $item){
 															?>
-																<option value="<?=@$item->id?>" <?php if($item->id == @$progress_status_id) echo "selected";?>>
+																<?php
+																	if ($lang == 'HE')
+																		$progress_status_row_label = trim(@$item->name_he) !== '' ? simplifyStatusLabel(@$item->name_he) : '(ללא)';
+																	else
+																		$progress_status_row_label = trim(@$item->name) !== '' ? @$item->name : '(Without)';
+																?>
+																<option value="<?=@$item->id?>" data-label="<?=htmlspecialchars($progress_status_row_label)?>" <?php if($item->id == @$progress_status_id) echo "selected";?>>
 																	<strong>
-																		<?php 
-																		if ($lang == 'HE'){
-																			echo trim(@$item->name_he) !== '' ? @$item->name_he : '(ללא)';
-																		} else {
-																			echo trim(@$item->name) !== '' ? @$item->name : '(Without)';
-																		}
-																		?>
+																		<?=@$progress_status_row_label?>
 																	</strong>
 																</option>
 																<?php
@@ -2229,22 +2229,24 @@ include 'menu_tasks.php';
 											    $reminder_date = @$item->reminder_date;
 												
 												$dir_log_meeting_updates = 'alignRight paddingRight10';
-												if(@$item->lang == 'EN')
+												if(@$lang == 'EN')
 													$dir_log_meeting_updates = 'alignLeft paddingLeft10';
-												
+
 												foreach($log_meeting_updates as $item){
-													$remark = @$item->remark;	
+													$remark = @$item->remark;
 													$action_date = @$item->action_date;
-													
+
 													if(@$remark != '')
 														$description .= "<div class='marginTop5 colorGreenDark display-block ".@$dir_log_meeting_updates."'>"
 																	    ."<span class='badge-nickname-green'>"
 																	    .@$item->user_nickname
 																	    ."</span> "
-																	    ."<span class='log-date-grey' style='direction:".@$dir.";unicode-bidi:embed;'>"
+																	    ."<span class='log-date-grey' style='unicode-bidi:isolate;'>"
 																		.smartDate(@$action_date, $lang)
 																		."</span> - "
+																		."<span style='unicode-bidi:isolate;'>"
 																		.html_entity_decode(@$remark)
+																		."</span>"
 																		 ."</div>";
 												}
 																								
@@ -2529,7 +2531,7 @@ include 'menu_tasks.php';
 
 													if(in_array('progress status',$columns_list_array)) { ?>
 														<td style="<?=@$text_align?>;<?=@$padding?>:5px;<?=@$progress_status_color?>;<?=@$progress_status_bgcolor?>;">
-															<?=@$progress_status?>
+															<?=simplifyStatusLabel(@$progress_status)?>
 														</td>
 													<?php } ?>
 													
@@ -2735,7 +2737,7 @@ include 'menu_tasks.php';
 										$checked = ($item->id == @$progress_status_filter && strpos(@$_SESSION['filter_progress_status_list'], ',') === false) ? 'checked' : '';?>
 										<label class="display-block">
 											<input type="radio" name="progress_status_filter" value="<?=@$item->id?>" <?=@$checked?> onclick="setFilter(<?=@$id_report?>,this.value,'','progress_status_filter');" />
-											<?=(trim(@$item->name_he) !== '' ? @$item->name_he : '(ללא)')?>
+											<?=(trim(@$item->name_he) !== '' ? simplifyStatusLabel(@$item->name_he) : '(ללא)')?>
 										</label>
 										<?php
 									}
@@ -2900,7 +2902,6 @@ include 'menu_tasks.php';
 					    <div id="modalContent">	        	        
 					        <form>
 							    <div class='marginTop5 subtitle color-19bf42 fontSize18 font-weight-bold alignCenter'></div>
-                                <div id="task_active_remarks_target_date"></div>							
 								<div class="marginTop10 <?=@$padding_10?> <?=@$align?> height-auto bgColorWhite fontSize13 cursor-pointer border-black overflow-y-scroll dir-rtl">
 									<div name="remark_delay_target_date" id="remark_delay_target_date" contenteditable="true" dir="rtl" class="editable green cursor-pointer" style="text-align:right;" data-placeholder="ניתן להוסיף כאן הערה"></div>
 								</div>
@@ -2926,10 +2927,8 @@ include 'menu_tasks.php';
 					    <div id="modalContent">			                             					   		
 							<form>
 							    <div class='marginTop5 subtitle color-19bf42 fontSize18 font-weight-bold alignCenter'></div>
-                                <div class="margin-top-10-x-auto padding-4x-4y colorWhite bgColorBlack borderRadius10 width100 border-black fontSize13 font-weight-bold alignCenter" id="div_new_progress_status"></div>							
+                                <div class="margin-top-10-x-auto padding-4x-4y colorWhite bgColorBlack borderRadius10 width100 border-black fontSize13 font-weight-bold alignCenter" id="div_new_progress_status"></div>
                                 <div class="marginTop10"></div>
-								<hr class="colorGrey" style="margin:1px 0" />
-								<div id="task_active_remarks_progress_status"></div>							
 								<div class="marginTop10 <?=@$padding_10?> <?=@$align?> height-auto bgColorWhite fontSize13 cursor-pointer border-black overflow-y-scroll dir-rtl">
 									<div name="remark_changes_status" id="remark_changes_status" contenteditable="true" class="editable green cursor-pointer" data-placeholder="ניתן להוסיף כאן הערה"></div>
 								</div>	
@@ -3061,7 +3060,7 @@ include 'menu_tasks.php';
 						        <div class="marginTop15 fontSize18 alignCenter"><?=@$popup_lang=='HE' ? 'בדרך ליצור עבורך משימת המשך לפני כן, תציין אם ברצונך לסמן סטטוס משימה כ:' : 'A continuation task will be created. Please select the status to apply to the current task:'?></div>
 							    <div class="marginTop15 d-flex justify-content-center" style="gap:20px;">
 									<label style="cursor:pointer">
-										<input type="radio" id="done" name="progress_status" value="1" onclick="continuousTask($('#hidden_meeting_id').val(),'בוצע/נמסר',$('#hidden_iteration').val(),'fromMeetings')" />&nbsp;<?=@$popup_lang=='HE' ? 'בוצע/נמסר' : 'Done/Delivered'?>
+										<input type="radio" id="done" name="progress_status" value="1" onclick="continuousTask($('#hidden_meeting_id').val(),'בוצע/נמסר',$('#hidden_iteration').val(),'fromMeetings')" />&nbsp;<?=@$popup_lang=='HE' ? 'בוצע' : 'Done/Delivered'?>
 									</label>
 									<label style="cursor:pointer">
 										<input type="radio" id="archive" name="progress_status" value="2" onclick="continuousTask($('#hidden_meeting_id').val(),'ארכיון',$('#hidden_iteration').val(),'fromMeetings')" />&nbsp;<?=@$popup_lang=='HE' ? 'ארכיון' : 'Archive'?>
@@ -3112,8 +3111,8 @@ include 'menu_tasks.php';
 												if($_pl == "HE"){
 													if(@$item->name_he == ' ')
 														$progress_status_name_for_update = '(ללא)';
-													else 
-														$progress_status_name_for_update = @$item->name_he;
+													else
+														$progress_status_name_for_update = simplifyStatusLabel(@$item->name_he);
 												}
 												else {
 													if(@$item->name == ' ')
@@ -3122,7 +3121,7 @@ include 'menu_tasks.php';
 														$progress_status_name_for_update = @$item->name;
 												}
 											?>
-												<option value="<?=@$item->id?>" data-name-en="<?=@$item->name?>">
+												<option value="<?=@$item->id?>" data-name-en="<?=@$item->name?>" data-label="<?=htmlspecialchars($progress_status_name_for_update)?>">
 													<strong>
 														<?=@$progress_status_name_for_update?>
 													</strong>
@@ -3844,22 +3843,6 @@ $(document).ready(function(){
 		$('#modalTaskFollowupDelayTargetDate .modal-title').html("<img src='images/status-icon.png' alt='status icon' width='20' height='20'>&nbsp;&nbsp;עדכון תאריך יעד&nbsp;&nbsp;<img src='images/status-icon.png' alt='status icon' width='20' height='20'>");
 	    $('.subtitle').html(chapter+"<br/>"+subject+"&nbsp;|&nbsp;"+area).css('line-height','1.1em');
 
-	    let form_data = new FormData();
-        form_data.append('id_meeting',meeting_id);
-	    form_data.append('lang',$('#lang').val());
-
-	    $.ajax({
-			type: 'POST',
-			url: 'fill_task_active_remarks.php',
-			data: form_data,
-			cache: false,
-			processData: false,
-			contentType: false,
-			success: function(data){
-			    $('#task_active_remarks_target_date').html(data);
-			},
-	    });
-
 	   $('#modalContent input[type="hidden"]').remove();
 	   $('#modalContent').append("<input type='hidden' id='hidden_meeting_id' value='"+meeting_id+"'><input type='hidden' id='hidden_iteration' value='"+iteration+"'>");
 	   $('#modalDestinationDate').modal('hide');
@@ -3867,11 +3850,6 @@ $(document).ready(function(){
     });
 
     var allowed_progress_status_ids = "<?=@$progress_status_ids?>";
-
-    $(document).on('change', '#progress_status_update', function(){
-		let selectedText = $(this).find('option:selected').text().trim();
-		$(this).toggleClass('status-blank-when-empty', selectedText === '(ללא)' || selectedText === '(Without)');
-	});
 
     $('[id^="_progress_status"]').on('change', function(){
 		let selectedStatusText = $(this).find('option:selected').text().trim();
@@ -3899,29 +3877,15 @@ $(document).ready(function(){
 			processData: false,
 			contentType: false,
 			success: function(data){
-                data = JSON.parse(data);			
+                data = JSON.parse(data);
+				let isBlankStatus = (data.progress_status_name_he === '(ללא)' || data.progress_status_name_he === '(Without)');
 				$('#div_new_progress_status')
                 .css({'color':data.progress_status_color,'background-color':data.progress_status_bgcolor})
-                .text(data.progress_status_name_he);
+                .text(isBlankStatus ? '' : data.progress_status_name_he)
+                .toggle(!isBlankStatus);
 			},
 	    });
 	    
-		let form_data2 = new FormData();
-        form_data2.append('id_meeting',meeting_id);
-		form_data2.append('lang',$('#lang').val());
-	   
-	    $.ajax({
-			type: 'POST',
-			url: 'fill_task_active_remarks.php',
-			data: form_data2,
-			cache: false,
-			processData: false,
-			contentType: false,
-			success: function(data){	
-			    $('#task_active_remarks_progress_status').html(data);
-			},
-	    });
-	   	
 	   $('#new_destination_date').val(destination_date);
 	   $('#modalContent input[type="hidden"]').remove();
 	   $('#modalContent').append("<input type='hidden' id='hidden_meeting_id' value='"+meeting_id+"'><input type='hidden' id='hidden_iteration' value='"+iteration+"'><input type='hidden' id='hidden_remark' value='"+remark+"'><input type='hidden' id='hidden_project_id' value='"+$('#project_id').val()+"'>");
@@ -4114,9 +4078,8 @@ $(document).ready(function(){
 		
 		let selectedId = $('#hidden_progress_status_id').val();
         $('#progress_status_update').val(selectedId);
-		let selectedStatusUpdateText = $('#progress_status_update option:selected').text().trim();
-		$('#progress_status_update').toggleClass('status-blank-when-empty', selectedStatusUpdateText === '(ללא)' || selectedStatusUpdateText === '(Without)');
-		
+		blankStatusIfEmpty($('#progress_status_update'));
+
 	    $('#modalTaskFollowupActions').modal('hide');
 	    $('#modalUpdateTask').modal('show');
 	});

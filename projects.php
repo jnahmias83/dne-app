@@ -898,7 +898,7 @@ foreach($all_what_news as $wn){
 																		<?php if(trim(@$wn->lmu_progress_status_name) != ''){ ?>
 																			&nbsp;-
 																			<span class="color-status-green-darker dir-rtl unicode-bidi-embed" style="font-weight:bold;">
-																				<?=@$wn->lmu_progress_status_name?>
+																				<?=simplifyStatusLabel(@$wn->lmu_progress_status_name)?>
 																			</span>
 																		<?php }
 																		    if(@$remark != '') echo ' - <span class="colorGreenDark dir-rtl unicode-bidi-embed" style="font-weight:normal;">'.$remark.'</span>';
@@ -1540,7 +1540,7 @@ foreach($all_what_news as $wn){
 																					<?php } else { ?>
 																						<?php if(trim(@$wn->lmu_progress_status_name) != ''){ ?>
 																							<span class="color-status-green-darker dir-rtl unicode-bidi-embed" style="font-weight:bold;">
-																								<?=' '.@$wn->lmu_progress_status_name?>
+																								<?=' '.simplifyStatusLabel(@$wn->lmu_progress_status_name)?>
 																							</span>
 																						<?php }
 																						if(@$lmu_remark_s2 != '') echo ' - <span class="colorGreenDark dir-rtl unicode-bidi-embed" style="font-weight:normal;">'.$lmu_remark_s2.'</span>';
@@ -1944,7 +1944,7 @@ foreach($all_what_news as $wn){
 					        <form class="alignCenter">
 						       <div class="marginTop15 fontSize18 alignCenter" id="continuous_task_intro">בדרך ליצור עבורך משימת המשך לפני כן, תציין אם ברצונך לסמן סטטוס משימה כ:</div>
 							   <div class="marginTop15">
-									<input type="radio" id="done" name="progress_status" value="1" onclick="continuousTask($('#hidden_meeting_id').val(),'בוצע/נמסר','','from_'+$('#hidden_project_id').val())" />&nbsp;<span id="continuous_label_done">בוצע/נמסר</span>
+									<input type="radio" id="done" name="progress_status" value="1" onclick="continuousTask($('#hidden_meeting_id').val(),'בוצע/נמסר','','from_'+$('#hidden_project_id').val())" />&nbsp;<span id="continuous_label_done">בוצע</span>
 							        <input type="radio" id="archive" name="progress_status" class="marginRight8" value="2" onclick="continuousTask($('#hidden_meeting_id').val(),'ארכיון','','from_'+$('#hidden_project_id').val())" />&nbsp;<span id="continuous_label_archive">ארכיון</span>
 							        <input type="radio" id="no_change" name="progress_status" class="marginRight8" value="3" onclick="continuousTask($('#hidden_meeting_id').val(),'no_change','','from_'+$('#hidden_project_id').val())" />&nbsp;<span id="continuous_label_no_change">ללא שינוי</span>
 							   </div>
@@ -2258,7 +2258,7 @@ $(document).ready(function(){
 		$('#modalContinuousTask').attr('dir', isHE ? 'rtl' : 'ltr').toggleClass('dir-rtl', isHE);
 		$('#modalContinuousTask .modal-title').html(isHE ? 'המשך' : 'Continue');
 		$('#continuous_task_intro').html(isHE ? 'בדרך ליצור עבורך משימת המשך לפני כן, תציין אם ברצונך לסמן סטטוס משימה כ:' : 'A continuation task will be created. Please select the status to apply to the current task:');
-		$('#continuous_label_done').html(isHE ? 'בוצע/נמסר' : 'Done/Delivered');
+		$('#continuous_label_done').html(isHE ? 'בוצע' : 'Done/Delivered');
 		$('#continuous_label_archive').html(isHE ? 'ארכיון' : 'Archive');
 		$('#continuous_label_no_change').html(isHE ? 'ללא שינוי' : 'No change');
 	});
@@ -2288,11 +2288,6 @@ $(document).ready(function(){
 	   $('#modalHistoryTasks .modal-title').html("הסטורי-ה");
 	});
 	
-	$(document).on('change', '#progress_status_update', function(){
-		let selectedText = $(this).find('option:selected').text().trim();
-		$(this).toggleClass('status-blank-when-empty', selectedText === '(ללא)' || selectedText === '(Without)');
-	});
-
 	$('[id="update_btn"]').on('click', function(){
 		meeting_id = $('#hidden_meeting_id').val();
 		project_id = $('#hidden_project_id').val();
@@ -2335,8 +2330,7 @@ $(document).ready(function(){
 			contentType: false,
 			success: function (data){
 				$('#progress_status_update').html(data);
-				let selectedStatusText = $('#progress_status_update option:selected').text().trim();
-				$('#progress_status_update').toggleClass('status-blank-when-empty', selectedStatusText === '(ללא)' || selectedStatusText === '(Without)');
+				blankStatusIfEmpty($('#progress_status_update'));
 			}
         });
 
@@ -2918,8 +2912,8 @@ $(document).ready(function(){
 				let current_meeting_id = $('#hidden_meeting_id').val();			
 				let index = meeting_ids_array.indexOf(current_meeting_id);			
 					   
-				if($('#progress_status_update option:selected').text().trim() == 'ארכיון' ||
-					$('#progress_status_update option:selected').text().trim() == 'בוצע/נמסר'){
+				if($('#progress_status_update option:selected').data('name-en') == 'Archive' ||
+					$('#progress_status_update option:selected').data('name-en') == 'Done'){
 						index++;
 						if(index >= meeting_ids_array.length) 
 							index = 0;
@@ -2964,8 +2958,8 @@ $(document).ready(function(){
 				let current_meeting_id = $('#hidden_meeting_id').val();			
 				let index = meeting_ids_array.indexOf(current_meeting_id);			
 					   
-				if($('#progress_status_update option:selected').text().trim() == 'ארכיון' ||
-					$('#progress_status_update option:selected').text().trim() == 'בוצע/נמסר'){
+				if($('#progress_status_update option:selected').data('name-en') == 'Archive' ||
+					$('#progress_status_update option:selected').data('name-en') == 'Done'){
 						index++;
 						if(index >= meeting_ids_array.length) 
 							index = 0;

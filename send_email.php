@@ -142,7 +142,7 @@ else {
         $html_message .= "<tr style='text-align:center;'>
 	                          <td colspan='3'>
 							     <div>סטטוס משימה</div>
-								 <div>".@$meeting->ps_name_he."</div>
+								 <div>".simplifyStatusLabel(@$meeting->ps_name_he)."</div>
 							  </td>     
 						  </tr>";		  
 	                      

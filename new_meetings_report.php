@@ -232,7 +232,7 @@ foreach($chapters as $item) {
 			$html1_body.='<td width="90" style="text-align:center;border:1px solid black;'.@$pass_on_bg_color.'"><strong>'.@$pass_on.'</strong></td>';
 			$html1_body.='<td width="50" style="text-align:center;border:1px solid black;font-size:10px;'.$task_creation_date_bg_color.'">'.@$task_creation_date.'</td>';
 			$html1_body.='<td width="50" style="text-align:center;border:1px solid black;font-size:10px;'.@$dest_date_color.';'.$dest_date_bg_color.'"><strong>'.@$destination_date.'</strong></td>';
-			$html1_body.='<td width="85" style="text-align:center;color:'.@$progress_status_color.';background-color:'.@$progress_status_bgcolor.';border:1px solid black;"><strong>'.@$progress_status.'</strong></td>';
+			$html1_body.='<td width="85" style="text-align:center;color:'.@$progress_status_color.';background-color:'.@$progress_status_bgcolor.';border:1px solid black;"><strong>'.simplifyStatusLabel(@$progress_status).'</strong></td>';
 			$html1_body.='</tr>';
 		}
 	}

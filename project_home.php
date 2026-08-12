@@ -256,7 +256,7 @@ $what_news_label = 'מה חדש';
 					        <form class="alignCenter">
 						       <div class="marginTop15 fontSize18 alignCenter">בדרך ליצור עבורך משימת המשך לפני כן, תציין אם ברצונך לסמן סטטוס משימה כ:</div>
 							   <div class="marginTop15">
-									<input type="radio" id="done" name="progress_status" value="1" onclick="continuousTask($('#hidden_meeting_id').val(),'בוצע/נמסר','','fromProjectHome')" />&nbsp;בוצע/נמסר
+									<input type="radio" id="done" name="progress_status" value="1" onclick="continuousTask($('#hidden_meeting_id').val(),'בוצע/נמסר','','fromProjectHome')" />&nbsp;בוצע
 							        <input type="radio" id="archive" name="progress_status" class="marginRight8" value="2" onclick="continuousTask($('#hidden_meeting_id').val(),'ארכיון','','fromProjectHome')" />&nbsp;ארכיון
 							        <input type="radio" id="no_change" name="progress_status" class="marginRight8" value="3" onclick="continuousTask($('#hidden_meeting_id').val(),'no_change','','fromProjectHome')" />&nbsp;ללא שינוי
 							   </div> 

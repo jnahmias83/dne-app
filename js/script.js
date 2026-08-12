@@ -715,6 +715,32 @@ function computeIndependentReminderDate(daysFromToday){
 	$('#computed_reminder_date').val(formatDate(d));
 }
 
+function restoreStatusOptionsText($select){
+	$select.find('option').each(function(){
+		let label = $(this).data('label');
+		if(label !== undefined) $(this).text(label);
+	});
+}
+
+function blankStatusIfEmpty($select){
+	let $option = $select.find('option:selected');
+	let label = $option.data('label');
+	if(label === '(ללא)' || label === '(Without)')
+		$option.text('');
+}
+
+$(document).on('focus mousedown', '#progress_status_update', function(){
+	restoreStatusOptionsText($(this));
+});
+
+$(document).on('change', '#progress_status_update', function(){
+	blankStatusIfEmpty($(this));
+});
+
+$(document).on('blur', '#progress_status_update', function(){
+	blankStatusIfEmpty($(this));
+});
+
 function updateReminderBellIcon(value){
 	if(value == '0'){
 		$('#reminder_bell_icon').removeClass('fa-bell').addClass('fa-bell-slash').css('color','#888');

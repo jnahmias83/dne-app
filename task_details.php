@@ -78,7 +78,7 @@ if(@$_POST['all_ids_to_edit'] == '') {
 
 		$all_remarks .= "<div class='marginTop5'>".@$user_nickname." - ".smartDate(@$action_date, @$meeting->p_lang).' - '.html_entity_decode(@$remark).'</div>';
 
-		$progress_status_log_updates = @$item->ps_name_he;
+		$progress_status_log_updates = simplifyStatusLabel(@$item->ps_name_he);
 		if(@$meeting->p_lang == 'EN')
 			$progress_status_log_updates = @$item->ps_name;
 
@@ -87,7 +87,7 @@ if(@$_POST['all_ids_to_edit'] == '') {
 							."<span class='badge-nickname-green'>"
 							.@$user_nickname
 							."</span> "
-							."<span class='log-date-grey'>"
+							."<span class='log-date-grey' style='unicode-bidi:isolate;'>"
 							.smartDate(@$action_date, @$meeting->p_lang)
 							."</span>";
 
@@ -98,7 +98,7 @@ if(@$_POST['all_ids_to_edit'] == '') {
 			}
 
 			$description .=  " - "
-							."<span>"
+							."<span style='unicode-bidi:isolate;'>"
 							.html_entity_decode(@$remark)
 							."</span>"
 							."</div>";
@@ -234,7 +234,7 @@ if(@$_POST['all_ids_to_edit'] == '') {
 	$task_details .= stripNbspArtifact(@$description).'|~|';
 	$task_details .= @$meeting->image1.'|~|';
 	$task_details .= @$meeting->ps_id.'|~|';
-	$task_details .= @$meeting->ps_name_he.'|~|';
+	$task_details .= simplifyStatusLabel(@$meeting->ps_name_he).'|~|';
 	$task_details .= stripNbspArtifact(@$meeting->subject).'|~|';
 	$task_details .= @$count_delay_dest_date.'|~|';
 	$task_details .= @$meeting->t_name_he.'|~|';

@@ -949,9 +949,9 @@ foreach($chapters as $item){
 				$remark = str_replace(["\r\n", "\r", "\n"], '<br />', $remark);
 
 				$action_date = @$item->action_date;		
-                $progress_status_log_updates = @$item->ps_name_he;
+                $progress_status_log_updates = simplifyStatusLabel(@$item->ps_name_he);
 				if(@$lang == 'EN')
-					$progress_status_log_updates = @$item->ps_name;				
+					$progress_status_log_updates = @$item->ps_name;
 
 				if(trim($remark) != '') {
 					$status_text = trim(@$progress_status_log_updates);
@@ -1283,7 +1283,7 @@ foreach($chapters as $item){
 				if(in_array('destination date',$columns_list_array))
 				   $html1_body.='<td width="'.@$destination_date_width.'" style="text-align:center;border:1px solid black;font-size:10px;'.@$dest_date_color.';'.$dest_date_bgcolor.';'.@$target_date_text_decoration.'">'.(@$row_pad_lines['destination_date']??'').'<strong>'.@$destination_date_display.'</strong></td>';
 				if(in_array('progress status',$columns_list_array))
-				   $html1_body.='<td width="'.@$progress_status_width.'" style="text-align:center;'.@$progress_status_color.';'.@$progress_status_bgcolor.';border:1px solid black;">'.(@$row_pad_lines['progress_status']??'').'<strong>'.@$progress_status.'</strong></td>';
+				   $html1_body.='<td width="'.@$progress_status_width.'" style="text-align:center;'.@$progress_status_color.';'.@$progress_status_bgcolor.';border:1px solid black;">'.(@$row_pad_lines['progress_status']??'').'<strong>'.simplifyStatusLabel(@$progress_status).'</strong></td>';
 				$html1_body.='</tr>';
 				
 				$image1_path = !empty($image1) ? realpath(__DIR__.'/uploads/'.$image1) : false;
@@ -1773,7 +1773,7 @@ foreach($chapters as $item) {
 				if(in_array('destination date',$columns_list_array))
 				   $html2_body.='<td width="'.@$destination_date_width.'" style="text-align:center;border:1px solid black;font-size:10px;'.@$dest_date_color.';'.$dest_date_bgcolor.';'.@$target_date_text_decoration.'">'.(@$row_pad_lines['destination_date']??'').'<strong>'.@$destination_date_display.'</strong></td>';
 				if(in_array('progress status',$columns_list_array))
-				   $html2_body.='<td width="'.@$progress_status_width.'" style="text-align:center;'.@$progress_status_color.';'.@$progress_status_bgcolor.';border:1px solid black;">'.(@$row_pad_lines['progress_status']??'').'<strong>'.@$progress_status.'</strong></td>';
+				   $html2_body.='<td width="'.@$progress_status_width.'" style="text-align:center;'.@$progress_status_color.';'.@$progress_status_bgcolor.';border:1px solid black;">'.(@$row_pad_lines['progress_status']??'').'<strong>'.simplifyStatusLabel(@$progress_status).'</strong></td>';
 				$html2_body.='</tr>'; 
 				
 				if(strpos($image1,'Snag') === false && strpos($image2,'Snag') === false) {

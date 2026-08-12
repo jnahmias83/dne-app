@@ -103,8 +103,8 @@ else {
 		$content .= "<div class='margin-10-x-auto max-height-180 overflow-x-hidden overflow-y-scroll'>";
 			
 		foreach(@$log_meeting_updates as $item){
-			$progress_status = @$item->ps_name_he;
-			
+			$progress_status = simplifyStatusLabel(@$item->ps_name_he);
+
 			if($_POST['lang'] == 'EN')
 				$progress_status = @$item->ps_name;						
 										

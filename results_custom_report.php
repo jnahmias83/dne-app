@@ -676,7 +676,7 @@ foreach($chapters as $item) {
 			if(in_array('destination date',$columns_list_array))
 			  $html1_body.='<td width="'.@$destination_date_width.'" style="text-align:center;border:1px solid black;font-size:10px;'.@$dest_date_color.';'.$dest_date_bg_color.'"><strong>'.@$destination_date_display.'</strong></td>';
 			if(in_array('progress status',$columns_list_array))
-			  $html1_body.='<td width="'.@$progress_status_width.'" style="text-align:center;color:'.@$progress_status_color.';background-color:'.@$progress_status_bgcolor.';border:1px solid black;"><strong>'.@$progress_status.'</strong></td>';
+			  $html1_body.='<td width="'.@$progress_status_width.'" style="text-align:center;color:'.@$progress_status_color.';background-color:'.@$progress_status_bgcolor.';border:1px solid black;"><strong>'.simplifyStatusLabel(@$progress_status).'</strong></td>';
 			$html1_body.='</tr>';
 			
 			 if($is_images == 1 && (($item->image1 != '' && $item->is_appears_img1) || ($item->image2 != '' && $item->is_appears_img2)) && strpos($image1,'Snag') === false && strpos($image2,'Snag') === false) {
@@ -1079,7 +1079,7 @@ foreach($chapters as $item) {
 				if(in_array('destination date',$columns_list_array))
 				  $html2_body.='<td width="'.@$destination_date_width.'" style="text-align:center;border:1px solid black;font-size:10px;'.@$dest_date_color.';'.$dest_date_bg_color.'"><strong>'.@$destination_date_display.'</strong></td>';
 				if(in_array('progress status',$columns_list_array))
-				  $html2_body.='<td width="'.@$progress_status_width.'" style="text-align:center;color:'.@$progress_status_color.';background-color:'.@$progress_status_bgcolor.';border:1px solid black;"><strong>'.@$progress_status.'</strong></td>';
+				  $html2_body.='<td width="'.@$progress_status_width.'" style="text-align:center;color:'.@$progress_status_color.';background-color:'.@$progress_status_bgcolor.';border:1px solid black;"><strong>'.simplifyStatusLabel(@$progress_status).'</strong></td>';
 				$html2_body.='</tr>';
 				
 				if(strpos($image1,'Snag') === false && strpos($image2,'Snag') === false) {

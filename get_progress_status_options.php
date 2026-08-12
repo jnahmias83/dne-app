@@ -11,7 +11,7 @@ echo "<option value='0'>--סטטוס--</option>";
 foreach ($progress_status as $item) {
     $selected = ((int)$item->id === (int)($_POST['id_progress_status'] ?? 0))?'selected':'';
     $name_he_clean = trim(preg_replace('/\xc2\xa0|\s+/u',' ',strip_tags($item->name_he)));     
-    $name_he = ($name_he_clean === '')?'(ללא)':$item->name_he;
-    echo "<option value='{$item->id}' $selected>{$name_he}</option>";
+    $name_he = ($name_he_clean === '')?'(ללא)':simplifyStatusLabel($item->name_he);
+    echo "<option value='{$item->id}' data-name-en='".htmlspecialchars(@$item->name)."' data-label='".htmlspecialchars($name_he)."' $selected>{$name_he}</option>";
 }
 ?>

@@ -17,10 +17,11 @@ $query->store_result();
 $project = fetch_unique($query);
 
 $query = $mysqli->prepare("SELECT r.id AS id,r.email AS email,r.phone AS phone,
-                          r.name AS name,r.id_projects_suppliers AS id_projects_suppliers,
+                          r.name AS name,r.firstname AS firstname,r.lastname AS lastname,
+                          r.id_projects_suppliers AS id_projects_suppliers,
                           r.role,r.color AS color,r.bgcolor AS bgcolor,
-                          r.is_active AS is_active						  
-                          FROM dne_responsibles r 
+                          r.is_active AS is_active
+                          FROM dne_responsibles r
 						  LEFT JOIN dne_projects_suppliers ps ON r.id_projects_suppliers = ps.id 
 						  LEFT JOIN dne_suppliers s ON ps.id_supplier = s.id 
 						  WHERE r.id_project = ? ORDER BY r.name");
@@ -67,13 +68,14 @@ include 'menu_tasks.php';
 							<table id="responsibles_list" class="" border="1" dir="rtl">						
 								<tr class="bgColorSilver height50">   
 								    <th width="20px;" class="alignCenter"></th>
-									<th width="130px;" class="alignCenter"><i class="fa fa-user"></i><br/>שם</th>
-									<th width="160px;" class="alignCenter">משרד/חברה</th>
+									<th width="130px;" class="alignCenter">שם</th>
+									<th width="130px;" class="alignCenter">ספק</th>
+									<th width="100px;" class="alignCenter">משרד/חברה</th>
 									<th width="60px;" class="alignCenter">גופן</th>
 									<th width="60px;" class="alignCenter">רקע</th>
 									<th width="60px;" class="alignCenter">דוא''ל</th>
 									<th width="60px;" class="alignCenter"><i class="fa fa-user"></i><br/>טלפון</th>
-									<th width="120px;" class="alignCenter">תפקיד</th>
+									<th width="100px;" class="alignCenter">תפקיד</th>
 									<th width="40px;" class="alignCenter">&nbsp;</th>
 									<th width="40px;" class="alignCenter">&nbsp;</th>
 								</tr>
@@ -106,6 +108,7 @@ include 'menu_tasks.php';
 								?>
 									<tr class="height35">
 									    <td class="alignCenter"><input type="checkbox" id="is_active_<?=@$item->id?>" name="is_active_<?=@$item->id?>" value="<?=@$item->is_active?>" <?php if(@$item->is_active == 1) echo "checked"?> onchange="setResponsibleActive(<?=@$item->id?>);" /></td>
+										<td class="alignRight paddingRight5"><?=trim(@$item->firstname.' '.@$item->lastname)?></td>
 										<td class="alignRight paddingRight5"><?=@$item->name?></td>
 										<td class="alignRight paddingRight5"><?=@$supplier->name_he?></td>
 										<td class="alignRight paddingRight5"><input type="color" class="width60" disabled="true" value="<?=@$item->color?>" /></td>
