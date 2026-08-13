@@ -709,10 +709,23 @@ include 'menu_tasks.php';
 												   $area_bg_color = 'background-color:#fafd49';
 												   $description_bg_color = 'background-color:#fafd49';
 												}
-												else 
+												else
 													$dest_date_color = 'color:white';
 											}
-											
+
+											if(@$is_colors && $progress_status == 'בוצע/נמסר') {
+												$subject_bg_color = 'background-color:#dedede';
+												$area_bg_color = 'background-color:#dedede';
+												$description_bg_color = 'background-color:#dedede';
+												$task_bgcolor = '#dedede';
+												$responsible_bgcolor = '#dedede';
+												$pass_on_bg_color = 'background-color:#dedede';
+												$task_creation_date_bg_color = 'background-color:#dedede';
+												$dest_date_color = 'color:#dedede';
+												$dest_date_bg_color = 'background-color:#dedede';
+												$progress_status_bgcolor = '#dedede';
+											}
+
 											if(@$period_new_tasks == 'today')
 												$end_new_tasks_date = $task_creation_date;
 											else if(@$period_new_tasks == 'three_days')
@@ -1117,10 +1130,23 @@ include 'menu_tasks.php';
 													   $area_bg_color = 'background-color:#fafd49';
 													   $description_bg_color = 'background-color:#fafd49';
 													}
-													else 
+													else
 														$dest_date_color = 'color:white';
 												}
-												
+
+												if(@$is_colors && $progress_status == 'בוצע/נמסר') {
+													$subject_bg_color = 'background-color:#dedede';
+													$area_bg_color = 'background-color:#dedede';
+													$description_bg_color = 'background-color:#dedede';
+													$task_bgcolor = '#dedede';
+													$responsible_bgcolor = '#dedede';
+													$pass_on_bg_color = 'background-color:#dedede';
+													$task_creation_date_bg_color = 'background-color:#dedede';
+													$dest_date_color = 'color:#dedede';
+													$dest_date_bg_color = 'background-color:#dedede';
+													$progress_status_bgcolor = '#dedede';
+												}
+
 												if(@$period_new_tasks == 'today')
 												   $end_new_tasks_date = $task_creation_date;
 										    	else if(@$period_new_tasks == 'three_days')
