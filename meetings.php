@@ -1868,7 +1868,7 @@ include 'menu_tasks.php';
 											}
 
 											$td_count_bgcolor = 'background-color:white';
-											if(@$is_colors && @$progress_status != 'בוצע/נמסר' && @$task != 'בקרת איכות'){
+											if(@$is_colors && @$progress_status_he != 'בוצע/נמסר' && @$task != 'בקרת איכות'){
 												if(strlen(@$period_new_tasks) > 1 && (date('Y-m-d') <= $end_new_tasks_date)){			
 													$td_count_bgcolor = 'background-color:'.$global_bgcolor_new_task->bgcolor;
 													$subject_bgcolor = 'background-color:'.$global_bgcolor_new_task->bgcolor;
@@ -2473,7 +2473,7 @@ include 'menu_tasks.php';
 													else $end_new_tasks_date = '0000-00-00';
 												}
 
-												if($is_colors && @$progress_status != 'בוצע/נמסר' && @$task != 'בקרת איכות') {
+												if($is_colors && @$progress_status_he != 'בוצע/נמסר' && @$task != 'בקרת איכות') {
 													if(strlen(@$period_new_tasks) > 1 && (date('Y-m-d') <= $end_new_tasks_date)){			
 														$subject_bgcolor = 'background-color:'.$global_bgcolor_new_task->bgcolor;
 													    $area_bgcolor = 'background-color:'.$global_bgcolor_new_task->bgcolor;
