@@ -671,9 +671,10 @@ include 'menu_tasks.php';
 											$query->store_result();
 											$query = fetch_unique($query);
 											$progress_status = @$query->name_he;
+											$progress_status_he_raw = @$query->name_he;
 											if($lang == 'EN')
 											   $progress_status = @$query->name;
-											if(@$is_colors) {	
+											if(@$is_colors) {
 											   $progress_status_color = @$query->color;
 											   $progress_status_bgcolor = @$query->bgcolor;
 											}
@@ -713,7 +714,7 @@ include 'menu_tasks.php';
 													$dest_date_color = 'color:white';
 											}
 
-											if(@$is_colors && $progress_status == 'בוצע/נמסר') {
+											if(@$is_colors && @$progress_status_he_raw == 'בוצע/נמסר') {
 												$subject_bg_color = 'background-color:#dedede';
 												$area_bg_color = 'background-color:#dedede';
 												$description_bg_color = 'background-color:#dedede';
@@ -743,7 +744,7 @@ include 'menu_tasks.php';
 											else if(@$period_new_tasks == 'two_years')
 												$end_new_tasks_date = date('Y-m-d',strtotime($task_creation_date . '+2 years'));
 											
-											if(strlen(@$period_new_tasks) > 1 && (date('Y-m-d') <= @$end_new_tasks_date) && (@$progress_status != 'בוצע/נמסר') && (@$task != 'בקרת איכות')) {
+											if(strlen(@$period_new_tasks) > 1 && (date('Y-m-d') <= @$end_new_tasks_date) && (@$progress_status_he_raw != 'בוצע/נמסר') && (@$task != 'בקרת איכות')) {
 												$update_cell_bgcolor = 'background-color:'.$global_bgcolor_new_task->bgcolor;
 												$subject_bg_color = 'background-color:'.$global_bgcolor_new_task->bgcolor;
 												$area_bg_color = 'background-color:'.$global_bgcolor_new_task->bgcolor;
@@ -1092,6 +1093,7 @@ include 'menu_tasks.php';
 												$query->store_result();
 												$query = fetch_unique($query);
 												$progress_status = @$query->name_he;
+												$progress_status_he_raw = @$query->name_he;
 												if($lang == 'EN')
 													$progress_status = @$query->name;
 												if(@$is_colors) {
@@ -1134,7 +1136,7 @@ include 'menu_tasks.php';
 														$dest_date_color = 'color:white';
 												}
 
-												if(@$is_colors && $progress_status == 'בוצע/נמסר') {
+												if(@$is_colors && @$progress_status_he_raw == 'בוצע/נמסר') {
 													$subject_bg_color = 'background-color:#dedede';
 													$area_bg_color = 'background-color:#dedede';
 													$description_bg_color = 'background-color:#dedede';
@@ -1164,7 +1166,7 @@ include 'menu_tasks.php';
 												else if(@$period_new_tasks == 'two_years')
 													$end_new_tasks_date = date('Y-m-d',strtotime($task_creation_date . '+2 years'));
 											
-												if(strlen(@$period_new_tasks) > 1 && (date('Y-m-d') <= @$end_new_tasks_date) && (@$progress_status != 'בוצע/נמסר') && (@$task != 'בקרת איכות')) {
+												if(strlen(@$period_new_tasks) > 1 && (date('Y-m-d') <= @$end_new_tasks_date) && (@$progress_status_he_raw != 'בוצע/נמסר') && (@$task != 'בקרת איכות')) {
 													$update_cell_bgcolor = 'background-color:'.$global_bgcolor_new_task->bgcolor;
 													$subject_bg_color = 'background-color:'.$global_bgcolor_new_task->bgcolor;
 													$area_bg_color = 'background-color:'.$global_bgcolor_new_task->bgcolor;
