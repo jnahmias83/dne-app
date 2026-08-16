@@ -302,6 +302,11 @@ include 'menu_tasks.php';
 										<strong>טלפון</strong>
 										<br/>
 										<input type="text" dir="ltr" class="paddingRight10 marginTop5" name="phone" id="phone" placeholder="טלפון" value="<?=@$responsible->phone?>" />
+										<?php if(trim(@$responsible->phone) !== '') { ?>
+											<a href="tel:<?=htmlspecialchars(@$responsible->phone)?>" style="margin-right:5px;" title="התקשר">
+												<i class="fa-solid fa-phone colorGreen"></i>
+											</a>
+										<?php } ?>
 									</div>
 								</div>
 							</div>
@@ -393,8 +398,7 @@ include 'menu_tasks.php';
 														   name="save_btn"
 														   class="btn fontSize14 bgColorBlue colorWhite" style="white-space:nowrap;flex-shrink:0;"
 														   value="<?=@$btn_save?>" />
-											<a class="btn fontSize14 bgColorBlue colorWhite" style="white-space:nowrap;flex-shrink:0;"
-											   onclick="location.href='add_responsible.php?id=0&project_id=<?=@$project_id?>&from=addSupToProj&for=projectgroup&ps_id=<?=@$ps_id?>'">
+											<a id="save_and_add_another_btn" class="btn fontSize14 bgColorBlue colorWhite" style="white-space:nowrap;flex-shrink:0;cursor:pointer;">
 												<i class='fa fa-plus'></i> הוסף אחראי נוסף
 											</a>
 											<a class="btn fontSize14 bgColorBlack colorWhite"
@@ -597,6 +601,13 @@ function functionsOnForm(){
 	autoFillColors();
 }
 
+let saveThenAddAnother = false;
+
+$('#save_and_add_another_btn').click(function(){
+    saveThenAddAnother = true;
+    $('#save_btn').trigger('click');
+});
+
 $('#save_btn').click(function (e){
     $('#firstname').css('border-color', 'initial');
     if ($('#firstname').val().trim() == ''){
@@ -688,12 +699,12 @@ $('#save_btn').click(function (e){
                             ($('#for').val() == 'projectgroup' && $('#ps_id').val() == ''))){
                     window.location.reload();
                 } else if ($('#from').val() == 'addSupToProj'){
-                    if(data.indexOf('inserted') === 0){
-                        let newId = data.split(',')[1];
-                        window.location.href = 'add_responsible.php?id=' + newId + '&project_id=' + $('#project_id').val() +
+                    if(saveThenAddAnother){
+                        saveThenAddAnother = false;
+                        window.location.href = 'add_responsible.php?id=0&project_id=' + $('#project_id').val() +
                                   '&from=addSupToProj&for=projectgroup&ps_id=' + $('#ps_id').val();
                     } else {
-                        window.location.reload();
+                        window.location.href = 'add_sup_to_proj.php?id=' + $('#project_id').val();
                     }
                 } else if ($('#for').val() == 'projectgroup' && $('#ps_id').val() != '') {
                     let url = 'add_responsible.php?id=0&project_id=' + $('#project_id').val() +
