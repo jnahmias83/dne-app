@@ -1935,7 +1935,7 @@ include 'menu_tasks.php';
 												
 												if(in_array('_task',$columns_list_array)){ ?>
 													<td id="td_task_<?=@$meeting_id?>" class="<?php if(end($columns_list_array) == "_task") echo $border_cell_table_end;?> cursor-pointer col-w-task" style="<?=@$task_bgcolor?>;">
-														<div style="max-width:8ch;overflow:hidden;box-sizing:border-box;margin:0 auto;">
+														<div style="max-width:100%;overflow:hidden;box-sizing:border-box;margin:0 auto;">
 														<select id="task_<?=@$meeting_id?>" class="form-control font-weight-bold fontSize12 border-none cursor-pointer alignCenter" style="direction:<?=@$dir?>;width:98%;<?=@$task_color?>;<?=@$task_bgcolor?>;" onchange="setData(<?=@$meeting_id?>,<?=@$iteration?>,'id_task',0,0,'screen');">
 															<?php
 															foreach($tasks as $task){
@@ -1998,7 +1998,7 @@ include 'menu_tasks.php';
 												
 												if(in_array('progress status',$columns_list_array)){ ?>
 													<td id="td_progress_status_<?=@$meeting_id?>" class="<?php if(end($columns_list_array) == "progress status") echo $border_cell_table_end;?> cursor-pointer" style="<?=@$text_align?>;<?=@$padding?>:5px;<?=@$progress_status_color?>;<?=@$progress_status_bgcolor?>;">
-														<div style="max-width:8ch;overflow:hidden;box-sizing:border-box;margin:0 auto;">
+														<div style="max-width:100%;overflow:hidden;box-sizing:border-box;margin:0 auto;">
 														<select id="_progress_status_<?=@$meeting_id?>" class="form-control fontSize12 font-weight-bold border-none cursor-pointer alignCenter<?php if(trim(@$progress_status_he) === '') echo ' status-blank-when-empty'; ?>" style="direction:<?=@$dir?>;width:98%;<?=@$progress_status_bgcolor?>;" data-meetingid="<?=@$meeting_id?>" data-iteration=<?=@$iteration?> data-chapter="<?=@$chapter_name?>" data-name="<?=@$subject?>" data-area="<?=@$area?>" data-destinationdate="<?=@$destination_date?>">
 															<option>---סטטוס---</option>
 															<?php 
