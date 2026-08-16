@@ -3250,7 +3250,7 @@ include 'menu_tasks.php';
 											<i class="fas fa-bullseye" style="color:#e74c3c;"></i><br/>שמור מעקב
 										</button>
 										<button type="button" class="btn font-weight-bold px-3 text-nowrap alignCenter"
-												onclick="fillLogTaskTracking($('#hidden_meeting_id').val(),$('#hidden_iteration').val(),'for_closing',0)">
+												onclick="let meeting_ids_array=$('#meetings_table [id^=&quot;task_actions_&quot;]').map(function(){return String($(this).data('meetingid'));}).get();let current_meeting_id=$('#hidden_meeting_id').val();let index=meeting_ids_array.indexOf(current_meeting_id);index++;let next_meeting_id=(index<meeting_ids_array.length)?meeting_ids_array[index]:'';localStorage.setItem('next_meeting_id',next_meeting_id);localStorage.setItem('meeting_id',next_meeting_id);fillLogTaskTracking($('#hidden_meeting_id').val(),$('#hidden_iteration').val(),'for_closing',0,true)">
 											<i class="fas fa-bullseye" style="color:#95a5a6;"></i><br/>בטל מעקב
 										</button>
 										<input type="button" id="close_tracking_btn" class="btn bg-dark text-white font-weight-bold px-3 fontSize14" value="סגור"
@@ -4425,11 +4425,9 @@ $(document).on('click','#save_update_task_btn', function (){
 	let selectedStatusNameEn = $('#progress_status_update option:selected').data('name-en');
 	if(selectedStatusNameEn == 'Archive' || selectedStatusNameEn == 'Done'){
 			index++;
-			if(index >= meeting_ids_array.length)
-				index = 0;
 	}
 
-	let next_meeting_id = meeting_ids_array[index];
+	let next_meeting_id = (index < meeting_ids_array.length) ? meeting_ids_array[index] : '';
 	localStorage.setItem('next_meeting_id',next_meeting_id);
 	localStorage.setItem('meeting_id',next_meeting_id);
 	setData(current_meeting_id,'','update_task',1,0,'for_closing');

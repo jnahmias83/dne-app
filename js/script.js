@@ -283,6 +283,11 @@ function setData(meeting_id,iteration,field,isRemark,forShare,screen_type){
 			}
 			
 			if(field == 'update_task'){
+				if(!localStorage.getItem('next_meeting_id')){
+					location.reload();
+					return;
+				}
+
 				let form_data1 = new FormData();
 				form_data1.append('id_meeting', localStorage.getItem('next_meeting_id'));
 
@@ -866,7 +871,7 @@ $(document).on('keydown', '#new_remark', function(e){
 	}
 });
 
-function fillLogTaskTracking(id_meeting,iteration,screen_type,track_type){
+function fillLogTaskTracking(id_meeting,iteration,screen_type,track_type,advance_to_next){
 	let selectedValues = $('input[name="log_meeting_tracking[]"]:checked')
 		.map(function() {
 			return $(this).val();
@@ -905,6 +910,14 @@ function fillLogTaskTracking(id_meeting,iteration,screen_type,track_type){
 		contentType: false,
 		success: function(data){
 			let url;
+
+			if (advance_to_next){
+				$('#modalTaskTracking').modal('hide');
+				$('tr.meeting_' + id_meeting + ' .badge-circle-track').remove();
+				$('#description_' + id_meeting + ' [id^="div-tracking-remarks-"]').remove();
+				setData(id_meeting,'','update_task',1,0,'for_closing');
+				return;
+			}
 
 			if (iteration !== ''){
 				url = 'meetings.php?project_id=' + $('#project_id').val() + '&row=row_' + iteration;
@@ -1254,7 +1267,6 @@ function navigateTasks(meeting_ids, action){
 		if (index < 0) index = meeting_ids_array.length - 1;
 	} else if (action === 'next') {
 		index++;
-		if (index >= meeting_ids_array.length) index = 0;
 	}
 
 	let meeting_id = meeting_ids_array[index];

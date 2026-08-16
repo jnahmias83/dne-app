@@ -527,8 +527,8 @@ foreach($all_what_news as $wn){
 
 								$user_nickname = @$ut->user_nickname;
 								?>
-								<tr class="task-row fontSize13">	
-									<td>	
+								<tr class="task-row fontSize13 meeting_<?=@$ut->id?>">
+									<td>
 										<a id="task_name_<?=@$ut->id?>" class="text-decoration-none w-100">
 											<div class="flex flex-wrap justify-content-center align-items-center task_name width100Percents cursor-pointer" data-projectnickname="<?=@$ut->p_nickname?>" data-meetingid="<?=@$ut->id?>" data-projectid="<?=@$ut->p_id?>" data-userid="<?=@$user_id?>" data-lang="<?=@$ut->p_lang?>" data-chapter="<?=@$ut->chapter_name?>" data-name="<?=@$ut->subject?>" data-area="<?=@$ut->area?>" data-recipient="<?=@$responsible_email?>" data-responsibleid="<?=@$ut->id_responsible?>" data-destinationdate="<?=@$ut->destination_date?>" data-progresstatusid="<?=@$ut->id_progress_status?>" data-ispriority="<?=@$ut->is_priority?>" data-trackresponsibleid="<?=@$id_track_responsible?>" data-tracktype="<?=@$track_type?>" data-reminderdate="<?=@$reminder_date?>" data-remindertime="<?=@$reminder_time?>" data-istodotoday="0">
 												<div class="width15Percents">
@@ -574,7 +574,7 @@ foreach($all_what_news as $wn){
 														$q_ut->bind_param('isi',$ut->id,$empty_ut,$one_ut);
 														$tr_ut = fetch($q_ut);
 														if($q_ut->num_rows > 0){ ?>
-														<div class="d-flex flex-column">
+														<div class="d-flex flex-column" id="tracking_log_<?=@$ut->id?>">
 															<?php foreach($tr_ut as $tr_item){
 																$tr_remark = @$tr_item->remark;
 																if(mb_strlen(@$tr_remark,'UTF-8') > 30) $tr_remark = mb_substr($tr_remark,0,30,'UTF-8').'...';
@@ -660,7 +660,7 @@ foreach($all_what_news as $wn){
 								$log_meeting_tracking_num_rows = $query->num_rows;
 								$log_meeting_tracking = fetch($query);
 								?>
-								<tr class="task-row fontSize13">	
+								<tr class="task-row fontSize13 meeting_<?=@$at->id?>">
 									<td>
 										<a id="task_name_<?=@$at->id?>" class="text-decoration-none w-100">
 											<div class="flex flex-wrap justify-content-center align-items-center task_name cursor-pointer" data-projectnickname="<?=@$at->p_nickname?>" data-meetingid="<?=@$at->id?>" data-projectid="<?=@$at->p_id?>" data-userid="<?=@$user_id?>" data-lang="<?=@$at->p_lang?>" data-chapter="<?=@$at->chapter_name?>" data-name="<?=@$at->subject?>" data-area="<?=@$at->area?>" data-recipient="<?=@$responsible_email?>" data-responsibleid="<?=@$at->id_responsible?>" data-destinationdate="<?=@$at->destination_date?>" data-progresstatusid="<?=@$at->id_progress_status?>" data-ispriority="<?=@$at->is_priority?>" data-trackresponsibleid="<?=@$id_track_responsible?>" data-tracktype="<?=@$track_type?>" data-reminderdate="<?=@$reminder_date?>" data-remindertime="<?=@$reminder_time?>" data-istodotoday="0">
@@ -843,7 +843,7 @@ foreach($all_what_news as $wn){
 									$log_meeting_tracking_num_rows_wn = $q_wn->num_rows;
 								}
 								?>
-								<tr class="task-row fontSize13">
+								<tr class="task-row fontSize13 meeting_<?=@$wn->id?>">
 									<td>
 										<a id="task_name_<?=@$wn->id?>" class="text-decoration-none w-100 d-block">
 											<div class="marginTop5 marginBottom5 flex flex-wrap justify-content-center align-items-start task_name width100Percents cursor-pointer" data-projectnickname="<?=@$wn->p_nickname?>" data-meetingid="<?=@$wn->id?>" data-projectid="<?=@$wn->p_id?>" data-userid="<?=@$user_id?>" data-lang="<?=@$wn->p_lang?>" data-chapter="<?=@$wn->chapter_name?>" data-name="<?=@$wn->subject?>" data-area="<?=@$wn->area?>" data-recipient="<?=@$responsible_email?>" data-responsibleid="<?=@$wn->id_responsible?>" data-destinationdate="<?=@$wn->destination_date?>" data-progresstatusid="<?=@$wn->id_progress_status?>" data-ispriority="<?=@$wn->is_priority?>" data-trackresponsibleid="<?=@$id_track_responsible?>" data-tracktype="<?=@$track_type?>" data-reminderdate="<?=@$reminder_date?>" data-remindertime="<?=@$reminder_time?>" data-istodotoday="0">
@@ -2100,7 +2100,7 @@ foreach($all_what_news as $wn){
 												<i class="fas fa-bullseye" style="color:#e74c3c;"></i><br/>שמור מעקב
 											</button>
 											<button type="button" class="btn font-weight-bold px-3 text-nowrap alignCenter" style="color:#212529;"
-													onclick="fillLogTaskTracking($('#hidden_meeting_id').val(),'','for_closing',0)">
+													onclick="advanceToNextTaskAndCancelTracking()">
 												<i class="fas fa-bullseye" style="color:#95a5a6;"></i><br/>בטל מעקב
 											</button>
 											<input type="button" id="close_tracking_btn" class="btn bg-dark text-white font-weight-bold px-3 fontSize14" value="סגור" style="padding-top:2px!important;padding-bottom:2px!important;"
@@ -2915,11 +2915,34 @@ $(document).ready(function(){
 				if($('#progress_status_update option:selected').data('name-en') == 'Archive' ||
 					$('#progress_status_update option:selected').data('name-en') == 'Done'){
 						index++;
-						if(index >= meeting_ids_array.length) 
-							index = 0;
+						if(localStorage.getItem('target') == 'active_tracking'){
+							$('tr.meeting_' + current_meeting_id).remove();
+							$('._badge-switcher[data-target="active_tracking"] span').each(function(){
+								$(this).text(Math.max(0, parseInt($(this).text()) - 1));
+							});
+							$('.badge-switcher[data-target="active_tracking"][data-prid="' + $('#hidden_project_id').val() + '"] span').each(function(){
+								$(this).text(Math.max(0, parseInt($(this).text()) - 1));
+							});
+						} else if(localStorage.getItem('target') == 'user_tasks'){
+							$('tr.meeting_' + current_meeting_id).remove();
+							$('._badge-switcher[data-target="user_tasks"] span').each(function(){
+								$(this).text(Math.max(0, parseInt($(this).text()) - 1));
+							});
+							$('.badge-switcher[data-target="user_tasks"][data-prid="' + $('#hidden_project_id').val() + '"] span').each(function(){
+								$(this).text(Math.max(0, parseInt($(this).text()) - 1));
+							});
+						} else if(localStorage.getItem('target') == 'what_news'){
+							$('tr.meeting_' + current_meeting_id).remove();
+							$('._badge-switcher[data-target="what_news"] span').each(function(){
+								$(this).text(Math.max(0, parseInt($(this).text()) - 1));
+							});
+							$('.badge-switcher[data-target="what_news"][data-prid="' + $('#hidden_project_id').val() + '"] span').each(function(){
+								$(this).text(Math.max(0, parseInt($(this).text()) - 1));
+							});
+						}
 				}
-				
-				let next_meeting_id = meeting_ids_array[index];
+
+				let next_meeting_id = (index < meeting_ids_array.length) ? meeting_ids_array[index] : '';
 				localStorage.setItem('next_meeting_id',next_meeting_id);
 				if($('#hidden_is_to_do_today').val() == 1)
 					localStorage.setItem('is_to_do_today','1');
@@ -2929,6 +2952,60 @@ $(document).ready(function(){
 			}
        });
 	});
+
+	window.advanceToNextTaskAndCancelTracking = function(){
+		let form_data = new FormData();
+		form_data.append('from','projects');
+		form_data.append('id_project',$('#hidden_project_id').val());
+		form_data.append('currentBadgeTarget',localStorage.getItem('target'));
+		form_data.append('filter_by',$('#filter_by').val());
+		form_data.append('list_user_tasks',$('#list_user_tasks').val());
+
+		if(localStorage.getItem('prId') != null)
+			form_data.append('currentProject',localStorage.getItem('prId'));
+		else
+			form_data.append('currentProject',0);
+
+		if($('#hidden_is_to_do_today').val() == 1)
+			form_data.append('is_to_do_today',1);
+
+		$.ajax({
+			type: 'POST',
+			url: 'fill_meeting_ids.php',
+			data: form_data,
+			cache: false,
+			processData: false,
+			contentType: false,
+			success: function(data){
+				let meeting_ids_array = data.split(',');
+				let current_meeting_id = $('#hidden_meeting_id').val();
+				let index = meeting_ids_array.indexOf(current_meeting_id);
+
+				index++;
+
+				let next_meeting_id = (index < meeting_ids_array.length) ? meeting_ids_array[index] : '';
+				localStorage.setItem('next_meeting_id',next_meeting_id);
+				if($('#hidden_is_to_do_today').val() == 1)
+					localStorage.setItem('is_to_do_today','1');
+				else
+					localStorage.removeItem('is_to_do_today');
+
+				if(localStorage.getItem('target') == 'active_tracking'){
+					$('tr.meeting_' + current_meeting_id).remove();
+					$('._badge-switcher[data-target="active_tracking"] span').each(function(){
+						$(this).text(Math.max(0, parseInt($(this).text()) - 1));
+					});
+					$('.badge-switcher[data-target="active_tracking"][data-prid="' + $('#hidden_project_id').val() + '"] span').each(function(){
+						$(this).text(Math.max(0, parseInt($(this).text()) - 1));
+					});
+				} else {
+					$('#tracking_log_' + current_meeting_id).remove();
+				}
+
+				fillLogTaskTracking($('#hidden_meeting_id').val(),'','for_closing',0,true);
+			}
+       });
+	};
 
     $(document).on('click','#save_update_task_no_comment_btn', function (){
 		let form_data = new FormData();
@@ -2961,11 +3038,34 @@ $(document).ready(function(){
 				if($('#progress_status_update option:selected').data('name-en') == 'Archive' ||
 					$('#progress_status_update option:selected').data('name-en') == 'Done'){
 						index++;
-						if(index >= meeting_ids_array.length) 
-							index = 0;
+						if(localStorage.getItem('target') == 'active_tracking'){
+							$('tr.meeting_' + current_meeting_id).remove();
+							$('._badge-switcher[data-target="active_tracking"] span').each(function(){
+								$(this).text(Math.max(0, parseInt($(this).text()) - 1));
+							});
+							$('.badge-switcher[data-target="active_tracking"][data-prid="' + $('#hidden_project_id').val() + '"] span').each(function(){
+								$(this).text(Math.max(0, parseInt($(this).text()) - 1));
+							});
+						} else if(localStorage.getItem('target') == 'user_tasks'){
+							$('tr.meeting_' + current_meeting_id).remove();
+							$('._badge-switcher[data-target="user_tasks"] span').each(function(){
+								$(this).text(Math.max(0, parseInt($(this).text()) - 1));
+							});
+							$('.badge-switcher[data-target="user_tasks"][data-prid="' + $('#hidden_project_id').val() + '"] span').each(function(){
+								$(this).text(Math.max(0, parseInt($(this).text()) - 1));
+							});
+						} else if(localStorage.getItem('target') == 'what_news'){
+							$('tr.meeting_' + current_meeting_id).remove();
+							$('._badge-switcher[data-target="what_news"] span').each(function(){
+								$(this).text(Math.max(0, parseInt($(this).text()) - 1));
+							});
+							$('.badge-switcher[data-target="what_news"][data-prid="' + $('#hidden_project_id').val() + '"] span').each(function(){
+								$(this).text(Math.max(0, parseInt($(this).text()) - 1));
+							});
+						}
 				}
-				
-				let next_meeting_id = meeting_ids_array[index];
+
+				let next_meeting_id = (index < meeting_ids_array.length) ? meeting_ids_array[index] : '';
 				localStorage.setItem('next_meeting_id',next_meeting_id);
 				if($('#hidden_is_to_do_today').val() == 1)
 					localStorage.setItem('is_to_do_today','1');
