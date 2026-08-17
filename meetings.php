@@ -1682,8 +1682,11 @@ include 'menu_tasks.php';
 											$log_meeting_tracking = fetch($query);
 
 											$tracking_data = '';
-											if($reminder_date != '0000-00-00')
-												$tracking_data = '('.smartDate($reminder_date, $lang).')';
+											if(!empty($reminder_date) && $reminder_date != '0000-00-00'){
+												$smart_reminder_date = smartDate($reminder_date, $lang);
+												if($smart_reminder_date != '')
+													$tracking_data = '('.$smart_reminder_date.')';
+											}
 
                                             $dir_log_meeting_tracking = 'alignRight';
 												if(@$lang == 'EN')
@@ -1869,20 +1872,23 @@ include 'menu_tasks.php';
 
 											$td_count_bgcolor = 'background-color:white';
 											if(@$is_colors && @$progress_status_he != 'בוצע/נמסר' && @$task != 'בקרת איכות'){
-												if(strlen(@$period_new_tasks) > 1 && (date('Y-m-d') <= $end_new_tasks_date)){			
+												if(strlen(@$period_new_tasks) > 1 && (date('Y-m-d') <= $end_new_tasks_date)){
 													$td_count_bgcolor = 'background-color:'.$global_bgcolor_new_task->bgcolor;
 													$subject_bgcolor = 'background-color:'.$global_bgcolor_new_task->bgcolor;
 													$area_bgcolor = 'background-color:'.$global_bgcolor_new_task->bgcolor;
 													$description_bgcolor = 'background-color:'.$global_bgcolor_new_task->bgcolor;
 													$dest_date_bgcolor = 'background-color:'.$global_bgcolor_new_task->bgcolor;
+													$progress_status_bgcolor = 'background-color:'.$global_bgcolor_new_task->bgcolor;
 											    }
-											
+
 											    if(strlen(@$period_new_tasks) > 1 && (date('Y-m-d') <= $end_updated_date)){
 													if(checkIfChangedField($meeting_id,'description'))
 														$description_bgcolor = 'background-color:'.$global_bgcolor_new_task->bgcolor;
 													if(checkIfChangedField($meeting_id,'destination_date'))
 														$dest_date_bgcolor = 'background-color:'.$global_bgcolor_new_task->bgcolor;
-												}				
+													if(checkIfChangedField($meeting_id,'id_progress_status'))
+														$progress_status_bgcolor = 'background-color:'.$global_bgcolor_new_task->bgcolor;
+												}
 											}
 											
 											$count++;
@@ -2474,19 +2480,22 @@ include 'menu_tasks.php';
 												}
 
 												if($is_colors && @$progress_status_he != 'בוצע/נמסר' && @$task != 'בקרת איכות') {
-													if(strlen(@$period_new_tasks) > 1 && (date('Y-m-d') <= $end_new_tasks_date)){			
+													if(strlen(@$period_new_tasks) > 1 && (date('Y-m-d') <= $end_new_tasks_date)){
 														$subject_bgcolor = 'background-color:'.$global_bgcolor_new_task->bgcolor;
 													    $area_bgcolor = 'background-color:'.$global_bgcolor_new_task->bgcolor;
 														$description_bgcolor = 'background-color:'.$global_bgcolor_new_task->bgcolor;
 														$dest_date_bgcolor = 'background-color:'.$global_bgcolor_new_task->bgcolor;
+														$progress_status_bgcolor = 'background-color:'.$global_bgcolor_new_task->bgcolor;
 													}
-												
+
 													if(strlen(@$period_new_tasks) > 1 && (date('Y-m-d') <= $end_updated_date)){
 														if(checkIfChangedField($meeting_id,'description'))
 															$description_bgcolor = 'background-color:'.$global_bgcolor_new_task->bgcolor;
 														if(checkIfChangedField($meeting_id,'destination_date'))
 															$dest_date_bgcolor = 'background-color:'.$global_bgcolor_new_task->bgcolor;
-													}				
+														if(checkIfChangedField($meeting_id,'id_progress_status'))
+															$progress_status_bgcolor = 'background-color:'.$global_bgcolor_new_task->bgcolor;
+													}
 												}
 												
 												if($image1 != '' && $is_appears_img1) { ?>
@@ -4935,7 +4944,7 @@ tr.task-row-highlight td {
     background-color: #9ef7b6 !important;
 }
 
-tr.task-row-highlight td *:not(select) {
+tr.task-row-highlight td *:not(select):not([id^="destination_date_"]):not([id^="description_"]) {
     background-color: transparent !important;
 }
 
@@ -5001,7 +5010,7 @@ td {
     z-index: 1;
 }
 
-.row-darken td *:not(select) {
+.row-darken td *:not(select):not([id^="destination_date_"]):not([id^="description_"]) {
     background-color: transparent !important;
 }
 
@@ -5021,9 +5030,13 @@ td[id^="td_area_"] > div {
     flex: 1 1 auto;
     height: 100%;
     width: 100%;
-    background-color: inherit !important;
     position: relative;
     z-index: 1;
+}
+
+td[id^="td_subject_"] > div,
+td[id^="td_area_"] > div {
+    background-color: inherit !important;
 }
 
 #meetings_table {

@@ -6,6 +6,9 @@ include 'functions/functions.php';
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
 
+header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+header('Pragma: no-cache');
+
 $project_id = @$_GET['project_id'];
 $is_specific_filter = @$_GET['is_specific_filter'];
 $all_ids_to_print = @$_GET['all_ids_to_print'];
@@ -837,14 +840,15 @@ foreach($chapters as $item){
 								  m.image2 AS image2,
 								  m.image2_width AS image2_width,
 								  m.image2_height AS image2_height,
-								  m.is_appears_img2 AS is_appears_img2
-								  FROM dne_meetings m 
+								  m.is_appears_img2 AS is_appears_img2,
+								  m.updated_date AS updated_date
+								  FROM dne_meetings m
 								  LEFT JOIN dne_tasks t ON m.id_task = t.id
 								  LEFT JOIN dne_progress_status ps ON m.id_progress_status = ps.id
 								  LEFT JOIN dne_responsibles r ON m.id_responsible = r.id
-								  WHERE m.id_project = ? 
-								  AND m.id_chapter = ? 
-								  AND m.is_appears = ? 
+								  WHERE m.id_project = ?
+								  AND m.id_chapter = ?
+								  AND m.is_appears = ?
 								  AND FIND_IN_SET(?,ids_rdv) > 0
 								  AND m.id_progress_status <> ?
 								  ".$_order_by);
@@ -1175,20 +1179,23 @@ foreach($chapters as $item){
 				$end_updated_date = '0000-00-00';
 			}
 			if(@$is_colors && @$progress_status != 'בוצע/נמסר' && @$task != 'בקרת איכות'){
-				if(strlen(@$period_new_tasks) > 1 && (date('Y-m-d') <= $end_new_tasks_date)){			
+				if(strlen(@$period_new_tasks) > 1 && (date('Y-m-d') <= $end_new_tasks_date)){
 					$update_cell_bgcolor = 'background-color:'.$global_bgcolor_new_task->bgcolor;
 					$subject_bgcolor = 'background-color:'.$global_bgcolor_new_task->bgcolor;
 					$area_bgcolor = 'background-color:'.$global_bgcolor_new_task->bgcolor;
 					$description_bgcolor = 'background-color:'.$global_bgcolor_new_task->bgcolor;
 					$dest_date_bgcolor = 'background-color:'.$global_bgcolor_new_task->bgcolor;
+					$progress_status_bgcolor = 'background-color:'.$global_bgcolor_new_task->bgcolor;
 				}
-			
+
 				if(strlen(@$period_new_tasks) > 1 && (date('Y-m-d') <= $end_updated_date)){
 					if(checkIfChangedField($meeting_id,'description'))
 						$description_bgcolor = 'background-color:'.$global_bgcolor_new_task->bgcolor;
 					if(checkIfChangedField($meeting_id,'destination_date'))
-						$dest_date_bgcolor = 'background-color:'.$global_bgcolor_new_task->bgcolor;	
-				}				
+						$dest_date_bgcolor = 'background-color:'.$global_bgcolor_new_task->bgcolor;
+					if(checkIfChangedField($meeting_id,'id_progress_status'))
+						$progress_status_bgcolor = 'background-color:'.$global_bgcolor_new_task->bgcolor;
+				}
 			}
 			
 			if(@$all_ids_to_print == '' || in_array($meeting_id,$all_ids_to_print_array)){
@@ -1731,19 +1738,22 @@ foreach($chapters as $item) {
 				$end_updated_date = '0000-00-00';
 			}
 			if(@$is_colors && @$progress_status != 'בוצע/נמסר' && @$task != 'בקרת איכות') {
-				if(strlen(@$period_new_tasks) > 1 && (date('Y-m-d') <= $end_new_tasks_date)){			
+				if(strlen(@$period_new_tasks) > 1 && (date('Y-m-d') <= $end_new_tasks_date)){
 					$subject_bgcolor = 'background-color:'.$global_bgcolor_new_task->bgcolor;
 				    $area_bgcolor = 'background-color:'.$global_bgcolor_new_task->bgcolor;
 					$description_bgcolor = 'background-color:'.$global_bgcolor_new_task->bgcolor;
 					$dest_date_bgcolor = 'background-color:'.$global_bgcolor_new_task->bgcolor;
+					$progress_status_bgcolor = 'background-color:'.$global_bgcolor_new_task->bgcolor;
 				}
-			
+
 				if(strlen(@$period_new_tasks) > 1 && (date('Y-m-d') <= $end_updated_date)){
 					if(checkIfChangedField($meeting_id,'description'))
 						$description_bgcolor = 'background-color:'.$global_bgcolor_new_task->bgcolor;
 					if(checkIfChangedField($meeting_id,'destination_date'))
 						$dest_date_bgcolor = 'background-color:'.$global_bgcolor_new_task->bgcolor;
-				}				
+					if(checkIfChangedField($meeting_id,'id_progress_status'))
+						$progress_status_bgcolor = 'background-color:'.$global_bgcolor_new_task->bgcolor;
+				}
 			}
 			
             if((@$all_ids_to_print == '' || in_array($meeting_id,$all_ids_to_print_array)) && (@$image1 != '' && @$is_appears_img1)) {	

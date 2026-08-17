@@ -63,10 +63,32 @@ else if($_POST['field'] == "area"){
 }
 
 else if($_POST['field'] == "description"){
+	$query = $mysqli->prepare("SELECT description FROM dne_meetings WHERE id = ?");
+	$query->bind_param('i',$_POST['meeting_id']);
+	$query->execute();
+	$query->store_result();
+	$old_meeting = fetch_unique($query);
+
 	$query = "UPDATE dne_meetings SET description = ? WHERE id = ?";
 	$query = $mysqli->prepare($query);
-	$query->bind_param('si',$_POST['description'],$_POST['meeting_id']);	
+	$query->bind_param('si',$_POST['description'],$_POST['meeting_id']);
 	$query->execute();
+
+	if(@$old_meeting->description != $_POST['description']){
+		$query = "INSERT INTO dne_log_meeting_updates
+				 (id_user,id_meeting,action_date,action,destination_date,
+				 remark,id_progress_status,is_remark_appears_log,updated_users)
+				 VALUES(?,?,?,?,?,?,?,?,?)";
+		$query = $mysqli->prepare($query);
+		$empty_date = '0000-00-00';
+		$log_remark_desc = 'התיאור עודכן';
+		$zero = 0;
+		$is_silent_log = 0;
+		$query->bind_param('iissssiii',$_SESSION['id_user'],$_POST['meeting_id'],
+						   date('Y-m-d'),$action,$empty_date,$log_remark_desc,
+						   $zero,$is_silent_log,$_SESSION['id_user']);
+		$query->execute();
+	}
 }
 
 else if($_POST['field'] == "id_task"){

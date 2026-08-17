@@ -355,14 +355,17 @@ function isEffectivelyEmpty($field) {
 function checkIfChangedField($meeting_id,$field){
 	global $mysqli;
 	
+	if($field == 'id_progress_status')
+		$sql = "SELECT id FROM dne_log_meeting_updates
+	            WHERE id_meeting = ".$meeting_id." AND id_progress_status <> 0";
 	if($field == 'destination_date')
-		$sql = "SELECT id FROM dne_log_meeting_updates 
+		$sql = "SELECT id FROM dne_log_meeting_updates
 	            WHERE id_meeting = ".$meeting_id
 				." AND destination_date <> '0000-00-00'";
 	if($field == 'description')
-		$sql = "SELECT id FROM dne_log_meeting_updates 
-	            WHERE id_meeting = ".$meeting_id." AND remark <> '' 
-				AND is_remark_appears_log = 1";	
+		$sql = "SELECT id FROM dne_log_meeting_updates
+	            WHERE id_meeting = ".$meeting_id." AND
+				((remark <> '' AND is_remark_appears_log = 1) OR remark = 'התיאור עודכן')";
 	$query = $mysqli->prepare($sql);		
 	$query->execute();
     $query->store_result();
