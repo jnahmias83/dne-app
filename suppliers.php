@@ -13,10 +13,10 @@ if($type_sup == 'S') {
 	$type = 'S';
 	$list_label = 'רשימת קבלנים וספקים';
 	$title_add_btn = "ספק/קבלן";
-	
+
 	$query = $mysqli->prepare("SELECT * FROM dne_suppliers WHERE type = ? ORDER BY name");
 	$query->bind_param("s",$type);
-	$query->execute(); 
+	$query->execute();
 	$query->store_result();
 	$suppliers = fetch($query);
 }
@@ -24,13 +24,17 @@ else if($type_sup == 'D') {
 	$type = 'D';
 	$list_label = 'רשימת מתכננים ויועצים';
     $title_add_btn = "מתכנן/יועץ";
-	
+
     $query = $mysqli->prepare("SELECT * FROM dne_suppliers WHERE type = ? ORDER BY name");
     $query->bind_param("s",$type);
-    $query->execute(); 
+    $query->execute();
     $query->store_result();
     $designers = fetch($query);
 }
+
+$alert_not_allowed_delete = ($type_sup == 'D')
+	? 'אי אפשר למחוק מתכנן זה כי יש לאנשי הצוות שלו משימות.'
+	: 'אי אפשר למחוק ספק זה כי יש לאנשי הצוות שלו משימות.';
 
 $title_add_btn .= "&nbsp;<i class='fa fa-plus'></i>";
 
@@ -43,7 +47,9 @@ $cellular_label = 'נייד';
 $email_office_label = "דוא''ל";
 $edite_label = 'עדכן';
 $remove_label = 'מחוק';
-$alert_confirme_delete = 'Are you sure to remove this supplier?';
+$alert_confirme_delete = ($type_sup == 'D')
+	? 'האם אתה בטוח שברצונך למחוק מתכנן זה?'
+	: 'האם אתה בטוח שברצונך למחוק ספק זה?';
 ?>
 
         <form method="post" action="" class="form-inline">
@@ -242,11 +248,14 @@ function removeSupplier(s_id) {
 			data: form_data,
 			cache: false,
 			processData: false,
-			contentType: false,			
+			contentType: false,
 			success: function(data){
-				location.href = 'suppliers.php?type='+$('#type').val();			
+				if(data == 'notallowedtoremove')
+					alert('<?=@$alert_not_allowed_delete?>')
+				else
+					location.href = 'suppliers.php?type='+$('#type').val();
 			},
-		});		
+		});
     }
     return false;
 }

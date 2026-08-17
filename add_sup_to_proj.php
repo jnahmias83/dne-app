@@ -388,11 +388,14 @@ function removeSupplierFromProject(ps_id) {
 			data: form_data,
 			cache: false,
 			processData: false,
-			contentType: false,			
+			contentType: false,
 			success: function(data){
-				location.href = 'add_sup_to_proj.php?id='+$('#id').val();				
+				if(data == 'notallowedtoremove')
+					alert('אי אפשר למחוק ספק זה כי יש לאנשי הצוות שלו משימות.')
+				else
+					location.href = 'add_sup_to_proj.php?id='+$('#id').val();
 			},
-		});		
+		});
     }
     return false;
 }

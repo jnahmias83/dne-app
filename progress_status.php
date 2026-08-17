@@ -169,11 +169,14 @@ function removeProgressStatus(id) {
 			data: form_data,
 			cache: false,
 			processData: false,
-			contentType: false,			
+			contentType: false,
 			success: function(data){
-				location.reload(true);			
+				if(data == 'notallowedtoremove')
+					alert('לא ניתן למחוק את סטטוס ההתקדמות הזה כי הוא משוייך למשימה אחת או יותר.')
+				else
+					location.reload(true);
 			},
-		});		
+		});
     }
     return false;
 }

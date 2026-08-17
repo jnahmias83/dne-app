@@ -301,18 +301,21 @@ $(document).ready(function () {
 function removeDomain(id) {
 	if(confirm("Are you sure to remove this domain?")) {
         let form_data = new FormData();
-		form_data.append('id',id);			
+		form_data.append('id',id);
 		$.ajax({
 			type: 'POST',
 			url: 'domain_delete.php',
 			data: form_data,
 			cache: false,
 			processData: false,
-			contentType: false,			
+			contentType: false,
 			success: function(data){
-				location.reload(true);			
+				if(data == 'notallowedtoremove')
+					alert('לא ניתן למחוק תחום זה כי יש ספקים או מתכננים המשוייכים אליו.')
+				else
+					location.reload(true);
 			},
-		});		
+		});
     }
     return false;
 }
