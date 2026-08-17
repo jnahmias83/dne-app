@@ -84,11 +84,14 @@ function removeMeetingType(id){
 			data: form_data,
 			cache: false,
 			processData: false,
-			contentType: false,			
+			contentType: false,
 			success: function(data){
-				location.reload(true);			
+				if(data == 'notallowedtoremove')
+					alert('לא ניתן למחוק את סוג הפגישה הזה כי יש פגישות (rdv) המשוייכות אליו.')
+				else
+					location.reload(true);
 			},
-		});		
+		});
     }
     return false;
 }

@@ -94,11 +94,18 @@ function removeCustomReport(id) {
 			data: form_data,
 			cache: false,
 			processData: false,
-			contentType: false,			
+			contentType: false,
 			success: function(data){
-				location.reload(true);			
+				if(data == 'basereport_and_activeproject')
+					alert('לא ניתן למחוק דו\'\'ח זה כי הוא גם דו\'\'ח בסיס וגם כי יש משימות בפרויקט הזה.')
+				else if(data == 'basereport')
+					alert('לא ניתן למחוק דו\'\'ח זה כי הוא דו\'\'ח בסיס של המערכת.')
+				else if(data == 'activeproject')
+					alert('לא ניתן למחוק דו\'\'ח זה כי יש משימות בפרויקט הזה.')
+				else
+					location.reload(true);
 			},
-		});		
+		});
     }
     return false;
 }
