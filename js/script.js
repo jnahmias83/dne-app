@@ -22,9 +22,12 @@
 })();
 
 (function(){
-	if(typeof AndroidNative !== 'undefined' && document.body){
+	if(typeof AndroidNative === 'undefined') return;
+	function addNativeAppClass(){
 		document.body.classList.add('native-app');
 	}
+	if(document.body) addNativeAppClass();
+	else document.addEventListener('DOMContentLoaded', addNativeAppClass);
 })();
 
 (function(){
