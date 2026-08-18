@@ -1353,3 +1353,17 @@ function navigateTasks(meeting_ids, action){
 
 	$('#modalTaskDetails').modal('show');
 }
+// Appelee par l'appli Android (DNEMobile) une fois le token de notification recupere.
+// Sans effet dans un navigateur normal (fonction jamais appelee, pas de AndroidNative disponible).
+function registerFcmToken(token){
+	if(!token) return;
+	$.ajax({
+		type: 'POST',
+		url: 'save_push_subscription.php',
+		data: { fcm_token: token },
+	});
+}
+
+if(typeof AndroidNative !== 'undefined' && AndroidNative.requestFcmToken){
+	AndroidNative.requestFcmToken();
+}

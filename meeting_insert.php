@@ -167,6 +167,40 @@ else {
 		$query->execute();
 		$inserted_meeting = $query->insert_id;
 
+		// Notification push (appli DNE Mobile) - ajout pur, ne modifie rien de l'insertion ci-dessus.
+		// Toute erreur ici (reseau, cle Firebase, etc.) est capturee pour ne jamais bloquer la creation de la tache.
+		try {
+			include_once 'functions/fcm_push.php';
+
+			$chapterName = '';
+			$q = $mysqli->prepare("SELECT name FROM dne_chapters WHERE id = ?");
+			$q->bind_param('i', $_POST['id_chapter']);
+			$q->execute();
+			$q->store_result();
+			$chapterRow = fetch_unique($q);
+			$chapterName = @$chapterRow->name;
+
+			$responsibleName = '';
+			if(@$_POST['id_responsible'] > 0){
+				$q = $mysqli->prepare("SELECT name FROM dne_responsibles WHERE id = ?");
+				$q->bind_param('i', $_POST['id_responsible']);
+				$q->execute();
+				$q->store_result();
+				$responsibleRow = fetch_unique($q);
+				$responsibleName = @$responsibleRow->name;
+			}
+
+			$notifTitle = (@$chapterName != '') ? $chapterName : $_subject;
+			$notifBodyParts = array_filter([$_subject, $_area, $responsibleName]);
+			$notifBody = implode(' - ', $notifBodyParts);
+			if($_descr != '')
+				$notifBody .= "\n" . mb_substr($_descr, 0, 100);
+
+			sendFcmNotificationToAllSubscribers($notifTitle, $notifBody);
+		} catch (Exception $e) {
+			error_log('Notification push echouee: ' . $e->getMessage());
+		}
+
         $query = "SELECT id_task FROM dne_chapters WHERE id_project = ?";
 		$query = $mysqli->prepare($query);
 		$query->bind_param('i',$_POST['id_project']);   

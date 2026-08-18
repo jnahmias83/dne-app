@@ -7,6 +7,7 @@ error_log
 config.php
 config.server-test.php
 config.server-prod.php
+firebase_service_account.json
 deploy-test.log
 deploy-prod.log
 .last-deploy-prod
