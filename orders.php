@@ -52,17 +52,21 @@ include 'menu_budget_reports.php';
 			    </div>
 				
 				<div class="margin-top-10-x-auto alignCenter">
-					<div id="div_btns" class="col-4 bgColor-cbddec padding10 borderRadius10">
-					    <a id="add_new_order_btn" onclick="location.href='add_order.php?id=0&project_id=<?=@$project_id?>&lang_screen=<?=@$lang_screen?>'"></a>
-					    <a class="text-decoration-none cursor-pointer d-flex flex-column align-items-center" onclick="toOrdersPdfReport();">
-							<img src="images/file-pdf-solid.svg" width="50" height="30" alt="PDF Icon" />
-							<?php if(@$lang_screen == 'HE'){ ?>
-								<strong class="font-family-david mt-1 text-center">דו''ח</strong>
-							<?php } else { ?>
-								<strong class="fontSize13 mt-1 text-center">Report</strong>
-							<?php } ?>
-						</a>
-					</div>					
+					<div id="div_btns" class="d-inline-flex flex-column align-items-center gap-2 bgColorBrown pt-3 px-3 pb-3 rounded-4">
+						<div class="d-flex justify-content-center">
+					    	<a id="add_new_order_btn" onclick="location.href='add_order.php?id=0&project_id=<?=@$project_id?>&lang_screen=<?=@$lang_screen?>'"></a>
+						</div>
+						<div class="text-center mt-2">
+					    	<a class="text-decoration-none cursor-pointer d-flex flex-column align-items-center" onclick="toOrdersPdfReport();">
+								<img src="images/file-pdf-solid.svg" width="50" height="30" alt="PDF Icon" />
+								<?php if(@$lang_screen == 'HE'){ ?>
+									<strong class="font-family-david mt-1 text-center">דו''ח</strong>
+								<?php } else { ?>
+									<strong class="fontSize13 mt-1 text-center">Report</strong>
+								<?php } ?>
+							</a>
+						</div>
+					</div>
 				</div>
 
                 <div class="row marginTop20 alignCenter">
@@ -165,7 +169,7 @@ $(document).ready(function() {
 		  $('#project_name_title').html("<span class='fontSize26 font-weight-bold cursor-pointer'>Project "+$('#project_name').val()+"</span>");
 		  $('#title').html("<span class='fontSize26 font-weight-bold cursor-pointer'>Orders Report</span>");
           $('#div_btns').css({"direction":"ltr","text-align":"center"});
-		  $('#add_new_order_btn').html("<div class='alignCenter border-black borderRadius10 padding-4x-4y'><i class='fa-solid fa-plus colorGrey'></i><br/><strong class='fontSize13'>Order</strong></div>");
+		  $('#add_new_order_btn').html("<div class='alignCenter border-black borderRadius10 padding-4x-4y bgColorWhite'><i class='fa-solid fa-plus colorGrey'></i><br/><strong class='fontSize13'>Order</strong></div>");
 		  $('#orders_list').css({"direction":"ltr"});
 		  $('#th_iteration').html('&#x2116;');  
 		  $('#th_signature_date').html('Signature <br/> Date');
@@ -194,7 +198,7 @@ $(document).ready(function() {
 		   $('#project_name_title').html("<span class='fontSize26 font-weight-bold font-family-david cursor-pointer'>פרוייקט "+$('#project_name_he').val()+"</span>");
 		   $('#title').html("<span class='fontSize26 font-weight-bold font-family-david cursor-pointer'>דו''ח הזמנות</span>");
 		   $('#div_btns').css({"direction":"rtl","text-align":"center"});
-		   $('#add_new_order_btn').html("<div class='alignCenter border-black borderRadius10 padding-4x-4y'><i class='fa-solid fa-plus colorGrey'></i><br/><strong class='fontSize13'>הזמנה</strong></div>");
+		   $('#add_new_order_btn').html("<div class='alignCenter border-black borderRadius10 padding-4x-4y bgColorWhite'><i class='fa-solid fa-plus colorGrey'></i><br/><strong class='fontSize13'>הזמנה</strong></div>");
 		   $('#orders_list').css({"direction":"rtl"});
 		   $('#th_iteration').html("מס'");  
            $('#th_signature_date').html('תאריך חתימה');

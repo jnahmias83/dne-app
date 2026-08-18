@@ -124,13 +124,13 @@ include 'menu_budget_reports.php';
 			    </div>
 				
 				<div class="d-flex justify-content-center my-3">
-					<div id="div_btns" class="d-flex flex-column align-items-center gap-2 bgColorBrown p-3 rounded-4">					
+					<div id="div_btns" class="d-flex flex-column align-items-center gap-2 bgColorBrown pt-3 px-3 pb-3 rounded-4">
 						<div class="d-flex justify-content-center gap-2">
 							<a id="btn_add_order" onclick="location.href='add_order.php?project_id=<?=@$supplier->p_id?>&ps_id=<?=@$ps_id?>&from=accounts_payments&lang_screen=<?=@$lang_screen?>';"></a>
 							<a id="btn_add_account" onclick="location.href='add_account.php?project_id=<?=@$supplier->p_id?>&ps_id=<?=@$ps_id?>&from=accounts_payments&lang_screen=<?=@$lang_screen?>';"></a>				
 							<a id="btn_add_payment" onclick="location.href='add_payment.php?project_id=<?=@$supplier->p_id?>&ps_id=<?=@$ps_id?>&from=accounts_payments&lang_screen=<?=@$lang_screen?>';"></a>
 						</div>
-						<div class="text-center">
+						<div class="text-center mt-2">
 							<a class="text-decoration-none cursor-pointer d-inline-flex flex-column align-items-center"
 							   onclick="toSupplierPdfReport();">
 							   <img src="images/file-pdf-solid.svg" width="50" height="30" alt="PDF Icon" />

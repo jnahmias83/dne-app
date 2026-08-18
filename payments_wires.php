@@ -62,7 +62,7 @@ include 'menu_budget_reports.php';
 			    </div>
 				
 				<div class="row justify-content-center marginTop10">
-					<div id="div_btns" class="bgColor-cbddec padding10 rounded px-3 py-2 d-inline-block" style="min-width: 280px; max-width: 100%; width: fit-content;">    
+					<div id="div_btns" class="bgColorBrown pt-3 px-3 pb-3 rounded-4 d-inline-block" style="min-width: 280px; max-width: 100%; width: fit-content;">
 						<div class="row">
 							<div class="col-12 text-center">
 								<a onclick="toPaymentsWiresPdfReport();" class="text-decoration-none cursor-pointer d-flex flex-column align-items-center">

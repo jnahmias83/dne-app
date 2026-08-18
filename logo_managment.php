@@ -16,7 +16,7 @@ $logo = fetch_unique($query);
 			<div class="container">
 				<div class="row alignCenter marginTop25">
 					<div class="col-12">
-						<a href="projects.php"><img src="images/<?=@$logo->logo?>" width="120" height="114" /></a>
+						<a href="projects.php"><img src="images/<?=@$logo->logo?>" width="170" height="170" /></a>
 					</div>
 					
 					<div class="row marginTop5 title fontSize20">	

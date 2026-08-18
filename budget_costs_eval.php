@@ -44,8 +44,8 @@ include 'menu_budget_reports.php';
 					</div>				
 			    </div>			
 				<div class="margin-top-10-x-auto d-flex justify-content-center dir-rtl">
-					<div id="div_btns_eval" class="bgColor-cbddec padding10 borderRadius10 d-flex flex-wrap justify-content-center gap-3">
-						<a class="border-black borderRadius10 padding-4x-4y d-flex flex-column align-items-center justify-content-center text-decoration-none" onclick="location.href='add_cost_eval.php?id=0&project_id=<?=@$project_id?>&lang_screen=<?=@$lang_screen?>'">
+					<div id="div_btns_eval" class="bgColorBrown pt-3 px-3 pb-3 rounded-4 d-flex flex-wrap justify-content-center gap-3">
+						<a class="border-black borderRadius10 padding-4x-4y bgColorWhite d-flex flex-column align-items-center justify-content-center text-decoration-none" onclick="location.href='add_cost_eval.php?id=0&project_id=<?=@$project_id?>&lang_screen=<?=@$lang_screen?>'">
 						  <i class='fa fa-plus'></i>
 						  <div>אומדן תקציבי</div>
 						</a>

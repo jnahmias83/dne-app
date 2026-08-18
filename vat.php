@@ -16,7 +16,7 @@ $vat = fetch_unique($query);
 			<div class="container">
 			    <div class="row marginTop25 alignCenter">
 					<div class="col-12">
-						<a href="projects.php"><img src="images/<?=@$logo->logo?>" width="120" height="114" /></a>
+						<a href="projects.php"><img src="images/<?=@$logo->logo?>" width="170" height="170" /></a>
 					</div>
 				</div>
 				

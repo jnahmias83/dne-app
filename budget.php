@@ -79,21 +79,21 @@ include 'menu_budget_reports.php';
 			    </div>
 				
 				<div class="d-flex justify-content-center my-3">
-					<div id="div_btns" class="d-flex flex-column align-items-center gap-2 bgColor-cbddec p-3 rounded">
+					<div id="div_btns" class="d-flex flex-column align-items-center gap-2 bgColorBrown pt-3 px-3 pb-3 rounded-4">
 						<div class="d-flex justify-content-center gap-2">
 							<a id="btn_add_order" onclick="location.href='add_order.php?id=0&project_id=<?=@$project->id?>&from=budget&lang_screen=<?=@$lang_screen?>';"></a>
 							<a id="btn_add_account" onclick="location.href='add_account.php?id=0&project_id=<?=@$project->id?>&from=budget&lang_screen=<?=@$lang_screen?>';"></a>
 							<a id="btn_add_payment" onclick="location.href='add_payment.php?id=0&project_id=<?=@$project->id?>&from=budget&lang_screen=<?=@$lang_screen?>';"></a>
 						</div>
-						
+
 						<div class="text-center">
 							<input type="checkbox" id="add_supplier_reports" />
 							<span id="add_supplier_reports_span"></span>
 						</div>
 
-						<div class="text-center">
+						<div class="text-center mt-1">
 							<a class="text-decoration-none cursor-pointer d-inline-flex flex-column align-items-center"
-							   onclick="toBudgetPdfReport();"> 
+							   onclick="toBudgetPdfReport();">
 								<img src="images/file-pdf-solid.svg" width="50" height="30" alt="PDF Icon" />
 								<?php if(@$lang_screen == 'HE'){ ?>
 									<strong class="font-family-david mt-1">דו"ח</strong>
@@ -276,9 +276,9 @@ $(document).ready(function() {
           $('#project_name_title').html("<span class='fontSize26 font-weight-bold cursor-pointer'>Project "+$('#project_name').val()+"</span>");
 		  $('#title').html("<span class='fontSize26 font-weight-bold cursor-pointer'>Budget Report</span>");
 		  $('#div_btns').css({"direction":"ltr","text-align":"center"});
-		  $('#btn_add_order').html("<div class='alignCenter border-black borderRadius10 padding-4x-4y'><i class='fa-solid fa-plus colorGrey'></i><br/><strong class='fontSize13'>Order</strong></div>");
-		  $('#btn_add_account').html("<div class='alignCenter border-black borderRadius10 padding-4x-4y'><i class='fa-solid fa-plus colorGrey'></i><br/><strong class='fontSize13'>Account</strong></div>");
-		  $('#btn_add_payment').html("<div class='alignCenter border-black borderRadius10 padding-4x-4y'><i class='fa-solid fa-plus colorGrey'></i><br/><strong class='fontSize13'>Payment</strong></div>");
+		  $('#btn_add_order').html("<div class='alignCenter border-black borderRadius10 padding-4x-4y bgColorWhite'><i class='fa-solid fa-plus colorGrey'></i><br/><strong class='fontSize13'>Order</strong></div>");
+		  $('#btn_add_account').html("<div class='alignCenter border-black borderRadius10 padding-4x-4y bgColorWhite'><i class='fa-solid fa-plus colorGrey'></i><br/><strong class='fontSize13'>Account</strong></div>");
+		  $('#btn_add_payment').html("<div class='alignCenter border-black borderRadius10 padding-4x-4y bgColorWhite'><i class='fa-solid fa-plus colorGrey'></i><br/><strong class='fontSize13'>Payment</strong></div>");
 		  $('#row_cbx').css({"direction":"ltr"});
 		  $('#budget_table').css({"direction":"ltr"});
 		  $('#th_iteration').html('&#x2116;');
@@ -322,9 +322,9 @@ $(document).ready(function() {
 		  $('#project_name_title').html("<span class='fontSize26 font-weight-bold font-family-david cursor-pointer'>פרוייקט "+$('#project_name_he').val()+"</span>");
 		  $('#title').html("<span class='fontSize26 font-weight-bold font-family-david cursor-pointer'>דו''ח תקציב</span>");  
 		  $('#div_btns').css({"direction":"rtl","text-align":"center"});
-		  $('#btn_add_order').html("<div class='alignCenter border-black borderRadius10 padding-4x-4y'><i class='fa-solid fa-plus colorGrey'></i><br/><strong class='fontSize13'>הזמנה</strong></div>");	  
-		  $('#btn_add_account').html("<div class='alignCenter border-black borderRadius10 padding-4x-4y'><i class='fa-solid fa-plus colorGrey'></i><br/><strong class='fontSize13'>חשבון</strong></div>");
-		  $('#btn_add_payment').html("<div class='alignCenter border-black borderRadius10 padding-4x-4y'><i class='fa-solid fa-plus colorGrey'></i><br/><strong class='fontSize13'>תשלום</strong></div>");
+		  $('#btn_add_order').html("<div class='alignCenter border-black borderRadius10 padding-4x-4y bgColorWhite'><i class='fa-solid fa-plus colorGrey'></i><br/><strong class='fontSize13'>הזמנה</strong></div>");
+		  $('#btn_add_account').html("<div class='alignCenter border-black borderRadius10 padding-4x-4y bgColorWhite'><i class='fa-solid fa-plus colorGrey'></i><br/><strong class='fontSize13'>חשבון</strong></div>");
+		  $('#btn_add_payment').html("<div class='alignCenter border-black borderRadius10 padding-4x-4y bgColorWhite'><i class='fa-solid fa-plus colorGrey'></i><br/><strong class='fontSize13'>תשלום</strong></div>");
 		  $('#row_cbx').css({"direction":"rtl"});
 		  $('#budget_table').css({"direction":"rtl"});
 		  $('#th_iteration').html("מס'");

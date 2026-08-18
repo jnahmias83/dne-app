@@ -53,7 +53,7 @@ include 'menu_budget_reports.php';
 			    </div>
 				
 				<div class="margin-top-10-x-auto d-flex justify-content-center">
-					<div id="div_btns" class="bgColor-cbddec padding10 text-center">
+					<div id="div_btns" class="d-inline-flex flex-column align-items-center bgColorBrown pt-3 px-3 pb-3 rounded-4 text-center">
 						<a class="text-decoration-none cursor-pointer d-flex flex-column align-items-center" onclick="toPaymentsMissingInvoicePdfReport();">
 							<img src="images/file-pdf-solid.svg" width="50" height="30" alt="PDF Icon" />
 							<?php if(@$lang_screen == 'HE'){ ?>
