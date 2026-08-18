@@ -172,6 +172,14 @@ else {
 		try {
 			include_once 'functions/fcm_push.php';
 
+			$projectNickname = '';
+			$q = $mysqli->prepare("SELECT nickname FROM dne_projects WHERE id = ?");
+			$q->bind_param('i', $_POST['id_project']);
+			$q->execute();
+			$q->store_result();
+			$projectRow = fetch_unique($q);
+			$projectNickname = @$projectRow->nickname;
+
 			$chapterName = '';
 			$q = $mysqli->prepare("SELECT name FROM dne_chapters WHERE id = ?");
 			$q->bind_param('i', $_POST['id_chapter']);
@@ -191,6 +199,8 @@ else {
 			}
 
 			$notifTitle = (@$chapterName != '') ? $chapterName : $_subject;
+			if(@$projectNickname != '')
+				$notifTitle = $projectNickname.' - '.$notifTitle;
 			$notifBodyParts = array_filter([$_subject, $_area, $responsibleName]);
 			$notifBody = implode(' - ', $notifBodyParts);
 			if($_descr != '')
