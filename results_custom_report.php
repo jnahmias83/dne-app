@@ -766,9 +766,15 @@ foreach($chapters as $item) {
 	   $sql.= ' AND id_chapter ='.$chapter_id;
    
 	$query = $mysqli->prepare($sql);
-	$query->execute();
-	$query->store_result();
-	$meetings = fetch($query);
+	if(!$query){
+		error_log('SQL invalide pour un rapport (results_custom_report.php, project_id='.$project_id.'): '.$mysqli->error.' -- '.$sql);
+		$meetings = array();
+	}
+	else {
+		$query->execute();
+		$query->store_result();
+		$meetings = fetch($query);
+	}
 											
 	$counter_with_image = 0;
 	foreach ($meetings as $item) {							

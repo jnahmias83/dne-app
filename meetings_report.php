@@ -142,18 +142,25 @@ if($id_custom_report > 0) {
 		}	
 				
 		$query = $mysqli->prepare($sql);
-		$query->execute();
-		$query->store_result();
-		$all_meetings_num_rows = $query->num_rows;
-		
-		$query = $mysqli->prepare($sql." AND m.image1 <> '' 
-		                          AND m.is_appears_img1 = 1 
-								  ORDER BY t.id_display,
-								  m.subject,m.id_area,
-								  m.destination_date DESC");
-		$query->execute(); 
-		$query->store_result();
-		$all_meetings_with_images_num_rows = $query->num_rows;
+		if(!$query){
+			error_log('SQL invalide pour un rapport (meetings_report.php, project_id='.$project_id.'): '.$mysqli->error.' -- '.$sql);
+			$all_meetings_num_rows = 0;
+			$all_meetings_with_images_num_rows = 0;
+		}
+		else {
+			$query->execute();
+			$query->store_result();
+			$all_meetings_num_rows = $query->num_rows;
+
+			$query = $mysqli->prepare($sql." AND m.image1 <> ''
+			                          AND m.is_appears_img1 = 1
+									  ORDER BY t.id_display,
+									  m.subject,m.id_area,
+									  m.destination_date DESC");
+			$query->execute();
+			$query->store_result();
+			$all_meetings_with_images_num_rows = $query->num_rows;
+		}
 	
 		$report_type = 'general_'.$id_custom_report;
 
@@ -252,17 +259,24 @@ else if($id_rdv_report > 0){
 		}
 		
 		$query = $mysqli->prepare($sql);
-		$query->execute();
-		$query->store_result();
-		$all_meetings_num_rows = $query->num_rows;
-		
-		$query = $mysqli->prepare($sql." AND m.image1 <> '' 
-		                          AND m.is_appears_img1 = 1 
-								  ORDER BY t.id_display,m.subject,
-								  m.id_area,m.destination_date DESC");
-		$query->execute(); 
-		$query->store_result();
-		$all_meetings_with_images_num_rows = $query->num_rows;
+		if(!$query){
+			error_log('SQL invalide pour un rapport (meetings_report.php, project_id='.$project_id.'): '.$mysqli->error.' -- '.$sql);
+			$all_meetings_num_rows = 0;
+			$all_meetings_with_images_num_rows = 0;
+		}
+		else {
+			$query->execute();
+			$query->store_result();
+			$all_meetings_num_rows = $query->num_rows;
+
+			$query = $mysqli->prepare($sql." AND m.image1 <> ''
+			                          AND m.is_appears_img1 = 1
+									  ORDER BY t.id_display,m.subject,
+									  m.id_area,m.destination_date DESC");
+			$query->execute();
+			$query->store_result();
+			$all_meetings_with_images_num_rows = $query->num_rows;
+		}
 	}
 	
 	$query = $mysqli->prepare("SELECT rdv.rdv_name AS rdv_name,
@@ -784,12 +798,18 @@ foreach($chapters as $item){
 		    $sql.= ' AND m.id_chapter ='.$chapter_id;
 		
 		    $query = $mysqli->prepare($sql);
-			$query->execute();
-			$query->store_result();
-			$meetings = fetch($query);
-											
+			if(!$query){
+				error_log('SQL invalide pour un rapport (meetings_report.php, project_id='.$project_id.'): '.$mysqli->error.' -- '.$sql);
+				$meetings = array();
+			}
+			else {
+				$query->execute();
+				$query->store_result();
+				$meetings = fetch($query);
+			}
+
 			$counter_with_image = 0;
-			foreach ($meetings as $item){							
+			foreach ($meetings as $item){
 				if(@$all_ids_to_print == '' || in_array($item->id,$all_ids_to_print_array)) 
 					$counter_with_image++;
 			}
@@ -1388,9 +1408,15 @@ foreach($chapters as $item) {
 		    $sql.= ' AND m.id_chapter ='.$chapter_id;
 			
 			$query = $mysqli->prepare($sql);
-			$query->execute();
-			$query->store_result();
-			$meetings = fetch($query);
+			if(!$query){
+				error_log('SQL invalide pour un rapport (meetings_report.php, project_id='.$project_id.'): '.$mysqli->error.' -- '.$sql);
+				$meetings = array();
+			}
+			else {
+				$query->execute();
+				$query->store_result();
+				$meetings = fetch($query);
+			}
 											
 			$counter_with_image = 0;
 			foreach ($meetings as $item) {							

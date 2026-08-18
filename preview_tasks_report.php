@@ -126,10 +126,17 @@ if($id_custom_report > 0) {
 		}	
 				
 		$query = $mysqli->prepare($sql);
-	    $query->execute();
-	    $query->store_result();
-	    $all_meetings_num_rows = $query->num_rows;
-        $all_meetings = fetch($query);
+	    if(!$query){
+	        error_log('SQL invalide pour un rapport (preview_tasks_report.php, project_id='.$project_id.'): '.$mysqli->error.' -- '.$sql);
+	        $all_meetings_num_rows = 0;
+	        $all_meetings = array();
+	    }
+	    else {
+	        $query->execute();
+	        $query->store_result();
+	        $all_meetings_num_rows = $query->num_rows;
+	        $all_meetings = fetch($query);
+	    }
 	    $all_meetings_with_images_num_rows = 0;
 		
 	    foreach($all_meetings as $item) {
@@ -218,10 +225,17 @@ else if($id_rdv_report > 0) {
 		}
 		
 		$query = $mysqli->prepare($sql);
-	    $query->execute();
-	    $query->store_result();
-	    $all_meetings_num_rows = $query->num_rows;
-        $all_meetings = fetch($query);
+	    if(!$query){
+	        error_log('SQL invalide pour un rapport (preview_tasks_report.php, project_id='.$project_id.'): '.$mysqli->error.' -- '.$sql);
+	        $all_meetings_num_rows = 0;
+	        $all_meetings = array();
+	    }
+	    else {
+	        $query->execute();
+	        $query->store_result();
+	        $all_meetings_num_rows = $query->num_rows;
+	        $all_meetings = fetch($query);
+	    }
 	    $all_meetings_with_images_num_rows = 0;
 		
 	    foreach($all_meetings as $item) {
@@ -462,9 +476,15 @@ include 'menu_tasks.php';
 										  $sql.= ' AND m.id_chapter ='.$chapter_id;
 									  
 										$query = $mysqli->prepare($sql);
-										$query->execute();
-										$query->store_result();
-										$meetings = fetch($query);
+										if(!$query){
+											error_log('SQL invalide pour un rapport (preview_tasks_report.php, project_id='.$project_id.'): '.$mysqli->error.' -- '.$sql);
+											$meetings = array();
+										}
+										else {
+											$query->execute();
+											$query->store_result();
+											$meetings = fetch($query);
+										}
 										
 										$counter_with_image = 0;
 										foreach ($meetings as $item) {							
@@ -885,9 +905,15 @@ include 'menu_tasks.php';
 											  $sql.= ' AND m.id_chapter ='.$chapter_id;
 											
 											$query = $mysqli->prepare($sql);
-											$query->execute();
-											$query->store_result();
-											$meetings = fetch($query);
+											if(!$query){
+												error_log('SQL invalide pour un rapport (preview_tasks_report.php, project_id='.$project_id.'): '.$mysqli->error.' -- '.$sql);
+												$meetings = array();
+											}
+											else {
+												$query->execute();
+												$query->store_result();
+												$meetings = fetch($query);
+											}
 																			
 											$counter_with_image = 0;
 											foreach ($meetings as $item) {							
