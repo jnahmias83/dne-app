@@ -4,7 +4,8 @@ require_once('tcpdf_min/tcpdf.php');
 session_start();
 include 'functions/functions.php';
 error_reporting(E_ALL);
-ini_set('display_errors', '1');
+ini_set('display_errors', '0');
+ini_set('log_errors', '1');
 
 header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
 header('Pragma: no-cache');

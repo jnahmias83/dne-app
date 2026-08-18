@@ -5,7 +5,8 @@ require_once('tcpdf_min/tcpdf.php');
 include 'include/header.php';
 include 'functions/functions.php';
 error_reporting(E_ALL);
-ini_set('display_errors', '1');
+ini_set('display_errors', '0');
+ini_set('log_errors', '1');
 
 $project_id = @$_GET['project_id'];
 
