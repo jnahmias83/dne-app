@@ -76,6 +76,30 @@ foreach($projects as $pr){
 	echo "<p><b>5 dernieres taches creees sur ce projet :</b></p><ul>";
 	foreach($recent as $t){
 		echo "<li>id={$t->id} : ".htmlspecialchars($t->subject)." (createur id_user={$t->id_user}, cree le {$t->task_creation_date})</li>";
+
+		// Verifie si une entree dne_log_news existe deja pour cette tache
+		$qn = $mysqli->prepare("SELECT id FROM dne_log_news WHERE id_meeting = ?");
+		$qn->bind_param('i', $t->id);
+		$qn->execute();
+		$qn->store_result();
+		echo "<ul><li>Ligne dne_log_news existante pour cette tache ? ".($qn->num_rows > 0 ? 'OUI' : 'NON')."</li>";
+
+		// Simule la requete de synchronisation (celle qui tourne normalement au chargement de projects.php)
+		$qs = $mysqli->prepare("SELECT lmu.id AS lmu_id, lmu.id_user AS lmu_creator, lmu.is_remark_appears_log, lmu.updated_users, lmu.action
+		                        FROM dne_log_meeting_updates lmu
+		                        WHERE lmu.id_meeting = ?
+		                        ORDER BY lmu.id DESC");
+		$qs->bind_param('i', $t->id);
+		$qs->execute();
+		$qs->store_result();
+		$logs = fetch($qs);
+		echo "<li>Entrees dne_log_meeting_updates pour cette tache :</li><ul>";
+		foreach($logs as $l){
+			$excl_self = ($l->lmu_creator == $viewer_id) ? 'OUI (c est toi)' : 'non';
+			$already_seen = in_array($viewer_id, array_map('trim', explode(',', $l->updated_users)));
+			echo "<li>lmu_id={$l->lmu_id}, createur={$l->lmu_creator}, action=".htmlspecialchars($l->action).", is_remark_appears_log={$l->is_remark_appears_log}, updated_users='".htmlspecialchars($l->updated_users)."' | exclu (toi createur) ? {$excl_self} | deja marque vu par toi ? ".($already_seen?'OUI':'non')."</li>";
+		}
+		echo "</ul></ul>";
 	}
 	echo "</ul>";
 }
