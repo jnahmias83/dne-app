@@ -891,6 +891,7 @@ foreach($all_what_news as $wn){
 																		<?php
 																		echo smartDate(@$wn->lmu_action_date)?>
 																	</span>
+																	<span style="background:yellow;color:red;font-size:9px;">[lmu_id=<?=@$wn->lmu_id?> date=<?=@$wn->lmu_action_date?>]</span>
 																	<?php if(@$wn->lmu_action == 'חדשה'){ ?>
 																		&nbsp;-
 																		<span class="colorGreenDark dir-rtl unicode-bidi-embed" style="font-weight:bold;">
