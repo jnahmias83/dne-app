@@ -77,12 +77,13 @@ foreach($projects as $pr){
 	foreach($recent as $t){
 		echo "<li>id={$t->id} : ".htmlspecialchars($t->subject)." (createur id_user={$t->id_user}, cree le {$t->task_creation_date})</li>";
 
-		// Verifie si une entree dne_log_news existe deja pour cette tache
-		$qn = $mysqli->prepare("SELECT id FROM dne_log_news WHERE id_meeting = ?");
+		// Verifie si une entree dne_log_news existe deja pour cette tache, et VERS QUEL lmu_id elle pointe precisement
+		$qn = $mysqli->prepare("SELECT ln.id, ln.id_log_meeting_updates FROM dne_log_news ln WHERE ln.id_meeting = ?");
 		$qn->bind_param('i', $t->id);
 		$qn->execute();
 		$qn->store_result();
-		echo "<ul><li>Ligne dne_log_news existante pour cette tache ? ".($qn->num_rows > 0 ? 'OUI' : 'NON')."</li>";
+		$newsRow = fetch_unique($qn);
+		echo "<ul><li>Ligne dne_log_news existante pour cette tache ? ".($qn->num_rows > 0 ? "OUI, pointe vers lmu_id=".$newsRow->id_log_meeting_updates : 'NON')."</li>";
 
 		// Simule la requete de synchronisation (celle qui tourne normalement au chargement de projects.php)
 		$qs = $mysqli->prepare("SELECT lmu.id AS lmu_id, lmu.id_user AS lmu_creator, lmu.is_remark_appears_log, lmu.updated_users, lmu.action
