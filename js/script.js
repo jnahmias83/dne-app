@@ -345,9 +345,12 @@ function setData(meeting_id,iteration,field,isRemark,forShare,screen_type){
 									location.href = 'projects.php';
 									return;
 								}
-								$('#modalTaskFollowupActions').modal('show');
-								setProjectModalTitle($('#hidden_project_id').val(), '#modalTaskFollowupActions', false);
-								$(this).off('hidden.bs.modal');
+								if(localStorage.getItem('skip_followup_popup') == '1'){
+									localStorage.removeItem('skip_followup_popup');
+								} else {
+									$('#modalTaskFollowupActions').modal('show');
+									setProjectModalTitle($('#hidden_project_id').val(), '#modalTaskFollowupActions', false);
+								}
 								setlocalStorage(localStorage.getItem('next_meeting_id'), iteration);
 							},
 							error: function(xhr, status, error) {}

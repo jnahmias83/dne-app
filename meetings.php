@@ -4468,6 +4468,9 @@ $(document).on('click','#save_update_task_btn', function (){
 	let selectedStatusNameEn = $('#progress_status_update option:selected').data('name-en');
 	if(selectedStatusNameEn == 'Archive' || selectedStatusNameEn == 'Done'){
 			index++;
+			localStorage.setItem('skip_followup_popup','1');
+			$('tr.meeting_' + current_meeting_id).next('.tr-image-row').remove();
+			$('tr.meeting_' + current_meeting_id).remove();
 	}
 
 	let next_meeting_id = (index < meeting_ids_array.length) ? meeting_ids_array[index] : '';
