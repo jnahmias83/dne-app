@@ -1,5 +1,7 @@
 <?php
 // Outil de diagnostic temporaire, lecture seule (ne modifie rien) - a supprimer une fois le probleme resolu.
+ini_set('display_errors', '1');
+error_reporting(E_ALL);
 session_start();
 include 'functions/functions.php';
 
