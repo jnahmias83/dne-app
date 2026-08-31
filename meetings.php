@@ -3979,8 +3979,11 @@ $(document).ready(function(){
 							let dropdown_next_meeting_id = dropdown_meeting_ids_array[dropdown_index];
 							localStorage.setItem('next_meeting_id', dropdown_next_meeting_id);
 							localStorage.setItem('meeting_id', dropdown_next_meeting_id);
+							localStorage.setItem('skip_followup_popup','1');
 							setData(meeting_id, '', 'update_task', 1, 0, 'for_closing');
 						}
+						row.next('.tr-image-row').remove();
+						row.remove();
 					}
 
 					if(allowed_progress_status_ids !== '' && allowed_progress_status_ids.split(',').indexOf(String(changed_progress_status_id)) === -1){
