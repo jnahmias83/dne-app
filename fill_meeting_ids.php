@@ -163,7 +163,8 @@ if($_POST['from'] == 'projects'){
 											WHERE r.id_project = p.id
 											AND r.id_user = ?
 									  )
-									  ORDER BY GREATEST(COALESCE(lmu.action_date,'1970-01-01'), COALESCE(lmt.action_date,'1970-01-01')) DESC");
+									  ORDER BY GREATEST(COALESCE(lmu.action_date,'1970-01-01'), COALESCE(lmt.action_date,'1970-01-01')) DESC,
+									  GREATEST(COALESCE(lmu.id,0), COALESCE(lmt.id,0)) DESC");
             $query->bind_param('sssiiiii',$ps1,$ps2,$ps3,$is_active_project,$_SESSION['id_user'],$is_remark_appears_log,$_SESSION['id_user'],$_SESSION['id_user']);
 			$query->execute(); 
 			$query->store_result();
@@ -272,7 +273,8 @@ if($_POST['from'] == 'projects'){
 					   AND lmu.id_user <> ?
 									   AND lmu.is_remark_appears_log = ?
 									   AND NOT FIND_IN_SET(?,lmu.updated_users)
-					                   ORDER BY GREATEST(COALESCE(lmu.action_date,'1970-01-01'), COALESCE(lmt.action_date,'1970-01-01')) DESC");
+					                   ORDER BY GREATEST(COALESCE(lmu.action_date,'1970-01-01'), COALESCE(lmt.action_date,'1970-01-01')) DESC,
+					                   GREATEST(COALESCE(lmu.id,0), COALESCE(lmt.id,0)) DESC");
 			$query->bind_param('sssiiii',$ps1,$ps2,$ps3,$_POST['currentProject'],$_SESSION['id_user'],$is_remark_appears_log,$_SESSION['id_user']);
 			$query->execute(); 
 			$query->store_result();
