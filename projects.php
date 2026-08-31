@@ -769,7 +769,8 @@ foreach($all_what_news as $wn){
 									
 					<div class="marginTop10 width100Percents overflow-y-scroll scrollbar-colored alignCenter dir-rtl" style="max-height:530px;">
 						<table align="center" class="dir-rtl" cellpadding="4" width="100%">
-							<?php foreach ($all_what_news as $wn){ 
+							<?php foreach ($all_what_news as $wn){
+								if(trim(@$wn->lmu_progress_status_name) == 'ארכיון') continue;
 								$user_id = @$wn->id_user;
 								
 								$reminder_time = @$wn->reminder_time;	
@@ -1416,7 +1417,8 @@ foreach($all_what_news as $wn){
 										
 										<div class="marginTop10 width100Percents overflow-y-scroll scrollbar-colored alignCenter dir-rtl" style="max-height:530px;">
 											<table align="center" class="dir-rtl" cellpadding="4" width="100%">
-												<?php foreach ($what_news as $wn){ 
+												<?php foreach ($what_news as $wn){
+												if(trim(@$wn->lmu_progress_status_name) == 'ארכיון') continue;
 													$user_id = @$wn->id_user;																					
 													
 													$reminder_time = @$wn->reminder_time;
