@@ -2912,10 +2912,8 @@ $(document).ready(function(){
 				let current_meeting_id = $('#hidden_meeting_id').val();
 				let index = meeting_ids_array.indexOf(current_meeting_id);
 
-				let _dbgStatus = $('#progress_status_update option:selected').data('name-en');
-				console.log('DEBUG archive: statut lu =', JSON.stringify(_dbgStatus), '| target =', JSON.stringify(localStorage.getItem('target')), '| current_meeting_id =', JSON.stringify(current_meeting_id));
-				if(_dbgStatus == 'Archive' || _dbgStatus == 'Done'){
-						console.log('DEBUG archive: condition Archive/Done VRAIE, on retire la ligne');
+				if($('#progress_status_update option:selected').data('name-en') == 'Archive' ||
+					$('#progress_status_update option:selected').data('name-en') == 'Done'){
 						index++;
 						localStorage.setItem('skip_followup_popup','1');
 						if(localStorage.getItem('target') == 'active_tracking'){
@@ -3038,10 +3036,8 @@ $(document).ready(function(){
 				let current_meeting_id = $('#hidden_meeting_id').val();
 				let index = meeting_ids_array.indexOf(current_meeting_id);
 
-				let _dbgStatus = $('#progress_status_update option:selected').data('name-en');
-				console.log('DEBUG archive: statut lu =', JSON.stringify(_dbgStatus), '| target =', JSON.stringify(localStorage.getItem('target')), '| current_meeting_id =', JSON.stringify(current_meeting_id));
-				if(_dbgStatus == 'Archive' || _dbgStatus == 'Done'){
-						console.log('DEBUG archive: condition Archive/Done VRAIE, on retire la ligne');
+				if($('#progress_status_update option:selected').data('name-en') == 'Archive' ||
+					$('#progress_status_update option:selected').data('name-en') == 'Done'){
 						index++;
 						localStorage.setItem('skip_followup_popup','1');
 						if(localStorage.getItem('target') == 'active_tracking'){
