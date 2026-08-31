@@ -359,7 +359,8 @@ $query = $mysqli->prepare("SELECT ln.id_log_meeting_updates AS id_log_meeting_up
 									WHERE r.id_project = p.id
 									AND r.id_user = ?
 						   )
-					       ORDER BY GREATEST(COALESCE(lmu.action_date,'1970-01-01'), COALESCE(lmt.action_date,'1970-01-01')) DESC");
+					       ORDER BY GREATEST(COALESCE(lmu.action_date,'1970-01-01'), COALESCE(lmt.action_date,'1970-01-01')) DESC,
+					       GREATEST(COALESCE(lmu.id,0), COALESCE(lmt.id,0)) DESC");
 $query->bind_param('iisssiiiii',$_SESSION['id_user'],$_SESSION['id_user'],$ps1,$ps2,$ps3,$is_active_project,$_SESSION['id_user'],$is_remark_appears_log,$_SESSION['id_user'],$_SESSION['id_user']);
 $query->execute();
 $query->store_result();
@@ -1066,7 +1067,8 @@ foreach($all_what_news as $wn){
 														   AND lmu.id_user <> ?
 														   AND lmu.is_remark_appears_log = ?
 														   AND NOT FIND_IN_SET(?,lmu.updated_users)
-														   ORDER BY GREATEST(COALESCE(lmu.action_date,'1970-01-01'), COALESCE(lmt.action_date,'1970-01-01')) DESC");
+														   ORDER BY GREATEST(COALESCE(lmu.action_date,'1970-01-01'), COALESCE(lmt.action_date,'1970-01-01')) DESC,
+													   GREATEST(COALESCE(lmu.id,0), COALESCE(lmt.id,0)) DESC");
 								$query->bind_param('iisssiiii',$_SESSION['id_user'],$_SESSION['id_user'],$ps1,$ps2,$ps3,$pr->id,$_SESSION['id_user'],$is_remark_appears_log,$_SESSION['id_user']);
 								$query->execute();
 								$query->store_result();
