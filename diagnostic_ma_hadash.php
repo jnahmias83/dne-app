@@ -8,66 +8,72 @@ if(empty($_SESSION['id_user'])){
 }
 
 $viewer_id = $_SESSION['id_user'];
-$subject_search = @$_GET['subject'] ?: 'ghghghhg';
-
-echo "<h2>Diagnostic מה חדש</h2>";
+echo "<h2>Diagnostic badges / מה חדש</h2>";
 echo "<p>Utilisateur connecte (viewer) : id = <b>{$viewer_id}</b></p>";
 
-$query = $mysqli->prepare("SELECT id, id_project, id_user, subject, id_progress_status FROM dne_meetings WHERE subject LIKE ? ORDER BY id DESC LIMIT 5");
-$search = '%'.$subject_search.'%';
-$query->bind_param('s', $search);
+$ps1 = 'ארכיון'; $ps2 = 'בוצע/נמסר'; $ps3 = 'בהמתנה';
+
+$query = $mysqli->prepare("SELECT id, nickname FROM dne_projects WHERE nickname LIKE '%DNE%' AND is_project_active = 1");
 $query->execute();
 $query->store_result();
-$tasks = fetch($query);
+$projects = fetch($query);
 
-if(empty($tasks)){
-	echo "<p style='color:red;'>Aucune tache trouvee avec le sujet contenant '{$subject_search}'.</p>";
+if(empty($projects)){
+	echo "<p style='color:red;'>Aucun projet actif dont le nom contient 'DNE' trouve.</p>";
 	exit;
 }
 
-foreach($tasks as $task){
-	echo "<hr><h3>Tache id={$task->id} : ".htmlspecialchars($task->subject)."</h3>";
-	echo "<p>id_project = {$task->id_project} | createur (id_user) = {$task->id_user} | id_progress_status = {$task->id_progress_status}</p>";
+foreach($projects as $pr){
+	echo "<hr><h3>Projet id={$pr->id} : ".htmlspecialchars($pr->nickname)."</h3>";
 
-	$q = $mysqli->prepare("SELECT name_he FROM dne_progress_status WHERE id = ?");
-	$q->bind_param('i', $task->id_progress_status);
+	$q = $mysqli->prepare("SELECT id, name, role, id_user FROM dne_responsibles WHERE id_project = ?");
+	$q->bind_param('i', $pr->id);
 	$q->execute();
 	$q->store_result();
-	$ps = fetch_unique($q);
-	echo "<p>Statut actuel : <b>".htmlspecialchars(@$ps->name_he ?: '(aucun)')."</b></p>";
-
-	$q = $mysqli->prepare("SELECT is_project_active, nickname FROM dne_projects WHERE id = ?");
-	$q->bind_param('i', $task->id_project);
-	$q->execute();
-	$q->store_result();
-	$proj = fetch_unique($q);
-	echo "<p>Projet : ".htmlspecialchars(@$proj->nickname)." | actif = ".(@$proj->is_project_active ? 'OUI' : 'NON')."</p>";
-
-	$q = $mysqli->prepare("SELECT id FROM dne_responsibles WHERE id_project = ? AND id_user = ?");
-	$q->bind_param('ii', $task->id_project, $viewer_id);
-	$q->execute();
-	$q->store_result();
-	$isResp = $q->num_rows > 0;
-	echo "<p>Le viewer (toi) est-il enregistre comme 'responsible' sur ce projet ? <b>".($isResp ? 'OUI' : 'NON - c\'est probablement la cause !')."</b></p>";
-
-	$q = $mysqli->prepare("SELECT ln.id AS ln_id, lmu.id AS lmu_id, lmu.id_user AS lmu_creator, lmu.is_remark_appears_log, lmu.updated_users
-	                       FROM dne_log_news ln
-	                       LEFT JOIN dne_log_meeting_updates lmu ON ln.id_log_meeting_updates = lmu.id
-	                       WHERE ln.id_meeting = ?");
-	$q->bind_param('i', $task->id);
-	$q->execute();
-	$q->store_result();
-	$newsRows = fetch($q);
-
-	if(empty($newsRows)){
-		echo "<p style='color:red;'><b>Aucune ligne dans dne_log_news pour cette tache - c'est pour ca qu'elle n'apparait jamais dans מה חדש, pour personne, meme pas pour toi.</b></p>";
-	} else {
-		foreach($newsRows as $nr){
-			echo "<p>dne_log_news id={$nr->ln_id} : log createur={$nr->lmu_creator}, is_remark_appears_log={$nr->is_remark_appears_log}, updated_users='".htmlspecialchars($nr->updated_users)."'</p>";
-			$excluded_self = ($nr->lmu_creator == $viewer_id) ? 'OUI (normal, c est toi qui l as fait)' : 'non';
-			echo "<p>Exclu car c'est toi le createur de ce log ? {$excluded_self}</p>";
-			$already_marked = in_array($viewer_id, array_map('trim', explode(',', $nr->updated_users)));
-			echo "<p>Deja marque comme vu par toi (updated_users) ? ".($already_marked ? 'OUI - c\'est probablement la cause !' : 'non')."</p>";
-		}
+	$resps = fetch($q);
+	echo "<p><b>Responsables sur ce projet :</b></p><ul>";
+	$viewerIsResp = false;
+	foreach($resps as $r){
+		$match = ($r->id_user == $viewer_id) ? ' <-- TOI' : '';
+		if($r->id_user == $viewer_id) $viewerIsResp = true;
+		echo "<li>".htmlspecialchars($r->name)." (role={$r->role}, id_user={$r->id_user}){$match}</li>";
 	}
+	echo "</ul>";
+	echo "<p>Es-tu enregistre comme responsable sur ce projet ? <b>".($viewerIsResp ? 'OUI' : 'NON - c\'est la cause des badges a 0 !')."</b></p>";
+
+	// user_tasks
+	$q = $mysqli->prepare("SELECT COUNT(*) AS n FROM dne_meetings m LEFT JOIN dne_responsibles r ON m.id_responsible = r.id LEFT JOIN dne_progress_status ps ON m.id_progress_status = ps.id WHERE ps.name_he <> ? AND ps.name_he <> ? AND ps.name_he <> ? AND m.id_project = ? AND r.id_user = ?");
+	$q->bind_param('sssii', $ps1, $ps2, $ps3, $pr->id, $viewer_id);
+	$q->execute();
+	$q->store_result();
+	$row = fetch_unique($q);
+	echo "<p>Badge משימות שלי (compte reel) : <b>{$row->n}</b></p>";
+
+	// nombre total de taches actives sur ce projet, peu importe le responsable
+	$q = $mysqli->prepare("SELECT COUNT(*) AS n FROM dne_meetings m LEFT JOIN dne_progress_status ps ON m.id_progress_status = ps.id WHERE ps.name_he <> ? AND ps.name_he <> ? AND ps.name_he <> ? AND m.id_project = ?");
+	$q->bind_param('sssi', $ps1, $ps2, $ps3, $pr->id);
+	$q->execute();
+	$q->store_result();
+	$row2 = fetch_unique($q);
+	echo "<p>Nombre total de taches actives sur ce projet (tous responsables confondus) : <b>{$row2->n}</b></p>";
+
+	// what's new
+	$q = $mysqli->prepare("SELECT COUNT(*) AS n FROM dne_log_news ln LEFT JOIN dne_log_meeting_updates lmu ON ln.id_log_meeting_updates = lmu.id INNER JOIN dne_meetings m ON ln.id_meeting = m.id LEFT JOIN dne_progress_status ps ON m.id_progress_status = ps.id WHERE (ps.name_he IS NULL OR (ps.name_he <> ? AND ps.name_he <> ? AND ps.name_he <> ?)) AND m.id_project = ? AND lmu.id_user <> ? AND lmu.is_remark_appears_log = 1");
+	$q->bind_param('sssii', $ps1, $ps2, $ps3, $pr->id, $viewer_id);
+	$q->execute();
+	$q->store_result();
+	$row3 = fetch_unique($q);
+	echo "<p>Badge מה חדש (compte reel, sans le filtre 'deja vu') : <b>{$row3->n}</b></p>";
+
+	// dernieres taches creees sur ce projet
+	$q = $mysqli->prepare("SELECT id, subject, id_user, task_creation_date FROM dne_meetings WHERE id_project = ? ORDER BY id DESC LIMIT 5");
+	$q->bind_param('i', $pr->id);
+	$q->execute();
+	$q->store_result();
+	$recent = fetch($q);
+	echo "<p><b>5 dernieres taches creees sur ce projet :</b></p><ul>";
+	foreach($recent as $t){
+		echo "<li>id={$t->id} : ".htmlspecialchars($t->subject)." (createur id_user={$t->id_user}, cree le {$t->task_creation_date})</li>";
+	}
+	echo "</ul>";
 }
