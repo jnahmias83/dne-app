@@ -91,7 +91,7 @@ else {
 	    }
 		
 		if(isset($_FILES['image1']['name'])){
-			$image1_name = $_FILES['image1']['name'];
+			$image1_name = uniqid().'_'.$_FILES['image1']['name'];
 			$imageUploadPath = 'uploads/'.$image1_name;
 			$fileType = pathinfo($imageUploadPath, PATHINFO_EXTENSION);
 
@@ -110,7 +110,7 @@ else {
 	    }
 
 		if(isset($_FILES['image2']['name'])){
-			$image2_name = $_FILES['image2']['name'];
+			$image2_name = uniqid().'_'.$_FILES['image2']['name'];
 			$imageUploadPath = 'uploads/'.$image2_name;
 			$fileType = pathinfo($imageUploadPath, PATHINFO_EXTENSION);
 
@@ -294,7 +294,7 @@ else {
 		}
 
 		if(isset($_FILES['image1']['name'])) {
-			$image1_name = $_FILES['image1']['name'];
+			$image1_name = uniqid().'_'.$_FILES['image1']['name'];
 			$imageUploadPath = 'uploads/'.$image1_name;
 			$fileType = pathinfo($imageUploadPath, PATHINFO_EXTENSION);
 
@@ -320,7 +320,7 @@ else {
 		}
 
 		if(isset($_FILES['image2']['name'])){
-			$image2_name = $_FILES['image2']['name'];
+			$image2_name = uniqid().'_'.$_FILES['image2']['name'];
 			$imageUploadPath = 'uploads/'.$image2_name;
 			$fileType = pathinfo($imageUploadPath, PATHINFO_EXTENSION);
 
@@ -336,7 +336,7 @@ else {
 			} else {
 				$image2_name = '';
 			}
-			
+
 			$query = "UPDATE dne_meetings SET image2 = ?,image2_width = ?,
 					  image2_height = ? WHERE id = ?";
 			$query = $mysqli->prepare($query);
