@@ -75,7 +75,12 @@ foreach($projects as $pr){
 	$recent = fetch($q);
 	echo "<p><b>5 dernieres taches creees sur ce projet :</b></p><ul>";
 	foreach($recent as $t){
-		echo "<li>id={$t->id} : ".htmlspecialchars($t->subject)." (createur id_user={$t->id_user}, cree le {$t->task_creation_date})</li>";
+		$qcs = $mysqli->prepare("SELECT m.id_progress_status, ps.name_he FROM dne_meetings m LEFT JOIN dne_progress_status ps ON m.id_progress_status = ps.id WHERE m.id = ?");
+		$qcs->bind_param('i', $t->id);
+		$qcs->execute();
+		$qcs->store_result();
+		$curStatus = fetch_unique($qcs);
+		echo "<li>id={$t->id} : ".htmlspecialchars($t->subject)." (createur id_user={$t->id_user}, cree le {$t->task_creation_date}) | <b>statut actuel = ".htmlspecialchars(@$curStatus->name_he ?: '(aucun, id='.@$curStatus->id_progress_status.')')."</b></li>";
 
 		// Verifie si une entree dne_log_news existe deja pour cette tache, et VERS QUEL lmu_id elle pointe precisement
 		$qn = $mysqli->prepare("SELECT ln.id, ln.id_log_meeting_updates FROM dne_log_news ln WHERE ln.id_meeting = ?");
