@@ -334,6 +334,7 @@ $query = $mysqli->prepare("SELECT ln.id_log_meeting_updates AS id_log_meeting_up
 						   m.reminder_date AS reminder_date,
 						   m.id_track_responsible AS id_track_responsible,
 					   u.nickname AS user_nickname,
+					   ps.name_he AS current_status_name_he,
 					(SELECT lmu2.remark FROM dne_log_meeting_updates lmu2 WHERE lmu2.id_meeting = m.id AND TRIM(lmu2.remark) <> '' ORDER BY lmu2.id DESC LIMIT 1) AS latest_lmu_remark,
 					(SELECT ps2.name_he FROM dne_log_meeting_updates lmu3 LEFT JOIN dne_progress_status ps2 ON ps2.id = lmu3.id_progress_status WHERE lmu3.id_meeting = m.id AND lmu3.id_progress_status <> 0 AND lmu3.id_user <> ? ORDER BY lmu3.id DESC LIMIT 1) AS lmu_progress_status_name,
 					(SELECT lmu4.destination_date FROM dne_log_meeting_updates lmu4 WHERE lmu4.id_meeting = m.id AND lmu4.destination_date <> '0000-00-00' AND lmu4.id_user <> ? ORDER BY lmu4.id DESC LIMIT 1) AS lmu_destination_date
@@ -895,10 +896,10 @@ foreach($all_what_news as $wn){
 																			המשימה נוצרה בתאריך <?=smartDate(@$wn->lmu_action_date)?>
 																		</span>
 																	<?php } else { ?>
-																		<?php if(trim(@$wn->lmu_progress_status_name) != ''){ ?>
+																		<?php if(trim(@$wn->current_status_name_he) != ''){ ?>
 																			&nbsp;-
 																			<span class="color-status-green-darker dir-rtl unicode-bidi-embed" style="font-weight:bold;">
-																				<?=simplifyStatusLabel(@$wn->lmu_progress_status_name)?>
+																				<?=simplifyStatusLabel(@$wn->current_status_name_he)?>
 																			</span>
 																		<?php }
 																		    if(@$remark != '') echo ' - <span class="colorGreenDark dir-rtl unicode-bidi-embed" style="font-weight:normal;">'.$remark.'</span>';
@@ -1046,6 +1047,7 @@ foreach($all_what_news as $wn){
 														   m.reminder_date AS reminder_date,
 														   m.id_track_responsible AS id_track_responsible,
 														   u.nickname AS user_nickname,
+														   ps.name_he AS current_status_name_he,
 														   (SELECT lmu2.remark FROM dne_log_meeting_updates lmu2 WHERE lmu2.id_meeting = m.id AND TRIM(lmu2.remark) <> '' ORDER BY lmu2.id DESC LIMIT 1) AS latest_lmu_remark,
 														   (SELECT ps2.name_he FROM dne_log_meeting_updates lmu3 LEFT JOIN dne_progress_status ps2 ON ps2.id = lmu3.id_progress_status WHERE lmu3.id_meeting = m.id AND lmu3.id_progress_status <> 0 AND lmu3.id_user <> ? ORDER BY lmu3.id DESC LIMIT 1) AS lmu_progress_status_name,
 														   (SELECT lmu4.destination_date FROM dne_log_meeting_updates lmu4 WHERE lmu4.id_meeting = m.id AND lmu4.destination_date <> '0000-00-00' AND lmu4.id_user <> ? ORDER BY lmu4.id DESC LIMIT 1) AS lmu_destination_date
@@ -1538,9 +1540,9 @@ foreach($all_what_news as $wn){
 																							המשימה נוצרה בתאריך <?=smartDate(@$wn->lmu_action_date)?>
 																						</span>
 																					<?php } else { ?>
-																						<?php if(trim(@$wn->lmu_progress_status_name) != ''){ ?>
+																						<?php if(trim(@$wn->current_status_name_he) != ''){ ?>
 																							<span class="color-status-green-darker dir-rtl unicode-bidi-embed" style="font-weight:bold;">
-																								<?=' '.simplifyStatusLabel(@$wn->lmu_progress_status_name)?>
+																								<?=' '.simplifyStatusLabel(@$wn->current_status_name_he)?>
 																							</span>
 																						<?php }
 																						if(@$lmu_remark_s2 != '') echo ' - <span class="colorGreenDark dir-rtl unicode-bidi-embed" style="font-weight:normal;">'.$lmu_remark_s2.'</span>';
