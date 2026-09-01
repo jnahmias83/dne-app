@@ -224,7 +224,7 @@ else if($_POST['field'] == "destination_date"){
     $log_meeting_updates_num_rows = $query->num_rows;
 	$log_meeting_updates = fetch($query);
     
-	if(!empty($ids_remark_checked_array) && $ids_remark_checked_array[0] !== ''){
+	if(@$_POST['has_active_remarks_ui']){
 		foreach($log_meeting_updates as $item){
 			$is_remark_appears_log = 0;
 
@@ -340,7 +340,7 @@ else if($_POST['field'] == "id_progress_status" || $_POST['field'] == "update_ta
     $log_meeting_updates_num_rows = $query->num_rows;
 	$log_meeting_updates = fetch($query);	
     
-	if(!empty($ids_remark_checked_array) && $ids_remark_checked_array[0] !== ''){
+	if(@$_POST['has_active_remarks_ui']){
 		foreach($log_meeting_updates as $item){
 			$is_remark_appears_log = 0;
 

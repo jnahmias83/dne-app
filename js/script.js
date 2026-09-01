@@ -223,32 +223,38 @@ function setData(meeting_id,iteration,field,isRemark,forShare,screen_type){
 		form_data.append('destination_date',$(destination_date_elem).val());
 		form_data.append('isRemark',isRemark);
 		form_data.append('remark',$('#remark_delay_target_date').html());
+		let has_active_remarks_ui = ($('input[name="log_meeting_updates[]"]').length > 0 || $('input[name="log_meeting_updates_is_updates[]"]').length > 0) ? 1 : 0;
+		form_data.append('has_active_remarks_ui',has_active_remarks_ui);
 	}
 	else if(field == 'id_progress_status'){
 		form_data.append('field',field);
 		form_data.append('ids_remark_checked',ids_remark_checked);
 		form_data.append('id_user',$(task_created_by_elem).val());
-		
+
 		if(screen_type != 'popup2')
 		   form_data.append('remark',$('#remark_changes_status').html());
-	    else 
+	    else
 		   form_data.append('remark',$('#popup_remark').val());
-		
+
 		form_data.append('isRemark',isRemark);
 		form_data.append('new_destination_date',$('#new_destination_date').val());
 		form_data.append('screen_type',screen_type);
 		form_data.append('field',field);
 		form_data.append('id_progress_status',$(id_progress_status_elem).val());
+		let has_active_remarks_ui = ($('input[name="log_meeting_updates[]"]').length > 0 || $('input[name="log_meeting_updates_is_updates[]"]').length > 0) ? 1 : 0;
+		form_data.append('has_active_remarks_ui',has_active_remarks_ui);
 	}
 	else if(field == 'update_task'){
 		form_data.append('ids_remark_checked',ids_remark_is_updates_checked);
-		form_data.append('id_user',$(task_created_by_elem).val());		
-		form_data.append('remark',$('#remark_changes_status_update').html());    
+		form_data.append('id_user',$(task_created_by_elem).val());
+		form_data.append('remark',$('#remark_changes_status_update').html());
 		form_data.append('isRemark',isRemark);
 		form_data.append('new_destination_date',$('#new_destination_date_update').val());
 		form_data.append('screen_type',screen_type);
 		form_data.append('field',field);
-		form_data.append('id_progress_status',$('#progress_status_update').val());	
+		form_data.append('id_progress_status',$('#progress_status_update').val());
+		let has_active_remarks_ui = ($('input[name="log_meeting_updates[]"]').length > 0 || $('input[name="log_meeting_updates_is_updates[]"]').length > 0) ? 1 : 0;
+		form_data.append('has_active_remarks_ui',has_active_remarks_ui);
 	}
 	else if(field == 'track_responsible_id'){	
 		form_data.append('field',field);
@@ -359,10 +365,31 @@ function setData(meeting_id,iteration,field,isRemark,forShare,screen_type){
 				});
 			}
 			
-	        if(screen_type != 'popup' && screen_type != 'popup2' && (iteration != ''))
+	        if(screen_type == 'add_meeting'){
+				location.href = url;
+			}
+			else if((field == 'id_progress_status' || field == 'destination_date') && screen_type != 'popup' && screen_type != 'popup2' && (iteration != '')){
+				$('#modalTaskFollowupChangeStatus').modal('hide');
+				$('#modalTaskFollowupDelayTargetDate').modal('hide');
+				$.get(url, function(response){
+					let $freshRows = $(response).find('tr.meeting_' + meeting_id);
+					$('tr.meeting_' + meeting_id).each(function(i){
+						let $currentRow = $(this);
+						let $currentImgRow = $currentRow.next('.tr-image-row');
+						let $freshRow = $freshRows.eq(i);
+						if($freshRow.length){
+							let $freshImgRow = $freshRow.next('.tr-image-row');
+							if($currentImgRow.length) $currentImgRow.remove();
+							$currentRow.replaceWith($freshRow);
+							if($freshImgRow.length) $freshRow.after($freshImgRow);
+						}
+					});
+				});
+			}
+			else if(screen_type != 'popup' && screen_type != 'popup2' && (iteration != ''))
 				location.href = url;
 		}
-	});	
+	});
 }
 
 function setIsRemarkAppearsLog(log_id,log_type){
