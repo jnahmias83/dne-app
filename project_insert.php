@@ -47,10 +47,10 @@ else {
 				                           LEFT JOIN dne_projects p ON ps.id_project = p.id
 										   LEFT JOIN dne_suppliers s ON ps.id_supplier = s.id
 										   WHERE p.id = ? AND s.type = ?");
-				$query->bind_param("s",$entrepreneur_type);
+				$query->bind_param("is",$id_project,$entrepreneur_type);
 				$query->execute();
-				$query->store_result();	
-				
+				$query->store_result();
+
 				if(@$query->num_rows == 0){
 					$query = "INSERT INTO dne_projects_suppliers (id_project,id_supplier) 
 							  VALUES(?,?)";
