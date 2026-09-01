@@ -66,9 +66,11 @@ if(@$_POST['all_ids_to_edit'] == '') {
 
 	$dir_log_meeting_updates = 'alignRight';
 	$dir_updates = 'rtl';
+	$padding_log_meeting_updates = 'paddingRight8';
 	if(@$meeting->lang == 'EN'){
 		$dir_log_meeting_updates = 'alignLeft';
 		$dir_updates = 'ltr';
+		$padding_log_meeting_updates = 'paddingLeft8';
 	}
 
 	foreach($log_meeting_updates as $item){
@@ -83,7 +85,7 @@ if(@$_POST['all_ids_to_edit'] == '') {
 			$progress_status_log_updates = @$item->ps_name;
 
 		if(@$remark != ''){
-			$description .= "<div class='marginTop5 colorGreenDark ".@$dir_log_meeting_updates."' dir='".@$dir_updates."'>"
+			$description .= "<div class='marginTop5 colorGreenDark ".@$dir_log_meeting_updates." ".@$padding_log_meeting_updates."' dir='".@$dir_updates."'>"
 							."<span class='badge-nickname-green'>"
 							.@$user_nickname
 							."</span> "
