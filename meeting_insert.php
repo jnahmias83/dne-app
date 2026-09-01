@@ -206,7 +206,7 @@ else {
 			if($_descr != '')
 				$notifBody .= "\n" . mb_substr($_descr, 0, 100);
 
-			sendFcmNotificationToAllSubscribers($notifTitle, $notifBody, $_POST['id_project'], $_SESSION['id_user']);
+			sendFcmNotificationToAllSubscribers($notifTitle, $notifBody, $_SESSION['id_user']);
 		} catch (Exception $e) {
 			error_log('Notification push echouee: ' . $e->getMessage());
 		}
