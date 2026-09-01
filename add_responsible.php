@@ -19,6 +19,20 @@ $query->execute();
 $query->store_result();
 $responsible = fetch_unique($query);
 
+$pm_role = 'project_manager';
+$query = $mysqli->prepare("SELECT id FROM dne_responsibles WHERE id_project = ? AND role = ? AND id <> ?");
+$query->bind_param("isi",$project_id,$pm_role,$id);
+$query->execute();
+$query->store_result();
+$has_existing_project_manager = $query->num_rows > 0;
+
+$entr_role = 'entrepreneur';
+$query = $mysqli->prepare("SELECT id FROM dne_responsibles WHERE id_project = ? AND role = ? AND id <> ?");
+$query->bind_param("isi",$project_id,$entr_role,$id);
+$query->execute();
+$query->store_result();
+$has_existing_entrepreneur = $query->num_rows > 0;
+
 if(@$ps_id > 0){
 	$query = $mysqli->prepare("SELECT ps.id AS id,s.name_he AS s_name_he,s.type AS s_type,IF(s.nickname<>'',s.nickname,s.nickname_he) AS nickname_he,sfow.name_he AS sfow_name_he
                                FROM dne_projects_suppliers ps
@@ -244,14 +258,18 @@ include 'menu_tasks.php';
 									<br/>
 									<select id="roles" class="marginTop5 width200 height30">
 										<option value="0">---תפקיד---</option>
-										<?php if($for == 'admingroup' ||($from != 'addProject')){ ?>
+										<?php if($for == 'admingroup' ||($from != 'addProject')){
+											if(!$has_existing_project_manager || $for != 'admingroup'){ ?>
 											<option value="project_manager" <?php if(@$responsible->role == 'project_manager') echo 'selected'?>>מנהל פרויקט</option>
+											<?php } ?>
 											<option value="inspector" <?php if(@$responsible->role == 'inspector') echo "selected"?>>מפקח</option>
 										<?php }
-                                         if($for == 'entrepreneurgroup' ||($from != 'addProject')){ ?>
+                                         if($for == 'entrepreneurgroup' ||($from != 'addProject')){
+											if(!$has_existing_entrepreneur || $for != 'entrepreneurgroup'){ ?>
 											<option value="entrepreneur" <?php if(@$responsible->role == 'entrepreneur') echo 'selected'?>>יזם</option>
+											<?php } ?>
 											<option value="entrepreneur_team" <?php if(@$responsible->role == 'entrepreneur_team') echo 'selected'?>>צוות יזם</option>
-										<?php } 										
+										<?php }
 										if(($for != 'admingroup' && $for != 'entrepreneurgroup') || ($from != 'addProject')){ ?>
 											<option value="programmer" <?php if(@$responsible->role == 'programmer' || @$ps->s_type == 'D') echo 'selected'?>>מתכנן</option>
 											<option value="supplier_contractor" <?php if(@$responsible->role == 'supplier_contractor' || @$ps->s_type == 'S') echo 'selected'?>>ספק/קבלן</option>	
@@ -377,15 +395,13 @@ include 'menu_tasks.php';
 													   class="btn fontSize14 bgColorBlue colorWhite" style="white-space:nowrap;"
 													   value="<?=@$btn_save?>" />
 												<?php } ?>
-												<a class="btn fontSize14 bgColorBlue colorWhite" style="white-space:nowrap;"
-												   onclick="location.href='<?=@$url?>'">
+												<a id="next_step_btn_1" class="btn fontSize14 bgColorBlue colorWhite" style="white-space:nowrap;" data-url="<?=@$url?>">
 													<?=@$btn_next_step_val?>
 												</a>
 											</div>
 
 											<?php if(@$ps_id != ''){ ?>
-												<a class="btn fontSize14 bgColorBlue colorWhite" style="white-space:nowrap;position:absolute;left:10px;top:50%;transform:translateY(-50%);"
-												   onclick="location.href='add_chapter.php?id=0&project_id=<?=@$project_id?>&from=addProject'">
+												<a id="next_step_btn_2" class="btn fontSize14 bgColorBlue colorWhite" style="white-space:nowrap;position:absolute;left:10px;top:50%;transform:translateY(-50%);" data-url="add_chapter.php?id=0&project_id=<?=@$project_id?>&from=addProject">
 													<i class="fa fa-arrow-left"></i> הבא : הגדרות
 												</a>
 											<?php } ?>
@@ -608,6 +624,18 @@ $('#save_and_add_another_btn').click(function(){
     $('#save_btn').trigger('click');
 });
 
+let goToUrlAfterSave = '';
+
+$('#next_step_btn_1, #next_step_btn_2').click(function(){
+    let url = $(this).data('url');
+    if ($('#firstname').val().trim() != ''){
+        goToUrlAfterSave = url;
+        $('#save_btn').trigger('click');
+    } else {
+        location.href = url;
+    }
+});
+
 $('#save_btn').click(function (e){
     $('#firstname').css('border-color', 'initial');
     if ($('#firstname').val().trim() == ''){
@@ -684,12 +712,19 @@ $('#save_btn').click(function (e){
                     $('#firstname').css('border-color', 'initial');
                 }
                 $('#div_message_alert_down').html("<span style='color:red;font-size:13px;'>נא למלה את כל השדות החובות</span>");
+                goToUrlAfterSave = '';
             } else if (data == 'firstnotinspector'){
                 $('#div_message_alert_down').html("<span style='color:red;font-size:13px;'>ראשית לבחור מנהל פרוייקט</span>");
 				alert('ראשית לבחור מנהל פרוייקט');
+                goToUrlAfterSave = '';
             } else if (data == 'exists'){
                 $('#div_message_alert_down').html("<span style='color:red;font-size:13px;'>אחראי זה כבר קיים בפרוייקט זה</span>");
-            } else {      
+                goToUrlAfterSave = '';
+            } else if (goToUrlAfterSave != ''){
+                let url = goToUrlAfterSave;
+                goToUrlAfterSave = '';
+                location.href = url;
+            } else {
                 if ($('#from').val() == 'project_data'){
                     let url = 'add_project.php?id=' + $('#project_id').val();
                     window.location.href = url;
