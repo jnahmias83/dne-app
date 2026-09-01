@@ -3481,7 +3481,7 @@ $(document).ready(function(){
 		  $('#td_cbx_meetings_to_update_'+meeting_id).css({'background-color':'red'});
     });
 	
-	$('input[type="checkbox"][id^="meetings_to_update_cbx"]').on('click', function () {
+	$(document).on('click', 'input[type="checkbox"][id^="meetings_to_update_cbx"]', function () {
 		const atLeastOneChecked = $('input[type="checkbox"][id^="meetings_to_update_cbx"]:checked').length > 0;
         let checked_row = $(this).attr('id').replace('meetings_to_update_cbx_','');
 		
@@ -3849,7 +3849,7 @@ $(document).ready(function(){
 		return txt.value;
     }
    
-    $('[id^="description"]').on('click', function(){
+    $(document).on('click', '[id^="description"]', function(){
       meeting_id = $(this).data('meetingid');
 	  iteration = $(this).data('iteration');
 	  chapter = $(this).data('chapter');
@@ -3865,7 +3865,7 @@ $(document).ready(function(){
 	  $('#modalTaskDescription').modal('show');
     });
 	
-	$('[id^="task_creation_date"]').on('click', function(){
+	$(document).on('click', '[id^="task_creation_date"]', function(){
 	   meeting_id = $(this).data('meetingid');
 	   iteration = $(this).data('iteration');
 	   task_creation_date = $(this).data('taskcreationdate');
@@ -3876,10 +3876,10 @@ $(document).ready(function(){
 	   $('#modalTaskCreationDate').modal('show');
 	});
 	
-	$('[id^="destination_date"]').on('click', function(){
+	$(document).on('click', '[id^="destination_date"]', function(){
 	   meeting_id = $(this).data('meetingid');
-	   iteration = $(this).data('iteration');  
-	   chapter = $(this).data('chapter'); 
+	   iteration = $(this).data('iteration');
+	   chapter = $(this).data('chapter');
 	   subject = $(this).data('name');
 	   area = $(this).data('area');
 	   destination_date = $(this).data('destinationdate');	   
@@ -3923,7 +3923,7 @@ $(document).ready(function(){
 
     var allowed_progress_status_ids = "<?=@$progress_status_ids?>";
 
-    $('[id^="_progress_status"]').on('change', function(){
+    $(document).on('change', '[id^="_progress_status"]', function(){
 		let selectedStatusText = $(this).find('option:selected').text().trim();
 		$(this).toggleClass('status-blank-when-empty', selectedStatusText === '(ללא)' || selectedStatusText === '(Without)');
 		let changed_progress_status_id = $(this).val();
@@ -4043,9 +4043,9 @@ $(document).ready(function(){
 	    });
     })
 	
-	$('[id^="task_actions"]').on('click', function(){	
-		project_id = $(this).data('projectid'); 	   
-	    meeting_id = $(this).data('meetingid');  				
+	$(document).on('click', '[id^="task_actions"]', function(){
+		project_id = $(this).data('projectid');
+	    meeting_id = $(this).data('meetingid');
 		lang = $(this).data('lang'); 
 	    iteration = $(this).data('iteration'); 
 		chapter = $(this).data('chapter');
