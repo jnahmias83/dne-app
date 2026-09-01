@@ -29,7 +29,7 @@ if(@$_POST['isTracking'] == 1){
 	$log_meeting_tracking = fetch($query);	
 
 	$existing_remarks = "עדכונים";
-	$padding = 'paddingRight5';
+	$padding = 'paddingRight8';
 	$align = 'alignRight';
 	$dir_attr = 'rtl';
 }
@@ -52,12 +52,12 @@ else {
 	$log_meeting_updates = fetch($query);
 	
 	$existing_remarks = "עדכונים";
-	$padding = 'paddingRight5';
+	$padding = 'paddingRight8';
 	$align = 'alignRight';
 	$dir_attr = 'rtl';
 
 	if($_POST['lang'] == "EN"){
-		$padding = 'paddingLeft5';
+		$padding = 'paddingLeft8';
 		$align = 'alignLeft';
 		$dir_attr = 'ltr';
 

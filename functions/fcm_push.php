@@ -130,10 +130,18 @@ function sendFcmNotification($fcmToken, $title, $body, &$error = null, &$isInval
 }
 
 // Envoie a tous les appareils abonnes, et nettoie automatiquement les abonnements devenus invalides.
-function sendFcmNotificationToAllSubscribers($title, $body) {
+function sendFcmNotificationToAllSubscribers($title, $body, $id_project = 0, $exclude_id_user = 0) {
     global $mysqli;
 
-    $query = $mysqli->prepare("SELECT id, endpoint FROM dne_push_subscriptions");
+    if($id_project > 0){
+        $query = $mysqli->prepare("SELECT ps.id, ps.endpoint FROM dne_push_subscriptions ps
+                                    WHERE ps.id_user <> ?
+                                    AND EXISTS (SELECT 1 FROM dne_responsibles r WHERE r.id_project = ? AND r.id_user = ps.id_user)");
+        $query->bind_param('ii', $exclude_id_user, $id_project);
+    }
+    else {
+        $query = $mysqli->prepare("SELECT id, endpoint FROM dne_push_subscriptions");
+    }
     $query->execute();
     $query->store_result();
     $subscriptions = fetch($query);
