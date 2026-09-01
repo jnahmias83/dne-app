@@ -586,7 +586,7 @@ foreach($all_what_news as $wn){
 																<span class="marginRight2 log-date-grey dir-rtl unicode-bidi-embed"><?=smartDate(@$tr_item->action_date)?> -</span>
 																<span class="colorRed dir-rtl unicode-bidi-embed display-inline-block"><?=html_entity_decode(@$tr_remark)?></span>
 															</div>
-															<?php } ?>
+															<?php break; } ?>
 														</div>
 													<?php } } ?>
 												</div>
@@ -726,7 +726,7 @@ foreach($all_what_news as $wn){
 																				<?=html_entity_decode(@$remark)?>
 																			</span>
 																		</div>
-																<?php } ?>
+																<?php break; } ?>
 															</div>
 													<?php } ?>
 												</div>								
@@ -919,7 +919,7 @@ foreach($all_what_news as $wn){
 															<span class="marginRight2 log-date-grey dir-rtl unicode-bidi-embed"><?=smartDate(@$tr_item->action_date)?> -</span>
 															<span class="colorRed dir-rtl unicode-bidi-embed" style="word-wrap:break-word;overflow-wrap:break-word;"><?=html_entity_decode(@$tr_remark)?></span>
 														</div>
-														<?php } ?>
+														<?php break; } ?>
 													</div>
 													<?php } ?>
 												</div>
@@ -1359,7 +1359,7 @@ foreach($all_what_news as $wn){
 																<?=@$tracking_data ?>
 															</span>
 														</div>
-													<?php } ?>
+													<?php break; } ?>
 																				</div>
 																		<?php } ?>
 																	</div>										
@@ -1563,7 +1563,7 @@ foreach($all_what_news as $wn){
 																						<span class="marginRight2 log-date-grey dir-rtl unicode-bidi-embed"><?=smartDate(@$tr_item->action_date)?> -</span>
 																						<span class="colorRed dir-rtl unicode-bidi-embed display-inline-block"><?=html_entity_decode(@$tr_remark)?></span>
 																					</div>
-																					<?php } ?>
+																							<?php break; } ?>
 																				</div>
 																				<?php } ?>																				  		
 																	</div>
@@ -1789,7 +1789,7 @@ foreach($all_what_news as $wn){
 																				<?=html_entity_decode(@$remark)?>
 																			</span>
 																		</div>
-																				<?php } ?>
+																				<?php break; } ?>
 																			</div>
 																	<?php } 
 																}
@@ -1826,7 +1826,7 @@ foreach($all_what_news as $wn){
 																			<span class="marginRight2 log-date-grey dir-rtl unicode-bidi-embed"><?=smartDate(@$tr_item->action_date)?> -</span>
 																			<span class="colorRed dir-rtl unicode-bidi-embed display-inline-block"><?=html_entity_decode(@$tr_remark)?></span>
 																		</div>
-																		<?php } ?>
+																		<?php break; } ?>
 																	</div>
 																	<?php } ?>
 																<?php } ?>
@@ -1990,6 +1990,7 @@ foreach($all_what_news as $wn){
 							    </div>								
 							</div>
 							<hr class="colorGrey mb-1 mt-1"/>
+							<div id="task_active_remarks_progress_status_update"></div>
 							<div class="marginTop10 paddingRight10 alignRight height-auto bgColorWhite fontSize13 cursor-pointer border-black overflow-y-scroll dir-rtl">
 								<div name="remark_changes_status_update" id="remark_changes_status_update" contenteditable="true" class="editable green cursor-pointer" data-placeholder="ניתן להוסיף כאן הערה"></div>
 							</div>
@@ -2337,6 +2338,19 @@ $(document).ready(function(){
 				blankStatusIfEmpty($('#progress_status_update'));
 			}
         });
+
+		$.ajax({
+			type: 'POST',
+			url: 'fill_task_active_remarks.php',
+			method: 'POST',
+			data: form_data,
+			cache: false,
+			processData: false,
+			contentType: false,
+			success: function(data){
+			    $('#task_active_remarks_progress_status_update').html(data);
+			},
+	    });
 
 		$('#new_destination_date_update').val(destination_date);
 	    $('#modalTaskFollowupActions').modal('hide');

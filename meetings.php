@@ -1732,6 +1732,7 @@ include 'menu_tasks.php';
 																  . " : <span class='colorRed ".(@$lang=='HE' ? 'dir-rtl' : 'dir-ltr')." unicode-bidi-embed'>".nl2br(html_entity_decode(@$item->remark))."</span>"
 																  . (@$tracking_data != '' ? " <span class='colorRed ".(@$lang=='HE' ? 'dir-rtl' : 'dir-ltr')." unicode-bidi-embed'>".@$tracking_data."</span>" : "")
 																  . "</div>";
+													break;
 												}
 											}
 
@@ -2332,6 +2333,7 @@ include 'menu_tasks.php';
 																	  . " : <span class='colorRed ".(@$lang=='HE' ? 'dir-rtl' : 'dir-ltr')." unicode-bidi-embed'>".nl2br(html_entity_decode(@$item->remark))."</span>"
 																	  . (@$tracking_data != '' ? " <span class='colorRed ".(@$lang=='HE' ? 'dir-rtl' : 'dir-ltr')." unicode-bidi-embed'>".@$tracking_data."</span>" : "")
 																	  . "</div>";
+														break;
 													}
 												}
 
@@ -2952,6 +2954,7 @@ include 'menu_tasks.php';
 					    <div id="modalContent">	        	        
 					        <form>
 							    <div class='marginTop5 subtitle color-19bf42 fontSize18 font-weight-bold alignCenter'></div>
+                                <div id="task_active_remarks_target_date"></div>
 								<div class="marginTop10 <?=@$padding_10?> <?=@$align?> height-auto bgColorWhite fontSize13 cursor-pointer border-black overflow-y-scroll dir-rtl">
 									<div name="remark_delay_target_date" id="remark_delay_target_date" contenteditable="true" dir="rtl" class="editable green cursor-pointer" style="text-align:right;" data-placeholder="ניתן להוסיף כאן הערה"></div>
 								</div>
@@ -2979,9 +2982,11 @@ include 'menu_tasks.php';
 							    <div class='marginTop5 subtitle color-19bf42 fontSize18 font-weight-bold alignCenter'></div>
                                 <div class="margin-top-10-x-auto padding-4x-4y colorWhite bgColorBlack borderRadius10 width100 border-black fontSize13 font-weight-bold alignCenter" id="div_new_progress_status"></div>
                                 <div class="marginTop10"></div>
+								<hr class="colorGrey" style="margin:1px 0" />
+								<div id="task_active_remarks_progress_status"></div>
 								<div class="marginTop10 <?=@$padding_10?> <?=@$align?> height-auto bgColorWhite fontSize13 cursor-pointer border-black overflow-y-scroll dir-rtl">
 									<div name="remark_changes_status" id="remark_changes_status" contenteditable="true" class="editable green cursor-pointer" data-placeholder="ניתן להוסיף כאן הערה"></div>
-								</div>	
+								</div>
 								<div class="marginTop10"></div>
 								<hr class="colorGrey" style="margin:1px 0" />
 								<div class="marginTop5 color-349feb fontSize13 font-weight-bold alignCenter">
@@ -3183,6 +3188,7 @@ include 'menu_tasks.php';
 								</div>
 							</div>
                             <hr class="colorGrey mb-1 mt-1"/>
+                            <div id="task_active_remarks_progress_status_update"></div>
 							<div class="marginTop10 <?=($_pl=='HE') ? 'paddingRight10' : 'paddingLeft10'?> <?=($_pl=='HE') ? 'alignRight' : 'alignLeft'?> height-auto bgColorWhite fontSize13 cursor-pointer border-black overflow-y-scroll" style="direction:<?=$_pd?>">
 								<div name="remark_changes_status_update" id="remark_changes_status_update" contenteditable="true" class="editable green cursor-pointer" data-placeholder="<?=($_pl=='HE') ? 'ניתן להוסיף כאן הערה' : 'You can add a comment here'?>"></div>
 							</div>
@@ -3893,6 +3899,22 @@ $(document).ready(function(){
 		$('#modalTaskFollowupDelayTargetDate .modal-title').html("<img src='images/status-icon.png' alt='status icon' width='20' height='20'>&nbsp;&nbsp;עדכון תאריך יעד&nbsp;&nbsp;<img src='images/status-icon.png' alt='status icon' width='20' height='20'>");
 	    $('.subtitle').html(chapter+"<br/>"+subject+"&nbsp;|&nbsp;"+area).css('line-height','1.1em');
 
+	    let form_data_target_date = new FormData();
+        form_data_target_date.append('id_meeting',meeting_id);
+	    form_data_target_date.append('lang',$('#lang').val());
+
+	    $.ajax({
+			type: 'POST',
+			url: 'fill_task_active_remarks.php',
+			data: form_data_target_date,
+			cache: false,
+			processData: false,
+			contentType: false,
+			success: function(data){
+			    $('#task_active_remarks_target_date').html(data);
+			},
+	    });
+
 	   $('#modalContent input[type="hidden"]').remove();
 	   $('#modalContent').append("<input type='hidden' id='hidden_meeting_id' value='"+meeting_id+"'><input type='hidden' id='hidden_iteration' value='"+iteration+"'>");
 	   $('#modalDestinationDate').modal('hide');
@@ -3935,7 +3957,23 @@ $(document).ready(function(){
                 .toggle(!isBlankStatus);
 			},
 	    });
-	    
+
+		let form_data2 = new FormData();
+        form_data2.append('id_meeting',meeting_id);
+		form_data2.append('lang',$('#lang').val());
+
+	    $.ajax({
+			type: 'POST',
+			url: 'fill_task_active_remarks.php',
+			data: form_data2,
+			cache: false,
+			processData: false,
+			contentType: false,
+			success: function(data){
+			    $('#task_active_remarks_progress_status').html(data);
+			},
+	    });
+
 	   $('#new_destination_date').val(destination_date);
 	   $('#modalContent input[type="hidden"]').remove();
 	   $('#modalContent').append("<input type='hidden' id='hidden_meeting_id' value='"+meeting_id+"'><input type='hidden' id='hidden_iteration' value='"+iteration+"'><input type='hidden' id='hidden_remark' value='"+remark+"'><input type='hidden' id='hidden_project_id' value='"+$('#project_id').val()+"'>");
@@ -4127,8 +4165,26 @@ $(document).ready(function(){
 
         $('#modalUpdateTask .subtitle').html(chapter+"<br/>"+subject+"&nbsp;|&nbsp;"+area).css('line-height','1.1em');
 
+		let form_data_active_remarks = new FormData();
+		form_data_active_remarks.append('id_meeting',meeting_id);
+		form_data_active_remarks.append('id_project',project_id);
+		form_data_active_remarks.append('is_updates',1);
+		form_data_active_remarks.append('lang',$('#project_lang').val());
+
+		$.ajax({
+			type: 'POST',
+			url: 'fill_task_active_remarks.php',
+			data: form_data_active_remarks,
+			cache: false,
+			processData: false,
+			contentType: false,
+			success: function(data){
+			    $('#task_active_remarks_progress_status_update').html(data);
+			},
+	    });
+
 	    $('#new_destination_date_update').val(destination_date);
-		
+
 		let selectedId = $('#hidden_progress_status_id').val();
         $('#progress_status_update').val(selectedId);
 		blankStatusIfEmpty($('#progress_status_update'));
