@@ -1,3 +1,4 @@
+<?php if(!empty($project_id)) $_SESSION['id_project'] = $project_id; ?>
 <div class="topbar bgColorBrown alignCenter" dir="rtl" id="tasks_topbar">
   <button type="button" id="tasks_hamburger_btn" class="hamburger-btn" aria-label="menu">&#9776;</button>
   <ul class="menu-list" id="tasks_menu_list">
