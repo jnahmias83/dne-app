@@ -493,9 +493,9 @@ $(document).ready(function() {
 		  $('.th_not_approved_accounts_item').css({"text-align":"left",'padding-left':'5px'});
 		  $('#create_pdf_btn').css({"direction":"rtl","margin-right":"10px"});
 		  $('#lang').css({"padding-left":"10px"});
-		  $('#btn_add_order').html("<div class='alignCenter border-black borderRadius10 padding-4x-4y bgColorWhite'><i class='fa-solid fa-plus colorGrey'></i><br/><strong class='fontSize13'>Order</strong></div>");
-		  $('#btn_add_account').html("<div class='alignCenter border-black borderRadius10 padding-4x-4y bgColorWhite'><i class='fa-solid fa-plus colorGrey'></i><br/><strong class='fontSize13'>Account</strong></div>");
-		  $('#btn_add_payment').html("<div class='alignCenter border-black borderRadius10 padding-4x-4y bgColorWhite'><i class='fa-solid fa-plus colorGrey'></i><br/><strong class='fontSize13'>Payment</strong></div>");
+		  $('#btn_add_order').html("<div class='alignCenter border-black borderRadius10 padding-4x-4y bgColorWhite cursor-pointer'><i class='fa-solid fa-plus colorGrey'></i><br/><strong class='fontSize13'>Order</strong></div>");
+		  $('#btn_add_account').html("<div class='alignCenter border-black borderRadius10 padding-4x-4y bgColorWhite cursor-pointer'><i class='fa-solid fa-plus colorGrey'></i><br/><strong class='fontSize13'>Account</strong></div>");
+		  $('#btn_add_payment').html("<div class='alignCenter border-black borderRadius10 padding-4x-4y bgColorWhite cursor-pointer'><i class='fa-solid fa-plus colorGrey'></i><br/><strong class='fontSize13'>Payment</strong></div>");
 		  $('#div_title_orders_list').html('Orders');
 		  $('#div_title_orders_list').css({"text-align":"left","font-size":"22px"});
 		  $('.th_iteration').html('&#x2116;');
@@ -536,9 +536,9 @@ $(document).ready(function() {
 		  $('#project_name_title').html("<span class='fontSize26 font-weight-bold font-family-david cursor-pointer'>פרוייקט "+$('#project_name_he').val()+"</span>");
 		  $('#title').html('<span class="fontSize25 font-weight-bold text-decoration-underline font-family-david">'+$('#s_name_he').val()+'</span><br/><span class="fontSize24 font-family-david">'+$('#sfow_name_he').val()+"</span><br/><span class='fontSize23 font-family-david'>סטטוס הזמנות ותשלומים</span>");
 		  $('#div_btns').css({"direction":"rtl"});
-		  $('#btn_add_order').html("<div class='alignCenter border-black borderRadius10 padding-4x-4y bgColorWhite'><i class='fa-solid fa-plus colorGrey'></i><br/><strong class='fontSize13'>הזמנה</strong></div>");
-		  $('#btn_add_account').html("<div class='alignCenter border-black borderRadius10 padding-4x-4y bgColorWhite'><i class='fa-solid fa-plus colorGrey'></i><br/><strong class='fontSize13'>חשבון</strong></div>");
-		  $('#btn_add_payment').html("<div class='alignCenter border-black borderRadius10 padding-4x-4y bgColorWhite'><i class='fa-solid fa-plus colorGrey'></i><br/><strong class='fontSize13'>תשלום</strong></div>");
+		  $('#btn_add_order').html("<div class='alignCenter border-black borderRadius10 padding-4x-4y bgColorWhite cursor-pointer'><i class='fa-solid fa-plus colorGrey'></i><br/><strong class='fontSize13'>הזמנה</strong></div>");
+		  $('#btn_add_account').html("<div class='alignCenter border-black borderRadius10 padding-4x-4y bgColorWhite cursor-pointer'><i class='fa-solid fa-plus colorGrey'></i><br/><strong class='fontSize13'>חשבון</strong></div>");
+		  $('#btn_add_payment').html("<div class='alignCenter border-black borderRadius10 padding-4x-4y bgColorWhite cursor-pointer'><i class='fa-solid fa-plus colorGrey'></i><br/><strong class='fontSize13'>תשלום</strong></div>");
 		  $('#div_title_orders_list').html('הזמנות');
 		  $('#div_title_orders_list').css({"text-align":"right","font-size":"22px"});
 		  $('#th_signature_date').html('תאריך <br/> חתימה');

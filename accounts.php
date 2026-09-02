@@ -172,7 +172,7 @@ $(document).ready(function() {
 		  $('#project_name_title').html("<span class='fontSize26 font-weight-bold cursor-pointer'>Project "+$('#project_name').val()+"</span>");
 		  $('#title').html("<span class='fontSize26 font-weight-bold cursor-pointer'>Accounts Report</span>");
           $('#div_btns').css({"direction":"ltr","text-align":"center"});
-		  $('#add_new_account_btn').html("<div class='alignCenter border-black borderRadius10 padding-4x-4y bgColorWhite'><i class='fa-solid fa-plus colorGrey'></i><br/><strong class='fontSize13'>Account</strong></div>");
+		  $('#add_new_account_btn').html("<div class='alignCenter border-black borderRadius10 padding-4x-4y bgColorWhite cursor-pointer'><i class='fa-solid fa-plus colorGrey'></i><br/><strong class='fontSize13'>Account</strong></div>");
 		  $('#accounts_list').css({"direction":"ltr"});
 		  $('#th_iteration').html('&#x2116; <i class="fa-solid fa-sort marginRight5"></i>');  
 		  $('#th_submit_date').html('Submit <br/> Date <i class="fa-solid fa-sort marginLeft5"></i>');
@@ -196,7 +196,7 @@ $(document).ready(function() {
 		   $('#project_name_title').html("<span class='fontSize26 font-weight-bold font-family-david cursor-pointer'>פרוייקט "+$('#project_name_he').val()+"</span>");
 		   $('#title').html("<span class='fontSize26 font-weight-bold font-family-david cursor-pointer'>דו''ח חשבונות</span>");
 		   $('#div_btns').css({"direction":"rtl","text-align":"center"});
-		   $('#add_new_account_btn').html("<div class='alignCenter border-black borderRadius10 padding-4x-4y bgColorWhite'><i class='fa-solid fa-plus colorGrey'></i><br/><strong class='fontSize13'>חשבון</strong></div>");
+		   $('#add_new_account_btn').html("<div class='alignCenter border-black borderRadius10 padding-4x-4y bgColorWhite cursor-pointer'><i class='fa-solid fa-plus colorGrey'></i><br/><strong class='fontSize13'>חשבון</strong></div>");
 		   $('#accounts_list').css({"direction":"rtl"});
 		   $('#th_iteration').html("מס' <i class='fa-solid fa-sort marginRight5'></i>");  
            $('#th_submit_date').html('תאריך <br/> הגשה <i class="fa-solid fa-sort marginRight5"></i>');

@@ -170,7 +170,7 @@ $(document).ready(function() {
 		  $('#project_name_title').html("<span class='fontSize26 font-weight-bold cursor-pointer'>Project "+$('#project_name').val()+"</span>");
 		  $('#title').html("<span class='fontSize26 font-weight-bold cursor-pointer'>Payments Report</span>");
           $('#div_btns').css({"direction":"ltr","text-align":"center"});
-		  $('#add_new_payment_btn').html("<div class='alignCenter border-black borderRadius10 padding-4x-4y bgColorWhite'><i class='fa-solid fa-plus colorGrey'></i><br/><strong class='fontSize13'>Payment</strong></div>");
+		  $('#add_new_payment_btn').html("<div class='alignCenter border-black borderRadius10 padding-4x-4y bgColorWhite cursor-pointer'><i class='fa-solid fa-plus colorGrey'></i><br/><strong class='fontSize13'>Payment</strong></div>");
 		  $('#payments_list').css({"direction":"ltr"});
 		  $('#th_iteration').html('&#x2116;');  
           $('#th_supplier_name').html('Supplier <br/> Name'); 
@@ -195,7 +195,7 @@ $(document).ready(function() {
 		   $('#project_name_title').html("<span class='fontSize26 font-weight-bold font-family-david cursor-pointer'>פרוייקט "+$('#project_name_he').val()+"</span>");
 		   $('#title').html("<span class='fontSize26 font-weight-bold font-family-david cursor-pointer'>דו''ח ביצוע תשלומים</span>");
 		   $('#div_btns').css({"direction":"rtl","text-align":"center"});
-		   $('#add_new_payment_btn').html("<div class='alignCenter border-black borderRadius10 padding-4x-4y bgColorWhite'><i class='fa-solid fa-plus colorGrey'></i><br/><strong class='fontSize13'>תשלום</strong></div>");
+		   $('#add_new_payment_btn').html("<div class='alignCenter border-black borderRadius10 padding-4x-4y bgColorWhite cursor-pointer'><i class='fa-solid fa-plus colorGrey'></i><br/><strong class='fontSize13'>תשלום</strong></div>");
 		   $('#payments_list').css({"direction":"rtl"});
 		   $('#th_iteration').html("מס'");  
            $('#th_supplier_name').html('שם ספק');  	
