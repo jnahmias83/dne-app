@@ -202,8 +202,20 @@ else {
 				$query = $mysqli->prepare($query);
 				$query->bind_param('sssissi',$_POST['project_name'],$_POST['project_name_he'],
 				                   strtoupper($_POST['project_nickname']),$_POST['is_project_active'],
-								   $_POST['project_lang'],date("Y-m-d"),$_POST['id']);	
+								   $_POST['project_lang'],date("Y-m-d"),$_POST['id']);
 				$query->execute();
+
+				$updated_project_entry = $_POST['id'].'-'.strtoupper($_POST['project_nickname']);
+				$projects_list_array = explode(',',@$_SESSION['projects_list']);
+				$updated_project_id = $_POST['id'];
+				$projects_list_array = array_filter($projects_list_array,function($entry) use ($updated_project_id){
+					$entry_parts = explode('-',$entry,2);
+					return @$entry_parts[0] != $updated_project_id;
+				});
+				if($_POST['is_project_active'])
+					$projects_list_array[] = $updated_project_entry;
+				$_SESSION['projects_list'] = implode(',',$projects_list_array);
+
 				ob_end_clean(); echo 'updated';
 			}
 		}
