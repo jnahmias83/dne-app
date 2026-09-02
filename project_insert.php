@@ -147,9 +147,16 @@ else {
 				
 				$query = "INSERT INTO dne_log_current_report (id_project) VALUES(?)";
 				$query = $mysqli->prepare($query);
-				$query->bind_param('i',$id_project);  
+				$query->bind_param('i',$id_project);
 				$query->execute();
-			
+
+				$new_project_entry = $id_project.'-'.strtoupper($_POST['project_nickname']);
+				$existing_projects_list = @$_SESSION['projects_list'];
+				if($existing_projects_list != '')
+					$_SESSION['projects_list'] = $existing_projects_list.','.$new_project_entry;
+				else
+					$_SESSION['projects_list'] = $new_project_entry;
+
 				ob_end_clean(); echo $id_project;
 		    }
 			else if($_POST['id'] > 0){

@@ -28,6 +28,16 @@ $designers_label = 'DESIGNERS';
 $domains_label = 'DOMAINS';
 
 $projects_list_array = explode(',',@$_SESSION['projects_list']);
+$seen_project_ids = array();
+$deduped_projects_list_array = array();
+foreach($projects_list_array as $entry){
+	$entry_parts = explode('-',$entry,2);
+	$entry_id = @$entry_parts[0];
+	if($entry_id == '' || in_array($entry_id,$seen_project_ids)) continue;
+	$seen_project_ids[] = $entry_id;
+	$deduped_projects_list_array[] = $entry;
+}
+$projects_list_array = $deduped_projects_list_array;
 ?>
 
 <head>
