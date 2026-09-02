@@ -15,9 +15,16 @@ if(isset($_POST['login_btn'])) {
 		$lang = @$query->lang;
 		
 		$is_project_active = 1;
-		$query = $mysqli->prepare("SELECT * FROM dne_projects WHERE is_project_active = ?
-		                          ORDER BY nickname");
-		$query->bind_param("i",$is_project_active);
+		$query = $mysqli->prepare("SELECT p.* FROM dne_projects p
+		                          WHERE p.is_project_active = ?
+		                          AND EXISTS (
+		                               SELECT 1
+		                               FROM dne_responsibles r
+		                               WHERE r.id_project = p.id
+		                               AND r.id_user = ?
+		                          )
+		                          ORDER BY p.nickname");
+		$query->bind_param("ii",$is_project_active,$id_user);
 		$query->execute();
 		$query->store_result();
 		$projects = fetch($query);

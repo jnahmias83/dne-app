@@ -239,7 +239,10 @@ if($from == 'taskslist')
 
 <script>
 $('#save_btn').click (function (e){
-	let form_data = new FormData();	
+	if($(this).prop('disabled')) return;
+	$(this).prop('disabled', true);
+
+	let form_data = new FormData();
 	form_data.append('id',$('#id').val());
 	form_data.append('project_name',$('#project_name').val());
 	form_data.append('project_name_he',$('#project_name_he').val());
@@ -271,13 +274,20 @@ $('#save_btn').click (function (e){
 		},          			
 		success: function(data){
 			data = $.trim(data);
-			if(data == 'hebrewchars')
+			if(data == 'hebrewchars'){
+				$('#save_btn').prop('disabled', false);
 				alert('The project name contains hebrew characters.');
-			else if(data == 'englishchars')
+			}
+			else if(data == 'englishchars'){
+				$('#save_btn').prop('disabled', false);
 				alert('The project hebrew name contains english characters.');
-			else if(data == 'uptosevencharacters') 
+			}
+			else if(data == 'uptosevencharacters') {
+				$('#save_btn').prop('disabled', false);
 				alert('The project nickname or the project initiator nickname up to 7 characters.');
+			}
 			else if(data == 'empty') {
+				$('#save_btn').prop('disabled', false);
 				if($('#project_name').val().length == 0)			
 					$('#project_name').css('border-color','red');
 				else if(!($('#project_name').val().length == 0))
