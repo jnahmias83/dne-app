@@ -758,13 +758,13 @@ foreach($all_what_news as $wn){
 					<?php } ?>	
 				</div>
 
-                <div id="div_what_news" class="display-none border-black dir-rtl">
-					<div class="row fontSize16 position-relative">
+                <div id="div_what_news" class="display-none border-black dir-rtl" style="overflow:hidden;border-radius:10px;">
+					<div class="row fontSize16 position-relative" style="background-color:<?=@$bg_color_inputs->h_bgcolor?>;padding:8px 0;margin:0;width:100%;">
 						<div class="col-12 position-relative">
-							<strong class="d-block text-center what-news-title" style="color:<?=@$bg_color_inputs->h_bgcolor?>">מה חדש</strong>
+							<strong class="d-block text-center what-news-title" style="color:#ffffff;font-weight:bold;"><i class="fa fa-bell" style="color:#ffffff;margin:0 15px;"></i>מה חדש</strong>
 							<div class="d-flex align-items-center position-absolute what-news-header-actions" style="top:0;right:13;gap:8px;">
 								<button type="button" class="btn btn-primary btn-sm fontSize12 whats-new-mark-seen-btn" data-panel="#left_new_content" onclick="markCheckedWhatsNewSeen('#left_new_content')" disabled>תודה על העדכון</button>
-								<input type="button" id="btn-close-what-news" class="borderRadius10 fontSize16 font-weight-bold" style="color:<?=@$bg_color_inputs->h_bgcolor?>;border:1px solid <?=@$bg_color_inputs->h_bgcolor?>" value="X" />
+								<input type="button" id="btn-close-what-news" class="borderRadius10 fontSize16 font-weight-bold" style="color:#ffffff;background-color:<?=@$bg_color_inputs->h_bgcolor?>;border:1px solid #ffffff" value="X" />
 							</div>
 						</div>
 					</div>
@@ -1399,22 +1399,21 @@ foreach($all_what_news as $wn){
 										<?php } ?>										
 									</div>	
 									
-									<div id="div_what_news_<?=@$pr->id?>" class="flex margin-0-x-auto width50Percents border-black display-none overflow-y-scroll dir-rtl">	
-										<div class="row fontSize18 alignCenter dir-rtl">
+									<div id="div_what_news_<?=@$pr->id?>" class="flex margin-0-x-auto width50Percents border-black display-none overflow-y-scroll dir-rtl">
+										<div class="row fontSize18 alignCenter dir-rtl" style="background-color:<?=@$bg_color_inputs->h_bgcolor?>;padding:8px 0;">
 											<div class="col-12 position-relative" style="min-height:38px;">
-												<label class="padding-4x-4y borderRadius20 bgColor-cbddec mx-auto position-absolute start-50 translate-middle-x">
-													<?=@$pr->nickname?>
-												</label>
+												<strong style="color:#ffffff;font-weight:bold;">מה חדש<i class="fa fa-bell" style="color:#ffffff;margin:0 15px;"></i></strong>
 												<div class="d-flex align-items-center position-absolute" style="top:0;right:13;gap:8px;">
-													<input type="button" id="btn-close-what-news-<?=@$pr->id?>" class="borderRadius10 fontSize16 font-weight-bold" style="color:<?=@$bg_color_inputs->h_bgcolor?>; border:1px solid <?=@$bg_color_inputs->h_bgcolor?>" value="X" />
+													<input type="button" id="btn-close-what-news-<?=@$pr->id?>" class="borderRadius10 fontSize16 font-weight-bold" style="color:#ffffff;background-color:transparent;border:1px solid #ffffff" value="X" />
 													<button type="button" class="btn btn-primary btn-sm fontSize12 whats-new-mark-seen-btn" data-panel="#left_new_content" onclick="markCheckedWhatsNewSeen('#left_new_content')" disabled>תודה על העדכון</button>
 												</div>
 											</div>
-											
-											<div class="row marginTop5 fontSize16">
-												<div class="col-12 alignCenter">
-													<strong style="color:<?=@$bg_color_inputs->h_bgcolor?>">מה חדש ?</strong>
-												</div>
+										</div>
+										<div class="row marginTop10 fontSize18 alignCenter dir-rtl">
+											<div class="col-12">
+												<label class="padding-4x-4y borderRadius20 bgColor-cbddec mx-auto">
+													<?=@$pr->nickname?>
+												</label>
 											</div>
 										</div>
 										
@@ -2054,7 +2053,7 @@ foreach($all_what_news as $wn){
 									    </div>
 									    <div class="col-10 p-2 text-end d-flex flex-column justify-content-center align-items-center">
 										    <div class="row align-items-start justify-content-start flex-nowrap gx-2" dir="rtl">
-											    <div class="col-auto fontSize13 text-end" style="margin-left:6px;">
+											    <div class="col-auto fontSize13 text-end" style="margin-left:20px;">
 												    <div><input type="radio" id="not_reminders" name="set_reminder_date_radio" value="0" > <i id="reminder_bell_icon" class="fa-solid fa-bell-slash" style="color:#888;font-size:16px;"></i></div>
 											    </div>
 											    <div class="col-auto fontSize13 text-end">
