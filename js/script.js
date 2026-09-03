@@ -1145,9 +1145,9 @@ function hidePopup(modal,iteration,meeting_id,from){
 
 function setBellBcgColor(track_type){
     if(track_type == 0)
-        $('#target-icon-popup').css('color','#888');
+        $('#target-icon-popup').attr('src','images/grey-target-icon-transparent.png');
     else if(track_type == 1)
-        $('#target-icon-popup').css('color','red');
+        $('#target-icon-popup').attr('src','images/red-target-icon-transparent.png');
 }
 
 function setEmergencyTaskCSS(is_priority){

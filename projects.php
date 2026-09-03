@@ -431,7 +431,10 @@ foreach($all_what_news as $wn){
 				<div id="div_top_buttons" class="flex flex-wrap width-one-of-three margin-top-10-x-auto justify-content-center dir-rtl alignCenter">
 				    <div class="width25Percents">
 					    <a class="text-decoration-none cursor-pointer _badge-switcher borderRadius10" href="#" title="משימות שלי" data-target="user_tasks" data-bgcolor="<?=@$bg_color_inputs->a_bgcolor?>">
-							<span class="padding-7x-3y borderRadius20 colorWhite font-weight-bold" style="background-color:<?=@$bg_color_inputs->e_bgcolor?>;box-shadow: 0 6px 12px rgba(0, 0, 0, 0.35);"><?=@$all_user_tasks_num_rows?></span>	
+							<img src="images/clipboard-list-solid.svg" alt="tasks" style="width:30px;height:30px;filter:invert(20%) sepia(90%) saturate(6000%) hue-rotate(340deg);" />
+							<div class="marginTop5">
+								<span class="padding-7x-3y borderRadius20 colorWhite font-weight-bold" style="background-color:<?=@$bg_color_inputs->e_bgcolor?>;box-shadow: 0 6px 12px rgba(0, 0, 0, 0.35);"><?=@$all_user_tasks_num_rows?></span>
+							</div>
 							<div class="marginTop5">
 								<label class="fontSize12 color-1a5276 font-weight-bold">משימות שלי</label>
 							</div>
@@ -439,7 +442,10 @@ foreach($all_what_news as $wn){
 				    </div>	
                     <div class="width25Percents">					
 						<a class="text-decoration-none cursor-pointer _badge-switcher" href="#" title="מעקב אקטיבי" data-target="active_tracking" data-bgcolor="<?=@$bg_color_inputs->b_bgcolor?>">
-							<span class="padding-7x-3y borderRadius20 colorWhite font-weight-bold" style="background-color:<?=@$bg_color_inputs->f_bgcolor?>;box-shadow: 0 6px 12px rgba(0, 0, 0, 0.35);"><?=@$all_active_tracking_num_rows?></span>
+							<img src="images/target-icon-f-bgcolor.png" alt="tracking" style="width:30px;height:30px;" />
+							<div class="marginTop5">
+								<span class="padding-7x-3y borderRadius20 colorWhite font-weight-bold" style="background-color:<?=@$bg_color_inputs->f_bgcolor?>;box-shadow: 0 6px 12px rgba(0, 0, 0, 0.35);"><?=@$all_active_tracking_num_rows?></span>
+							</div>
 							<div class="marginTop5">
 								<label class="fontSize12 color-1a5276 font-weight-bold">מעקב אקטיבי</label>
 							</div>
@@ -447,57 +453,60 @@ foreach($all_what_news as $wn){
 					</div>
 					<div class="width25Percents">
                         <a class="text-decoration-none cursor-pointer _badge-switcher" href="#" title="תקציב" data-target="not_approved_accounts" data-bgcolor="<?=@$bg_color_inputs->c_bgcolor?>">
-							<span class="padding-7x-3y borderRadius20 colorWhite font-weight-bold" style="background-color:<?=@$bg_color_inputs->g_bgcolor?>;box-shadow: 0 6px 12px rgba(0, 0, 0, 0.35);"><?=@$all_not_approved_accounts_num_rows?></span>
+							<img src="images/dollar-sign-solid.svg" alt="budget" style="width:22px;height:30px;" />
+							<div class="marginTop5">
+								<span class="padding-7x-3y borderRadius20 colorWhite font-weight-bold" style="background-color:<?=@$bg_color_inputs->g_bgcolor?>;box-shadow: 0 6px 12px rgba(0, 0, 0, 0.35);"><?=@$all_not_approved_accounts_num_rows?></span>
+							</div>
 							<div class="marginTop5">
 								<label class="fontSize12 color-1a5276 font-weight-bold">תקציב</label>
 							</div>
-						</a> 
+						</a>
 					</div>
                     <div class="width25Percents">					
 						<a class="text-decoration-none cursor-pointer _badge-switcher" href="#" title="מה חדש" data-target="what_news" data-bgcolor="<?=@$bg_color_inputs->d_bgcolor?>">
-							<span class="padding-7x-3y borderRadius20 colorWhite font-weight-bold" style="background-color:<?=@$bg_color_inputs->h_bgcolor?>;box-shadow: 0 6px 12px rgba(0, 0, 0, 0.35);"><?=@$all_what_news_num_rows?></span>
+							<img src="images/bell-h-bgcolor.svg" alt="what's new" style="width:26px;height:30px;" />
+							<div class="marginTop5">
+								<span class="padding-7x-3y borderRadius20 colorWhite font-weight-bold" style="background-color:<?=@$bg_color_inputs->h_bgcolor?>;box-shadow: 0 6px 12px rgba(0, 0, 0, 0.35);"><?=@$all_what_news_num_rows?></span>
+							</div>
 							<div class="marginTop5">
 								<label class="fontSize12 color-1a5276 font-weight-bold">מה חדש ?</label>
 							</div>
-						</a>		
+						</a>
 					</div>
 				</div>				
 
-               	<div id="div_user_tasks" class="display-none border-black dir-rtl">				
-					<div class="row alignRight">
-						<div class="col-12">
-							<input type="button" id="btn-close-user-tasks" class="borderRadius10 fontSize13 font-weight-bold" style="color:<?=@$bg_color_inputs->e_bgcolor?>; border:1px solid <?=@$bg_color_inputs->e_bgcolor?>" value="X" />
-						</div>							  
+               	<div id="div_user_tasks" class="display-none border-black dir-rtl">
+					<div class="row fontSize16 position-relative" style="background-color:<?=@$bg_color_inputs->e_bgcolor?>;padding:8px 0;margin:-10px -10px 0 -10px;border-radius:10px 10px 0 0;">
+						<div class="col-12 position-relative">
+							<strong class="d-block text-center" style="color:#ffffff;font-weight:bold;">המשימות שלי<img src="images/rectangle-list-regular.svg" alt="tasks" style="width:18px;height:18px;filter:brightness(0) invert(1);margin:0 15px;vertical-align:middle;" /></strong>
+							<input type="button" id="btn-close-user-tasks" class="borderRadius10 fontSize13 font-weight-bold position-absolute" style="top:0;right:13;color:#ffffff;background-color:<?=@$bg_color_inputs->e_bgcolor?>;border:1px solid #ffffff" value="X" />
+						</div>
 					</div>
-					
-					<div class="row dir-rtl" id="user_tasks_filter_row">
-						<div id="div_filter_user_tasks" class="col-6 alignCenter">
-							<div class="text-center flex-grow-1">
-								<span class="fontSize13 font-weight-bold">מיון לפי</span>
-							</div>
-							<div id="filter_user_tasks_radios">
-								<div class="filter-radio-row"><input type="radio" id="by_project" name="user_tasks_filter" value="project" onclick="setFilterParam('project')" <?php if(@$filter_by == 'project') echo 'checked';?> />&nbsp;<span class="fontSize12">פרוייקט</span></div>
-								<div class="filter-radio-row"><input type="radio" id="by_task" name="user_tasks_filter" value="task" onclick="setFilterParam('task')" <?php if(@$filter_by == 'task') echo 'checked';?> />&nbsp;<span class="fontSize12">סוג משימה</span></div>
-								<div class="filter-radio-row"><input type="radio" id="by_responsible" name="user_tasks_filter" value="responsible" onclick="setFilterParam('responsible')" <?php if(@$filter_by == 'responsible') echo 'checked';?> />&nbsp;<span class="fontSize12">אחראי</span></div>
-							</div>
-						</div>
-						
-						<div class="col-6 btn-group btn-group-toggle dir-rtl">
-							<label id="label-team" class="btn btn-secondary fontSize12 <?php if($list_user_tasks == 'team') echo 'active'; ?>">
-								<input type="radio" id="team" name="options" class="width50 height10" autocomplete="off" onclick="setListParam('team')" /> TEAM
-							</label>
-							<label id="label-me" class="btn btn-secondary fontSize12 <?php if($list_user_tasks == 'me') echo 'active'; ?>">
-								<input type="radio" id="me" name="options" class="width50 height10" autocomplete="off" onclick="setListParam('me')" /> ME
-							</label>
-						</div>
-					</div>	
 
-					<div class="row marginTop5">
-					    <div class="col-12 alignCenter">
-							<strong style="color:<?=@$bg_color_inputs->e_bgcolor?>">המשימות שלי</strong>
-				        </div>
+					<div class="row dir-rtl marginTop10" id="user_tasks_filter_row">
+						<div id="div_filter_user_tasks" class="col-6 alignCenter">
+							<div class="user-tasks-filter-inner">
+								<div class="text-center flex-grow-1">
+									<span class="fontSize13 font-weight-bold">מיון לפי</span>
+								</div>
+								<div id="filter_user_tasks_radios">
+									<div class="filter-radio-row"><input type="radio" id="by_project" name="user_tasks_filter" value="project" onclick="setFilterParam('project')" <?php if(@$filter_by == 'project') echo 'checked';?> />&nbsp;<span class="fontSize12">פרוייקט</span></div>
+									<div class="filter-radio-row"><input type="radio" id="by_task" name="user_tasks_filter" value="task" onclick="setFilterParam('task')" <?php if(@$filter_by == 'task') echo 'checked';?> />&nbsp;<span class="fontSize12">סוג משימה</span></div>
+									<div class="filter-radio-row"><input type="radio" id="by_responsible" name="user_tasks_filter" value="responsible" onclick="setFilterParam('responsible')" <?php if(@$filter_by == 'responsible') echo 'checked';?> />&nbsp;<span class="fontSize12">אחראי</span></div>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-6 dir-rtl marginTop10 alignCenter">
+							<div class="dir-rtl" style="display:inline-flex;align-items:center;gap:6px;border:1px solid <?=@$bg_color_inputs->e_bgcolor?>;border-radius:20px;padding:5px 12px;color:<?=@$bg_color_inputs->e_bgcolor?>;">
+								<img src="images/user-solid.svg" alt="user" style="width:14px;height:14px;filter:invert(20%) sepia(90%) saturate(6000%) hue-rotate(340deg);vertical-align:middle;" />
+								<span id="label-me" class="fontSize12 cursor-pointer <?php if($list_user_tasks == 'me') echo 'font-weight-bold'; ?>" onclick="setListParam('me')">אני</span>
+								<span class="fontSize12">–</span>
+								<span id="label-team" class="fontSize12 cursor-pointer <?php if($list_user_tasks == 'team') echo 'font-weight-bold'; ?>" onclick="setListParam('team')">צוות ניהול</span>
+							</div>
+						</div>
 					</div>
-					
+
 					<div class="marginTop10 width100Percents overflow-y-scroll scrollbar-colored alignCenter dir-rtl" style="max-height:530px;">
 						<table align="center" class="dir-rtl" cellpadding="4" width="100%">
 							<?php foreach ($all_user_tasks as $ut){								
@@ -599,13 +608,13 @@ foreach($all_what_news as $wn){
 					</div>
 				</div>
 
-                <div id="div_active_tracking" class="display-none border-black dir-rtl">									
-					<div class="row fontSize16 position-relative">
+                <div id="div_active_tracking" class="display-none border-black dir-rtl">
+					<div class="row fontSize16 position-relative" style="background-color:<?=@$bg_color_inputs->f_bgcolor?>;padding:8px 0;margin:-10px -10px 0 -10px;border-radius:10px 10px 0 0;">
 						<div class="col-12 position-relative">
-							<strong class="d-block text-center" style="color:<?=@$bg_color_inputs->f_bgcolor?>">מעקב אקטיבי</strong>
-							<input type="button" id="btn-close-active-tracking" class="borderRadius10 fontSize16 font-weight-bold position-absolute" style="top:0;right:13;color:<?=@$bg_color_inputs->f_bgcolor?>;border:1px solid <?=@$bg_color_inputs->f_bgcolor?>" value="X" />
+							<strong class="d-block text-center" style="color:#ffffff;font-weight:bold;"><img src="images/white-target-icon.png" alt="target" style="width:20px;height:20px;margin:0 15px;vertical-align:middle;" />מעקב אקטיבי<img src="images/white-target-icon.png" alt="target" style="width:20px;height:20px;margin:0 15px;vertical-align:middle;" /></strong>
+							<input type="button" id="btn-close-active-tracking" class="borderRadius10 fontSize16 font-weight-bold position-absolute" style="top:0;right:13;color:#ffffff;background-color:<?=@$bg_color_inputs->f_bgcolor?>;border:1px solid #ffffff" value="X" />
 						</div>
-					</div>							
+					</div>
 									
 					<div class="marginTop10 overflow-y-scroll scrollbar-colored alignCenter dir-rtl" style="max-height:530px;">
 						<table align="center" class="dir-rtl" cellpadding="4" width="100%">
@@ -758,17 +767,25 @@ foreach($all_what_news as $wn){
 					<?php } ?>	
 				</div>
 
-                <div id="div_what_news" class="display-none border-black dir-rtl" style="overflow:hidden;border-radius:10px;">
-					<div class="row fontSize16 position-relative" style="background-color:<?=@$bg_color_inputs->h_bgcolor?>;padding:8px 0;margin:0;width:100%;">
+                <div id="div_what_news" class="display-none border-black dir-rtl">
+					<div class="row fontSize16 position-relative" style="background-color:<?=@$bg_color_inputs->h_bgcolor?>;padding:8px 0;margin:-10px -10px 0 -10px;border-radius:10px 10px 0 0;">
 						<div class="col-12 position-relative">
 							<strong class="d-block text-center what-news-title" style="color:#ffffff;font-weight:bold;"><i class="fa fa-bell" style="color:#ffffff;margin:0 15px;"></i>מה חדש</strong>
 							<div class="d-flex align-items-center position-absolute what-news-header-actions" style="top:0;right:13;gap:8px;">
-								<button type="button" class="btn btn-primary btn-sm fontSize12 whats-new-mark-seen-btn" data-panel="#left_new_content" onclick="markCheckedWhatsNewSeen('#left_new_content')" disabled>תודה על העדכון</button>
 								<input type="button" id="btn-close-what-news" class="borderRadius10 fontSize16 font-weight-bold" style="color:#ffffff;background-color:<?=@$bg_color_inputs->h_bgcolor?>;border:1px solid #ffffff" value="X" />
 							</div>
 						</div>
 					</div>
-									
+					<div class="d-flex justify-content-between align-items-center dir-rtl" style="padding:8px 15px;">
+						<div class="d-flex align-items-center" style="gap:8px;">
+							<input type="checkbox" id="select_all_what_news" class="whats-new-select-all" data-panel="#left_new_content" />
+							<label for="select_all_what_news" class="fontSize13 cursor-pointer" style="color:green;font-weight:bold;background-color:<?=@$bg_color_inputs->d_bgcolor?>;padding:4px 8px;border-radius:6px;border:1px solid lightgrey;">
+								בחר הכל
+							</label>
+						</div>
+						<button type="button" class="btn btn-link btn-sm fontSize13 whats-new-mark-seen-btn" data-panel="#left_new_content" onclick="markCheckedWhatsNewSeen('#left_new_content')" disabled style="color:green;font-weight:bold;text-decoration:none;background-color:<?=@$bg_color_inputs->d_bgcolor?>;padding:4px 8px;border-radius:6px;border:1px solid lightgrey;">תודה על העדכון</button>
+					</div>
+
 					<div class="marginTop10 width100Percents overflow-y-scroll scrollbar-colored alignCenter dir-rtl" style="max-height:530px;">
 						<table align="center" class="dir-rtl" cellpadding="4" width="100%">
 							<?php foreach ($all_what_news as $wn){
@@ -927,12 +944,12 @@ foreach($all_what_news as $wn){
 										</a>																				
 									</td>
 								</tr>
-						<?php } ?>		   
-						</table>	
-					</div>										
-				</div>				
-				
-                <div class="row" style="max-width:1300px;margin:0 auto;">	
+						<?php } ?>
+						</table>
+					</div>
+				</div>
+
+                <div class="row" style="max-width:1300px;margin:0 auto;">
 					<div id="left_content" class="col-12 col-md-6">
 						<div id="left_initial_content" class="marginTop20 overflow-y-scroll flex flex-wrap justify-content-center" style="margin:20px auto;max-height:650px;">          
 							<?php 
@@ -1099,21 +1116,22 @@ foreach($all_what_news as $wn){
 									</div>							
 									
 									<div id="div_user_tasks_<?=@$pr->id?>" class="flex margin-0-x-auto width50Percents border-black display-none dir-rtl">
-										<div class="row fontSize18 alignCenter">
-											<div class="col-12 d-flex justify-content-between align-items-center position-relative">
-												<label class="padding-4x-4y borderRadius20 bgColor-cbddec mx-auto position-absolute start-50 translate-middle-x">
+										<div class="row fontSize18 alignCenter dir-rtl" style="background-color:<?=@$bg_color_inputs->e_bgcolor?>;padding:8px 0;margin:-10px -10px 0 -10px;border-radius:10px 10px 0 0;">
+											<div class="col-12 position-relative" style="min-height:38px;">
+												<strong style="color:#ffffff;font-weight:bold;">המשימות שלי<img src="images/rectangle-list-regular.svg" alt="tasks" style="width:18px;height:18px;filter:brightness(0) invert(1);margin:0 15px;vertical-align:middle;" /></strong>
+												<div class="d-flex align-items-center position-absolute" style="top:0;right:13;gap:8px;">
+													<input type="button" id="btn-close-user-tasks-<?=@$pr->id?>" class="borderRadius10 fontSize16 font-weight-bold" style="color:#ffffff;background-color:transparent;border:1px solid #ffffff" value="X" />
+												</div>
+											</div>
+										</div>
+										<div class="row marginTop10 fontSize18 alignCenter dir-rtl">
+											<div class="col-12">
+												<label class="padding-4x-4y borderRadius20 bgColor-cbddec mx-auto">
 													<?=@$pr->nickname?>
 												</label>
-												<input type="button" id="btn-close-user-tasks-<?=@$pr->id?>" class="borderRadius10 fontSize16 font-weight-bold ms-auto" style="color:<?=@$bg_color_inputs->e_bgcolor?>; border:1px solid <?=@$bg_color_inputs->e_bgcolor?>" value="X" />
 											</div>
-										</div>		
-										
-										<div class="row fontSize16">
-											<div class="col-12 alignCenter">
-												<strong class="paddingLeft15" style="color:<?=@$bg_color_inputs->e_bgcolor?>">משימות שלי</strong>	
-											</div>
-										</div>		
-											
+										</div>
+
 										<div class="marginTop10 width100Percents overflow-y-scroll scrollbar-colored alignCenter dir-rtl" style="max-height:530px;">
 											<table align="center" class="dir-rtl" cellpadding="4" width="100%">
 												<?php foreach ($user_tasks as $ut){ 
@@ -1224,18 +1242,19 @@ foreach($all_what_news as $wn){
 									</div>
 									
 									<div id="div_active_tracking_<?=@$pr->id?>" class="flex margin-0-x-auto width50Percents border-black display-none dir-rtl">
-										<div class="row fontSize18 alignCenter">
-											<div class="col-12 d-flex justify-content-between align-items-center position-relative">
-												<label class="padding-4x-4y borderRadius20 bgColor-cbddec mx-auto position-absolute start-50 translate-middle-x">
+										<div class="row fontSize18 alignCenter dir-rtl" style="background-color:<?=@$bg_color_inputs->f_bgcolor?>;padding:8px 0;margin:-10px -10px 0 -10px;border-radius:10px 10px 0 0;">
+											<div class="col-12 position-relative" style="min-height:38px;">
+												<strong style="color:#ffffff;font-weight:bold;"><img src="images/white-target-icon.png" alt="target" style="width:20px;height:20px;margin:0 15px;vertical-align:middle;" />מעקב אקטיבי<img src="images/white-target-icon.png" alt="target" style="width:20px;height:20px;margin:0 15px;vertical-align:middle;" /></strong>
+												<div class="d-flex align-items-center position-absolute" style="top:0;right:13;gap:8px;">
+													<input type="button" id="btn-close-active-tracking-<?=@$pr->id?>" class="borderRadius10 fontSize16 font-weight-bold" style="color:#ffffff;background-color:transparent;border:1px solid #ffffff" value="X" />
+												</div>
+											</div>
+										</div>
+										<div class="row marginTop10 fontSize18 alignCenter dir-rtl">
+											<div class="col-12">
+												<label class="padding-4x-4y borderRadius20 bgColor-cbddec mx-auto">
 													<?=@$pr->nickname?>
 												</label>
-												<input type="button" id="btn-close-active-tracking-<?=@$pr->id?>" class="borderRadius10 fontSize16 font-weight-bold ms-auto" style="color:<?=@$bg_color_inputs->f_bgcolor?>; border:1px solid <?=@$bg_color_inputs->f_bgcolor?>" value="X" />
-											</div>
-										</div>		
-											
-										<div class="row marginTop5 fontSize16">
-											<div class="col-12 alignCenter">
-												<strong style="color:<?=@$bg_color_inputs->f_bgcolor?>">מעקב אקטיבי</strong>
 											</div>
 										</div>
 										
@@ -1399,13 +1418,12 @@ foreach($all_what_news as $wn){
 										<?php } ?>										
 									</div>	
 									
-									<div id="div_what_news_<?=@$pr->id?>" class="flex margin-0-x-auto width50Percents border-black display-none overflow-y-scroll dir-rtl">
-										<div class="row fontSize18 alignCenter dir-rtl" style="background-color:<?=@$bg_color_inputs->h_bgcolor?>;padding:8px 0;">
+									<div id="div_what_news_<?=@$pr->id?>" class="flex margin-0-x-auto width50Percents border-black display-none dir-rtl">
+										<div class="row fontSize18 alignCenter dir-rtl" style="background-color:<?=@$bg_color_inputs->h_bgcolor?>;padding:8px 0;margin:-10px -10px 0 -10px;border-radius:10px 10px 0 0;">
 											<div class="col-12 position-relative" style="min-height:38px;">
 												<strong style="color:#ffffff;font-weight:bold;">מה חדש<i class="fa fa-bell" style="color:#ffffff;margin:0 15px;"></i></strong>
 												<div class="d-flex align-items-center position-absolute" style="top:0;right:13;gap:8px;">
 													<input type="button" id="btn-close-what-news-<?=@$pr->id?>" class="borderRadius10 fontSize16 font-weight-bold" style="color:#ffffff;background-color:transparent;border:1px solid #ffffff" value="X" />
-													<button type="button" class="btn btn-primary btn-sm fontSize12 whats-new-mark-seen-btn" data-panel="#left_new_content" onclick="markCheckedWhatsNewSeen('#left_new_content')" disabled>תודה על העדכון</button>
 												</div>
 											</div>
 										</div>
@@ -1416,7 +1434,16 @@ foreach($all_what_news as $wn){
 												</label>
 											</div>
 										</div>
-										
+										<div class="d-flex justify-content-between align-items-center dir-rtl" style="padding:0 15px 8px 15px;">
+											<div class="d-flex align-items-center" style="gap:8px;">
+												<input type="checkbox" id="select_all_what_news_<?=@$pr->id?>" class="whats-new-select-all" data-panel="#left_new_content" />
+												<label for="select_all_what_news_<?=@$pr->id?>" class="fontSize13 cursor-pointer" style="color:green;font-weight:bold;background-color:<?=@$bg_color_inputs->d_bgcolor?>;padding:4px 8px;border-radius:6px;border:1px solid lightgrey;">
+													בחר הכל
+												</label>
+											</div>
+											<button type="button" class="btn btn-link btn-sm fontSize13 whats-new-mark-seen-btn" data-panel="#left_new_content" onclick="markCheckedWhatsNewSeen('#left_new_content')" disabled style="color:green;font-weight:bold;text-decoration:none;background-color:<?=@$bg_color_inputs->d_bgcolor?>;padding:4px 8px;border-radius:6px;border:1px solid lightgrey;">תודה על העדכון</button>
+										</div>
+
 										<div class="marginTop10 width100Percents overflow-y-scroll scrollbar-colored alignCenter dir-rtl" style="max-height:530px;">
 											<table align="center" class="dir-rtl" cellpadding="4" width="100%">
 												<?php foreach ($what_news as $wn){
@@ -1571,13 +1598,13 @@ foreach($all_what_news as $wn){
      													</td>
 													</tr>
 											<?php } ?>
-											</table>	
-										</div>							
-									</div>						
-								</div>	
+											</table>
+										</div>
+									</div>
+								</div>
 							<?php } ?>
 						</div>
-                        <div class="marginTop15 borderRadius10 shadow" id="left_new_content" style="max-width:500px;max-height:650px;margin:20px auto;"></div>						
+                        <div class="marginTop15 borderRadius10 shadow" id="left_new_content" style="max-width:500px;max-height:650px;margin:20px auto;"></div>
 					</div>	
 					<div id="right_content" class="col-12 col-md-6 marginTop15 border-black padding10 borderRadius10 shadow alignCenter" style="background-color:<?=@$bg_color_inputs->i_bgcolor?>;max-width:600px;max-height:650px;margin:20px auto;">				
 						<div class="flex flex-wrap width300 fontSize12">	
@@ -1899,7 +1926,7 @@ foreach($all_what_news as $wn){
 										</div>		
 										<div class="width20Percents">
 										    <a id="tracking_btn" class="btn text-dark bg-white width130">
-												<i id="target-icon-popup" class="fas fa-bullseye" style="font-size:26px;color:#888;"></i>
+												<img id="target-icon-popup" src="images/grey-target-icon-transparent.png" alt="target icon" style="width:26px;height:26px;" />
 												<br/>
 												<strong class="fontSize14">מעקב</strong>
 									        </a>
@@ -2101,11 +2128,11 @@ foreach($all_what_news as $wn){
 										<div class="col-12 d-flex justify-content-center align-items-center gap-3">
 											<button type="button" class="btn font-weight-bold px-3 text-nowrap alignCenter" style="color:#212529;"
 													onclick="fillLogTaskTracking($('#hidden_meeting_id').val(),'','for_closing',1)">
-												<i class="fas fa-bullseye" style="color:#e74c3c;"></i><br/>שמור מעקב
+												<img src="images/red-target-icon-transparent.png" alt="target icon" style="width:20px;height:20px;" /><br/>שמור מעקב
 											</button>
 											<button type="button" class="btn font-weight-bold px-3 text-nowrap alignCenter" style="color:#212529;"
 													onclick="advanceToNextTaskAndCancelTracking()">
-												<i class="fas fa-bullseye" style="color:#95a5a6;"></i><br/>בטל מעקב
+												<img src="images/grey-target-icon-transparent.png" alt="target icon" style="width:20px;height:20px;" /><br/>בטל מעקב
 											</button>
 											<input type="button" id="close_tracking_btn" class="btn bg-dark text-white font-weight-bold px-3 fontSize14" value="סגור" style="padding-top:2px!important;padding-bottom:2px!important;"
 												   onclick="hidePopup('modalTaskTracking','',$('#hidden_meeting_id').val(),'fromProjects')" />
@@ -2610,8 +2637,8 @@ $(document).ready(function(){
 		  $('#reminder_date').val(formatDate(new Date()));
 		}
 
-	    let trackTitleColor = $('#hidden_track_type').val() == 1 ? '#e74c3c' : '#95a5a6';
-	    $('#modalTaskTracking .modal-title').html("<i class='fas fa-bullseye' style='font-size:22px;color:"+trackTitleColor+";'></i>&nbsp;&nbsp;מעקב אקטיבי&nbsp;&nbsp;<i class='fas fa-bullseye' style='font-size:22px;color:"+trackTitleColor+";'></i>");
+	    let trackIconSrc = $('#hidden_track_type').val() == 1 ? 'images/red-target-icon-transparent.png' : 'images/grey-target-icon-transparent.png';
+	    $('#modalTaskTracking .modal-title').html("<img src='"+trackIconSrc+"' alt='target icon' style='width:22px;height:22px;vertical-align:middle;' />&nbsp;&nbsp;מעקב אקטיבי&nbsp;&nbsp;<img src='"+trackIconSrc+"' alt='target icon' style='width:22px;height:22px;vertical-align:middle;' />");
 		$('.subtitle').html(chapter+"<br/>"+subject+"&nbsp;|&nbsp;"+area).css('line-height','1.1em');
 
 	    if($('#hidden_reminder_time').val() == 0){
@@ -3179,10 +3206,28 @@ function setToReadTask(){
 }
 
 function updateWhatsNewSeenBtnState(){
-	let anyChecked = $('#left_new_content .whats-new-checkbox:checked').length > 0;
-	$('.whats-new-mark-seen-btn').prop('disabled', !anyChecked);
+	document.querySelectorAll('.whats-new-mark-seen-btn').forEach(function(btn){
+		let panel = btn.getAttribute('data-panel');
+		let anyChecked = document.querySelectorAll(panel + ' .whats-new-checkbox:checked').length > 0;
+		btn.disabled = !anyChecked;
+	});
 }
-$(document).on('change', '.whats-new-checkbox', updateWhatsNewSeenBtnState);
+document.addEventListener('change', function(e){
+	if(e.target && e.target.classList && e.target.classList.contains('whats-new-checkbox')){
+		updateWhatsNewSeenBtnState();
+	}
+});
+
+document.addEventListener('change', function(e){
+	if(e.target && e.target.classList && e.target.classList.contains('whats-new-select-all')){
+		let panel = e.target.getAttribute('data-panel');
+		let isChecked = e.target.checked;
+		document.querySelectorAll(panel + ' .whats-new-checkbox').forEach(function(taskCb){
+			taskCb.checked = isChecked;
+		});
+		updateWhatsNewSeenBtnState();
+	}
+});
 
 function markCheckedWhatsNewSeen(panelSelector){
 	let $checked = $(panelSelector).find('.whats-new-checkbox:checked');
@@ -3305,6 +3350,39 @@ function toTasksList(id_project){
   display: inline-block;
 }
 
+@media (max-width: 1024px) {
+#user_tasks_filter_row {
+  display: block !important;
+  text-align: center !important;
+}
+
+#user_tasks_filter_row > div {
+  display: inline-block !important;
+  float: none !important;
+  width: auto !important;
+  max-width: 100% !important;
+  vertical-align: top !important;
+}
+
+.user-tasks-filter-inner {
+  display: inline-block !important;
+  text-align: right !important;
+}
+
+#div_filter_user_tasks .text-center {
+  text-align: right !important;
+}
+
+#filter_user_tasks_radios {
+  display: block !important;
+}
+
+#filter_user_tasks_radios .filter-radio-row {
+  display: block !important;
+  text-align: right !important;
+}
+}
+
 @media (orientation: landscape) and (max-height: 500px) {
   #div_top_buttons {
      width: fit-content;
@@ -3340,18 +3418,6 @@ function toTasksList(id_project){
      margin-left: 4px;
   }
 
-  #filter_user_tasks_radios {
-     display: flex;
-     flex-wrap: wrap;
-  }
-
-  .filter-radio-row {
-     width: 100%;
-     box-sizing: border-box;
-     margin-bottom: 8px;
-     text-align: right;
-  }
-
   .task_name .width15Percents,
   .task_name .width10Percents {
      margin-bottom: 8px;
@@ -3368,6 +3434,7 @@ function toTasksList(id_project){
      text-align: right;
      margin-top: 5px;
   }
+
 }
 
 @media screen and (max-width: 600px) {
@@ -3415,11 +3482,6 @@ function toTasksList(id_project){
         accent-color: #1a5276;
         vertical-align: middle;
         margin-left: 4px;
-    }
-
-    #filter_user_tasks_radios {
-        display: flex;
-        flex-wrap: wrap;
     }
 
     .what-news-header-actions {

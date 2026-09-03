@@ -1132,7 +1132,7 @@ include 'menu_tasks.php';
 									</div> |
                                     <div class="alignCenter"> 									
 										<a id="track_btn" class="marginTop10 cursor-pointer text-decoration-none mb-2">	
-											<img id='target-icon' src="images/red-target-icon.png" alt="target icon" title="<?=@$track_label?>" width="20" height="20" />
+											<img id='target-icon' src="images/red-target-icon-transparent.png" alt="target icon" title="<?=@$track_label?>" width="20" height="20" />
 										    <br/>
 											<strong class="fontSize10"><?=@$track_label?></strong>
 										</a>
@@ -3068,7 +3068,7 @@ include 'menu_tasks.php';
 										</div>			
 										<div class="width20Percents">	    
 										    <a id="tracking_btn" class="btn colorBlack width130" style="box-shadow:none;">
-												<i id="target-icon-popup" class="fas fa-bullseye" style="font-size:26px;color:#888;"></i>
+												<img id="target-icon-popup" src="images/grey-target-icon-transparent.png" alt="target icon" style="width:26px;height:26px;" />
 												<br/>
 												<strong class="fontSize14">מעקב</strong>
 									        </a>
@@ -3296,11 +3296,11 @@ include 'menu_tasks.php';
 									<div class="col-12 d-flex justify-content-center align-items-center gap-3">
 										<button type="button" class="btn font-weight-bold px-3 text-nowrap alignCenter"
 												onclick="fillLogTaskTracking($('#hidden_meeting_id').val(),$('#hidden_iteration').val(),'for_closing',1)">
-											<i class="fas fa-bullseye" style="color:#e74c3c;"></i><br/>שמור מעקב
+											<img src="images/red-target-icon-transparent.png" alt="target icon" style="width:20px;height:20px;" /><br/>שמור מעקב
 										</button>
 										<button type="button" class="btn font-weight-bold px-3 text-nowrap alignCenter"
 												onclick="let meeting_ids_array=$('#meetings_table [id^=&quot;task_actions_&quot;]').map(function(){return String($(this).data('meetingid'));}).get();let current_meeting_id=$('#hidden_meeting_id').val();let index=meeting_ids_array.indexOf(current_meeting_id);index++;let next_meeting_id=(index<meeting_ids_array.length)?meeting_ids_array[index]:'';localStorage.setItem('next_meeting_id',next_meeting_id);localStorage.setItem('meeting_id',next_meeting_id);fillLogTaskTracking($('#hidden_meeting_id').val(),$('#hidden_iteration').val(),'for_closing',0,true)">
-											<i class="fas fa-bullseye" style="color:#95a5a6;"></i><br/>בטל מעקב
+											<img src="images/grey-target-icon-transparent.png" alt="target icon" style="width:20px;height:20px;" /><br/>בטל מעקב
 										</button>
 										<input type="button" id="close_tracking_btn" class="btn bg-dark text-white font-weight-bold px-3 fontSize14" value="סגור"
 											   onclick="hidePopup('modalTaskTracking',$('#hidden_iteration').val(),$('#hidden_meeting_id').val(),'fromMeetings')" />
@@ -3762,13 +3762,13 @@ $(document).ready(function(){
 
 	function applyTrackingState(isOn) {
 		if(isOn) {
-			$('#target-icon').attr('src','images/red-target-icon.png');
+			$('#target-icon').attr('src','images/red-target-icon-transparent.png');
 			$('[id^="div-tracking-remarks-"]').css('display','block');
 			$('.badge-circle-track').css('display','inline-flex');
 			$('#toggle_switch_track').prop('checked', true);
 			localStorage.removeItem(trackingKey);
 		} else {
-			$('#target-icon').attr('src','images/grey-target-icon.png');
+			$('#target-icon').attr('src','images/grey-target-icon-transparent.png');
 			$('[id^="div-tracking-remarks-"]').css('display','none');
 			$('.badge-circle-track').css('display','none');
 			$('#toggle_switch_track').prop('checked', false);
@@ -4211,8 +4211,8 @@ $(document).ready(function(){
 		  $('#reminder_date').val(formatDate(new Date()));
 		}
 
-	    let trackTitleColor = $('#hidden_track_type').val() == 1 ? '#e74c3c' : '#95a5a6';
-	    $('#modalTaskTracking .modal-title').html("<i class='fas fa-bullseye' style='font-size:22px;color:"+trackTitleColor+";'></i>&nbsp;&nbsp;מעקב אקטיבי&nbsp;&nbsp;<i class='fas fa-bullseye' style='font-size:22px;color:"+trackTitleColor+";'></i>");
+	    let trackIconSrc = $('#hidden_track_type').val() == 1 ? 'images/red-target-icon-transparent.png' : 'images/grey-target-icon-transparent.png';
+	    $('#modalTaskTracking .modal-title').html("<img src='"+trackIconSrc+"' alt='target icon' style='width:22px;height:22px;vertical-align:middle;' />&nbsp;&nbsp;מעקב אקטיבי&nbsp;&nbsp;<img src='"+trackIconSrc+"' alt='target icon' style='width:22px;height:22px;vertical-align:middle;' />");
 		$('.subtitle').html(chapter+"<br/>"+subject+"&nbsp;|&nbsp;"+area).css('line-height','1.1em');
 
 	    if($('#hidden_reminder_time').val() == 0) {
