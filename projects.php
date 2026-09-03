@@ -431,7 +431,7 @@ foreach($all_what_news as $wn){
 				<div id="div_top_buttons" class="flex flex-wrap width-one-of-three margin-top-10-x-auto justify-content-center dir-rtl alignCenter">
 				    <div class="width25Percents">
 					    <a class="text-decoration-none cursor-pointer _badge-switcher borderRadius10" href="#" title="משימות שלי" data-target="user_tasks" data-bgcolor="<?=@$bg_color_inputs->a_bgcolor?>">
-							<img src="images/clipboard-list-solid.svg" alt="tasks" style="width:30px;height:30px;filter:invert(20%) sepia(90%) saturate(6000%) hue-rotate(340deg);" />
+							<img src="images/clipboard-list-solid.svg" alt="tasks" style="width:30px;height:30px;" />
 							<div class="marginTop5">
 								<span class="padding-7x-3y borderRadius20 colorWhite font-weight-bold" style="background-color:<?=@$bg_color_inputs->e_bgcolor?>;box-shadow: 0 6px 12px rgba(0, 0, 0, 0.35);"><?=@$all_user_tasks_num_rows?></span>
 							</div>
