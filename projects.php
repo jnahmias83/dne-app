@@ -431,7 +431,7 @@ foreach($all_what_news as $wn){
 				<div id="div_top_buttons" class="flex flex-wrap width-one-of-three margin-top-10-x-auto justify-content-center dir-rtl alignCenter">
 				    <div class="width25Percents">
 					    <a class="text-decoration-none cursor-pointer _badge-switcher borderRadius10" href="#" title="משימות שלי" data-target="user_tasks" data-bgcolor="<?=@$bg_color_inputs->a_bgcolor?>">
-							<img src="images/clipboard-list-solid.svg" alt="tasks" style="width:30px;height:30px;" />
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" style="width:30px;height:30px;"><path fill="<?=@$bg_color_inputs->e_bgcolor?>" d="M192 0c-41.8 0-77.4 26.7-90.5 64L64 64C28.7 64 0 92.7 0 128L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-320c0-35.3-28.7-64-64-64l-37.5 0C269.4 26.7 233.8 0 192 0zm0 64a32 32 0 1 1 0 64 32 32 0 1 1 0-64zM80 152c0-13.3 10.7-24 24-24l176 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-176 0c-13.3 0-24-10.7-24-24zm24 88l176 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-176 0c-13.3 0-24-10.7-24-24s10.7-24 24-24zm0 112l176 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-176 0c-13.3 0-24-10.7-24-24s10.7-24 24-24z"/></svg>
 							<div class="marginTop5">
 								<span class="padding-7x-3y borderRadius20 colorWhite font-weight-bold" style="background-color:<?=@$bg_color_inputs->e_bgcolor?>;box-shadow: 0 6px 12px rgba(0, 0, 0, 0.35);"><?=@$all_user_tasks_num_rows?></span>
 							</div>
@@ -442,7 +442,7 @@ foreach($all_what_news as $wn){
 				    </div>	
                     <div class="width25Percents">					
 						<a class="text-decoration-none cursor-pointer _badge-switcher" href="#" title="מעקב אקטיבי" data-target="active_tracking" data-bgcolor="<?=@$bg_color_inputs->b_bgcolor?>">
-							<img src="images/target-icon-f-bgcolor.png" alt="tracking" style="width:30px;height:30px;" />
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" style="width:30px;height:30px;"><g fill="none" stroke="<?=@$bg_color_inputs->f_bgcolor?>" stroke-width="6"><circle cx="50" cy="50" r="42"/><circle cx="50" cy="50" r="26"/><line x1="50" y1="0" x2="50" y2="100"/><line x1="0" y1="50" x2="100" y2="50"/></g><circle cx="50" cy="50" r="9" fill="<?=@$bg_color_inputs->f_bgcolor?>"/></svg>
 							<div class="marginTop5">
 								<span class="padding-7x-3y borderRadius20 colorWhite font-weight-bold" style="background-color:<?=@$bg_color_inputs->f_bgcolor?>;box-shadow: 0 6px 12px rgba(0, 0, 0, 0.35);"><?=@$all_active_tracking_num_rows?></span>
 							</div>
@@ -453,7 +453,7 @@ foreach($all_what_news as $wn){
 					</div>
 					<div class="width25Percents">
                         <a class="text-decoration-none cursor-pointer _badge-switcher" href="#" title="תקציב" data-target="not_approved_accounts" data-bgcolor="<?=@$bg_color_inputs->c_bgcolor?>">
-							<img src="images/dollar-sign-solid.svg" alt="budget" style="width:22px;height:30px;" />
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" style="width:22px;height:30px;"><path fill="<?=@$bg_color_inputs->g_bgcolor?>" d="M160 0c17.7 0 32 14.3 32 32l0 35.7c1.6 .2 3.1 .4 4.7 .7c.4 .1 .7 .1 1.1 .2l48 8.8c17.4 3.2 28.9 19.9 25.7 37.2s-19.9 28.9-37.2 25.7l-47.5-8.7c-31.3-5.8-58.9-4.5-78.3 3.2s-27.2 19.7-29 30.1c-2 11.9-.5 19.2 1.6 23.9c2.2 5 6.5 10.3 14.3 15.9c16.4 11.8 41.3 19.1 73.7 28.3l2.9 .8c28.6 8.2 63.6 18.2 89.8 37.3c14.7 10.7 28.3 24.9 36.5 44.1c8.3 19.5 10 41.4 5.5 64.8c-8.1 42.4-38.6 68.7-73.7 80.9c-16.3 5.7-34.1 9-52.5 10.2l0 35.9c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-36.9c-1.3-.2-2.7-.4-4-.6l-1.1-.2c-24.2-3.8-64.5-14.3-90.6-25.1c-16.3-6.8-24.1-25.5-17.3-41.8s25.5-24.1 41.8-17.3c20.9 8.7 55.5 17.6 75.7 20.7c31.4 4.9 57.3 2 74.6-4c17.1-6 25.3-14.8 27.5-26.1c1.9-10.1 .5-16.9-1.6-21.9c-2.3-5.5-6.7-11.2-14.8-17.2c-16.9-12.2-42.5-19.7-75.2-29.1l-2.5-.7c-28-8-62-17.8-87.6-36.2c-14.6-10.6-27.9-24.8-35.9-43.8C10.9 233.9 9 213 12.5 191.5C20 145.9 55 118.5 89.7 106.5c12.9-4.5 26.7-7.5 40.5-9.1L130.2 32c0-17.7 14.3-32 32-32z"/></svg>
 							<div class="marginTop5">
 								<span class="padding-7x-3y borderRadius20 colorWhite font-weight-bold" style="background-color:<?=@$bg_color_inputs->g_bgcolor?>;box-shadow: 0 6px 12px rgba(0, 0, 0, 0.35);"><?=@$all_not_approved_accounts_num_rows?></span>
 							</div>
@@ -464,7 +464,7 @@ foreach($all_what_news as $wn){
 					</div>
                     <div class="width25Percents">					
 						<a class="text-decoration-none cursor-pointer _badge-switcher" href="#" title="מה חדש" data-target="what_news" data-bgcolor="<?=@$bg_color_inputs->d_bgcolor?>">
-							<img src="images/bell-h-bgcolor.svg" alt="what's new" style="width:26px;height:30px;" />
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" style="width:26px;height:30px;"><path fill="<?=@$bg_color_inputs->h_bgcolor?>" d="M224 0c-17.7 0-32 14.3-32 32V51.2C119 66 64 130.6 64 208v18.8c0 47-17.3 92.4-48.5 127.6l-7.4 8.3c-8.4 9.4-10.4 22.9-5.3 34.4S19.4 416 32 416H416c12.6 0 24-7.4 29.2-18.9s3.1-25-5.3-34.4l-7.4-8.3C401.3 319.2 384 273.9 384 226.8V208c0-77.4-55-142-128-156.8V32c0-17.7-14.3-32-32-32zm45.3 493.3c12-12 18.7-28.3 18.7-45.3H224 160c0 17 6.7 33.3 18.7 45.3s28.3 18.7 45.3 18.7s33.3-6.7 45.3-18.7z"/></svg>
 							<div class="marginTop5">
 								<span class="padding-7x-3y borderRadius20 colorWhite font-weight-bold" style="background-color:<?=@$bg_color_inputs->h_bgcolor?>;box-shadow: 0 6px 12px rgba(0, 0, 0, 0.35);"><?=@$all_what_news_num_rows?></span>
 							</div>
@@ -499,7 +499,7 @@ foreach($all_what_news as $wn){
 
 						<div class="col-6 dir-rtl marginTop10 alignCenter">
 							<div class="dir-rtl" style="display:inline-flex;align-items:center;gap:6px;border:1px solid <?=@$bg_color_inputs->e_bgcolor?>;border-radius:20px;padding:5px 12px;color:<?=@$bg_color_inputs->e_bgcolor?>;">
-								<img src="images/user-solid.svg" alt="user" style="width:14px;height:14px;filter:invert(20%) sepia(90%) saturate(6000%) hue-rotate(340deg);vertical-align:middle;" />
+								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" style="width:14px;height:14px;vertical-align:middle;"><path fill="<?=@$bg_color_inputs->e_bgcolor?>" d="M304 128a80 80 0 1 0 -160 0 80 80 0 1 0 160 0zM96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM49.3 464l349.5 0c-8.9-63.3-63.3-112-129-112l-91.4 0c-65.7 0-120.1 48.7-129 112zM0 482.3C0 383.8 79.8 304 178.3 304l91.4 0C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7L29.7 512C13.3 512 0 498.7 0 482.3z"/></svg>
 								<span id="label-me" class="fontSize12 cursor-pointer <?php if($list_user_tasks == 'me') echo 'font-weight-bold'; ?>" onclick="setListParam('me')">אני</span>
 								<span class="fontSize12">–</span>
 								<span id="label-team" class="fontSize12 cursor-pointer <?php if($list_user_tasks == 'team') echo 'font-weight-bold'; ?>" onclick="setListParam('team')">צוות ניהול</span>
