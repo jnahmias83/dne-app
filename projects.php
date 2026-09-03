@@ -507,7 +507,7 @@ foreach($all_what_news as $wn){
 						</div>
 					</div>
 
-					<div class="marginTop10 width100Percents overflow-y-scroll scrollbar-colored alignCenter dir-rtl" style="max-height:530px;">
+					<div class="marginTop10 width100Percents overflow-y-scroll scrollbar-colored alignCenter dir-rtl" style="max-height:530px;border-radius:0 0 10px 10px;">
 						<table align="center" class="dir-rtl" cellpadding="4" width="100%">
 							<?php foreach ($all_user_tasks as $ut){								
 								$user_id = @$ut->id_user;
@@ -616,7 +616,7 @@ foreach($all_what_news as $wn){
 						</div>
 					</div>
 									
-					<div class="marginTop10 overflow-y-scroll scrollbar-colored alignCenter dir-rtl" style="max-height:530px;">
+					<div class="marginTop10 overflow-y-scroll scrollbar-colored alignCenter dir-rtl" style="max-height:530px;border-radius:0 0 10px 10px;">
 						<table align="center" class="dir-rtl" cellpadding="4" width="100%">
 							<?php foreach ($all_active_tracking as $at){ 
 								$user_id = @$at->id_user;
@@ -786,7 +786,7 @@ foreach($all_what_news as $wn){
 						<button type="button" class="btn btn-link btn-sm fontSize13 whats-new-mark-seen-btn" data-panel="#left_new_content" onclick="markCheckedWhatsNewSeen('#left_new_content')" disabled style="color:green;font-weight:bold;text-decoration:none;background-color:<?=@$bg_color_inputs->d_bgcolor?>;padding:4px 8px;border-radius:6px;border:1px solid lightgrey;">תודה על העדכון</button>
 					</div>
 
-					<div class="marginTop10 width100Percents overflow-y-scroll scrollbar-colored alignCenter dir-rtl" style="max-height:530px;">
+					<div class="marginTop10 width100Percents overflow-y-scroll scrollbar-colored alignCenter dir-rtl" style="max-height:530px;border-radius:0 0 10px 10px;">
 						<table align="center" class="dir-rtl" cellpadding="4" width="100%">
 							<?php foreach ($all_what_news as $wn){
 								$user_id = @$wn->id_user;
@@ -1132,7 +1132,7 @@ foreach($all_what_news as $wn){
 											</div>
 										</div>
 
-										<div class="marginTop10 width100Percents overflow-y-scroll scrollbar-colored alignCenter dir-rtl" style="max-height:530px;">
+										<div class="marginTop10 width100Percents overflow-y-scroll scrollbar-colored alignCenter dir-rtl" style="max-height:530px;border-radius:0 0 10px 10px;">
 											<table align="center" class="dir-rtl" cellpadding="4" width="100%">
 												<?php foreach ($user_tasks as $ut){ 
 													$user_id = @$ut->id_user;
@@ -1258,7 +1258,7 @@ foreach($all_what_news as $wn){
 											</div>
 										</div>
 										
-										<div class="marginTop10 width100Percents overflow-y-scroll scrollbar-colored alignCenter dir-rtl" style="max-height:530px;">
+										<div class="marginTop10 width100Percents overflow-y-scroll scrollbar-colored alignCenter dir-rtl" style="max-height:530px;border-radius:0 0 10px 10px;">
 											<table align="center" class="dir-rtl" cellpadding="4" width="100%">
 												<?php foreach ($active_tracking as $at){ 
 													$user_id = @$at->id_user;
@@ -1444,7 +1444,7 @@ foreach($all_what_news as $wn){
 											<button type="button" class="btn btn-link btn-sm fontSize13 whats-new-mark-seen-btn" data-panel="#left_new_content" onclick="markCheckedWhatsNewSeen('#left_new_content')" disabled style="color:green;font-weight:bold;text-decoration:none;background-color:<?=@$bg_color_inputs->d_bgcolor?>;padding:4px 8px;border-radius:6px;border:1px solid lightgrey;">תודה על העדכון</button>
 										</div>
 
-										<div class="marginTop10 width100Percents overflow-y-scroll scrollbar-colored alignCenter dir-rtl" style="max-height:530px;">
+										<div class="marginTop10 width100Percents overflow-y-scroll scrollbar-colored alignCenter dir-rtl" style="max-height:530px;border-radius:0 0 10px 10px;">
 											<table align="center" class="dir-rtl" cellpadding="4" width="100%">
 												<?php foreach ($what_news as $wn){
 													$user_id = @$wn->id_user;																					
@@ -1604,9 +1604,9 @@ foreach($all_what_news as $wn){
 								</div>
 							<?php } ?>
 						</div>
-                        <div class="marginTop15 borderRadius10 shadow" id="left_new_content" style="max-width:500px;max-height:650px;margin:20px auto;"></div>
+                        <div class="marginTop15 borderRadius10 shadow" id="left_new_content" style="max-width:500px;max-height:700px;margin:20px auto;overflow:hidden;"></div>
 					</div>	
-					<div id="right_content" class="col-12 col-md-6 marginTop15 border-black padding10 borderRadius10 shadow alignCenter" style="background-color:<?=@$bg_color_inputs->i_bgcolor?>;max-width:600px;max-height:650px;margin:20px auto;">				
+					<div id="right_content" class="col-12 col-md-6 marginTop15 border-black padding10 borderRadius10 shadow alignCenter" style="background-color:<?=@$bg_color_inputs->i_bgcolor?>;max-width:600px;max-height:650px;margin:20px auto;overflow:hidden;">
 						<div class="flex flex-wrap width300 fontSize12">	
 							<div class="alignLeft">
 								<a class="text-decoration-none cursor-pointer" onclick="toggleSettings_to_do_today()">
