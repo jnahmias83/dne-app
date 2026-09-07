@@ -547,16 +547,14 @@ foreach($all_what_news as $wn){
 														<i class="fa-solid fa-thumbtack"></i>
 													</a>
 
-													<span style="display:inline-flex;flex-direction:column;align-items:center;gap:5px;vertical-align:top;">
-														<span class="colorWhite bgColor-1a5276 border-black borderRadius10 padding-4x-4y fw-bold fontSize9">
-															<?=@$ut->p_nickname?>
-														</span>
-														<?php if($list_user_tasks == 'team'){ ?>
-														<span class="border-black padding-4x-4y borderRadius20 fontSize9 colorWhite bgColorRed" style="line-height:1;">
-															<?=@$user_nickname?>
-														</span>
-														<?php } ?>
+													<span class="colorWhite bgColor-1a5276 border-black borderRadius10 padding-4x-4y fw-bold fontSize9">
+														<?=@$ut->p_nickname?>
 													</span>
+													<?php if($list_user_tasks == 'team'){ ?>
+													<span class="marginTop10 marginRight5 border-black padding-4x-4y borderRadius20 fontSize9 align-items-center justify-content-center colorWhite bgColorRed width25 alignCenter" style="display:block;line-height:1;">
+														<?=@$user_nickname?>
+													</span>
+													<?php } ?>
 												</div>
 												<div class="width85Percents">
 													<div class="flex flex-wrap justify-content-center task-title-row marginTop5" style="line-height:0.1">
@@ -868,13 +866,13 @@ foreach($all_what_news as $wn){
 									<td>
 										<a id="task_name_<?=@$wn->id?>" class="text-decoration-none w-100 d-block">
 											<div class="marginTop5 marginBottom5 flex flex-wrap justify-content-center align-items-start task_name width100Percents cursor-pointer" data-projectnickname="<?=@$wn->p_nickname?>" data-meetingid="<?=@$wn->id?>" data-projectid="<?=@$wn->p_id?>" data-userid="<?=@$user_id?>" data-lang="<?=@$wn->p_lang?>" data-chapter="<?=@$wn->chapter_name?>" data-name="<?=@$wn->subject?>" data-area="<?=@$wn->area?>" data-recipient="<?=@$responsible_email?>" data-responsibleid="<?=@$wn->id_responsible?>" data-destinationdate="<?=@$wn->destination_date?>" data-progresstatusid="<?=@$wn->id_progress_status?>" data-ispriority="<?=@$wn->is_priority?>" data-trackresponsibleid="<?=@$id_track_responsible?>" data-tracktype="<?=@$track_type?>" data-reminderdate="<?=@$reminder_date?>" data-remindertime="<?=@$reminder_time?>" data-istodotoday="0">
-												<div class="width15Percents d-flex flex-row align-items-center justify-content-center" style="align-self:center;">
-													<input type='checkbox' class='whats-new-checkbox marginRight5' title='כבר לא חדש' data-lmuid="<?=@$wn->lmu_id?>" data-updatedusers="<?=@$wn->lmu_updated_users?>" onclick="event.stopPropagation();" />
-													<span class="marginRight5 colorWhite bgColor-1a5276 border-black borderRadius10 padding-4x-4y fw-bold fontSize9">
+												<div class="width15Percents d-flex flex-row align-items-center justify-content-center" style="align-self:center;gap:10px;">
+													<input type='checkbox' class='whats-new-checkbox' title='כבר לא חדש' data-lmuid="<?=@$wn->lmu_id?>" data-updatedusers="<?=@$wn->lmu_updated_users?>" onclick="event.stopPropagation();" />
+													<span class="colorWhite bgColor-1a5276 border-black borderRadius10 padding-4x-4y fw-bold fontSize9">
 													  <?=@$wn->p_nickname?>
 													</span>
 												</div>
-												<div class="width85Percents">
+												<div class="width85Percents" style="padding-right:10px;">
 													<div class="flex flex-wrap justify-content-center align-items-center" style="line-height:1.3;flex-wrap:nowrap;">
 														<div class="width65Percents align-items-center">
 															<span class="marginRight5 color-19bf42 font-weight-bold"><?=@$chapter_name?></span>
