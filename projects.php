@@ -546,15 +546,17 @@ foreach($all_what_news as $wn){
 													<a class="drag-task cursor-pointer alignCenter text-decoration-none" data-id="<?=@$ut->id?>" data-listfrom="user_tasks">
 														<i class="fa-solid fa-thumbtack"></i>
 													</a>
-													
-													<span class="colorWhite bgColor-1a5276 border-black borderRadius10 padding-4x-4y fw-bold fontSize9">
-														<?=@$ut->p_nickname?>
+
+													<span style="display:inline-flex;flex-direction:column;align-items:center;gap:5px;vertical-align:top;">
+														<span class="colorWhite bgColor-1a5276 border-black borderRadius10 padding-4x-4y fw-bold fontSize9">
+															<?=@$ut->p_nickname?>
+														</span>
+														<?php if($list_user_tasks == 'team'){ ?>
+														<span class="border-black padding-4x-4y borderRadius20 fontSize9 colorWhite bgColorRed" style="line-height:1;">
+															<?=@$user_nickname?>
+														</span>
+														<?php } ?>
 													</span>
-													<?php if($list_user_tasks == 'team'){ ?>
-													<span class="marginTop5 marginRight5 border-black padding-4x-4y borderRadius20 fontSize9 align-items-center justify-content-center colorWhite bgColorRed width25 alignCenter" style="display:block;line-height:1;">
-														<?=@$user_nickname?>
-													</span>
-													<?php } ?>
 												</div>
 												<div class="width85Percents">
 													<div class="flex flex-wrap justify-content-center task-title-row marginTop5" style="line-height:0.1">
