@@ -507,7 +507,7 @@ foreach($all_what_news as $wn){
 						</div>
 					</div>
 
-					<div class="marginTop10 width100Percents overflow-y-scroll scrollbar-colored alignCenter dir-rtl" style="max-height:530px;border-radius:0 0 10px 10px;">
+					<div class="marginTop10 width100Percents overflow-y-scroll scrollbar-colored alignCenter dir-rtl badge-task-list" style="background-color:<?=@$bg_color_inputs->a_bgcolor?>;max-height:530px;border-radius:0 0 10px 10px;">
 						<table align="center" class="dir-rtl" cellpadding="4" width="100%">
 							<?php foreach ($all_user_tasks as $ut){								
 								$user_id = @$ut->id_user;
@@ -616,7 +616,7 @@ foreach($all_what_news as $wn){
 						</div>
 					</div>
 									
-					<div class="marginTop10 overflow-y-scroll scrollbar-colored alignCenter dir-rtl" style="max-height:530px;border-radius:0 0 10px 10px;">
+					<div class="marginTop10 overflow-y-scroll scrollbar-colored alignCenter dir-rtl badge-task-list" style="background-color:<?=@$bg_color_inputs->b_bgcolor?>;max-height:530px;border-radius:0 0 10px 10px;">
 						<table align="center" class="dir-rtl" cellpadding="4" width="100%">
 							<?php foreach ($all_active_tracking as $at){ 
 								$user_id = @$at->id_user;
@@ -786,7 +786,7 @@ foreach($all_what_news as $wn){
 						<button type="button" class="btn btn-link btn-sm fontSize13 whats-new-mark-seen-btn" data-panel="#left_new_content" onclick="markCheckedWhatsNewSeen('#left_new_content')" disabled style="color:green;font-weight:bold;text-decoration:none;background-color:<?=@$bg_color_inputs->d_bgcolor?>;padding:4px 8px;border-radius:6px;border:1px solid lightgrey;">תודה על העדכון</button>
 					</div>
 
-					<div class="marginTop10 width100Percents overflow-y-scroll scrollbar-colored alignCenter dir-rtl" style="max-height:530px;border-radius:0 0 10px 10px;">
+					<div class="marginTop10 width100Percents overflow-y-scroll scrollbar-colored alignCenter dir-rtl badge-task-list" style="background-color:<?=@$bg_color_inputs->d_bgcolor?>;max-height:530px;border-radius:0 0 10px 10px;">
 						<table align="center" class="dir-rtl" cellpadding="4" width="100%">
 							<?php foreach ($all_what_news as $wn){
 								$user_id = @$wn->id_user;
@@ -1132,7 +1132,7 @@ foreach($all_what_news as $wn){
 											</div>
 										</div>
 
-										<div class="marginTop10 width100Percents overflow-y-scroll scrollbar-colored alignCenter dir-rtl" style="max-height:530px;border-radius:0 0 10px 10px;">
+										<div class="marginTop10 width100Percents overflow-y-scroll scrollbar-colored alignCenter dir-rtl badge-task-list" style="background-color:<?=@$bg_color_inputs->a_bgcolor?>;max-height:530px;border-radius:0 0 10px 10px;">
 											<table align="center" class="dir-rtl" cellpadding="4" width="100%">
 												<?php foreach ($user_tasks as $ut){ 
 													$user_id = @$ut->id_user;
@@ -1258,7 +1258,7 @@ foreach($all_what_news as $wn){
 											</div>
 										</div>
 										
-										<div class="marginTop10 width100Percents overflow-y-scroll scrollbar-colored alignCenter dir-rtl" style="max-height:530px;border-radius:0 0 10px 10px;">
+										<div class="marginTop10 width100Percents overflow-y-scroll scrollbar-colored alignCenter dir-rtl badge-task-list" style="background-color:<?=@$bg_color_inputs->b_bgcolor?>;max-height:530px;border-radius:0 0 10px 10px;">
 											<table align="center" class="dir-rtl" cellpadding="4" width="100%">
 												<?php foreach ($active_tracking as $at){ 
 													$user_id = @$at->id_user;
@@ -1444,7 +1444,7 @@ foreach($all_what_news as $wn){
 											<button type="button" class="btn btn-link btn-sm fontSize13 whats-new-mark-seen-btn" data-panel="#left_new_content" onclick="markCheckedWhatsNewSeen('#left_new_content')" disabled style="color:green;font-weight:bold;text-decoration:none;background-color:<?=@$bg_color_inputs->d_bgcolor?>;padding:4px 8px;border-radius:6px;border:1px solid lightgrey;">תודה על העדכון</button>
 										</div>
 
-										<div class="marginTop10 width100Percents overflow-y-scroll scrollbar-colored alignCenter dir-rtl" style="max-height:530px;border-radius:0 0 10px 10px;">
+										<div class="marginTop10 width100Percents overflow-y-scroll scrollbar-colored alignCenter dir-rtl badge-task-list" style="background-color:<?=@$bg_color_inputs->d_bgcolor?>;max-height:530px;border-radius:0 0 10px 10px;">
 											<table align="center" class="dir-rtl" cellpadding="4" width="100%">
 												<?php foreach ($what_news as $wn){
 													$user_id = @$wn->id_user;																					
@@ -1647,7 +1647,7 @@ foreach($all_what_news as $wn){
 						<div class="row marginTop5">
 							<div class="col-12">
 								<strong class="fontSize18">To Do Today</strong>	
-								<div class="marginTop10 overflow-y-scroll alignCenter dir-rtl" style="max-height:520px;">
+								<div class="marginTop10 overflow-y-scroll alignCenter dir-rtl badge-task-list" style="max-height:520px;">
 									<table align="center" class="dir-rtl" cellpadding="4" width="100%">
 										<?php foreach ($to_do_today as $tdt){ 
 											$user_id = @$tdt->id_user;
@@ -3546,5 +3546,15 @@ tr.task-row-highlight td > * {
     position: relative;
     z-index: 1;
     background-color: transparent !important;
+}
+
+.badge-task-list table {
+    border: 0 !important;
+    border-collapse: separate !important;
+    border-spacing: 0 5px !important;
+}
+.badge-task-list table tr.task-row > td {
+    border: 1px solid rgba(0, 0, 0, 0.18) !important;
+    border-radius: 12px;
 }
 </style>
