@@ -1933,7 +1933,7 @@ foreach($all_what_news as $wn){
 										</div>
 										<div class="width20Percents">
 										    <a id="send_email_btn" class="btn text-dark bg-white width130">
-												<img src="images/email-icon.png" width="30" height="30" />
+												<img src="images/share-icon.svg" width="35" height="25" alt="share icon" />
 												<br/>
 												<strong class="fontSize14">דוא''ל</strong>
 									        </a>
