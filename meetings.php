@@ -3010,7 +3010,7 @@ include 'menu_tasks.php';
             <div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<button type="button" class="btn-close btn-close-white-small" data-bs-dismiss="modal" aria-label="Close"></button>
+						<button type="button" class="btn-close btn-close-white-small" data-bs-dismiss="modal" aria-label="Close" style="align-self:flex-start;"></button>
 						<div class="modal-title"></div>
 					</div>
 					<div class="modal-body" style="padding:0;overflow:hidden;">
