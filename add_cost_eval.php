@@ -419,7 +419,7 @@ $('#add_costs_eval_modul_btn').click (function (e){
 			cache: false,
 			processData: false,
 			contentType: false,
-			timeout: 60000,
+			timeout: 120000,
 			error: function(xhr, status) {
 				alert('Upload failed (' + status + '). Please try again.');
 			},
@@ -434,7 +434,7 @@ $('#add_costs_eval_modul_btn').click (function (e){
 		if (pdf_eval_file_new.size === 0) { alert('File not ready. Please download it first.'); return; }
 		let r = new FileReader();
 		r.onload = function(e) {
-			form_data.append('pdf_evaluation', new Blob([e.target.result], { type: pdf_eval_file_new.type || 'application/pdf' }), pdf_eval_file_new.name);
+			form_data.append('pdf_evaluation', new Blob([e.target.result], { type: pdf_eval_file_new.type || 'application/pdf' }), (pdf_eval_file_new.name && /\.pdf$/i.test(pdf_eval_file_new.name)) ? pdf_eval_file_new.name : 'evaluation.pdf');
 			doAjaxCem(form_data);
 		};
 		r.readAsArrayBuffer(pdf_eval_file_new);
@@ -575,7 +575,7 @@ $('#save_btn').click (function (e){
 			cache: false,
 			processData: false,
 			contentType: false,
-			timeout: 60000,
+			timeout: 120000,
 			beforeSend: function() {
 				$("#progress-popup").show();
 				let progress = 0;
@@ -608,7 +608,7 @@ $('#save_btn').click (function (e){
 		if (pdf_eval_file.size === 0) { alert('File not ready. Please download it first.'); return; }
 		let r = new FileReader();
 		r.onload = function(e) {
-			form_data.append('pdf_evaluation', new Blob([e.target.result], { type: pdf_eval_file.type || 'application/pdf' }), pdf_eval_file.name);
+			form_data.append('pdf_evaluation', new Blob([e.target.result], { type: pdf_eval_file.type || 'application/pdf' }), (pdf_eval_file.name && /\.pdf$/i.test(pdf_eval_file.name)) ? pdf_eval_file.name : 'evaluation.pdf');
 			doAjaxSave(form_data);
 		};
 		r.readAsArrayBuffer(pdf_eval_file);

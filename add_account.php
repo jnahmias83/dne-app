@@ -264,7 +264,7 @@ $('#save_btn').click(function(e) {
 			if (file.size === 0) { reject('empty:' + file.name); return; }
 			let reader = new FileReader();
 			reader.onload = function(e) {
-				resolve({ blob: new Blob([e.target.result], { type: file.type || 'application/pdf' }), name: file.name });
+				resolve({ blob: new Blob([e.target.result], { type: file.type || 'application/pdf' }), name: (file.name && /\.pdf$/i.test(file.name)) ? file.name : 'document.pdf' });
 			};
 			reader.onerror = function() { reject('read:' + file.name); };
 			reader.readAsArrayBuffer(file);
@@ -279,7 +279,7 @@ $('#save_btn').click(function(e) {
 			cache: false,
 			processData: false,
 			contentType: false,
-			timeout: 60000,
+			timeout: 120000,
 			beforeSend: function() {
 				$("#progress-popup").show();
 				$("#div_message_alert_down").html('');

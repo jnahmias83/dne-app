@@ -212,7 +212,7 @@ $('#save_btn').click(function(e) {
 			cache: false,
 			processData: false,
 			contentType: false,
-			timeout: 60000,
+			timeout: 120000,
 			beforeSend: function() {
 				$("#progress-popup").show();
 				$("#div_message_alert_down").html('');
@@ -283,7 +283,8 @@ $('#save_btn').click(function(e) {
 		let reader = new FileReader();
 		reader.onload = function(e) {
 			let blob = new Blob([e.target.result], { type: pdf_file.type || 'application/pdf' });
-			form_data.append('pdf_order', blob, pdf_file.name);
+			let safe_name = (pdf_file.name && /\.pdf$/i.test(pdf_file.name)) ? pdf_file.name : 'order.pdf';
+			form_data.append('pdf_order', blob, safe_name);
 			doSubmit(form_data);
 		};
 		reader.onerror = function() {

@@ -27,14 +27,18 @@ else {
 		if(isset($_FILES['pdf_order']) && $_FILES['pdf_order']['error'] === UPLOAD_ERR_OK) {
 			$original_name = basename($_FILES['pdf_order']['name']);
 			$extension = strtolower(pathinfo($original_name, PATHINFO_EXTENSION));
-			if(!in_array($extension, ['pdf'])) { echo "no_file"; exit; }
-			$clean_project_name = preg_replace('/[^A-Za-z0-9_\-]/', '_', $project->name);
-			$pdf_order_name = 'pdf_order_'.$clean_project_name.'_'.time().'.'.$extension;
-			move_uploaded_file($_FILES['pdf_order']['tmp_name'],'uploads/'.$pdf_order_name);
+			// sur tablette le fichier arrive souvent sans extension dans son nom : on accepte si l'extension est pdf, absente, ou si le type MIME est application/pdf. On enregistre toujours en .pdf.
+			$is_pdf = ($extension === 'pdf' || $extension === '' || strtolower(@$_FILES['pdf_order']['type']) === 'application/pdf');
+			if($is_pdf) {
+				$clean_project_name = preg_replace('/[^A-Za-z0-9_\-]/', '_', $project->name);
+				$pdf_order_name = 'pdf_order_'.$clean_project_name.'_'.time().'.pdf';
+				move_uploaded_file($_FILES['pdf_order']['tmp_name'],'uploads/'.$pdf_order_name);
+			}
+			else error_log('order_insert.php: fichier pdf_order ignore (pas un PDF), type=' . @$_FILES['pdf_order']['type']);
 		}
 		else if(isset($_FILES['pdf_order']) && $_FILES['pdf_order']['error'] !== UPLOAD_ERR_NO_FILE) {
-			echo "no_file_" . $_FILES['pdf_order']['error'];
-			exit;
+			// upload interrompu (reseau tablette) : le PDF est optionnel, on enregistre la commande sans PDF
+			error_log('order_insert.php: upload pdf_order echoue, code ' . $_FILES['pdf_order']['error']);
 		}
 		// pas de PDF fourni : le PDF n'est plus obligatoire, $pdf_order_name reste ''
 
@@ -55,11 +59,8 @@ else {
 		$query->execute();
  
 		if(isset($_FILES['pdf_order']) && $_FILES['pdf_order']['error'] === UPLOAD_ERR_OK) {
-			$original_name = basename($_FILES['pdf_order']['name']);
-			$extension = pathinfo($original_name, PATHINFO_EXTENSION);
 			$clean_project_name = preg_replace('/[^A-Za-z0-9_\-]/', '_', $project->name ?? 'project');
-			$pdf_order_name = 'pdf_order_' . $clean_project_name . '_' . time() . '.' . $extension;
-			$upload_path = 'uploads/' . $pdf_order_name;
+			$pdf_order_name = 'pdf_order_' . $clean_project_name . '_' . time() . '.pdf';
 			move_uploaded_file($_FILES['pdf_order']['tmp_name'],'uploads/'.$pdf_order_name);
 				
 			$query = "UPDATE dne_orders SET pdf_order = ? WHERE id = ?";
