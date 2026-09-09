@@ -153,10 +153,11 @@ if($_POST['from'] == 'projects'){
 									  LEFT JOIN dne_progress_status ps ON m.id_progress_status = ps.id
 									  LEFT JOIN dne_projects p ON m.id_project = p.id
 						  WHERE (ps.name_he IS NULL OR (ps.name_he <> ? AND ps.name_he <> ? AND ps.name_he <> ?))
-									  AND p.is_project_active = ?  
-									  AND lmu.id_user <> ?
-									  AND lmu.is_remark_appears_log = ?
-									  AND NOT FIND_IN_SET(?,lmu.updated_users)
+									  AND p.is_project_active = ?
+									  AND (
+									       (lmu.id IS NOT NULL AND lmu.id_user <> ? AND lmu.is_remark_appears_log = ? AND NOT FIND_IN_SET(?,lmu.updated_users))
+									    OR (lmt.id IS NOT NULL AND m.track_type = 1 AND lmt.id_user <> ? AND lmt.is_remark_appears_log = ? AND NOT FIND_IN_SET(?,lmt.updated_users))
+									  )
 									  AND EXISTS (
 											SELECT 1
 											FROM dne_responsibles r
@@ -165,7 +166,7 @@ if($_POST['from'] == 'projects'){
 									  )
 									  ORDER BY GREATEST(COALESCE(lmu.action_date,'1970-01-01'), COALESCE(lmt.action_date,'1970-01-01')) DESC,
 									  GREATEST(COALESCE(lmu.id,0), COALESCE(lmt.id,0)) DESC");
-            $query->bind_param('sssiiiii',$ps1,$ps2,$ps3,$is_active_project,$_SESSION['id_user'],$is_remark_appears_log,$_SESSION['id_user'],$_SESSION['id_user']);
+            $query->bind_param('sssiiiiiiii',$ps1,$ps2,$ps3,$is_active_project,$_SESSION['id_user'],$is_remark_appears_log,$_SESSION['id_user'],$_SESSION['id_user'],$is_remark_appears_log,$_SESSION['id_user'],$_SESSION['id_user']);
 			$query->execute(); 
 			$query->store_result();
 			$what_news = fetch($query);
@@ -270,12 +271,13 @@ if($_POST['from'] == 'projects'){
 						   LEFT JOIN dne_projects p ON m.id_project = p.id
 					   WHERE (ps.name_he IS NULL OR (ps.name_he <> ? AND ps.name_he <> ? AND ps.name_he <> ?))
 					   AND m.id_project = ?
-					   AND lmu.id_user <> ?
-									   AND lmu.is_remark_appears_log = ?
-									   AND NOT FIND_IN_SET(?,lmu.updated_users)
+					   AND (
+					        (lmu.id IS NOT NULL AND lmu.id_user <> ? AND lmu.is_remark_appears_log = ? AND NOT FIND_IN_SET(?,lmu.updated_users))
+					     OR (lmt.id IS NOT NULL AND m.track_type = 1 AND lmt.id_user <> ? AND lmt.is_remark_appears_log = ? AND NOT FIND_IN_SET(?,lmt.updated_users))
+					   )
 					                   ORDER BY GREATEST(COALESCE(lmu.action_date,'1970-01-01'), COALESCE(lmt.action_date,'1970-01-01')) DESC,
 					                   GREATEST(COALESCE(lmu.id,0), COALESCE(lmt.id,0)) DESC");
-			$query->bind_param('sssiiii',$ps1,$ps2,$ps3,$_POST['currentProject'],$_SESSION['id_user'],$is_remark_appears_log,$_SESSION['id_user']);
+			$query->bind_param('sssiiiiiii',$ps1,$ps2,$ps3,$_POST['currentProject'],$_SESSION['id_user'],$is_remark_appears_log,$_SESSION['id_user'],$_SESSION['id_user'],$is_remark_appears_log,$_SESSION['id_user']);
 			$query->execute(); 
 			$query->store_result();
 			$what_news = fetch($query);

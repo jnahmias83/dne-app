@@ -275,37 +275,23 @@ foreach($query as $item){
 	$users_array = array_map('trim',explode(',',$item->updated_users));
 
     if(!in_array($_SESSION['id_user'],$users_array)){
-		$query = $mysqli->prepare("SELECT lmu.id 
-                                   FROM dne_log_meeting_updates lmu
-						           LEFT JOIN dne_meetings m ON lmu.id_meeting = m.id 
-						           LEFT JOIN dne_responsibles r ON m.id_responsible = r.id
-						           LEFT JOIN dne_progress_status ps ON m.id_progress_status = ps.id
-						           LEFT JOIN dne_projects p ON m.id_project = p.id
-						           WHERE ps.name_he <> ?  
-						           AND ps.name_he <> ?
-						           AND ps.name_he <> ?
-					               AND p.is_project_active = ?  
-								   AND lmu.id_meeting = ?
-						           AND lmu.id_user <> ?
-						           AND lmu.is_remark_appears_log = ?
-						           AND EXISTS (
-									    SELECT 1
-											FROM dne_responsibles r
-											WHERE r.id_project = p.id
-											AND r.id_user = ?
-						           )");
-                                   
-								   $query->bind_param('sssiiiii',$ps1,$ps2,$ps3,$is_active_project,$item->id_meeting,$_SESSION['id_user'],$is_remark_appears_log,$_SESSION['id_user']);
-                                   $query->execute(); 
-                                   $query->store_result();
-								   
-								   if(@$query->num_rows > 0){
-									   $query = "UPDATE dne_log_news SET id_log_meeting_tracking = ? 
-									             WHERE id_meeting = ?";
-									   $query = $mysqli->prepare($query);
-									   $query->bind_param('ii',$item->lmt_id,$item->id_meeting);	
-									   $query->execute();   
-								   }									   
+		$query = $mysqli->prepare("SELECT id FROM dne_log_news WHERE id_meeting = ?");
+		$query->bind_param('i',$item->id_meeting);
+		$query->execute();
+		$query->store_result();
+
+		if(@$query->num_rows == 0){
+			$query = "INSERT INTO dne_log_news (id_meeting,id_log_meeting_tracking) VALUES (?,?)";
+			$query = $mysqli->prepare($query);
+			$query->bind_param('ii',$item->id_meeting,$item->lmt_id);
+			$query->execute();
+		}
+		else {
+			$query = "UPDATE dne_log_news SET id_log_meeting_tracking = ? WHERE id_meeting = ?";
+			$query = $mysqli->prepare($query);
+			$query->bind_param('ii',$item->lmt_id,$item->id_meeting);
+			$query->execute();
+		}
 	}
 }
 
@@ -350,9 +336,10 @@ $query = $mysqli->prepare("SELECT ln.id_log_meeting_updates AS id_log_meeting_up
 				           LEFT JOIN dne_projects p ON m.id_project = p.id
 						   WHERE (ps.name_he IS NULL OR (ps.name_he <> ? AND ps.name_he <> ? AND ps.name_he <> ?))
 					       AND p.is_project_active = ?
-						   AND lmu.id_user <> ?
-						   AND lmu.is_remark_appears_log = ?
-						   AND NOT FIND_IN_SET(?,lmu.updated_users)
+						   AND (
+						        (lmu.id IS NOT NULL AND lmu.id_user <> ? AND lmu.is_remark_appears_log = ? AND NOT FIND_IN_SET(?,lmu.updated_users))
+						     OR (lmt.id IS NOT NULL AND m.track_type = 1 AND lmt.id_user <> ? AND lmt.is_remark_appears_log = ? AND NOT FIND_IN_SET(?,lmt.updated_users))
+						   )
 						   AND EXISTS (
 									SELECT 1
 									FROM dne_responsibles r
@@ -361,7 +348,7 @@ $query = $mysqli->prepare("SELECT ln.id_log_meeting_updates AS id_log_meeting_up
 						   )
 					       ORDER BY GREATEST(COALESCE(lmu.action_date,'1970-01-01'), COALESCE(lmt.action_date,'1970-01-01')) DESC,
 					       GREATEST(COALESCE(lmu.id,0), COALESCE(lmt.id,0)) DESC");
-$query->bind_param('iisssiiiii',$_SESSION['id_user'],$_SESSION['id_user'],$ps1,$ps2,$ps3,$is_active_project,$_SESSION['id_user'],$is_remark_appears_log,$_SESSION['id_user'],$_SESSION['id_user']);
+$query->bind_param('iisssiiiiiiii',$_SESSION['id_user'],$_SESSION['id_user'],$ps1,$ps2,$ps3,$is_active_project,$_SESSION['id_user'],$is_remark_appears_log,$_SESSION['id_user'],$_SESSION['id_user'],$is_remark_appears_log,$_SESSION['id_user'],$_SESSION['id_user']);
 $query->execute();
 $query->store_result();
 $all_what_news_num_rows = $query->num_rows;
@@ -1081,12 +1068,13 @@ foreach($all_what_news as $wn){
 														   LEFT JOIN dne_projects p ON m.id_project = p.id
 														   WHERE (ps.name_he IS NULL OR (ps.name_he <> ? AND ps.name_he <> ? AND ps.name_he <> ?))
 														   AND m.id_project = ?
-														   AND lmu.id_user <> ?
-														   AND lmu.is_remark_appears_log = ?
-														   AND NOT FIND_IN_SET(?,lmu.updated_users)
+														   AND (
+														        (lmu.id IS NOT NULL AND lmu.id_user <> ? AND lmu.is_remark_appears_log = ? AND NOT FIND_IN_SET(?,lmu.updated_users))
+														     OR (lmt.id IS NOT NULL AND m.track_type = 1 AND lmt.id_user <> ? AND lmt.is_remark_appears_log = ? AND NOT FIND_IN_SET(?,lmt.updated_users))
+														   )
 														   ORDER BY GREATEST(COALESCE(lmu.action_date,'1970-01-01'), COALESCE(lmt.action_date,'1970-01-01')) DESC,
 													   GREATEST(COALESCE(lmu.id,0), COALESCE(lmt.id,0)) DESC");
-								$query->bind_param('iisssiiii',$_SESSION['id_user'],$_SESSION['id_user'],$ps1,$ps2,$ps3,$pr->id,$_SESSION['id_user'],$is_remark_appears_log,$_SESSION['id_user']);
+								$query->bind_param('iisssiiiiiii',$_SESSION['id_user'],$_SESSION['id_user'],$ps1,$ps2,$ps3,$pr->id,$_SESSION['id_user'],$is_remark_appears_log,$_SESSION['id_user'],$_SESSION['id_user'],$is_remark_appears_log,$_SESSION['id_user']);
 								$query->execute();
 								$query->store_result();
 								$what_news_num_rows = $query->num_rows;
