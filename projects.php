@@ -850,7 +850,7 @@ foreach($all_what_news as $wn){
 								}
 								?>
 								<tr class="task-row fontSize13 meeting_<?=@$wn->id?>">
-									<td>
+									<td<?php if(@$wn->id_log_meeting_updates == 0 && @$wn->id_log_meeting_tracking != 0){ ?> style="background-color:<?=@$bg_color_inputs->b_bgcolor?>;"<?php } ?>>
 										<a id="task_name_<?=@$wn->id?>" class="text-decoration-none w-100 d-block">
 											<div class="marginTop5 marginBottom5 flex flex-wrap justify-content-center align-items-start task_name width100Percents cursor-pointer" data-projectnickname="<?=@$wn->p_nickname?>" data-meetingid="<?=@$wn->id?>" data-projectid="<?=@$wn->p_id?>" data-userid="<?=@$user_id?>" data-lang="<?=@$wn->p_lang?>" data-chapter="<?=@$wn->chapter_name?>" data-name="<?=@$wn->subject?>" data-area="<?=@$wn->area?>" data-recipient="<?=@$responsible_email?>" data-responsibleid="<?=@$wn->id_responsible?>" data-destinationdate="<?=@$wn->destination_date?>" data-progresstatusid="<?=@$wn->id_progress_status?>" data-ispriority="<?=@$wn->is_priority?>" data-trackresponsibleid="<?=@$id_track_responsible?>" data-tracktype="<?=@$track_type?>" data-reminderdate="<?=@$reminder_date?>" data-remindertime="<?=@$reminder_time?>" data-istodotoday="0">
 												<div class="width15Percents d-flex flex-row align-items-center justify-content-center" style="align-self:center;gap:10px;">
@@ -927,7 +927,7 @@ foreach($all_what_news as $wn){
 													</div>
 													<?php }
 													      else if(@$wn->id_log_meeting_tracking != 0 && @$wn->track_type == 1){ ?>
-													<div style="display:block;width:100%;">
+													<div class="js-tracking-line-<?=@$wn->id?>" style="display:block;width:100%;">
 														<div class="marginTop5 fontSize11 text-end" style="line-height:1.4;">
 															<span class="marginRight2 log-date-grey dir-rtl unicode-bidi-embed"><?=smartDate(@$wn->lmt_action_date)?> -</span>
 															<span class="colorRed dir-rtl unicode-bidi-embed">משימה במעקב</span>
@@ -1517,7 +1517,7 @@ foreach($all_what_news as $wn){
 													}
 													?>
 													<tr class="task-row fontSize13">
-														<td>
+														<td<?php if(@$wn->id_log_meeting_updates == 0 && @$wn->id_log_meeting_tracking != 0){ ?> style="background-color:<?=@$bg_color_inputs->b_bgcolor?>;"<?php } ?>>
 															<input type="hidden" id="p_nickname_<?=@$wn->id?>" value="<?=@$pr->nickname?>">
 															<a id="task_name_<?=@$wn->id?>" class="text-decoration-none w-100 d-block">
 																<div class="marginTop5 marginBottom5 flex flex-wrap justify-content-center align-items-start task_name width100Percents cursor-pointer" data-projectnickname="<?=@$wn->p_nickname?>" data-meetingid="<?=@$wn->id?>" data-projectid="<?=@$wn->p_id?>" data-userid="<?=@$user_id?>" data-lang="<?=@$wn->p_lang?>" data-chapter="<?=@$wn->chapter_name?>" data-name="<?=@$wn->subject?>" data-area="<?=@$wn->area?>" data-recipient="<?=@$responsible_email?>" data-responsibleid="<?=@$wn->id_responsible?>" data-destinationdate="<?=@$wn->destination_date?>" data-progresstatusid="<?=@$wn->id_progress_status?>" data-ispriority="<?=@$wn->is_priority?>" data-trackresponsibleid="<?=@$id_track_responsible?>" data-tracktype="<?=@$track_type?>" data-reminderdate="<?=@$reminder_date?>" data-remindertime="<?=@$reminder_time?>" data-istodotoday="0">
@@ -1589,7 +1589,7 @@ foreach($all_what_news as $wn){
 																				</div>
 																			<?php }
 																			      else if(@$wn->id_log_meeting_tracking != 0 && @$wn->track_type == 1){ ?>
-																			<div style="display:block;width:100%;">
+																			<div class="js-tracking-line-<?=@$wn->id?>" style="display:block;width:100%;">
 																				<div class="marginTop5 fontSize11 text-end" style="line-height:1.4;">
 																					<span class="marginRight2 log-date-grey dir-rtl unicode-bidi-embed"><?=smartDate(@$wn->lmt_action_date)?> -</span>
 																					<span class="colorRed dir-rtl unicode-bidi-embed">משימה במעקב</span>
@@ -3192,8 +3192,9 @@ $(window).on('load', function(){
 });
 
 function setToReadTask(){
+	let mid = $('#hidden_meeting_id').val();
 	let form_data = new FormData();
-	form_data.append('id_meeting',$('#hidden_meeting_id').val());
+	form_data.append('id_meeting',mid);
 
 	$.ajax({
 		type: 'POST',
@@ -3204,7 +3205,13 @@ function setToReadTask(){
 		contentType: false,
 		success: function(data){
 			$('#modalTaskFollowupActions').modal('hide');
-			location.href = 'projects.php';
+			$('#left_new_content, #right_content, #div_what_news, [id^="div_what_news_"]').find('.task_name[data-meetingid="' + mid + '"]').closest('tr').remove();
+			$('._badge-switcher[data-target="what_news"] span').each(function(){
+				$(this).text(Math.max(0, (parseInt($(this).text(), 10) || 0) - 1));
+			});
+			$('.badge-switcher[data-target="what_news"][data-prid="' + $('#hidden_project_id').val() + '"] span').each(function(){
+				$(this).text(Math.max(0, (parseInt($(this).text(), 10) || 0) - 1));
+			});
 		},
 	});
 }
@@ -3258,7 +3265,27 @@ function markCheckedWhatsNewSeen(panelSelector){
 	});
 
 	$.when.apply($, requests).then(function(){
-		location.reload();
+		let byProject = {};
+		let seen = [];
+		$checked.each(function(){
+			let $tn = $(this).closest('tr').find('.task_name[data-meetingid]').first();
+			let mid = String($tn.data('meetingid'));
+			let pid = $tn.data('projectid');
+			if(mid && seen.indexOf(mid) === -1){
+				seen.push(mid);
+				byProject[pid] = (byProject[pid] || 0) + 1;
+				$('#left_new_content, #right_content, #div_what_news, [id^="div_what_news_"]').find('.task_name[data-meetingid="' + mid + '"]').closest('tr').remove();
+			}
+		});
+		$('._badge-switcher[data-target="what_news"] span').each(function(){
+			$(this).text(Math.max(0, (parseInt($(this).text(), 10) || 0) - seen.length));
+		});
+		Object.keys(byProject).forEach(function(pid){
+			$('.badge-switcher[data-target="what_news"][data-prid="' + pid + '"] span').each(function(){
+				$(this).text(Math.max(0, (parseInt($(this).text(), 10) || 0) - byProject[pid]));
+			});
+		});
+		updateWhatsNewSeenBtnState();
 	});
 }
 

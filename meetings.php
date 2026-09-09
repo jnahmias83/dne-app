@@ -1739,7 +1739,7 @@ include 'menu_tasks.php';
 											}
 											if(!$track_line_shown_a && @$track_type == 1){
 												$mm_track_label = (@$lang == 'EN') ? 'Task in tracking' : 'משימה במעקב';
-												$description .= "<div class='marginTop5 display-block ".@$dir_log_meeting_tracking."' style='line-height:1.8;'><span class='colorRed ".(@$lang=='HE' ? 'dir-rtl' : 'dir-ltr')." unicode-bidi-embed'>".$mm_track_label."</span>".(@$tracking_data != '' ? " <span class='colorRed ".(@$lang=='HE' ? 'dir-rtl' : 'dir-ltr')." unicode-bidi-embed'>".@$tracking_data."</span>" : "")."</div>";
+												$description .= "<div class='marginTop5 display-block js-tracking-line-".@$meeting_id." ".@$dir_log_meeting_tracking."' style='line-height:1.8;'><span class='colorRed ".(@$lang=='HE' ? 'dir-rtl' : 'dir-ltr')." unicode-bidi-embed'>".$mm_track_label."</span>".(@$tracking_data != '' ? " <span class='colorRed ".(@$lang=='HE' ? 'dir-rtl' : 'dir-ltr')." unicode-bidi-embed'>".@$tracking_data."</span>" : "")."</div>";
 											}
 
 											if(@$image1_width > 0 && @$image1_height > 0){
@@ -2346,7 +2346,7 @@ include 'menu_tasks.php';
 												}
 												if(!$track_line_shown_b && @$track_type == 1){
 													$mm_track_label = (@$lang == 'EN') ? 'Task in tracking' : 'משימה במעקב';
-													$description .= "<div class='marginTop5 display-block ".@$dir_log_meeting_tracking."' style='line-height:1.8;'><span class='colorRed ".(@$lang=='HE' ? 'dir-rtl' : 'dir-ltr')." unicode-bidi-embed'>".$mm_track_label."</span>".(@$tracking_data != '' ? " <span class='colorRed ".(@$lang=='HE' ? 'dir-rtl' : 'dir-ltr')." unicode-bidi-embed'>".@$tracking_data."</span>" : "")."</div>";
+													$description .= "<div class='marginTop5 display-block js-tracking-line-".@$meeting_id." ".@$dir_log_meeting_tracking."' style='line-height:1.8;'><span class='colorRed ".(@$lang=='HE' ? 'dir-rtl' : 'dir-ltr')." unicode-bidi-embed'>".$mm_track_label."</span>".(@$tracking_data != '' ? " <span class='colorRed ".(@$lang=='HE' ? 'dir-rtl' : 'dir-ltr')." unicode-bidi-embed'>".@$tracking_data."</span>" : "")."</div>";
 												}
 
 												if(@$image1_width > 0 && @$image1_height > 0) {

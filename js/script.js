@@ -948,6 +948,7 @@ function fillLogTaskTracking(id_meeting,iteration,screen_type,track_type,advance
 				$('#modalTaskTracking').modal('hide');
 				$('tr.meeting_' + id_meeting + ' .badge-circle-track').remove();
 				$('#description_' + id_meeting + ' [id^="div-tracking-remarks-"]').remove();
+				$('.js-tracking-line-' + id_meeting).remove();
 				setData(id_meeting,'','update_task',1,0,'for_closing');
 				return;
 			}
