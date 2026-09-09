@@ -216,9 +216,11 @@ include 'menu_budget_reports.php';
 									<div class="row marginTop20">
 										<div class="col-12">
 											<strong><?=@$pdf_evaluation_label?></strong>
-											<br/>					
-											<input type="file" class="marginTop5" name="pdf_evaluation" id="pdf_evaluation" accept=".pdf" />
-											<?php if($id > 0) { ?><div><a href="uploads/<?=@$budget_cost_eval->pdf_evaluation?>" target="_blank"><?=@$budget_cost_eval->pdf_evaluation?></a></div><?php } ?>			
+											<br/>
+											<label for="pdf_evaluation" class="custom-file-upload marginTop5">בחר קובץ PDF</label>
+											<span id="pdf_evaluation_filename" class="marginRight5 fontSize13"></span>
+											<input type="file" name="pdf_evaluation" id="pdf_evaluation" accept="application/pdf,.pdf" hidden />
+											<?php if($id > 0) { ?><div><a href="uploads/<?=@$budget_cost_eval->pdf_evaluation?>" target="_blank"><?=@$budget_cost_eval->pdf_evaluation?></a></div><?php } ?>
 										</div>
 									</div>
 									
@@ -369,6 +371,10 @@ include 'menu_budget_reports.php';
 
 <script>
 let domain_type;
+
+$('#pdf_evaluation').on('change', function(){
+	$('#pdf_evaluation_filename').text(this.files && this.files.length ? this.files[0].name : '');
+});
 
 function displayDomainsList() {
 	if($("input:radio[name='domain_type']").is(':checked'))

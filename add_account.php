@@ -155,9 +155,11 @@ include 'menu_budget_reports.php';
 										<div class="card-body">
 											<p>
 												<strong class="label-font-size">PDF הגשה</strong>
-												<br/>					
-												<input type="file" class="marginTop5" name="pdf_submission" id="pdf_submission" accept=".pdf" />
-												<?php if($id > 0) { ?>&nbsp;<a href="uploads/<?=@$account->pdf_submission?>" target="_blank"><?=@$account->pdf_submission?></a><?php } ?>			
+												<br/>
+												<label for="pdf_submission" class="custom-file-upload marginTop5">בחר קובץ PDF</label>
+												<span id="pdf_submission_filename" class="marginRight5 fontSize13"></span>
+												<input type="file" name="pdf_submission" id="pdf_submission" accept="application/pdf,.pdf" hidden />
+												<?php if($id > 0) { ?>&nbsp;<a href="uploads/<?=@$account->pdf_submission?>" target="_blank"><?=@$account->pdf_submission?></a><?php } ?>
 											</p>
 											<p>
 											   <strong class="label-font-size">תאריך הגשה</strong>
@@ -178,9 +180,11 @@ include 'menu_budget_reports.php';
 										<div class="card-body">
 											<p>
 											   <strong class="label-font-size">PDF אישור</strong>
-											   <br/>					
-											   <input type="file" class="marginTop5" name="pdf_approval" id="pdf_approval" accept=".pdf" />
-											   <?php if($id > 0) { ?>&nbsp;<a href="uploads/<?=@$account->pdf_approval?>" target="_blank"><?=@$account->pdf_approval?></a><?php } ?>			
+											   <br/>
+											   <label for="pdf_approval" class="custom-file-upload marginTop5">בחר קובץ PDF</label>
+											   <span id="pdf_approval_filename" class="marginRight5 fontSize13"></span>
+											   <input type="file" name="pdf_approval" id="pdf_approval" accept="application/pdf,.pdf" hidden />
+											   <?php if($id > 0) { ?>&nbsp;<a href="uploads/<?=@$account->pdf_approval?>" target="_blank"><?=@$account->pdf_approval?></a><?php } ?>
 											</p>
 											<p>
 											   <strong class="label-font-size">תאריך אישור</strong>
@@ -239,7 +243,11 @@ $('#suppliers').chosen();
 
 let create_order_from_account = 0;
 
-$('#create_order_cb').click (function (e){  
+$('#pdf_submission,#pdf_approval').on('change', function(){
+	$('#' + this.id + '_filename').text(this.files && this.files.length ? this.files[0].name : '');
+});
+
+$('#create_order_cb').click (function (e){
     if ($(this).is(':checked'))
       create_order_from_account = 1;
     else if(!($(this).is(':checked'))) 

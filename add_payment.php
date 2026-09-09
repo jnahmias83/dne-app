@@ -185,9 +185,11 @@ include 'menu_budget_reports.php';
 										<div class="card-body">
 											<p>
 											   <strong class="label-font-size">PDF תשלום</strong>
-											   <br/>					
-											   <input type="file" class="marginTop5 width95Percents" name="pdf_payment" id="pdf_payment" accept=".pdf" />
-											   <?php if($id > 0) { ?>&nbsp;<a href="uploads/<?=@$payment->pdf_payment?>" target="_blank"><?=@$payment->pdf_payment?></a><?php } ?>		
+											   <br/>
+											   <label for="pdf_payment" class="custom-file-upload marginTop5">בחר קובץ PDF</label>
+											   <span id="pdf_payment_filename" class="marginRight5 fontSize13"></span>
+											   <input type="file" name="pdf_payment" id="pdf_payment" accept="application/pdf,.pdf" hidden />
+											   <?php if($id > 0) { ?>&nbsp;<a href="uploads/<?=@$payment->pdf_payment?>" target="_blank"><?=@$payment->pdf_payment?></a><?php } ?>
 											</p>
 											<p>
 											  <strong class="label-font-size">תאריך תשלום</strong>
@@ -209,9 +211,11 @@ include 'menu_budget_reports.php';
 										<div class="card-body">
 										   <p>
 											 <strong class="label-font-size">PDF חשבונית</strong>
-											 <br/>					
-											 <input type="file" class="marginTop5 width95Percents" name="pdf_invoice" id="pdf_invoice" accept=".pdf" />
-											 <?php if($id > 0) { ?>&nbsp;<a href="uploads/<?=@$payment->pdf_invoice?>" target="_blank"><?=@$payment->pdf_invoice?></a><?php } ?>		
+											 <br/>
+											 <label for="pdf_invoice" class="custom-file-upload marginTop5">בחר קובץ PDF</label>
+											 <span id="pdf_invoice_filename" class="marginRight5 fontSize13"></span>
+											 <input type="file" name="pdf_invoice" id="pdf_invoice" accept="application/pdf,.pdf" hidden />
+											 <?php if($id > 0) { ?>&nbsp;<a href="uploads/<?=@$payment->pdf_invoice?>" target="_blank"><?=@$payment->pdf_invoice?></a><?php } ?>
 										   </p>
 										   <p>
 											 <strong class="label-font-size">תאריך חשבונית</strong>
@@ -257,6 +261,10 @@ include 'menu_budget_reports.php';
 
 <script>
 $('#suppliers').chosen();
+
+$('#pdf_payment,#pdf_invoice').on('change', function(){
+	$('#' + this.id + '_filename').text(this.files && this.files.length ? this.files[0].name : '');
+});
 
 $('#save_btn').click(function(e) {
 	let pdf_payment_file = $('#pdf_payment')[0].files[0];
