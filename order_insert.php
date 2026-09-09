@@ -15,9 +15,6 @@ $pdf_order_name = '';
 if(empty($_POST['sum_order']) || empty($_POST['vat']) || empty($_POST['signature_date'])) {
 	echo "empty";
 }
-else if($_POST['id'] == 0 && !isset($_FILES['pdf_order']['name'])) {
-	echo "empty";
-}
 else {
 	if($_POST['id'] == 0){
 		if(isset($_FILES['pdf_order']) && $_FILES['pdf_order']['error'] === UPLOAD_ERR_OK) {
@@ -27,12 +24,13 @@ else {
 			$clean_project_name = preg_replace('/[^A-Za-z0-9_\-]/', '_', $project->name);
 			$pdf_order_name = 'pdf_order_'.$clean_project_name.'_'.time().'.'.$extension;
 			move_uploaded_file($_FILES['pdf_order']['tmp_name'],'uploads/'.$pdf_order_name);
-		} else {
-			$upload_err = isset($_FILES['pdf_order']['error']) ? $_FILES['pdf_order']['error'] : -1;
-			echo "no_file_" . $upload_err;
+		}
+		else if(isset($_FILES['pdf_order']) && $_FILES['pdf_order']['error'] !== UPLOAD_ERR_NO_FILE) {
+			echo "no_file_" . $_FILES['pdf_order']['error'];
 			exit;
 		}
-	
+		// pas de PDF fourni : le PDF n'est plus obligatoire, $pdf_order_name reste ''
+
 		$query = "INSERT INTO dne_orders (id_projects_suppliers,sum_order,pdf_order,vat,signature_date,
             	  description,created_date) VALUES (?,?,?,?,?,?,?)";
 		$query = $mysqli->prepare($query);
