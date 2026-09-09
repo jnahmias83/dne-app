@@ -898,7 +898,7 @@ foreach($all_what_news as $wn){
 																	<?php if(@$wn->lmu_action == 'חדשה'){ ?>
 																		&nbsp;-
 																		<span class="colorGreenDark dir-rtl unicode-bidi-embed" style="font-weight:bold;">
-																			המשימה נוצרה בתאריך <?=smartDate(@$wn->lmu_action_date)?>
+																			משימה חדשה
 																		</span>
 																	<?php } else { ?>
 																		<?php if(trim(@$wn->current_status_name_he) != ''){ ?>
@@ -924,6 +924,14 @@ foreach($all_what_news as $wn){
 															<span class="colorRed dir-rtl unicode-bidi-embed" style="word-wrap:break-word;overflow-wrap:break-word;"><?=html_entity_decode(@$tr_remark)?></span>
 														</div>
 														<?php break; } ?>
+													</div>
+													<?php }
+													      else if(@$wn->id_log_meeting_tracking != 0 && @$wn->track_type == 1){ ?>
+													<div style="display:block;width:100%;">
+														<div class="marginTop5 fontSize11 text-end" style="line-height:1.4;">
+															<span class="marginRight2 log-date-grey dir-rtl unicode-bidi-embed"><?=smartDate(@$wn->lmt_action_date)?> -</span>
+															<span class="colorRed dir-rtl unicode-bidi-embed">משימה במעקב</span>
+														</div>
 													</div>
 													<?php } ?>
 												</div>
@@ -1553,7 +1561,7 @@ foreach($all_what_news as $wn){
 																					</span>
 																					<?php if(@$wn->lmu_action == 'חדשה'){ ?>
 																						<span class="colorGreenDark dir-rtl unicode-bidi-embed" style="font-weight:bold;">
-																							המשימה נוצרה בתאריך <?=smartDate(@$wn->lmu_action_date)?>
+																							משימה חדשה
 																						</span>
 																					<?php } else { ?>
 																						<?php if(trim(@$wn->current_status_name_he) != ''){ ?>
@@ -1579,7 +1587,15 @@ foreach($all_what_news as $wn){
 																					</div>
 																							<?php break; } ?>
 																				</div>
-																				<?php } ?>																				  		
+																			<?php }
+																			      else if(@$wn->id_log_meeting_tracking != 0 && @$wn->track_type == 1){ ?>
+																			<div style="display:block;width:100%;">
+																				<div class="marginTop5 fontSize11 text-end" style="line-height:1.4;">
+																					<span class="marginRight2 log-date-grey dir-rtl unicode-bidi-embed"><?=smartDate(@$wn->lmt_action_date)?> -</span>
+																					<span class="colorRed dir-rtl unicode-bidi-embed">משימה במעקב</span>
+																				</div>
+																			</div>
+																			<?php } ?>																				  		
 																	</div>
 																</div>
 															</a>																				
