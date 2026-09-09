@@ -306,6 +306,10 @@ $('#save_btn').click(function(e) {
 				$('#div_message_alert_down').html("<span style='color:red;font-size:13px;'>Upload failed (" + status + "). Please try again.</span>");
 			},
 			success: function(data) {
+				if(data == 'too_large') {
+					$('#div_message_alert_down').html("<span style='color:red;font-size:13px;'>הקובץ כבד מדי (מקסימום 30MB). כווץ אותו או צלם מחדש באיכות נמוכה יותר.</span>");
+					return;
+				}
 				let url;
 				if($('#from').val() == 'not_app_acts')
 					url = 'not_approved_accounts.php';

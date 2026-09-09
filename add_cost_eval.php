@@ -424,6 +424,7 @@ $('#add_costs_eval_modul_btn').click (function (e){
 				alert('Upload failed (' + status + '). Please try again.');
 			},
 			success: function(data) {
+				if(data == 'too_large') { alert('הקובץ כבד מדי (מקסימום 30MB). כווץ אותו או צלם מחדש באיכות נמוכה יותר.'); return; }
 				location.href = 'add_cost_eval.php?id='+data+'&project_id='+$('#project_id').val();
 			}
 		});
@@ -597,6 +598,7 @@ $('#save_btn').click (function (e){
 				alert('Upload failed (' + status + '). Please try again.');
 			},
 			success: function(data) {
+				if(data == 'too_large') { alert('הקובץ כבד מדי (מקסימום 30MB). כווץ אותו או צלם מחדש באיכות נמוכה יותר.'); return; }
 				location.href = 'budget_costs_eval.php?project_id='+$('#project_id').val();
 			}
 		});

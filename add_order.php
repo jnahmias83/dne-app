@@ -239,7 +239,9 @@ $('#save_btn').click(function(e) {
 				$('#div_message_alert_down').html("<span style='color:red;font-size:13px;'>Upload failed (" + status + "). Please try again.</span>");
 			},
 			success: function(data) {
-				if(data == 'empty' || data.indexOf('no_file') === 0) {
+				if(data == 'too_large') {
+					$('#div_message_alert_down').html("<span style='color:red;font-size:13px;'>הקובץ כבד מדי (מקסימום 30MB). כווץ אותו או צלם מחדש באיכות נמוכה יותר.</span>");
+				} else if(data == 'empty' || data.indexOf('no_file') === 0) {
 					if($('#sum_order').val().length == 0)
 						$('#sum_order').css('border-color','red');
 					else
