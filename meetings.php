@@ -1720,6 +1720,7 @@ include 'menu_tasks.php';
 												if(@$lang == 'EN')
 													$dir_log_meeting_tracking = 'alignLeft';
 
+                                            $track_line_shown_a = false;
                                             foreach($log_meeting_tracking as $item){
 												$remark = @$item->remark;
 												$action_date = @$item->action_date;
@@ -1732,8 +1733,13 @@ include 'menu_tasks.php';
 																  . " : <span class='colorRed ".(@$lang=='HE' ? 'dir-rtl' : 'dir-ltr')." unicode-bidi-embed'>".nl2br(html_entity_decode(@$item->remark))."</span>"
 																  . (@$tracking_data != '' ? " <span class='colorRed ".(@$lang=='HE' ? 'dir-rtl' : 'dir-ltr')." unicode-bidi-embed'>".@$tracking_data."</span>" : "")
 																  . "</div>";
+													$track_line_shown_a = true;
 													break;
 												}
+											}
+											if(!$track_line_shown_a && @$track_type == 1){
+												$mm_track_label = (@$lang == 'EN') ? 'Task in tracking' : 'משימה במעקב';
+												$description .= "<div class='marginTop5 display-block ".@$dir_log_meeting_tracking."' style='line-height:1.8;'><span class='colorRed ".(@$lang=='HE' ? 'dir-rtl' : 'dir-ltr')." unicode-bidi-embed'>".$mm_track_label."</span>".(@$tracking_data != '' ? " <span class='colorRed ".(@$lang=='HE' ? 'dir-rtl' : 'dir-ltr')." unicode-bidi-embed'>".@$tracking_data."</span>" : "")."</div>";
 											}
 
 											if(@$image1_width > 0 && @$image1_height > 0){
@@ -2321,6 +2327,7 @@ include 'menu_tasks.php';
 												if(@$lang == 'EN')
 													$dir_log_meeting_tracking = 'alignLeft paddingLeft10';
 
+												$track_line_shown_b = false;
 												foreach($log_meeting_tracking as $item){
 													$remark = @$item->remark;	
 													$action_date = @$item->action_date;
@@ -2333,8 +2340,13 @@ include 'menu_tasks.php';
 																	  . " : <span class='colorRed ".(@$lang=='HE' ? 'dir-rtl' : 'dir-ltr')." unicode-bidi-embed'>".nl2br(html_entity_decode(@$item->remark))."</span>"
 																	  . (@$tracking_data != '' ? " <span class='colorRed ".(@$lang=='HE' ? 'dir-rtl' : 'dir-ltr')." unicode-bidi-embed'>".@$tracking_data."</span>" : "")
 																	  . "</div>";
+														$track_line_shown_b = true;
 														break;
 													}
+												}
+												if(!$track_line_shown_b && @$track_type == 1){
+													$mm_track_label = (@$lang == 'EN') ? 'Task in tracking' : 'משימה במעקב';
+													$description .= "<div class='marginTop5 display-block ".@$dir_log_meeting_tracking."' style='line-height:1.8;'><span class='colorRed ".(@$lang=='HE' ? 'dir-rtl' : 'dir-ltr')." unicode-bidi-embed'>".$mm_track_label."</span>".(@$tracking_data != '' ? " <span class='colorRed ".(@$lang=='HE' ? 'dir-rtl' : 'dir-ltr')." unicode-bidi-embed'>".@$tracking_data."</span>" : "")."</div>";
 												}
 
 												if(@$image1_width > 0 && @$image1_height > 0) {

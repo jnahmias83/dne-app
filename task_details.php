@@ -147,6 +147,7 @@ if(@$_POST['all_ids_to_edit'] == '') {
 	    $query->bind_param("iis",$id,$one,$empty_remark);
 	    $query->execute();
 	    $query->store_result();
+	    $track_display_rows = $query->num_rows;
     	$log_meeting_tracking = fetch($query);
 
 		if(@$meeting->reminder_date != '0000-00-00')
@@ -180,6 +181,11 @@ if(@$_POST['all_ids_to_edit'] == '') {
 			$tracking_table .= "<td style='vertical-align:middle;text-align:right;padding:0 2px 0 6px;width:91%;border:none!important;'><span class='marginRight5 dir-rtl unicode-bidi-embed' style='white-space:nowrap;vertical-align:middle;'>".$action_date." -</span> <span class='colorRed dir-rtl unicode-bidi-embed' style='white-space:normal;word-wrap:break-word;overflow-wrap:break-word;vertical-align:middle;'>".html_entity_decode($remark)."</span></td>";
 			$tracking_table .= "</tr>";
 	    }
+
+		if($track_display_rows == 0){
+			$mm_track_label = (@$meeting->p_lang != 'HE') ? 'Task in tracking' : 'משימה במעקב';
+			$tracking_table .= "<tr class='bg-fceaea alignCenter'><td colspan='2' style='vertical-align:middle;text-align:right;padding:0 8px 0 6px;border:none!important;'><span class='colorRed dir-rtl unicode-bidi-embed' style='vertical-align:middle;'>".$mm_track_label."</span></td></tr>";
+		}
 
 		$tracking_table .= "</table>";
 
