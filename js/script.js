@@ -646,7 +646,7 @@ function fillContentTaskDetails(meeting_id,iteration,task_details,forShare,withP
 
 function fillMultiTasks(meeting_id,task_details,forShare){
 	let content = '<table dir="rtl" width="100%">';
-	let headerText = forShare ? task_details[1] : task_details[0]+'<br/>'+task_details[1];
+	let headerText = forShare ? (task_details[1] || task_details[0]) : task_details[0]+'<br/>'+task_details[1];
 	content += '<tr class="alignCenter height26"><td class="bgColorBlue2 colorWhite font-weight-bold alignCenter paddingTop2 paddingBottom5 border-blue2">'+headerText+'</td></tr>';
 	content += task_details[2];
 	content += '<tr class="alignCenter"><td colspan="3"><img src="uploads/'+task_details[3]+'" width="480" alt="" /></td></tr>';
