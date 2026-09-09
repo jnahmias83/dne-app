@@ -185,11 +185,9 @@ include 'menu_budget_reports.php';
 										<div class="card-body">
 											<p>
 											   <strong class="label-font-size">PDF תשלום</strong>
-											   <br/>
-											   <label for="pdf_payment" class="custom-file-upload marginTop5">בחר קובץ PDF</label>
-											   <span id="pdf_payment_filename" class="marginRight5 fontSize13"></span>
-											   <input type="file" name="pdf_payment" id="pdf_payment" accept="application/pdf,.pdf" hidden />
-											   <?php if($id > 0) { ?>&nbsp;<a href="uploads/<?=@$payment->pdf_payment?>" target="_blank"><?=@$payment->pdf_payment?></a><?php } ?>
+											   <br/>					
+											   <input type="file" class="marginTop5 width95Percents" name="pdf_payment" id="pdf_payment" accept=".pdf" />
+											   <?php if($id > 0) { ?>&nbsp;<a href="uploads/<?=@$payment->pdf_payment?>" target="_blank"><?=@$payment->pdf_payment?></a><?php } ?>		
 											</p>
 											<p>
 											  <strong class="label-font-size">תאריך תשלום</strong>
@@ -211,11 +209,9 @@ include 'menu_budget_reports.php';
 										<div class="card-body">
 										   <p>
 											 <strong class="label-font-size">PDF חשבונית</strong>
-											 <br/>
-											 <label for="pdf_invoice" class="custom-file-upload marginTop5">בחר קובץ PDF</label>
-											 <span id="pdf_invoice_filename" class="marginRight5 fontSize13"></span>
-											 <input type="file" name="pdf_invoice" id="pdf_invoice" accept="application/pdf,.pdf" hidden />
-											 <?php if($id > 0) { ?>&nbsp;<a href="uploads/<?=@$payment->pdf_invoice?>" target="_blank"><?=@$payment->pdf_invoice?></a><?php } ?>
+											 <br/>					
+											 <input type="file" class="marginTop5 width95Percents" name="pdf_invoice" id="pdf_invoice" accept=".pdf" />
+											 <?php if($id > 0) { ?>&nbsp;<a href="uploads/<?=@$payment->pdf_invoice?>" target="_blank"><?=@$payment->pdf_invoice?></a><?php } ?>		
 										   </p>
 										   <p>
 											 <strong class="label-font-size">תאריך חשבונית</strong>
@@ -262,10 +258,6 @@ include 'menu_budget_reports.php';
 <script>
 $('#suppliers').chosen();
 
-$('#pdf_payment,#pdf_invoice').on('change', function(){
-	$('#' + this.id + '_filename').text(this.files && this.files.length ? this.files[0].name : '');
-});
-
 $('#save_btn').click(function(e) {
 	let pdf_payment_file = $('#pdf_payment')[0].files[0];
 	let pdf_invoice_file = $('#pdf_invoice')[0].files[0];
@@ -276,7 +268,7 @@ $('#save_btn').click(function(e) {
 			if (file.size === 0) { reject('empty:' + file.name); return; }
 			let reader = new FileReader();
 			reader.onload = function(e) {
-				resolve({ blob: new Blob([e.target.result], { type: file.type || 'application/pdf' }), name: (file.name && /\.pdf$/i.test(file.name)) ? file.name : 'document.pdf' });
+				resolve({ blob: new Blob([e.target.result], { type: file.type || 'application/pdf' }), name: file.name });
 			};
 			reader.onerror = function() { reject('read:' + file.name); };
 			reader.readAsArrayBuffer(file);
@@ -291,7 +283,7 @@ $('#save_btn').click(function(e) {
 			cache: false,
 			processData: false,
 			contentType: false,
-			timeout: 120000,
+			timeout: 60000,
 			beforeSend: function() {
 				$("#progress-popup").show();
 				$("#div_message_alert_down").html('');
@@ -318,9 +310,7 @@ $('#save_btn').click(function(e) {
 				$('#div_message_alert_down').html("<span style='color:red;font-size:13px;'>Upload failed (" + status + "). Please try again.</span>");
 			},
 			success: function(data) {
-				if(data == 'too_large') {
-					$('#div_message_alert_down').html("<span style='color:red;font-size:13px;'>הקובץ כבד מדי (מקסימום 30MB). כווץ אותו או צלם מחדש באיכות נמוכה יותר.</span>");
-				} else if(data == 'empty') {
+				if(data == 'empty') {
 					if($('#paid_amount').val().length == 0)
 						$('#paid_amount').css('border-color','red');
 					else

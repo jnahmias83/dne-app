@@ -155,11 +155,9 @@ include 'menu_budget_reports.php';
 										<div class="card-body">
 											<p>
 												<strong class="label-font-size">PDF הגשה</strong>
-												<br/>
-												<label for="pdf_submission" class="custom-file-upload marginTop5">בחר קובץ PDF</label>
-												<span id="pdf_submission_filename" class="marginRight5 fontSize13"></span>
-												<input type="file" name="pdf_submission" id="pdf_submission" accept="application/pdf,.pdf" hidden />
-												<?php if($id > 0) { ?>&nbsp;<a href="uploads/<?=@$account->pdf_submission?>" target="_blank"><?=@$account->pdf_submission?></a><?php } ?>
+												<br/>					
+												<input type="file" class="marginTop5" name="pdf_submission" id="pdf_submission" accept=".pdf" />
+												<?php if($id > 0) { ?>&nbsp;<a href="uploads/<?=@$account->pdf_submission?>" target="_blank"><?=@$account->pdf_submission?></a><?php } ?>			
 											</p>
 											<p>
 											   <strong class="label-font-size">תאריך הגשה</strong>
@@ -180,11 +178,9 @@ include 'menu_budget_reports.php';
 										<div class="card-body">
 											<p>
 											   <strong class="label-font-size">PDF אישור</strong>
-											   <br/>
-											   <label for="pdf_approval" class="custom-file-upload marginTop5">בחר קובץ PDF</label>
-											   <span id="pdf_approval_filename" class="marginRight5 fontSize13"></span>
-											   <input type="file" name="pdf_approval" id="pdf_approval" accept="application/pdf,.pdf" hidden />
-											   <?php if($id > 0) { ?>&nbsp;<a href="uploads/<?=@$account->pdf_approval?>" target="_blank"><?=@$account->pdf_approval?></a><?php } ?>
+											   <br/>					
+											   <input type="file" class="marginTop5" name="pdf_approval" id="pdf_approval" accept=".pdf" />
+											   <?php if($id > 0) { ?>&nbsp;<a href="uploads/<?=@$account->pdf_approval?>" target="_blank"><?=@$account->pdf_approval?></a><?php } ?>			
 											</p>
 											<p>
 											   <strong class="label-font-size">תאריך אישור</strong>
@@ -243,11 +239,7 @@ $('#suppliers').chosen();
 
 let create_order_from_account = 0;
 
-$('#pdf_submission,#pdf_approval').on('change', function(){
-	$('#' + this.id + '_filename').text(this.files && this.files.length ? this.files[0].name : '');
-});
-
-$('#create_order_cb').click (function (e){
+$('#create_order_cb').click (function (e){  
     if ($(this).is(':checked'))
       create_order_from_account = 1;
     else if(!($(this).is(':checked'))) 
@@ -264,7 +256,7 @@ $('#save_btn').click(function(e) {
 			if (file.size === 0) { reject('empty:' + file.name); return; }
 			let reader = new FileReader();
 			reader.onload = function(e) {
-				resolve({ blob: new Blob([e.target.result], { type: file.type || 'application/pdf' }), name: (file.name && /\.pdf$/i.test(file.name)) ? file.name : 'document.pdf' });
+				resolve({ blob: new Blob([e.target.result], { type: file.type || 'application/pdf' }), name: file.name });
 			};
 			reader.onerror = function() { reject('read:' + file.name); };
 			reader.readAsArrayBuffer(file);
@@ -279,7 +271,7 @@ $('#save_btn').click(function(e) {
 			cache: false,
 			processData: false,
 			contentType: false,
-			timeout: 120000,
+			timeout: 60000,
 			beforeSend: function() {
 				$("#progress-popup").show();
 				$("#div_message_alert_down").html('');
@@ -306,10 +298,6 @@ $('#save_btn').click(function(e) {
 				$('#div_message_alert_down').html("<span style='color:red;font-size:13px;'>Upload failed (" + status + "). Please try again.</span>");
 			},
 			success: function(data) {
-				if(data == 'too_large') {
-					$('#div_message_alert_down').html("<span style='color:red;font-size:13px;'>הקובץ כבד מדי (מקסימום 30MB). כווץ אותו או צלם מחדש באיכות נמוכה יותר.</span>");
-					return;
-				}
 				let url;
 				if($('#from').val() == 'not_app_acts')
 					url = 'not_approved_accounts.php';

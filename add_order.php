@@ -134,11 +134,9 @@ include 'menu_budget_reports.php';
 									<div class="row marginTop10 alignCenter dir-rtl">
 										<div class="col-12">
 											<strong>PDF הזמנה</strong>
-											<br/>
-											<label for="pdf_order" class="custom-file-upload marginTop10">בחר קובץ PDF</label>
-											<span id="pdf_order_filename" class="marginRight5 fontSize13"></span>
-											<input type="file" name="pdf_order" id="pdf_order" accept="application/pdf,.pdf" hidden />
-											<?php if($id > 0) { ?>&nbsp;<a href="uploads/<?=@$order->pdf_order?>" target="_blank"><?=@$order->pdf_order?></a><?php } ?>
+											<br/>					
+											<input type="file" class="marginTop10" name="pdf_order" id="pdf_order" accept=".pdf" />
+											<?php if($id > 0) { ?>&nbsp;<a href="uploads/<?=@$order->pdf_order?>" target="_blank"><?=@$order->pdf_order?></a><?php } ?>			
 										</div>
 									</div>	
 									
@@ -197,10 +195,6 @@ include 'menu_budget_reports.php';
 <script>
 $('#suppliers').chosen();
 
-$('#pdf_order').on('change', function(){
-	$('#pdf_order_filename').text(this.files && this.files.length ? this.files[0].name : '');
-});
-
 $('#save_btn').click(function(e) {
 	let pdf_file = $('#pdf_order')[0].files[0];
 
@@ -212,7 +206,7 @@ $('#save_btn').click(function(e) {
 			cache: false,
 			processData: false,
 			contentType: false,
-			timeout: 120000,
+			timeout: 60000,
 			beforeSend: function() {
 				$("#progress-popup").show();
 				$("#div_message_alert_down").html('');
@@ -239,9 +233,7 @@ $('#save_btn').click(function(e) {
 				$('#div_message_alert_down').html("<span style='color:red;font-size:13px;'>Upload failed (" + status + "). Please try again.</span>");
 			},
 			success: function(data) {
-				if(data == 'too_large') {
-					$('#div_message_alert_down').html("<span style='color:red;font-size:13px;'>הקובץ כבד מדי (מקסימום 30MB). כווץ אותו או צלם מחדש באיכות נמוכה יותר.</span>");
-				} else if(data == 'empty' || data.indexOf('no_file') === 0) {
+				if(data == 'empty' || data.indexOf('no_file') === 0) {
 					if($('#sum_order').val().length == 0)
 						$('#sum_order').css('border-color','red');
 					else
@@ -250,6 +242,10 @@ $('#save_btn').click(function(e) {
 						$('#signature_date').css('border-color','red');
 					else
 						$('#signature_date').css('border-color','initial');
+					if($('#pdf_order').val().length == 0)
+						$('#pdf_order').css('border-color','red');
+					else
+						$('#pdf_order').css('border-color','initial');
 					$('#div_message_alert_down').html("<span style='color:red;font-size:13px;'>Please fill all the mandatory fields</span>");
 				} else if(data == 'inserted' || data == 'updated') {
 					let url;
@@ -283,8 +279,7 @@ $('#save_btn').click(function(e) {
 		let reader = new FileReader();
 		reader.onload = function(e) {
 			let blob = new Blob([e.target.result], { type: pdf_file.type || 'application/pdf' });
-			let safe_name = (pdf_file.name && /\.pdf$/i.test(pdf_file.name)) ? pdf_file.name : 'order.pdf';
-			form_data.append('pdf_order', blob, safe_name);
+			form_data.append('pdf_order', blob, pdf_file.name);
 			doSubmit(form_data);
 		};
 		reader.onerror = function() {

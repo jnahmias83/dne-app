@@ -216,11 +216,9 @@ include 'menu_budget_reports.php';
 									<div class="row marginTop20">
 										<div class="col-12">
 											<strong><?=@$pdf_evaluation_label?></strong>
-											<br/>
-											<label for="pdf_evaluation" class="custom-file-upload marginTop5">בחר קובץ PDF</label>
-											<span id="pdf_evaluation_filename" class="marginRight5 fontSize13"></span>
-											<input type="file" name="pdf_evaluation" id="pdf_evaluation" accept="application/pdf,.pdf" hidden />
-											<?php if($id > 0) { ?><div><a href="uploads/<?=@$budget_cost_eval->pdf_evaluation?>" target="_blank"><?=@$budget_cost_eval->pdf_evaluation?></a></div><?php } ?>
+											<br/>					
+											<input type="file" class="marginTop5" name="pdf_evaluation" id="pdf_evaluation" accept=".pdf" />
+											<?php if($id > 0) { ?><div><a href="uploads/<?=@$budget_cost_eval->pdf_evaluation?>" target="_blank"><?=@$budget_cost_eval->pdf_evaluation?></a></div><?php } ?>			
 										</div>
 									</div>
 									
@@ -372,10 +370,6 @@ include 'menu_budget_reports.php';
 <script>
 let domain_type;
 
-$('#pdf_evaluation').on('change', function(){
-	$('#pdf_evaluation_filename').text(this.files && this.files.length ? this.files[0].name : '');
-});
-
 function displayDomainsList() {
 	if($("input:radio[name='domain_type']").is(':checked'))
 	    domain_type = $('#domain_type:checked').val();
@@ -419,12 +413,11 @@ $('#add_costs_eval_modul_btn').click (function (e){
 			cache: false,
 			processData: false,
 			contentType: false,
-			timeout: 120000,
+			timeout: 60000,
 			error: function(xhr, status) {
 				alert('Upload failed (' + status + '). Please try again.');
 			},
 			success: function(data) {
-				if(data == 'too_large') { alert('הקובץ כבד מדי (מקסימום 30MB). כווץ אותו או צלם מחדש באיכות נמוכה יותר.'); return; }
 				location.href = 'add_cost_eval.php?id='+data+'&project_id='+$('#project_id').val();
 			}
 		});
@@ -434,7 +427,7 @@ $('#add_costs_eval_modul_btn').click (function (e){
 		if (pdf_eval_file_new.size === 0) { alert('File not ready. Please download it first.'); return; }
 		let r = new FileReader();
 		r.onload = function(e) {
-			form_data.append('pdf_evaluation', new Blob([e.target.result], { type: pdf_eval_file_new.type || 'application/pdf' }), (pdf_eval_file_new.name && /\.pdf$/i.test(pdf_eval_file_new.name)) ? pdf_eval_file_new.name : 'evaluation.pdf');
+			form_data.append('pdf_evaluation', new Blob([e.target.result], { type: pdf_eval_file_new.type || 'application/pdf' }), pdf_eval_file_new.name);
 			doAjaxCem(form_data);
 		};
 		r.readAsArrayBuffer(pdf_eval_file_new);
@@ -575,7 +568,7 @@ $('#save_btn').click (function (e){
 			cache: false,
 			processData: false,
 			contentType: false,
-			timeout: 120000,
+			timeout: 60000,
 			beforeSend: function() {
 				$("#progress-popup").show();
 				let progress = 0;
@@ -598,7 +591,6 @@ $('#save_btn').click (function (e){
 				alert('Upload failed (' + status + '). Please try again.');
 			},
 			success: function(data) {
-				if(data == 'too_large') { alert('הקובץ כבד מדי (מקסימום 30MB). כווץ אותו או צלם מחדש באיכות נמוכה יותר.'); return; }
 				location.href = 'budget_costs_eval.php?project_id='+$('#project_id').val();
 			}
 		});
@@ -608,7 +600,7 @@ $('#save_btn').click (function (e){
 		if (pdf_eval_file.size === 0) { alert('File not ready. Please download it first.'); return; }
 		let r = new FileReader();
 		r.onload = function(e) {
-			form_data.append('pdf_evaluation', new Blob([e.target.result], { type: pdf_eval_file.type || 'application/pdf' }), (pdf_eval_file.name && /\.pdf$/i.test(pdf_eval_file.name)) ? pdf_eval_file.name : 'evaluation.pdf');
+			form_data.append('pdf_evaluation', new Blob([e.target.result], { type: pdf_eval_file.type || 'application/pdf' }), pdf_eval_file.name);
 			doAjaxSave(form_data);
 		};
 		r.readAsArrayBuffer(pdf_eval_file);
