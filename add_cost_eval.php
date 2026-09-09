@@ -216,9 +216,11 @@ include 'menu_budget_reports.php';
 									<div class="row marginTop20">
 										<div class="col-12">
 											<strong><?=@$pdf_evaluation_label?></strong>
-											<br/>					
-											<input type="file" class="marginTop5" name="pdf_evaluation" id="pdf_evaluation" accept=".pdf" />
-											<?php if($id > 0) { ?><div><a href="uploads/<?=@$budget_cost_eval->pdf_evaluation?>" target="_blank"><?=@$budget_cost_eval->pdf_evaluation?></a></div><?php } ?>			
+											<br/>
+											<label for="pdf_evaluation" class="custom-file-upload marginTop5">בחר קובץ PDF</label>
+											<span id="pdf_evaluation_filename" class="marginRight5 fontSize13"></span>
+											<input type="file" name="pdf_evaluation" id="pdf_evaluation" hidden />
+											<?php if($id > 0) { ?><div><a href="uploads/<?=@$budget_cost_eval->pdf_evaluation?>" target="_blank"><?=@$budget_cost_eval->pdf_evaluation?></a></div><?php } ?>
 										</div>
 									</div>
 									
@@ -370,6 +372,10 @@ include 'menu_budget_reports.php';
 <script>
 let domain_type;
 
+$('#pdf_evaluation').on('change', function(){
+	$('#pdf_evaluation_filename').text(this.files && this.files.length ? this.files[0].name : '');
+});
+
 function displayDomainsList() {
 	if($("input:radio[name='domain_type']").is(':checked'))
 	    domain_type = $('#domain_type:checked').val();
@@ -425,15 +431,9 @@ $('#add_costs_eval_modul_btn').click (function (e){
 
 	if (pdf_eval_file_new) {
 		if (pdf_eval_file_new.size === 0) { alert('File not ready. Please download it first.'); return; }
-		let r = new FileReader();
-		r.onload = function(e) {
-			form_data.append('pdf_evaluation', new Blob([e.target.result], { type: pdf_eval_file_new.type || 'application/pdf' }), pdf_eval_file_new.name);
-			doAjaxCem(form_data);
-		};
-		r.readAsArrayBuffer(pdf_eval_file_new);
-	} else {
-		doAjaxCem(form_data);
-	}		       			   
+		form_data.append('pdf_evaluation', pdf_eval_file_new);
+	}
+	doAjaxCem(form_data);
 })
 
 function editeCostsEvalModul(cem_id) {
@@ -598,15 +598,9 @@ $('#save_btn').click (function (e){
 
 	if (pdf_eval_file) {
 		if (pdf_eval_file.size === 0) { alert('File not ready. Please download it first.'); return; }
-		let r = new FileReader();
-		r.onload = function(e) {
-			form_data.append('pdf_evaluation', new Blob([e.target.result], { type: pdf_eval_file.type || 'application/pdf' }), pdf_eval_file.name);
-			doAjaxSave(form_data);
-		};
-		r.readAsArrayBuffer(pdf_eval_file);
-	} else {
-		doAjaxSave(form_data);
-	}										       			   
+		form_data.append('pdf_evaluation', pdf_eval_file);
+	}
+	doAjaxSave(form_data);
 })
 
 $('#cancel_btn').click(function(){

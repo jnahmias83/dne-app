@@ -185,9 +185,11 @@ include 'menu_budget_reports.php';
 										<div class="card-body">
 											<p>
 											   <strong class="label-font-size">PDF תשלום</strong>
-											   <br/>					
-											   <input type="file" class="marginTop5 width95Percents" name="pdf_payment" id="pdf_payment" accept=".pdf" />
-											   <?php if($id > 0) { ?>&nbsp;<a href="uploads/<?=@$payment->pdf_payment?>" target="_blank"><?=@$payment->pdf_payment?></a><?php } ?>		
+											   <br/>
+											   <label for="pdf_payment" class="custom-file-upload marginTop5">בחר קובץ PDF</label>
+											   <span id="pdf_payment_filename" class="marginRight5 fontSize13"></span>
+											   <input type="file" name="pdf_payment" id="pdf_payment" hidden />
+											   <?php if($id > 0) { ?>&nbsp;<a href="uploads/<?=@$payment->pdf_payment?>" target="_blank"><?=@$payment->pdf_payment?></a><?php } ?>
 											</p>
 											<p>
 											  <strong class="label-font-size">תאריך תשלום</strong>
@@ -209,9 +211,11 @@ include 'menu_budget_reports.php';
 										<div class="card-body">
 										   <p>
 											 <strong class="label-font-size">PDF חשבונית</strong>
-											 <br/>					
-											 <input type="file" class="marginTop5 width95Percents" name="pdf_invoice" id="pdf_invoice" accept=".pdf" />
-											 <?php if($id > 0) { ?>&nbsp;<a href="uploads/<?=@$payment->pdf_invoice?>" target="_blank"><?=@$payment->pdf_invoice?></a><?php } ?>		
+											 <br/>
+											 <label for="pdf_invoice" class="custom-file-upload marginTop5">בחר קובץ PDF</label>
+											 <span id="pdf_invoice_filename" class="marginRight5 fontSize13"></span>
+											 <input type="file" name="pdf_invoice" id="pdf_invoice" hidden />
+											 <?php if($id > 0) { ?>&nbsp;<a href="uploads/<?=@$payment->pdf_invoice?>" target="_blank"><?=@$payment->pdf_invoice?></a><?php } ?>
 										   </p>
 										   <p>
 											 <strong class="label-font-size">תאריך חשבונית</strong>
@@ -258,22 +262,13 @@ include 'menu_budget_reports.php';
 <script>
 $('#suppliers').chosen();
 
+$('#pdf_payment,#pdf_invoice').on('change', function(){
+	$('#' + this.id + '_filename').text(this.files && this.files.length ? this.files[0].name : '');
+});
+
 $('#save_btn').click(function(e) {
 	let pdf_payment_file = $('#pdf_payment')[0].files[0];
 	let pdf_invoice_file = $('#pdf_invoice')[0].files[0];
-
-	function readFileAsBlob(file) {
-		return new Promise(function(resolve, reject) {
-			if (!file) { resolve(null); return; }
-			if (file.size === 0) { reject('empty:' + file.name); return; }
-			let reader = new FileReader();
-			reader.onload = function(e) {
-				resolve({ blob: new Blob([e.target.result], { type: file.type || 'application/pdf' }), name: file.name });
-			};
-			reader.onerror = function() { reject('read:' + file.name); };
-			reader.readAsArrayBuffer(file);
-		});
-	}
 
 	function doSubmit(form_data) {
 		$.ajax({
@@ -341,18 +336,13 @@ $('#save_btn').click(function(e) {
 	form_data.append('invoice_date', $('#invoice_date').val());
 	form_data.append('vat', $('#vat').val());
 
-	Promise.all([readFileAsBlob(pdf_payment_file), readFileAsBlob(pdf_invoice_file)])
-		.then(function(results) {
-			if (results[0]) form_data.append('pdf_payment', results[0].blob, results[0].name);
-			if (results[1]) form_data.append('pdf_invoice', results[1].blob, results[1].name);
-			doSubmit(form_data);
-		})
-		.catch(function(err) {
-			let msg = err.indexOf('empty:') === 0
-				? 'File not ready. Please download it first and try again.'
-				: 'Cannot read file. Please try again.';
-			$('#div_message_alert_down').html("<span style='color:red;font-size:13px;'>" + msg + "</span>");
-		});
+	if ((pdf_payment_file && pdf_payment_file.size === 0) || (pdf_invoice_file && pdf_invoice_file.size === 0)) {
+		$('#div_message_alert_down').html("<span style='color:red;font-size:13px;'>File not ready. Please download it first and try again.</span>");
+		return;
+	}
+	if (pdf_payment_file) form_data.append('pdf_payment', pdf_payment_file);
+	if (pdf_invoice_file) form_data.append('pdf_invoice', pdf_invoice_file);
+	doSubmit(form_data);
 })
 $('#cancel_btn').click(function(){
     let url; 
