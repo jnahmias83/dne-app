@@ -149,7 +149,7 @@ $projects_list_array = $deduped_projects_list_array;
 									<li><a class="dropdown-item" href="graphic_settings.php">הגדרות גוונים ורקע</a></li>
 									<li><a class="dropdown-item" href="logo_managment.php">תמונות לוגו</a></li>
 									<li><hr class="dropdown-divider"></li>
-									<li><a class="dropdown-item" href="kill_session.php"><i class="fa-solid fa-sign-out" style="margin-left:6px;color:#000;"></i>התנתקות</a></li>
+									<li><a class="dropdown-item" href="kill_session.php"><i class="fa-solid fa-sign-out" style="margin-left:6px;color:#000;font-size:12px;"></i>התנתקות</a></li>
 								</ul>
 							</li>
                          </ul>
