@@ -5363,3 +5363,86 @@ $(function() {
     document.querySelectorAll('[id^="subject_"],[id^="area_"],[id^="description_"]').forEach(highlightEl);
 });
 </script>
+
+<style>
+/* Repli / depli des chapitres (fleche devant le nom du chapitre) */
+.chapter-collapse-toggle{
+	display:inline-block;
+	width:15px;
+	cursor:pointer;
+	font-size:11px;
+	line-height:1;
+	margin-inline-end:5px;
+	user-select:none;
+	transition:transform .12s ease;
+	color:#1b3a57;
+	vertical-align:middle;
+}
+.chapter-collapse-toggle.is-collapsed{
+	transform:rotate(-90deg);
+}
+</style>
+<script>
+/* Repli / depli des taches par chapitre. 100% cote client, aucune modif serveur/DB.
+   Les en-tetes de chapitre sont les <tr class="bgColor-cbddec"> de #meetings_table. */
+(function(){
+	var table = document.getElementById('meetings_table');
+	if(!table) return;
+
+	var pidEl = document.getElementById('project_id');
+	var storeKey = 'dne_meetings_collapsed_' + ((pidEl && pidEl.value) || 'default');
+
+	function loadCollapsed(){
+		try { return JSON.parse(localStorage.getItem(storeKey)) || []; }
+		catch(e){ return []; }
+	}
+	function saveCollapsed(list){
+		try { localStorage.setItem(storeKey, JSON.stringify(list)); } catch(e){}
+	}
+
+	var headers = table.querySelectorAll('tr.bgColor-cbddec');
+	if(!headers.length) return;
+
+	var initiallyCollapsed = loadCollapsed();
+
+	headers.forEach(function(header){
+		var td = header.querySelector('td');
+		if(!td) return;
+
+		var label = (header.textContent || '').trim();
+
+		var toggle = document.createElement('span');
+		toggle.className = 'chapter-collapse-toggle';
+		toggle.textContent = '▾';
+		toggle.title = 'Ouvrir / fermer le chapitre';
+		td.insertBefore(toggle, td.firstChild);
+
+		function groupRows(){
+			var rows = [], el = header.nextElementSibling;
+			while(el && !(el.tagName === 'TR' && el.classList.contains('bgColor-cbddec'))){
+				if(el.tagName === 'TR') rows.push(el);
+				el = el.nextElementSibling;
+			}
+			return rows;
+		}
+
+		function apply(isCollapsed, persist){
+			groupRows().forEach(function(r){ r.hidden = isCollapsed; });
+			toggle.classList.toggle('is-collapsed', isCollapsed);
+			if(!persist) return;
+			var list = loadCollapsed(), i = list.indexOf(label);
+			if(isCollapsed && i === -1) list.push(label);
+			if(!isCollapsed && i !== -1) list.splice(i, 1);
+			saveCollapsed(list);
+		}
+
+		toggle.addEventListener('click', function(ev){
+			ev.stopPropagation();
+			ev.preventDefault();
+			apply(!toggle.classList.contains('is-collapsed'), true);
+		});
+
+		if(label && initiallyCollapsed.indexOf(label) !== -1) apply(true, false);
+	});
+})();
+</script>
