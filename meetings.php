@@ -5370,13 +5370,13 @@ $(function() {
 	display:inline-flex;
 	align-items:center;
 	justify-content:center;
-	width:22px;
-	height:22px;
+	width:18px;
+	height:18px;
 	cursor:pointer;
-	font-size:15px;
+	font-size:12px;
 	font-weight:bold;
 	line-height:1;
-	margin-inline-end:7px;
+	margin-inline-end:6px;
 	user-select:none;
 	transition:transform .12s ease;
 	color:#0d2c47;
