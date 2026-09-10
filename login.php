@@ -96,7 +96,12 @@ if(isset($_POST['login_btn'])) {
 							</div>
 						</div>
 
-						<?php if(defined('GOOGLE_CLIENT_ID') && GOOGLE_CLIENT_ID !== ''): ?>
+						<?php
+						// Le bouton Google ne s'affiche que sur le domaine public (origine autorisee cote Google).
+						// Sur dne.local / localhost il reste masque : Google refuserait la connexion de toute facon.
+						$google_login_enabled = defined('GOOGLE_CLIENT_ID') && GOOGLE_CLIENT_ID !== ''
+							&& stripos(@$_SERVER['HTTP_HOST'], 'davidnahmiasengineering.com') !== false;
+						if($google_login_enabled): ?>
 						<div class="row marginTop15 alignCenter">
 							<div class="col-md-12 google-signin-wrap">
 								<div class="google-divider"><span>or</span></div>
