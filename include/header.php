@@ -3,17 +3,31 @@ ini_set('display_errors','1');
 error_reporting(E_ALL);
 
 if (session_status() == PHP_SESSION_NONE) {
-    ini_set('session.gc_maxlifetime',86400);
+    // Duree de vie de la session : 30 jours (2 592 000 s). Etait 86400 (24h) -> deconnexion quotidienne.
+    ini_set('session.gc_maxlifetime',2592000);
     ini_set('session.gc_probability',0);
-    
+
+    $session_cookie_secure = !empty($_SERVER['HTTPS']) || (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https');
+
     session_set_cookie_params([
-        'lifetime' => 86400,
+        'lifetime' => 2592000,
         'path' => '/',
-        'secure' => !empty($_SERVER['HTTPS']) || (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https'),
-        'httponly' => true,  
+        'secure' => $session_cookie_secure,
+        'httponly' => true,
         'samesite' => 'Lax'
     ]);
     session_start();
+
+    // Session glissante : tant que l'utilisateur navigue, on repousse l'expiration du cookie a +30 jours.
+    if(isset($_SESSION['id_user'])){
+        setcookie(session_name(), session_id(), [
+            'expires'  => time() + 2592000,
+            'path'     => '/',
+            'secure'   => $session_cookie_secure,
+            'httponly' => true,
+            'samesite' => 'Lax',
+        ]);
+    }
 }
 
 if((strpos($_SERVER['REQUEST_URI'],'login') === false 

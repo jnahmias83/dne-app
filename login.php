@@ -96,6 +96,25 @@ if(isset($_POST['login_btn'])) {
 							</div>
 						</div>
 
+						<?php if(defined('GOOGLE_CLIENT_ID') && GOOGLE_CLIENT_ID !== ''): ?>
+						<div class="row marginTop15 alignCenter">
+							<div class="col-md-12 google-signin-wrap">
+								<div class="google-divider"><span>or</span></div>
+								<div id="g_id_onload"
+								     data-client_id="<?=htmlspecialchars(GOOGLE_CLIENT_ID)?>"
+								     data-callback="handleGoogleCredential"
+								     data-auto_prompt="false"></div>
+								<div class="g_id_signin" data-type="standard" data-shape="pill" data-theme="outline"
+								     data-text="signin_with" data-size="large" data-logo_alignment="left"></div>
+								<button type="button" id="google_native_btn" class="btn google-native-btn" style="display:none;"
+								        onclick="if(window.AndroidNative&&AndroidNative.googleSignIn){AndroidNative.googleSignIn();}">
+									Se connecter avec Google
+								</button>
+							</div>
+						</div>
+						<script src="https://accounts.google.com/gsi/client" async defer></script>
+						<?php endif; ?>
+
 						<!-- Version: <?=trim(@file_get_contents(__DIR__.'/version.txt'))?> -->
 					</div>
 					<div class="col-md-4"></div>
@@ -106,6 +125,41 @@ if(isset($_POST['login_btn'])) {
 </html>
 
 <script>
+// Dans l'app DNEMobile (WebView), Google bloque le bouton "Sign in with Google" standard.
+// On le masque et on affiche un bouton qui declenche la connexion Google NATIVE de l'app ;
+// l'app renverra le jeton via handleGoogleCredential({credential:'...'}).
+(function(){
+	function swapForNative(){
+		if(!(window.AndroidNative && AndroidNative.googleSignIn)) return;
+		var gis = document.querySelector('.g_id_signin');
+		var onload = document.getElementById('g_id_onload');
+		var nativeBtn = document.getElementById('google_native_btn');
+		if(gis) gis.style.display = 'none';
+		if(onload) onload.style.display = 'none';
+		if(nativeBtn) nativeBtn.style.display = 'inline-block';
+	}
+	if(document.readyState !== 'loading') swapForNative();
+	else document.addEventListener('DOMContentLoaded', swapForNative);
+})();
+
+function handleGoogleCredential(response){
+	if(!response || !response.credential){ return; }
+	let fd = new FormData();
+	fd.append('credential', response.credential);
+	fetch('google_login.php', { method:'POST', body: fd })
+		.then(function(r){ return r.text(); })
+		.then(function(t){
+			t = (t || '').trim();
+			if(t === 'ok'){ window.location.href = 'projects.php'; return; }
+			let msg;
+			if(t === 'not_linked') msg = "This Google account is not linked to a DNE user. Contact the administrator.";
+			else if(t === 'not_configured') msg = "Google sign-in is not configured yet.";
+			else msg = "Google sign-in failed. Please try again.";
+			$('#div_alert').find('div').text(msg);
+		})
+		.catch(function(){ $('#div_alert').find('div').text("Google sign-in failed. Please try again."); });
+}
+
 function validPassword(){
   let upperCase = new RegExp('[A-Z]');
   let lowerCase = new RegExp('[a-z]');
@@ -132,5 +186,46 @@ function validPassword(){
 .btn:hover {
    background-color:#3370d6;
    color: white;
+}
+
+.google-signin-wrap {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+.google-divider {
+	display: flex;
+	align-items: center;
+	width: 220px;
+	max-width: 80vw;
+	color: #888;
+	font-size: 12px;
+	margin: 6px 0 12px;
+}
+.google-divider::before,
+.google-divider::after {
+	content: "";
+	flex: 1;
+	height: 1px;
+	background: #d0d0d0;
+}
+.google-divider span {
+	padding: 0 10px;
+}
+.g_id_signin {
+	display: inline-block;
+}
+.google-native-btn {
+	background-color: #fff;
+	color: #3c4043;
+	border: 1px solid #dadce0;
+	border-radius: 20px;
+	padding: 8px 22px;
+	font-size: 14px;
+	font-weight: 500;
+}
+.google-native-btn:hover {
+	background-color: #f7f8f8;
+	color: #3c4043;
 }
 </style>
