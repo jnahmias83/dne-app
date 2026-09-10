@@ -5367,16 +5367,26 @@ $(function() {
 <style>
 /* Repli / depli des chapitres (fleche devant le nom du chapitre) */
 .chapter-collapse-toggle{
-	display:inline-block;
-	width:15px;
+	display:inline-flex;
+	align-items:center;
+	justify-content:center;
+	width:22px;
+	height:22px;
 	cursor:pointer;
-	font-size:11px;
+	font-size:15px;
+	font-weight:bold;
 	line-height:1;
-	margin-inline-end:5px;
+	margin-inline-end:7px;
 	user-select:none;
 	transition:transform .12s ease;
-	color:#1b3a57;
+	color:#0d2c47;
+	background:#ffffff;
+	border:1px solid #7fa8c9;
+	border-radius:4px;
 	vertical-align:middle;
+}
+.chapter-collapse-toggle:hover{
+	background:#eaf3fb;
 }
 .chapter-collapse-toggle.is-collapsed{
 	transform:rotate(-90deg);
