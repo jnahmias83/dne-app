@@ -148,6 +148,8 @@ $projects_list_array = $deduped_projects_list_array;
 									<li><a class="dropdown-item" href="meeting_types_managment.php">ניהול סוגי ישיבות</a></li>
 									<li><a class="dropdown-item" href="graphic_settings.php">הגדרות גוונים ורקע</a></li>
 									<li><a class="dropdown-item" href="logo_managment.php">תמונות לוגו</a></li>
+									<li><hr class="dropdown-divider"></li>
+									<li><a class="dropdown-item" href="kill_session.php">התנתקות</a></li>
 								</ul>
 							</li>
                          </ul>
