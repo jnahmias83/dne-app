@@ -16,49 +16,13 @@ $query->execute();
 $query->store_result();
 $project = fetch_unique($query);
 
-$query = $mysqli->prepare("SELECT max(id_display) AS max_id,
-                          min(id_display) AS min_id 
-						  FROM dne_chapters WHERE id_project = ?");
-$query->bind_param("i",$project_id);
-$query->execute(); 
-$query->store_result();
-$chapter = fetch_unique($query);
-
-$query = $mysqli->prepare("SELECT * FROM dne_chapters 
+$query = $mysqli->prepare("SELECT * FROM dne_chapters
                           WHERE id_project = ? ORDER BY id_display");
 $query->bind_param("i",$project_id);
 $query->execute(); 
 $query->store_result();
 $chapters_num_rows = $query->num_rows;
 $chapters = fetch($query);
-
-if($chapters_num_rows > 0){
-    $last_chapter = null;
-    $other_chapters = [];
-
-    $max_display = null;
-
-	if(!empty($chapters) && is_array($chapters)){
-		$max_display = $chapters[0]->id_display;
-		foreach ($chapters as $c){
-			if ($c->id_display > $max_display){
-				$max_display = $c->id_display;
-			}
-		}
-	}
-
-    foreach($chapters as $item){
-        if ($item->id_display == $max_display){
-            $last_chapter = $item;    
-        } else {
-            $other_chapters[] = $item;  
-        }
-    }
-
-    if ($last_chapter !== null){
-        $chapters = array_merge([$last_chapter],$other_chapters);
-    }
-}
 
 include 'menu_tasks.php';
 ?>
@@ -95,37 +59,30 @@ include 'menu_tasks.php';
 				<?php if($chapters_num_rows > 0) { ?>		
 					<div class="row fontSize14 alignCenter">
 						<div align="center" class="col-md-12 mx-2">
-							<table id="chapters_list" border="1" dir="rtl">					
+							<table id="chapters_list" border="1" dir="rtl">
 								<tr class="bgColorSilver height50">
 									<th class="alignCenter" width="50px;">&nbsp;</th>
 									<th class="alignCenter" width="150px;">שם</th>
 									<th class="alignCenter" width="40px;">&nbsp;</th>
 									<th class="alignCenter" width="40px;">&nbsp;</th>
 								</tr>
-			
+								<tbody id="chapters_tbody">
 								<?php
 								foreach($chapters as $item) {
 									?>
-									<tr class="height35">
-										<td class="alignCenter"> 
-											<?php if($item->id_display === $chapter->min_id) { ?>
-												<a class="cursor-pointer text-decoration-none" onclick="mooveRecord(<?=@$item->id?>,<?=@$item->id_display?>,'down');">&darr;</a>
-											<?php } else if($item->id_display === $chapter->max_id) { ?>
-												<a class="cursor-pointer text-decoration-none" onclick="mooveRecord(<?=@$item->id?>,<?=@$item->id_display?>,'up');">&uarr;</a>
-											<?php } else { ?>
-											   <a class="cursor-pointer text-decoration-none" onclick="mooveRecord(<?=@$item->id?>,<?=@$item->id_display?>,'down');">&darr;</a> 
-											   &nbsp;&nbsp;  
-											   <a class="cursor-pointer text-decoration-none" onclick="mooveRecord(<?=@$item->id?>,<?=@$item->id_display?>,'up');">&uarr;</a>
-											<?php } ?>
+									<tr class="height35" data-chapter-id="<?=@$item->id?>">
+										<td class="alignCenter">
+											<span class="chapter-drag-handle" title="גרור לשינוי סדר"><i class="fa-solid fa-bars"></i></span>
 										</td>
 										<td class="alignRight paddingRight5"><?=stripNbspArtifact(@$item->name)?></td>
-										<td class="alignCenter"><img src="images/edit-button.svg" class="cursor-pointer" title="עדכן" onclick="location.href='add_chapter.php?id=<?=@$item->id?>&project_id=<?=@$project_id?>'" /></td>									
-										<td class="alignCenter"><img src="images/delete.svg" class="cursor-pointer" title="מחק" onclick="return removeChapter(<?=@$item->id?>);" /></td>	
+										<td class="alignCenter"><img src="images/edit-button.svg" class="cursor-pointer" title="עדכן" onclick="location.href='add_chapter.php?id=<?=@$item->id?>&project_id=<?=@$project_id?>'" /></td>
+										<td class="alignCenter"><img src="images/delete.svg" class="cursor-pointer" title="מחק" onclick="return removeChapter(<?=@$item->id?>);" /></td>
 									</tr>
 									<?php
 								}
 								?>
-							</table>		
+								</tbody>
+							</table>
 						</div>
 					</div>
 				<?php } ?>
@@ -134,25 +91,34 @@ include 'menu_tasks.php';
 	</body>
 </html>
 
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
 <script>
-function mooveRecord(id,id_display,direction){
-	let form_data = new FormData();	
-	form_data.append('id',id);
-	form_data.append('id_display',id_display);	
-	form_data.append('id_project',$('#id_project').val());
-	form_data.append('direction',direction);
-	$.ajax({
-		type: 'POST',
-		url: 'moove_chapter.php',
-		data: form_data,
-		cache: false,
-		processData: false,
-		contentType: false,			
-		success: function(data){
-			location.reload(true);				
-		},
+(function(){
+	let tbody = document.getElementById('chapters_tbody');
+	if(!tbody) return;
+
+	Sortable.create(tbody, {
+		handle: '.chapter-drag-handle',
+		animation: 150,
+		onEnd: function(){
+			let order = Array.prototype.map.call(
+				tbody.querySelectorAll('tr[data-chapter-id]'),
+				function(tr){ return tr.getAttribute('data-chapter-id'); }
+			);
+			let form_data = new FormData();
+			form_data.append('id_project', $('#id_project').val());
+			form_data.append('order', order.join(','));
+			$.ajax({
+				type: 'POST',
+				url: 'reorder_chapters.php',
+				data: form_data,
+				cache: false,
+				processData: false,
+				contentType: false,
+			});
+		}
 	});
-}
+})();
 
 function removeChapter(id){
 	if(confirm("האם אתה בטוח למחוק את הפרק הזה ?")){
@@ -190,5 +156,23 @@ function removeChapter(id){
 
 #a_project_title:hover {
 	color: grey;
+}
+
+.chapter-drag-handle {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 26px;
+	height: 26px;
+	cursor: grab;
+	touch-action: none;
+	color: #555;
+	font-size: 14px;
+}
+.chapter-drag-handle:active {
+	cursor: grabbing;
+}
+#chapters_tbody tr.sortable-ghost {
+	opacity: 0.4;
 }
 </style>
