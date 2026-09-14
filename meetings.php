@@ -1554,12 +1554,13 @@ include 'menu_tasks.php';
 									}
 									
 									if($meetings_num_rows > 0){ ?>
+										<tbody class="chapter-group" data-chapter-id="<?=@$chapter_id?>">
 										<tr class="bgColor-cbddec height40">
 										  <td class="<?=@$border_cell_table_start?> <?=@$border_cell_table_end?>" colspan="<?=sizeof($columns_list_array)+2?>" style="<?=@$text_align?>;<?=@$padding?>:5px;">
 											<a class="text-decoration-underline cursor-pointer" onclick="redirectToAddTaskForThisChapter(<?=@$chapter_id?>);"><strong><?=stripNbspArtifact(@$chapter_name)?></strong></a>
 										  </td>
 										</tr>
-										<?php 	
+										<?php
 										foreach($meetings as $item){
 											$meeting_id = @$item->id;
 											$user_id = @$item->id_user;
@@ -2076,14 +2077,17 @@ include 'menu_tasks.php';
 												</tr>
 											<?php }
 										}
+										?>
+										</tbody>
+										<?php
 									}
 								}
 								?>
-							</table>		
+							</table>
 						</div>
 					</div>
-					<?php } 
-					
+					<?php }
+
 					if(@$is_images == 2 && @$all_meetings_with_images_num_rows > 0){ ?>
 						<div class="row" style="direction:<?=@$dir?>;">
 							<label class="<?=@$margin_all_label?> colorBlack font-weight-bold"><?=@$image_concentration_label?></label>
@@ -5391,10 +5395,35 @@ $(function() {
 .chapter-collapse-toggle.is-collapsed{
 	transform:rotate(-90deg);
 }
+
+/* Poignee de glisser-depose pour reordonner les chapitres depuis meetings.php */
+.meetings-chapter-drag-handle{
+	display:inline-flex;
+	align-items:center;
+	justify-content:center;
+	width:18px;
+	height:18px;
+	cursor:grab;
+	touch-action:none;
+	color:#555;
+	font-size:12px;
+	margin-inline-end:4px;
+	vertical-align:middle;
+}
+.meetings-chapter-drag-handle:active{
+	cursor:grabbing;
+}
+#meetings_table tbody.chapter-group.sortable-ghost{
+	opacity:0.4;
+}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
 <script>
 /* Repli / depli des taches par chapitre. 100% cote client, aucune modif serveur/DB.
-   Les en-tetes de chapitre sont les <tr class="bgColor-cbddec"> de #meetings_table. */
+   Les en-tetes de chapitre sont les <tr class="bgColor-cbddec"> de #meetings_table.
+   Chaque chapitre (en-tete + ses taches) vit dans son propre <tbody class="chapter-group">,
+   ce qui permet aussi de le glisser-deposer en bloc pour changer l'ordre des chapitres
+   (colonne dne_chapters.id_display, reutilisee par chapters.php et meetings_report.php). */
 (function(){
 	var table = document.getElementById('meetings_table');
 	if(!table) return;
@@ -5421,11 +5450,17 @@ $(function() {
 
 		var label = (header.textContent || '').trim();
 
+		var grip = document.createElement('span');
+		grip.className = 'meetings-chapter-drag-handle';
+		grip.innerHTML = '<i class="fa-solid fa-grip-horizontal"></i>';
+		grip.title = 'גרור לשינוי סדר הפרקים';
+		td.insertBefore(grip, td.firstChild);
+
 		var toggle = document.createElement('span');
 		toggle.className = 'chapter-collapse-toggle';
 		toggle.textContent = '▾';
 		toggle.title = 'Ouvrir / fermer le chapitre';
-		td.insertBefore(toggle, td.firstChild);
+		td.insertBefore(toggle, grip.nextSibling);
 
 		function groupRows(){
 			var rows = [], el = header.nextElementSibling;
@@ -5454,5 +5489,23 @@ $(function() {
 
 		if(label && initiallyCollapsed.indexOf(label) !== -1) apply(true, false);
 	});
+
+	if(typeof Sortable !== 'undefined'){
+		Sortable.create(table, {
+			draggable: 'tbody.chapter-group',
+			handle: '.meetings-chapter-drag-handle',
+			animation: 150,
+			onEnd: function(){
+				var order = Array.prototype.map.call(
+					table.querySelectorAll('tbody.chapter-group'),
+					function(tb){ return tb.getAttribute('data-chapter-id'); }
+				);
+				var fd = new FormData();
+				fd.append('id_project', (pidEl && pidEl.value) || '');
+				fd.append('order', order.join(','));
+				fetch('reorder_chapters.php', { method: 'POST', body: fd });
+			}
+		});
+	}
 })();
 </script>
