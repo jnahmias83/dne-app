@@ -1939,7 +1939,7 @@ foreach($all_what_news as $wn){
 										    <a id="send_email_btn" class="btn text-dark bg-white width130">
 												<img src="images/share-icon.svg" width="35" height="25" alt="share icon" />
 												<br/>
-												<strong class="fontSize14">דוא''ל</strong>
+												<strong class="fontSize14">שתף</strong>
 									        </a>
 										</div>
 										<div class="width20Percents">
@@ -2685,7 +2685,60 @@ $(document).ready(function(){
 	});
 	
 	$('[id="send_email_btn"]').on('click', function(){
-       meeting_id = $('#hidden_meeting_id').val(); 
+	   // Dans l'app Android : partage general (tous les medias), meme mecanisme que WhatsApp
+	   // mais sans forcer WhatsApp. Sur PC/navigateur : popup email inchangee (bloc ci-dessous).
+	   if(typeof AndroidNative !== 'undefined' && AndroidNative.shareImageAny){
+	       meeting_id = $('#hidden_meeting_id').val();
+		   project_id = $('#hidden_project_id').val();
+		   $('#modalTaskFollowupActions').modal('hide');
+
+		   let form_data = new FormData();
+		   form_data.append('id_meeting',meeting_id);
+
+		   $.ajax({
+				type: 'POST',
+				url: 'task_details.php',
+				data: form_data,
+				cache: false,
+				processData: false,
+				contentType: false,
+				success: function(data){
+	            	let task_details = data.split('|~|');
+					let content = fillContentTaskDetails(meeting_id,'',task_details,false,true);
+					$('#contentToScreenshot').html(content);
+
+					const element = document.getElementById('contentToScreenshot');
+					const width = element.offsetWidth;
+	                const height = element.offsetHeight;
+
+					html2canvas(element, {
+	                scale: 1
+	                }).then(function(canvas) {
+						let finalCanvas = document.createElement('canvas');
+	                    finalCanvas.width = width;
+	                    finalCanvas.height = height;
+
+						let ctx = finalCanvas.getContext('2d');
+	                    ctx.drawImage(canvas, 0, 0, width, height);
+
+						const imageData = canvas.toDataURL('image/jpeg');
+
+						$.ajax({
+							type: 'POST',
+							url: 'save_image.php',
+							data: {imageData:imageData,meeting_id:meeting_id},
+							success: function(response){
+								const imageUrl = '<?= BASE_URL ?>'+response;
+								shareImage(imageUrl,meeting_id,project_id,'',0,'any');
+							},
+					   });
+	                });
+				},
+		   });
+		   return;
+	   }
+
+       meeting_id = $('#hidden_meeting_id').val();
 	   subject = $('#hidden_name').val();
 	   area = $('#hidden_area').val();
 	   $('.modal-title').html(subject+' - '+area);

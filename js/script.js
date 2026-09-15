@@ -1228,7 +1228,7 @@ async function setProjectModalTitle(project_id, modalSelector, forShare) {
     $(modalSelector + ' .modal-title').html(html);
 }
 
-async function shareImage(imageUrl,meeting_id,project_id,iteration,is_all_ids_to_edit){
+async function shareImage(imageUrl,meeting_id,project_id,iteration,is_all_ids_to_edit,target){
     try {
         const response = await fetch(imageUrl);
         const blob = await response.blob();
@@ -1241,7 +1241,10 @@ async function shareImage(imageUrl,meeting_id,project_id,iteration,is_all_ids_to
             const project_details = await getProjectDetails(project_id);
             const share_text = "שלום,\nשים לב בבקשה למשימה זו בפרוייקט:\n" + (project_details.name_he || '');
 
-            if(typeof AndroidNative !== 'undefined' && AndroidNative.shareImage){
+            if(target === 'any' && typeof AndroidNative !== 'undefined' && AndroidNative.shareImageAny){
+                AndroidNative.shareImageAny(reader.result, share_text);
+            }
+            else if(typeof AndroidNative !== 'undefined' && AndroidNative.shareImage){
                 AndroidNative.shareImage(reader.result, share_text);
             }
             else if(navigator.canShare && navigator.canShare({ files: [file] })){
