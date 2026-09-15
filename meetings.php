@@ -3084,7 +3084,7 @@ include 'menu_tasks.php';
 										</div>			
 										<div class="width20Percents">	    
 										    <a id="tracking_btn" class="btn colorBlack width130" style="box-shadow:none;">
-												<img id="target-icon-popup" src="images/grey-target-icon-transparent.png" alt="target icon" style="width:26px;height:26px;" />
+												<img id="target-icon-popup" src="images/grey-target-icon-transparent.png" alt="target icon" style="width:30px;height:30px;" />
 												<br/>
 												<strong class="fontSize14">מעקב</strong>
 									        </a>
