@@ -3091,7 +3091,7 @@ include 'menu_tasks.php';
 										</div>
 										<div class="width20Percents">
 										    <a id="send_email_btn" class="btn colorBlack width130" style="box-shadow:none;">
-												<img src="images/share-icon.svg" width="35" height="25" alt="share icon" />
+												<img src="images/share-icon.svg" width="30" height="30" alt="share icon" />
 												<br/>
 												<strong class="fontSize14">שתף</strong>
 									        </a>
