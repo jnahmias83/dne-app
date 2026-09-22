@@ -14,6 +14,13 @@
 	<li class="separator">|</li>
 	<li><a href="progress_status.php?project_id=<?=@$_SESSION['id_project']?>&task_filter=<?=@$task_filter?>&progress_status_filter=<?=@$progress_status_filter?>&supplier_filter=<?=@$_GET['supplier_filter']?>&period_new_task_filter=<?=@$period_new_task_filter?>&period_late_filter=<?=@$period_late_filter?>&is_specific_filter=<?=@$is_specific_filter?>">סטטוסים</a></li>
   </ul>
+  <ul class="menu-list-preview" id="tasks_menu_list_preview">
+    <li><a class="font-weight-bold" href="custom_reports.php?project_id=<?=@$_SESSION['id_project']?>&task_filter=<?=@$task_filter?>&progress_status_filter=<?=@$progress_status_filter?>&supplier_filter=<?=@$_GET['supplier_filter']?>&period_new_task_filter=<?=@$period_new_task_filter?>&period_late_filter=<?=@$period_late_filter?>">הדוח''ות שלי</a></li>
+	<li class="separator">|</li>
+	<li><a class="font-weight-bold" href="responsibles.php?project_id=<?=@$_SESSION['id_project']?>&task_filter=<?=@$task_filter?>&progress_status_filter=<?=@$progress_status_filter?>&supplier_filter=<?=@$_GET['supplier_filter']?>&period_new_task_filter=<?=@$period_new_task_filter?>&period_late_filter=<?=@$period_late_filter?>&is_specific_filter=<?=@$is_specific_filter?>">צוות הפרוייקט</a></li>
+	<li class="separator">|</li>
+	<li><a class="font-weight-bold" href="chapters.php?project_id=<?=@$_SESSION['id_project']?>&task_filter=<?=@$task_filter?>&progress_status_filter=<?=@$progress_status_filter?>&supplier_filter=<?=@$_GET['supplier_filter']?>&period_new_task_filter=<?=@$period_new_task_filter?>&period_late_filter=<?=@$period_late_filter?>&is_specific_filter=<?=@$is_specific_filter?>">פרקים</a></li>
+  </ul>
   <div class="topbar-actions">
 	  <a href="add_sup_to_proj.php?id=<?=@$_SESSION['id_project']?>" class="btn-attach-suppliers">
 		ספקים
@@ -47,6 +54,7 @@
     line-height: 1;
     cursor: pointer;
     padding: 0 10px;
+    margin-left: 8px;
 }
 
 .topbar.measuring {
@@ -81,6 +89,63 @@
 }
 
 .topbar-collapsed .menu-list.open li.separator {
+    display: none;
+}
+
+.menu-list-preview {
+    display: none;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+    gap: 10px;
+    color: white;
+    flex-wrap: wrap;
+}
+
+.menu-list-preview li a {
+    color: white;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.menu-list-preview li.separator {
+    color: white;
+    user-select: none;
+}
+
+.menu-list-preview a {
+    font-size: 14px;
+}
+
+.topbar-preview .menu-list-preview {
+    display: flex;
+}
+
+.topbar-preview .menu-list:not(.open) {
+    display: none;
+}
+
+.topbar-preview .hamburger-btn {
+    display: inline-block;
+}
+
+.topbar-preview .menu-list.open {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    background-color: #4d7380;
+    z-index: 1000;
+    padding: 10px 15px;
+    border-radius: 0 0 10px 10px;
+    gap: 8px;
+    flex-wrap: nowrap;
+}
+
+.topbar-preview .menu-list.open li.separator {
     display: none;
 }
 
@@ -159,7 +224,8 @@
 }
 
 @media (max-width: 600px) {
-    .menu-list a {
+    .menu-list a,
+    .menu-list-preview a {
         font-size: 12px;
     }
 
@@ -172,20 +238,43 @@
 </style>
 
 <script>
+function isTasksTopbarSingleLine(topbar){
+	let children = Array.from(topbar.children).filter(function(el){
+		return getComputedStyle(el).display !== 'none';
+	});
+	if(children.length === 0) return true;
+	let firstTop = children[0].offsetTop;
+	return children.every(function(el){
+		return Math.abs(el.offsetTop - firstTop) < 5;
+	});
+}
+
 function checkTasksMenuOverflow(){
 	let topbar = document.getElementById('tasks_topbar');
 	let menuList = document.getElementById('tasks_menu_list');
-	if(!topbar || !menuList) return;
+	let previewList = document.getElementById('tasks_menu_list_preview');
+	if(!topbar || !menuList || !previewList) return;
 
-	topbar.classList.remove('topbar-collapsed');
-	let isWrapped = topbar.scrollHeight > 64 || window.innerWidth <= 850;
+	topbar.classList.remove('topbar-collapsed', 'topbar-preview');
 
-	if(isWrapped){
-		topbar.classList.add('topbar-collapsed');
-	}
-	else {
+	// Etape 1 : est-ce que les 6 items + les boutons a droite tiennent reellement sur une ligne ?
+	let fullFits = isTasksTopbarSingleLine(topbar);
+	if(fullFits){
 		menuList.classList.remove('open');
+		return;
 	}
+
+	// Etape 2 : est-ce que les 3 premiers items + hamburger + les boutons a droite
+	// tiennent sur une ligne ?
+	topbar.classList.add('topbar-preview');
+	let previewFits = isTasksTopbarSingleLine(topbar);
+	if(previewFits){
+		return;
+	}
+
+	// Etape 3 : meme les 3 premiers ne rentrent pas -> hamburger seul
+	topbar.classList.remove('topbar-preview');
+	topbar.classList.add('topbar-collapsed');
 }
 
 window.addEventListener('load', checkTasksMenuOverflow);
