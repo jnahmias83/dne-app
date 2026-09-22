@@ -692,6 +692,7 @@ $header_pad_lines = array();
 foreach ($header_cell_heights as $hk => $hhw) {
 	list($hh, $hw_mm) = $hhw;
 	$gap_mm = ($hh < $header_max_h - 0.3) ? (0.25 * $header_max_h) : 0;
+	$gap_mm = min($gap_mm, 20); // evite un espaceur demesure qui pousserait le texte hors de la cellule si une colonne est anormalement haute
 	if ($gap_mm > 0.3) {
 		$unit_font_px = 24;
 		$unit_h = $pdf->getStringHeight($hw_mm, '') * ($unit_font_px / 10);
@@ -886,7 +887,7 @@ foreach($chapters as $item){
 
 	if($counter_with_image > 0) {
 		$html1_body.='<tr style="background-color:#cbddec;font-size:11px;">';
-		$html1_body.='<td colspan="12" style="'.$text_align.','.$padding.':5px;border:1px solid black;"><strong>'.@$chapter_name.'</strong></td>';
+		$html1_body.='<td colspan="'.@$colspan_image_tr.'" style="'.$text_align.','.$padding.':5px;border:1px solid black;"><strong>'.@$chapter_name.'</strong></td>';
 		$html1_body.='</tr>';
 		
 		foreach($meetings as $item){
@@ -1259,6 +1260,7 @@ foreach($chapters as $item){
 					// texte : le calcul exact (demi-ecart mesure) ne correspondait pas assez fidelement au rendu
 					// reel de TCPDF
 					$gap_mm = ($rh < $row_max_h - 0.3) ? (0.38 * $row_max_h) : 0;
+					$gap_mm = min($gap_mm, 20); // evite un espaceur demesure (ex: description tres longue) qui pousserait le texte des autres colonnes hors de la cellule
 					if ($gap_mm > 0.3) {
 						// TCPDF n'est fiable/lineaire qu'a des tailles de police "normales" : on plafonne
 						// chaque ligne d'espaceur a 24px et on la repete autant que necessaire, plutot que
@@ -1287,7 +1289,11 @@ foreach($chapters as $item){
 					}
 				}
 
-			    $html1_body.='<tr style="font-size:10px;'.@$dir_table.'">';
+			    // page-break-inside:avoid pour les lignes anormalement hautes (ex: description tres longue avec
+			    // historique de modifications) : evite qu'une telle ligne soit coupee au milieu de la page (ce qui
+			    // corrompt le rendu TCPDF), en la poussant entiere sur la page suivante si besoin.
+			    $row_nobr_style = ($row_max_h > 40 && $row_max_h < 220) ? 'page-break-inside:avoid;' : '';
+			    $html1_body.='<tr style="font-size:10px;'.$row_nobr_style.@$dir_table.'">';
                 $html1_body.='<td width="'.@$count_width.'" style="text-align:center;'.@$update_cell_bgcolor.';border:1px solid black;'.$color_num.'">'.(@$row_pad_lines['count']??'').@$count1.'</td>';
 			    if(in_array('subject',$columns_list_array))
 			      $html1_body.='<td width="'.@$subject_width.'" style="'.@$text_align.';'.@$padding.':5px;'.@$subject_bgcolor.';border:1px solid black;">'.(@$row_pad_lines['subject']??'').@$subject.'</td>';
@@ -1326,15 +1332,15 @@ foreach($chapters as $item){
 					&& strpos(@$image2,'Snag') === false
 					&& @getimagesize($image2_path) !== false)){
 					
-					$html1_body .= '<tr><td colspan="'.@$colspan_image_tr.'">';
+					$html1_body .= '<tr style="page-break-inside:avoid;"><td colspan="'.@$colspan_image_tr.'">';
 
-					if($image1_path && file_exists($image1_path) && is_readable($image1_path) 
-						&& @$is_images == 1 && @$image1_width > 0 && @$is_appears_img1 
+					if($image1_path && file_exists($image1_path) && is_readable($image1_path)
+						&& @$is_images == 1 && @$image1_width > 0 && @$is_appears_img1
 						&& strpos(@$item->image1,'Snag') === false
 						&& @getimagesize($image1_path) !== false){
-						
+
 						$html1_body .= '<img src="' . $image1_path . '" width="'.@$image1_width.'" height="'.@$image1_height.'" />';
-					} 	
+					}
 
 					if($image2_path && file_exists($image2_path) && is_readable($image2_path) 
 						&& @$image2_width > 0 && @$is_appears_img2 
@@ -1491,7 +1497,7 @@ foreach($chapters as $item) {
 	
 	if($counter_with_image > 0) {
 		$html2_body.='<tr style="background-color:#cbddec;font-size:11px;">';
-		$html2_body.='<td colspan="12" style="'.$text_align.','.$padding.':5px;border:1px solid black;"><strong>'.@$chapter_name.'</strong></td>';
+		$html2_body.='<td colspan="'.@$colspan_image_tr.'" style="'.$text_align.','.$padding.':5px;border:1px solid black;"><strong>'.@$chapter_name.'</strong></td>';
 		$html2_body.='</tr>';
 		
 		$is_html2_appears = true;
@@ -1786,7 +1792,7 @@ foreach($chapters as $item) {
             if((@$all_ids_to_print == '' || in_array($meeting_id,$all_ids_to_print_array)) && (@$image1 != '' && @$is_appears_img1)) {	
                 $count2++;
 				
-				$html2_body.='<tr style="font-size:10px;'.@$dir_table.'">';		
+				$html2_body.='<tr style="font-size:10px;'.$row_nobr_style.@$dir_table.'">';
 				$html2_body.='<td width="'.@$count_width.'" style="text-align:center;'.@$update_cell_bgcolor.';border:1px solid black;'.$color_num.'">'.(@$row_pad_lines['count']??'').@$count2.'</td>';
 				if(in_array('subject',$columns_list_array))
 				   $html2_body.='<td width="'.@$subject_width.'" style="'.@$text_align.';'.@$padding.':5px;'.@$subject_bgcolor.';border:1px solid black;">'.(@$row_pad_lines['subject']??'').@$subject.'</td>';
@@ -1814,7 +1820,7 @@ foreach($chapters as $item) {
 				$html2_body.='</tr>'; 
 				
 				if(strpos($image1,'Snag') === false && strpos($image2,'Snag') === false) {
-				  $html2_body.=   '<tr>
+				  $html2_body.=   '<tr style="page-break-inside:avoid;">
 					                    <td colspan="'.@$colspan_image_tr.'">
 									        <img src="uploads/'.@$image1.'" width="'.@$image1_width.'" height="'.@$image1_height.'" />';
 					if(@$image2 != '' && @$is_appears_img2 == 1) 
