@@ -427,7 +427,7 @@ foreach($chapters as $item) {
 			$query->execute();
 			$query->store_result();	
 			$query = fetch_unique($query);
-			$remark_changes_status = stripNbspArtifact(@$query->remark);
+			$remark_changes_status = htmlspecialchars(stripNbspArtifact(@$query->remark));
 			$action_date = @$query->action_date;
 											
 			$query = $mysqli->prepare("SELECT * FROM dne_tasks_followup 
@@ -439,7 +439,7 @@ foreach($chapters as $item) {
 			$query->execute();
 			$query->store_result();	
 			$query = fetch_unique($query);
-			$remark = stripNbspArtifact(@$query->remark);
+			$remark = htmlspecialchars(stripNbspArtifact(@$query->remark));
 			$action_date_remark = @$query->action_date;
 			
 			$color_remark_change_status = $color_remark = 'color:black';
@@ -843,7 +843,7 @@ foreach($chapters as $item) {
 			$query->execute();
 			$query->store_result();	
 			$query = fetch_unique($query);
-			$remark_changes_status = stripNbspArtifact(@$query->remark);
+			$remark_changes_status = htmlspecialchars(stripNbspArtifact(@$query->remark));
 			$action_date = @$query->action_date;
 											
 			$query = $mysqli->prepare("SELECT * FROM dne_tasks_followup 
@@ -855,7 +855,7 @@ foreach($chapters as $item) {
 			$query->execute();
 			$query->store_result();	
 			$query = fetch_unique($query);
-			$remark = stripNbspArtifact(@$query->remark);
+			$remark = htmlspecialchars(stripNbspArtifact(@$query->remark));
 			$action_date_remark = @$query->action_date;
 			
 			$color_remark_change_status = $color_remark = 'color:black';
