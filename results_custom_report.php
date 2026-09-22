@@ -295,7 +295,7 @@ $pdf->setFontSubsetting(true);
 $pdf->SetFont('freesans', '', 12);
 $pdf->setPrintHeader(false);
 
-$html1_header = '<table><tr><td style="text-align:center;"><img src="uploads/'.@$logo->logo_stread.'" /><br/><br/></td></tr>';
+$html1_header = '<table><tr><td style="text-align:center;"><img src="uploads/'.@$logo->logo_stread.'" width="600" /><br/><br/></td></tr>';
 
 $html1_body = '<tr style="font-size:16px;"><td width="40px;">&nbsp;</td><td style="text-align:center;padding-top:30px;"><span dir="'.$dir_table.'"><strong><u>'.$title.'</u></strong></span></td></tr></table>';
 $html1_body.= '<div class="row">';
