@@ -896,8 +896,8 @@ foreach($chapters as $item){
 			$meeting_id = @$item->id;
 			$is_priority = @$item->is_priority;
 			$ids_rdv = @$item->ids_rdv;
-			$subject = html_entity_decode(@$item->subject);
-			$area = html_entity_decode(@$item->area);	
+			$subject = escapeStrayAngleBrackets(html_entity_decode(@$item->subject));
+			$area = escapeStrayAngleBrackets(html_entity_decode(@$item->area));
 			$task_id = @$item->id_task;
 			$responsible_id = @$item->id_responsible;
 			$pass_on_id = @$item->id_pass_on;
@@ -924,6 +924,7 @@ foreach($chapters as $item){
 			
 			$description = @$item->description ?? '';
 			$description = html_entity_decode($description, ENT_QUOTES, 'UTF-8');
+			$description = escapeStrayAngleBrackets($description);
 			$description = preg_replace('#<div[^>]*>\s*(<br\s*/?>)?\s*</div>#i', '', $description);
 			$description = preg_replace('#</?div[^>]*>#i', '<br>', $description);
 			$description = preg_replace('#(<br>){2,}#i', '<br>', $description);
@@ -969,6 +970,7 @@ foreach($chapters as $item){
 				if(!mb_check_encoding($remark, 'UTF-8'))
 					$remark = mb_convert_encoding($remark, 'UTF-8', 'auto');
 				$remark = html_entity_decode($remark, ENT_QUOTES, 'UTF-8');
+				$remark = escapeStrayAngleBrackets($remark);
 				$remark = preg_replace('/<\/?(div|p)[^>]*>/i', '<br />', $remark);
 				$remark = preg_replace('/(<br\s*\/?>\s*){2,}/i', '<br />', $remark);
 				$remark = preg_replace('/^(<br\s*\/?>)+|(<br\s*\/?>)+$/i', '', $remark);
@@ -1506,8 +1508,8 @@ foreach($chapters as $item) {
 			$meeting_id = @$item->id;
 			$is_priority = @$item->is_priority;
 			$ids_rdv = @$item->ids_rdv;
-			$subject = html_entity_decode(@$item->subject);
-			$area = html_entity_decode(@$item->area);
+			$subject = escapeStrayAngleBrackets(html_entity_decode(@$item->subject));
+			$area = escapeStrayAngleBrackets(html_entity_decode(@$item->area));
 			$task_id = @$item->id_task;
 			$responsible_id = @$item->id_responsible;
 			$pass_on_id = @$item->id_pass_on;
@@ -1533,6 +1535,7 @@ foreach($chapters as $item) {
 			$image2_height = @$item->image2_height;
 			
 			$description = html_entity_decode(@$item->description);
+            $description = escapeStrayAngleBrackets($description);
             $description = str_ireplace(['<div>','</div>'],'<br>',$description);
             $description = preg_replace('/(<br\s*\/?>\s*){2,}/i','<br>',$description);
             $description = preg_replace('/(?<!<br>)(\d+\s*[\.\-]\s*)/u','<br>$1',$description);
@@ -1551,6 +1554,7 @@ foreach($chapters as $item) {
 			
 			foreach($log_meeting_updates as $item){
 				$remark = html_entity_decode(@$item->remark);
+				$remark = escapeStrayAngleBrackets($remark);
 				$remark = str_ireplace(['<div>', '</div>'], '<br>', $remark);
 				$remark = preg_replace('/(<br\s*\/?>\s*){2,}/i', '<br>', $remark);
 				$remark = preg_replace('/^(<br\s*\/?>)+|(<br\s*\/?>)+$/i', '', $remark);
