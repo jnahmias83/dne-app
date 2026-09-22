@@ -341,6 +341,12 @@ function stripNbspArtifact($str){
     return str_replace(['&amp;nbsp;','&nbsp;'], '', (string)$str);
 }
 
+// Echappe les "<" isoles (ex: "rouhav < 30 cm") qui cassent le parseur HTML de TCPDF,
+// sans toucher aux vraies balises (<br>, <b>, </div>, etc.) issues de l'editeur riche.
+function escapeStrayAngleBrackets($str){
+    return preg_replace('/<(?![a-zA-Z\/!])/', '&lt;', (string)$str);
+}
+
 function simplifyStatusLabel($str){
     return str_replace(['בוצע/נמסר','הנחיה/החלטה'], ['בוצע','החלטה'], (string)$str);
 }

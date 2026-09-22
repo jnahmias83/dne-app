@@ -386,9 +386,9 @@ foreach($chapters as $item) {
 			$meeting_id = @$item->id;
 			$is_priority = @$item->is_priority;
 			$id_rdv = @$item->id_rdv;
-			$subject = stripNbspArtifact(@$item->subject);
-			$area = stripNbspArtifact(@$item->area);
-			$description = html_entity_decode(@$item->description);
+			$subject = htmlspecialchars(stripNbspArtifact(@$item->subject));
+			$area = htmlspecialchars(stripNbspArtifact(@$item->area));
+			$description = escapeStrayAngleBrackets(html_entity_decode(@$item->description));
 			
 			$change_status_label = 'שינוי סטטוס';
 			$change_dest_date_label = 'דחיית תאריך יעד';
@@ -802,9 +802,9 @@ foreach($chapters as $item) {
 			$meeting_id = @$item->id;
 			$is_priority = @$item->is_priority;
 			$id_rdv = @$item->id_rdv;
-			$subject = stripNbspArtifact(@$item->subject);
-			$area = stripNbspArtifact(@$item->area);
-			$description = html_entity_decode(@$item->description);
+			$subject = htmlspecialchars(stripNbspArtifact(@$item->subject));
+			$area = htmlspecialchars(stripNbspArtifact(@$item->area));
+			$description = escapeStrayAngleBrackets(html_entity_decode(@$item->description));
 			
 			$change_status_label = 'שינוי סטטוס';
 			$change_dest_date_label = 'דחיית תאריך יעד';
