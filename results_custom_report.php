@@ -459,22 +459,24 @@ foreach($chapters as $item) {
 			$is_appears_img1 = @$item->is_appears_img1;
 			
 			$image1_height = 180;
-			$image1_width;
-		                                    
+			$image1_width = 0;
+
 			if(@$item->image1_height > 0) {
 				$ratio_image1 = @$item->image1_width/@$item->image1_height;
 				$image1_width = $ratio_image1*$image1_height;
+				if($image1_width > 450) { $image1_width = 450; }
 			}
-											
+
 			$image2 = @$item->image2;
 			$is_appears_img2 = @$item->is_appears_img2;
-			
+
 			$image2_height = 180;
-			$image2_width;
-			
+			$image2_width = 0;
+
 			if(@$item->image2_height > 0) {
 				$ratio_image2 = @$item->image2_width/@$item->image2_height;
 				$image2_width = $ratio_image2*$image2_height;
+				if($image2_width > 450) { $image2_width = 450; }
 			}
 
 			$color_num = 'black';
@@ -694,11 +696,12 @@ foreach($chapters as $item) {
 			  $html1_body.='<td width="'.@$progress_status_width.'" style="text-align:center;color:'.@$progress_status_color.';background-color:'.@$progress_status_bgcolor.';border:1px solid black;"><strong>'.simplifyStatusLabel(@$progress_status).'</strong></td>';
 			$html1_body.='</tr>';
 			
-			 if($is_images == 1 && (($item->image1 != '' && $item->is_appears_img1) || ($item->image2 != '' && $item->is_appears_img2)) && strpos($image1,'Snag') === false && strpos($image2,'Snag') === false) {
+			 if($is_images == 1 && (($item->image1 != '' && $item->is_appears_img1 && $image1_width > 0) || ($item->image2 != '' && $item->is_appears_img2 && $image2_width > 0)) && strpos($image1,'Snag') === false && strpos($image2,'Snag') === false) {
 			    $html1_body.=   '<tr>
-					                <td colspan="'.@$colspan_image_tr.'">
-									    <img src="uploads/'.@$item->image1.'" width="'.@$image1_width.'" height="'.@$image1_height.'" style="object-fit:fixed;" />';
-				if(@$item->image2 != '' && @$item->is_appears_img2 == 1) 
+					                <td colspan="'.@$colspan_image_tr.'">';
+				if(@$item->image1 != '' && @$item->is_appears_img1 && $image1_width > 0)
+				   $html1_body.= '<img src="uploads/'.@$item->image1.'" width="'.@$image1_width.'" height="'.@$image1_height.'" style="object-fit:fixed;" />';
+				if(@$item->image2 != '' && @$item->is_appears_img2 == 1 && $image2_width > 0)
 				   $html1_body.= '&nbsp;&nbsp;&nbsp;<img src="uploads/'.@$item->image2.'" width="'.@$image2_width.'" height="'.@$image2_height.'" style="object-fit:fixed;" />';
 				$html1_body.= '</td></tr>';
 			 }
@@ -871,30 +874,34 @@ foreach($chapters as $item) {
 			$is_appears_img1 = @$item->is_appears_img1;
 			
 			$image1_height = 180;
-			$image1_width;
-		                                    
+			$image1_width = 0;
+
 			if(@$item->image1_height > 0) {
 				$ratio_image1 = @$item->image1_width/@$item->image1_height;
-				
+
 				if(@$item->image1_width > @$item->image1_height)
 				  $image1_width = $ratio_image1*$image1_height;
-				else 
-				  $image1_width = $image1_height/$ratio_image1;	
+				else
+				  $image1_width = $image1_height/$ratio_image1;
+
+				if($image1_width > 450) { $image1_width = 450; }
 			}
 											
 			$image2 = @$item->image2;
 			$is_appears_img2 = @$item->is_appears_img2;
 			
 			$image2_height = 180;
-			$image2_width;
-			
+			$image2_width = 0;
+
 			if(@$item->image2_height > 0) {
 				$ratio_image2 = @$item->image2_width/@$item->image2_height;
-				
+
 				if(@$item->image2_width > @$item->image2_height)
 				  $image2_width = $ratio_image2*$image2_height;
-				else 
-				  $image2_width = $image2_height/$ratio_image2;	
+				else
+				  $image2_width = $image2_height/$ratio_image2;
+
+				if($image2_width > 450) { $image2_width = 450; }
 			}
 
 			$color_num = 'black';
@@ -1117,11 +1124,12 @@ foreach($chapters as $item) {
 				  $html2_body.='<td width="'.@$progress_status_width.'" style="text-align:center;color:'.@$progress_status_color.';background-color:'.@$progress_status_bgcolor.';border:1px solid black;"><strong>'.simplifyStatusLabel(@$progress_status).'</strong></td>';
 				$html2_body.='</tr>';
 				
-				if(strpos($image1,'Snag') === false && strpos($image2,'Snag') === false) {
+				if(($image1_width > 0 || $image2_width > 0) && strpos($image1,'Snag') === false && strpos($image2,'Snag') === false) {
 				  $html2_body.=   '<tr>
-					                    <td colspan="'.@$colspan_image_tr.'">
-									        <img src="uploads/'.@$item->image1.'" width="'.@$image1_width.'" height="'.@$image1_height.'" style="object-fit:fixed;" />';
-					if(@$item->image2 != '' && @$item->is_appears_img2 == 1) 
+					                    <td colspan="'.@$colspan_image_tr.'">';
+					if($image1_width > 0)
+					   $html2_body.= '<img src="uploads/'.@$item->image1.'" width="'.@$image1_width.'" height="'.@$image1_height.'" style="object-fit:fixed;" />';
+					if(@$item->image2 != '' && @$item->is_appears_img2 == 1 && $image2_width > 0)
 					   $html2_body.= '&nbsp;&nbsp;&nbsp;<img src="uploads/'.@$item->image2.'" width="'.@$image2_width.'" height="'.@$image2_height.'" style="object-fit:fixed;" />';
 					$html2_body.= '</td></tr>';
 			    }
