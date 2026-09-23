@@ -4638,34 +4638,19 @@ function openTrackingPopupForMeeting(meeting_id){
 	// modalTaskFollowupActions : on remplit directement les champs caches que lit
 	// tracking_btn, a partir des data-attributes deja presents sur la ligne, au
 	// lieu de simuler un clic sur task_actions (qui affiche ce menu intermediaire).
-	// IMPORTANT : reconstruire TOUS les champs caches (pas un sous-ensemble), sinon
-	// des fonctionnalites en aval (titre du popup, passage a la tache suivante apres
-	// בטל מעקב, etc.) qui dependent d'autres champs (hidden_project_id, hidden_lang,
-	// hidden_recipient, ...) se retrouvent casses.
 	let $link = $('#task_actions_' + meeting_id);
-	let project_id = $link.data('projectid');
-	let lang = $link.data('lang');
 	let iteration = $link.data('iteration');
 	let user_id = $link.data('userid');
-	let is_priority = $link.data('ispriority');
-	let remark = $link.data('remark');
 	let chapter = $link.data('chapter');
 	let subject = $link.data('name');
 	let area = $link.data('area');
-	let recipient = $link.data('recipient');
-	let responsible_id = $link.data('responsibleid');
-	let destination_date = $link.data('destinationdate');
-	let progress_status_id = $link.data('progresstatusid');
 	let track_responsible_id = $link.data('trackresponsibleid');
 	let track_type = $link.data('tracktype');
 	let reminder_time = $link.data('remindertime');
 	let reminder_date = $link.data('reminderdate');
 
 	$('#modalContent input[type="hidden"]').remove();
-	$('#modalContent').append("<input type='hidden' id='hidden_meeting_id' value='"+meeting_id+"'><input type='hidden' id='hidden_iteration' value='"+iteration+"'><input type='hidden' id='hidden_project_id' value='"+project_id+"'><input type='hidden' id='hidden_lang' value='"+lang+"'><input type='hidden' id='hidden_user_id' value='"+user_id+"'><input type='hidden' id='hidden_chapter' value='"+chapter+"'><input type='hidden' id='hidden_name' value='"+subject+"'><input type='hidden' id='hidden_area' value='"+area+"'><input type='hidden' id='hidden_recipient' value='"+recipient+"'><input type='hidden' id='hidden_responsible_id' value='"+responsible_id+"'><input type='hidden' id='hidden_destination_date' value='"+destination_date+"'><input type='hidden' id='hidden_progress_status_id' value='"+progress_status_id+"'><input type='hidden' id='hidden_is_priority' value='"+is_priority+"'><input type='hidden' id='hidden_remark' value='"+remark+"'><input type='hidden' id='hidden_track_responsible_id' value='"+track_responsible_id+"'><input type='hidden' id='hidden_track_type' value='"+track_type+"'><input type='hidden' id='hidden_reminder_date' value='"+reminder_date+"'><input type='hidden' id='hidden_reminder_time' value='"+reminder_time+"'>");
-
-	$('tr.task-row-highlight').removeClass('task-row-highlight');
-	$('#meetings_table tr.meeting_' + meeting_id).addClass('task-row-highlight');
+	$('#modalContent').append("<input type='hidden' id='hidden_meeting_id' value='"+meeting_id+"'><input type='hidden' id='hidden_iteration' value='"+iteration+"'><input type='hidden' id='hidden_user_id' value='"+user_id+"'><input type='hidden' id='hidden_chapter' value='"+chapter+"'><input type='hidden' id='hidden_name' value='"+subject+"'><input type='hidden' id='hidden_area' value='"+area+"'><input type='hidden' id='hidden_track_responsible_id' value='"+track_responsible_id+"'><input type='hidden' id='hidden_track_type' value='"+track_type+"'><input type='hidden' id='hidden_reminder_date' value='"+reminder_date+"'><input type='hidden' id='hidden_reminder_time' value='"+reminder_time+"'>");
 
 	$('#tracking_btn').trigger('click');
 }
