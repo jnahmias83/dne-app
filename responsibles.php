@@ -68,11 +68,11 @@ include 'menu_tasks.php';
 							<table id="responsibles_list" class="" border="1" dir="rtl">						
 								<tr class="bgColorSilver height50">   
 								    <th width="20px;" class="alignCenter"></th>
-									<th width="130px;" class="alignCenter">שם</th>
-									<th width="130px;" class="alignCenter">ספק</th>
-									<th width="100px;" class="alignCenter">משרד/חברה</th>
-									<th width="60px;" class="alignCenter">גופן</th>
-									<th width="60px;" class="alignCenter">רקע</th>
+									<th width="130px;" class="alignCenter sortable-col cursor-pointer" onclick="sortResponsiblesTable(1)">שם<br/><span class="sort-arrow">⇅</span></th>
+									<th width="130px;" class="alignCenter sortable-col cursor-pointer" onclick="sortResponsiblesTable(2)">תחום<br/><span class="sort-arrow">⇅</span></th>
+									<th width="100px;" class="alignCenter sortable-col cursor-pointer" onclick="sortResponsiblesTable(3)">משרד/חברה<br/><span class="sort-arrow">⇅</span></th>
+									<th width="40px;" class="alignCenter">גופן</th>
+									<th width="40px;" class="alignCenter">רקע</th>
 									<th width="60px;" class="alignCenter">דוא''ל</th>
 									<th width="60px;" class="alignCenter"><i class="fa fa-user"></i><br/>טלפון</th>
 									<th width="100px;" class="alignCenter">תפקיד</th>
@@ -83,9 +83,10 @@ include 'menu_tasks.php';
 								<?php
 								$count = 0;
 								foreach($responsibles as $item) { 
-									$query = $mysqli->prepare("SELECT s.name_he AS name_he
+									$query = $mysqli->prepare("SELECT s.name_he AS name_he, fow.name_he AS field_of_work_name
 															  FROM dne_projects_suppliers ps
 															  LEFT JOIN dne_suppliers s ON ps.id_supplier = s.id
+															  LEFT JOIN dne_sup_field_of_work fow ON s.id_field_of_work = fow.id
 															  WHERE ps.id = ?");
 									$query->bind_param("i",$item->id_projects_suppliers);
 									$query->execute();
@@ -109,10 +110,10 @@ include 'menu_tasks.php';
 									<tr class="height35">
 									    <td class="alignCenter"><input type="checkbox" id="is_active_<?=@$item->id?>" name="is_active_<?=@$item->id?>" value="<?=@$item->is_active?>" <?php if(@$item->is_active == 1) echo "checked"?> onchange="setResponsibleActive(<?=@$item->id?>);" /></td>
 										<td class="alignRight paddingRight5"><?=trim(@$item->firstname.' '.@$item->lastname)?></td>
-										<td class="alignRight paddingRight5"><?=@$item->name?></td>
+										<td class="alignRight paddingRight5"><?=@$supplier->field_of_work_name?></td>
 										<td class="alignRight paddingRight5"><?=@$supplier->name_he?></td>
-										<td class="alignRight paddingRight5"><input type="color" class="width60" disabled="true" value="<?=@$item->color?>" /></td>
-										<td class="alignRight paddingRight5"><input type="color" class="width60" disabled="true" value="<?=@$item->bgcolor?>" /></td>
+										<td class="alignCenter"><div class="color-circle" style="background-color:<?=@$item->color?>;"></div></td>
+										<td class="alignCenter"><div class="color-circle" style="background-color:<?=@$item->bgcolor?>;"></div></td>
 										<td class="alignCenter"><?php if(trim(@$item->email) !== '') { ?><i class="fa-solid fa-check colorGreen"></i><?php } ?></td>
 										<td class="alignCenter"><?php if(trim(@$item->phone) !== '') { ?><i class="fa-solid fa-check colorGreen"></i><?php } ?></td>
 										<td class="alignRight paddingRight5"><?=@$role?></td>
@@ -199,9 +200,42 @@ function setResponsibleActive(id_responsible) {
 	});	
 }
 
+let responsiblesSortState = {};
+function sortResponsiblesTable(colIndex) {
+	let table = document.getElementById('responsibles_list');
+	let tbody_rows = Array.prototype.slice.call(table.rows).slice(1);
+	let asc = !responsiblesSortState[colIndex];
+	responsiblesSortState = {};
+	responsiblesSortState[colIndex] = asc;
+
+	tbody_rows.sort(function(rowA, rowB) {
+		let textA = rowA.cells[colIndex].innerText.trim();
+		let textB = rowB.cells[colIndex].innerText.trim();
+		return asc ? textA.localeCompare(textB, 'he') : textB.localeCompare(textA, 'he');
+	});
+
+	tbody_rows.forEach(function(row) {
+		table.appendChild(row);
+	});
+
+	document.querySelectorAll('#responsibles_list .sortable-col .sort-arrow').forEach(function(el) {
+		el.textContent = '';
+	});
+	let arrow = table.rows[0].cells[colIndex].querySelector('.sort-arrow');
+	if (arrow) arrow.textContent = asc ? ' ▲' : ' ▼';
+}
+
 </script>
 
 <style>
+.color-circle {
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	margin: 0 auto;
+	border: 1px solid #999;
+}
+
 .btn {
    color: white;
    background-color: #218FD6;
