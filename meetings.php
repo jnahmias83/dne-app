@@ -4634,25 +4634,10 @@ $(document).on('click','#save_update_task_btn', function (){
 });
 
 function openTrackingPopupForMeeting(meeting_id){
-	// N'ouvre QUE le popup מעקב, sans faire apparaitre (meme brievement) le menu
-	// modalTaskFollowupActions : on remplit directement les champs caches que lit
-	// tracking_btn, a partir des data-attributes deja presents sur la ligne, au
-	// lieu de simuler un clic sur task_actions (qui affiche ce menu intermediaire).
-	let $link = $('#task_actions_' + meeting_id);
-	let iteration = $link.data('iteration');
-	let user_id = $link.data('userid');
-	let chapter = $link.data('chapter');
-	let subject = $link.data('name');
-	let area = $link.data('area');
-	let track_responsible_id = $link.data('trackresponsibleid');
-	let track_type = $link.data('tracktype');
-	let reminder_time = $link.data('remindertime');
-	let reminder_date = $link.data('reminderdate');
-
-	$('#modalContent input[type="hidden"]').remove();
-	$('#modalContent').append("<input type='hidden' id='hidden_meeting_id' value='"+meeting_id+"'><input type='hidden' id='hidden_iteration' value='"+iteration+"'><input type='hidden' id='hidden_user_id' value='"+user_id+"'><input type='hidden' id='hidden_chapter' value='"+chapter+"'><input type='hidden' id='hidden_name' value='"+subject+"'><input type='hidden' id='hidden_area' value='"+area+"'><input type='hidden' id='hidden_track_responsible_id' value='"+track_responsible_id+"'><input type='hidden' id='hidden_track_type' value='"+track_type+"'><input type='hidden' id='hidden_reminder_date' value='"+reminder_date+"'><input type='hidden' id='hidden_reminder_time' value='"+reminder_time+"'>");
-
-	$('#tracking_btn').trigger('click');
+	$('#task_actions_' + meeting_id).trigger('click');
+	setTimeout(function(){
+		$('#tracking_btn').trigger('click');
+	}, 400);
 }
 
 function checkAllItems(){
