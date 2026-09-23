@@ -20,7 +20,7 @@ if(@$_POST['isTracking'] == 1){
                                 WHERE lmt.id_meeting = ?							
 							    AND lmt.is_remark_appears_log = ?
 							    AND lmt.remark <> ?
-							    ORDER BY lmt.id DESC";	
+							    ORDER BY lmt.id ASC";
 	$query = $mysqli->prepare($sql_log_meeting_tracking);
 	$query->bind_param("iis",$_POST['id_meeting'],$one,$empty_remark);
 	$query->execute();
@@ -80,10 +80,7 @@ if(@$_POST['isTracking'] == 1){
 			$tracking_initials = mb_strtoupper(mb_substr(@$item->user_nickname, 0, 2, 'UTF-8'));
 
 			$content .= "<div class='flex marginTop10 width100Percents'>";
-			$content .=      "<div class='width30 paddingTop5'>";
-			$content .=           "<input type='checkbox' id='log_meeting_tracking_{$item->id}' name='log_meeting_tracking[]' value='{$item->id}' onclick=\"setTextColor('div_log_meeting_tracking_{$item->id}',this,'colorRed')\" />";
-			$content .=      "</div>";
-			$content .=      "<div id='div_log_meeting_tracking_{$item->id}' dir='".@$dir_attr."' class='".@$padding." fontSize13 width90Percents colorGrey border-black ".$align." display-block' style='line-height:1.8; padding:5px;'>";
+			$content .=      "<div id='div_log_meeting_tracking_{$item->id}' dir='".@$dir_attr."' class='".@$padding." fontSize13 width100Percents colorGrey border-black ".$align." display-block' style='line-height:1.8; padding:5px;'>";
 			$content .=           "<span style='display:inline-flex;align-items:center;gap:4px;vertical-align:top;'>";
 			$content .=                "<span class='badge-circle' style='display:inline-flex;align-items:center;justify-content:center;background-color:#333;width:22px;height:22px;font-size:10px;'>".$tracking_initials."</span>";
 			$content .=                "<span class='dir-rtl unicode-bidi-embed'>".smartDate(@$item->action_date, @$_POST['lang'])."</span>";

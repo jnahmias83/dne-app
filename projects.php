@@ -2106,6 +2106,13 @@ foreach($all_what_news as $wn){
 
 								    <div class="row" dir="rtl"><div class="col-12"><hr class="marginTop5" style="border:none;border-top:2px solid #999;opacity:1;margin-left:-35px;margin-right:-35px;" /></div></div>
 
+								    <div class="row" dir="rtl">
+									    <div class="col-2"></div>
+									    <div class="col-10">
+										    <div id="task_active_remarks_tracking"></div>
+									    </div>
+								    </div>
+
 								    <div class="row marginTop5" dir="rtl">
 									    <div class="col-2 p-2 text-center d-flex flex-column align-items-center justify-content-center">
 										    <img src="images/edit-button.svg" width="20" height="20" />
@@ -2674,6 +2681,21 @@ $(document).ready(function(){
 	   
 	    $('#modalTaskTracking').find('[id="users"]').css('background-color',
 	        $('#hidden_track_responsible_id').val() > 0 ? $('#filled_bgcolor_tracking').val() : $('#default_bgcolor_tracking').val());
+
+		let form_data_tracking_remarks = new FormData();
+		form_data_tracking_remarks.append('id_meeting', meeting_id);
+		form_data_tracking_remarks.append('isTracking', 1);
+		$.ajax({
+			type: 'POST',
+			url: 'fill_task_active_remarks.php',
+			data: form_data_tracking_remarks,
+			cache: false,
+			processData: false,
+			contentType: false,
+			success: function(data){
+				$('#task_active_remarks_tracking').html(data);
+			},
+		});
 
 	    $('#modalTaskFollowupActions').modal('hide');
 	    $('#modalTaskTracking').modal('show');
