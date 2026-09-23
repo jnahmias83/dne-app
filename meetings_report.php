@@ -928,6 +928,14 @@ foreach($chapters as $item){
 			$description = preg_replace('#<div[^>]*>\s*(<br\s*/?>)?\s*</div>#i', '', $description);
 			$description = preg_replace('#</?div[^>]*>#i', '<br>', $description);
 			$description = preg_replace('#(<br>){2,}#i', '<br>', $description);
+			// supprime les <span></span> vides : artefacts frequents d'un copier-coller depuis Word,
+			// qui perturbent le moteur bidi de TCPDF et peuvent corrompre le rendu de tout le document
+			$description = preg_replace('#<span[^>]*>\s*</span>#i', '', $description);
+			// retire les forcages de direction dir="ltr"/"rtl" sur les balises inline (artefact frequent
+			// d'un copier-coller Word) : plusieurs alternances de direction forcee dans un meme texte
+			// font planter le moteur bidi de TCPDF et corrompent tout le rendu du document. Le texte
+			// mixte hebreu/anglais s'affiche correctement SANS ce forcage (bidi Unicode automatique).
+			$description = preg_replace('#\s+dir\s*=\s*(["\']).*?\1#i', '', $description);
 			$description = trim($description);
 			
 			$query = $mysqli->prepare("SELECT * FROM dne_progress_status 
@@ -1539,6 +1547,7 @@ foreach($chapters as $item) {
             $description = str_ireplace(['<div>','</div>'],'<br>',$description);
             $description = preg_replace('/(<br\s*\/?>\s*){2,}/i','<br>',$description);
             $description = preg_replace('/(?<!<br>)(\d+\s*[\.\-]\s*)/u','<br>$1',$description);
+            $description = preg_replace('#<span[^>]*>\s*</span>#i', '', $description);
 						
 			$one = 1;
             $empty_remark = '';											
