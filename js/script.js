@@ -332,8 +332,12 @@ function setData(meeting_id,iteration,field,isRemark,forShare,screen_type){
 								let content = fillContentTaskDetails(localStorage.getItem('next_meeting_id'), '', task_details, true);
 								$('#div_content_task_details').html(content);
 
+								// chaque ligne a elle-meme un id (tr id="row_X"), donc closest('[id]') s'arretait
+								// sur la ligne elle-meme au lieu de remonter au tableau : on cherche directement
+								// dans tout le document (fonctionne pareil sur meetings.php et projects.php, qui
+								// n'ont pas le meme conteneur de tableau)
 								let $oldHighlight = $('tr.task-row-highlight');
-								let $highlightScope = $oldHighlight.length ? $oldHighlight.closest('[id]') : $(document);
+								let $highlightScope = $(document);
 								let $newHighlightRow = $highlightScope.find('tr.meeting_' + localStorage.getItem('next_meeting_id'));
 								if(!$newHighlightRow.length){
 									$newHighlightRow = $highlightScope.find('.task_name[data-meetingid="' + localStorage.getItem('next_meeting_id') + '"]').closest('tr');
@@ -1374,8 +1378,9 @@ function navigateTasks(meeting_ids, action){
 			let content = fillContentTaskDetails(meeting_id, '', task_details, true);
 			$('#div_content_task_details').html(content);
 
+			// meme correctif que plus haut : closest('[id]') s'arretait sur la ligne elle-meme
 			let $oldHighlight = $('tr.task-row-highlight');
-			let $highlightScope = $oldHighlight.length ? $oldHighlight.closest('[id]') : $(document);
+			let $highlightScope = $(document);
 			let $newHighlightRow = $highlightScope.find('tr.meeting_' + meeting_id);
 			if(!$newHighlightRow.length){
 				$newHighlightRow = $highlightScope.find('.task_name[data-meetingid="' + meeting_id + '"]').closest('tr');
