@@ -150,7 +150,7 @@ function continuousTask(meeting_id,progress_status,iteration,from){
 	});
 }
 
-function setData(meeting_id,iteration,field,isRemark,forShare,screen_type,skipRemarksVisibilityUpdate){
+function setData(meeting_id,iteration,field,isRemark,forShare,screen_type){
 	let task_created_by_elem = '#task_created_by_'+meeting_id;
 	let subject_elem = '#subject_'+meeting_id;
 	let area_elem = '#area_'+meeting_id;
@@ -253,7 +253,7 @@ function setData(meeting_id,iteration,field,isRemark,forShare,screen_type,skipRe
 		form_data.append('screen_type',screen_type);
 		form_data.append('field',field);
 		form_data.append('id_progress_status',$('#progress_status_update').val());
-		let has_active_remarks_ui = skipRemarksVisibilityUpdate ? 0 : (($('input[name="log_meeting_updates[]"]').length > 0 || $('input[name="log_meeting_updates_is_updates[]"]').length > 0) ? 1 : 0);
+		let has_active_remarks_ui = ($('input[name="log_meeting_updates[]"]').length > 0 || $('input[name="log_meeting_updates_is_updates[]"]').length > 0) ? 1 : 0;
 		form_data.append('has_active_remarks_ui',has_active_remarks_ui);
 	}
 	else if(field == 'track_responsible_id'){	
@@ -949,10 +949,7 @@ function fillLogTaskTracking(id_meeting,iteration,screen_type,track_type,advance
 				$('tr.meeting_' + id_meeting + ' .badge-circle-track').remove();
 				$('#description_' + id_meeting + ' [id^="div-tracking-remarks-"]').remove();
 				$('.js-tracking-line-' + id_meeting).remove();
-				// skipRemarksVisibilityUpdate=true : ce call sert uniquement a avancer a la tache
-				// suivante, il ne doit pas toucher a la visibilite de l'historique עדכון (table
-				// differente, sans rapport avec le מעקב qu'on est en train de fermer/annuler)
-				setData(id_meeting,'','update_task',1,0,'for_closing',true);
+				setData(id_meeting,'','update_task',1,0,'for_closing');
 				return;
 			}
 
