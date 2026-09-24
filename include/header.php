@@ -126,8 +126,8 @@ $projects_list_array = $deduped_projects_list_array;
 								</ul>
 							</li>
 					    </ul>				
-						<ul class="navbar-nav dir-rtl align-items-center flex-row">
-							<li class="nav-item dropdown text-center px-2 d-flex align-items-center gap-2">	
+						<ul class="navbar-nav dir-rtl align-items-center flex-row" id="header_icons_ul">
+							<li class="nav-item dropdown text-center px-2 d-flex align-items-center gap-2">
 								<a class="nav-link cursor-pointer" id="home_link">
 									<img src="images/white_home_icon.png" alt="home icon" width="30" height="30" />
 								</a>
@@ -153,6 +153,9 @@ $projects_list_array = $deduped_projects_list_array;
 								</ul>
 							</li>
                          </ul>
+						<div class="header-logo-wrap">
+							<img src="images/my_project_logo.png" alt="My Project" class="header-logo" />
+						</div>
 					</div>
 			    </div>
             </nav>
@@ -168,6 +171,26 @@ $projects_list_array = $deduped_projects_list_array;
 			location.href = 'projects.php?filter_by=projects';
 		});
 		
+		function alignHeaderLogo(){
+			let homeEl = document.getElementById('home_link');
+			let dnEl = document.getElementById('userDropdown');
+			let logoWrap = document.querySelector('.header-logo-wrap');
+			if(!homeEl || !dnEl || !logoWrap) return;
+			logoWrap.style.marginLeft = '';
+			if(window.getComputedStyle(logoWrap).position !== 'static') return;
+			let homeRect = homeEl.getBoundingClientRect();
+			let dnRect = dnEl.getBoundingClientRect();
+			let leftRect = homeRect.left < dnRect.left ? homeRect : dnRect;
+			let rightRect = homeRect.left < dnRect.left ? dnRect : homeRect;
+			let gapCenter = (leftRect.right + rightRect.left) / 2;
+			let container = logoWrap.parentElement;
+			let containerRect = container.getBoundingClientRect();
+			let containerCenter = containerRect.left + containerRect.width / 2;
+			let manualNudgeTowardDn = -3;
+			logoWrap.style.marginLeft = (gapCenter - containerCenter + manualNudgeTowardDn) + 'px';
+		}
+		$(window).on('load resize', alignHeaderLogo);
+
 		function toProjectHome(project_id){
 			let form_data = new FormData();	
 	        form_data.append('id_project',project_id);
@@ -188,10 +211,28 @@ $projects_list_array = $deduped_projects_list_array;
 		</script>
 		
 		<style>
+		.navbar {
+			position: relative;
+		}
+
 		.navbar-nav {
 			flex-direction: row;
 		}
-		
+
+		.header-logo-wrap {
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			transform: translate(-50%, -50%);
+			pointer-events: none;
+		}
+
+		.header-logo {
+			height: 38px;
+			width: auto;
+			display: block;
+		}
+
 		.navbar .dropdown {
 			position: relative; 
 		}
@@ -225,6 +266,15 @@ $projects_list_array = $deduped_projects_list_array;
 				justify-content: center;
 				flex-wrap: wrap;
 			}
+			.header-logo-wrap {
+				position: static;
+				transform: none;
+				width: 100%;
+				display: flex;
+				justify-content: center;
+				margin-top: 6px;
+				pointer-events: auto;
+			}
 		}
 
 		@media (orientation: landscape) and (max-height: 500px) {
@@ -235,6 +285,15 @@ $projects_list_array = $deduped_projects_list_array;
 			#navbarSupportedContent > ul {
 				justify-content: center;
 				flex-wrap: wrap;
+			}
+			.header-logo-wrap {
+				position: static;
+				transform: none;
+				width: 100%;
+				display: flex;
+				justify-content: center;
+				margin-top: 6px;
+				pointer-events: auto;
 			}
 		}
 		</style>
