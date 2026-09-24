@@ -1,25 +1,34 @@
-<?php if(!empty($project_id)) $_SESSION['id_project'] = $project_id; ?>
+<?php
+if(!empty($project_id)) $_SESSION['id_project'] = $project_id;
+$current_menu_page = basename($_SERVER['PHP_SELF']);
+$is_reports_current = ($current_menu_page == 'custom_reports.php') ? ' menu-item-current' : '';
+$is_team_current = ($current_menu_page == 'responsibles.php') ? ' menu-item-current' : '';
+$is_chapters_current = ($current_menu_page == 'chapters.php') ? ' menu-item-current' : '';
+$is_data_current = ($current_menu_page == 'add_project.php') ? ' menu-item-current' : '';
+$is_tasks_current = ($current_menu_page == 'tasks.php') ? ' menu-item-current' : '';
+$is_status_current = ($current_menu_page == 'progress_status.php') ? ' menu-item-current' : '';
+?>
 <div class="topbar bgColorBrown alignCenter" dir="rtl" id="tasks_topbar">
   <button type="button" id="tasks_hamburger_btn" class="hamburger-btn" aria-label="menu">&#9776;</button>
   <ul class="menu-list" id="tasks_menu_list">
-    <li><a class="font-weight-bold" href="custom_reports.php?project_id=<?=@$_SESSION['id_project']?>&task_filter=<?=@$task_filter?>&progress_status_filter=<?=@$progress_status_filter?>&supplier_filter=<?=@$_GET['supplier_filter']?>&period_new_task_filter=<?=@$period_new_task_filter?>&period_late_filter=<?=@$period_late_filter?>">הדוח''ות שלי</a></li>
+    <li><a class="font-weight-bold<?=$is_reports_current?>" href="custom_reports.php?project_id=<?=@$_SESSION['id_project']?>&task_filter=<?=@$task_filter?>&progress_status_filter=<?=@$progress_status_filter?>&supplier_filter=<?=@$_GET['supplier_filter']?>&period_new_task_filter=<?=@$period_new_task_filter?>&period_late_filter=<?=@$period_late_filter?>"><img src="images/my_reports_icon.png" width="20" height="20" class="menu-item-icon" alt="" /><span>הדוח''ות שלי</span></a></li>
 	<li class="separator">|</li>
-	<li><a class="font-weight-bold" href="responsibles.php?project_id=<?=@$_SESSION['id_project']?>&task_filter=<?=@$task_filter?>&progress_status_filter=<?=@$progress_status_filter?>&supplier_filter=<?=@$_GET['supplier_filter']?>&period_new_task_filter=<?=@$period_new_task_filter?>&period_late_filter=<?=@$period_late_filter?>&is_specific_filter=<?=@$is_specific_filter?>">צוות הפרוייקט</a></li>
+	<li><a class="font-weight-bold<?=$is_team_current?>" href="responsibles.php?project_id=<?=@$_SESSION['id_project']?>&task_filter=<?=@$task_filter?>&progress_status_filter=<?=@$progress_status_filter?>&supplier_filter=<?=@$_GET['supplier_filter']?>&period_new_task_filter=<?=@$period_new_task_filter?>&period_late_filter=<?=@$period_late_filter?>&is_specific_filter=<?=@$is_specific_filter?>"><img src="images/responsibles_icon.png" width="20" height="20" class="menu-item-icon" alt="" /><span>צוות הפרוייקט</span></a></li>
 	<li class="separator">|</li>
-	<li><a class="font-weight-bold" href="chapters.php?project_id=<?=@$_SESSION['id_project']?>&task_filter=<?=@$task_filter?>&progress_status_filter=<?=@$progress_status_filter?>&supplier_filter=<?=@$_GET['supplier_filter']?>&period_new_task_filter=<?=@$period_new_task_filter?>&period_late_filter=<?=@$period_late_filter?>&is_specific_filter=<?=@$is_specific_filter?>">פרקים</a></li>
+	<li><a class="font-weight-bold<?=$is_chapters_current?>" href="chapters.php?project_id=<?=@$_SESSION['id_project']?>&task_filter=<?=@$task_filter?>&progress_status_filter=<?=@$progress_status_filter?>&supplier_filter=<?=@$_GET['supplier_filter']?>&period_new_task_filter=<?=@$period_new_task_filter?>&period_late_filter=<?=@$period_late_filter?>&is_specific_filter=<?=@$is_specific_filter?>"><img src="images/chapters_icon.png" width="20" height="20" class="menu-item-icon" alt="" /><span>פרקים</span></a></li>
 	<li class="separator">|</li>
-	<li><a href="add_project.php?id=<?=@$_SESSION['id_project']?>&task_filter=<?=@$task_filter?>&progress_status_filter=<?=@$progress_status_filter?>&supplier_filter=<?=@$_GET['supplier_filter']?>&period_new_task_filter=<?=@$period_new_task_filter?>&period_late_filter=<?=@$period_late_filter?>&is_specific_filter=<?=@$is_specific_filter?>&from=taskslist">נתוני הפרוייקט</a></li>
+	<li><a class="<?=trim($is_data_current)?>" href="add_project.php?id=<?=@$_SESSION['id_project']?>&task_filter=<?=@$task_filter?>&progress_status_filter=<?=@$progress_status_filter?>&supplier_filter=<?=@$_GET['supplier_filter']?>&period_new_task_filter=<?=@$period_new_task_filter?>&period_late_filter=<?=@$period_late_filter?>&is_specific_filter=<?=@$is_specific_filter?>&from=taskslist"><img src="images/data_icon.png" width="20" height="20" class="menu-item-icon" alt="" /><span>נתוני הפרוייקט</span></a></li>
 	<li class="separator">|</li>
-	<li><a href="tasks.php?project_id=<?=@$_SESSION['id_project']?>&task_filter=<?=@$task_filter?>&progress_status_filter=<?=@$progress_status_filter?>&supplier_filter=<?=@$_GET['supplier_filter']?>&period_new_task_filter=<?=@$period_new_task_filter?>&period_late_filter=<?=@$period_late_filter?>&is_specific_filter=<?=@$is_specific_filter?>">סוגי משימות</a></li>
+	<li><a class="<?=trim($is_tasks_current)?>" href="tasks.php?project_id=<?=@$_SESSION['id_project']?>&task_filter=<?=@$task_filter?>&progress_status_filter=<?=@$progress_status_filter?>&supplier_filter=<?=@$_GET['supplier_filter']?>&period_new_task_filter=<?=@$period_new_task_filter?>&period_late_filter=<?=@$period_late_filter?>&is_specific_filter=<?=@$is_specific_filter?>"><img src="images/tasks_icon.png" width="20" height="20" class="menu-item-icon" alt="" /><span>סוגי משימות</span></a></li>
 	<li class="separator">|</li>
-	<li><a href="progress_status.php?project_id=<?=@$_SESSION['id_project']?>&task_filter=<?=@$task_filter?>&progress_status_filter=<?=@$progress_status_filter?>&supplier_filter=<?=@$_GET['supplier_filter']?>&period_new_task_filter=<?=@$period_new_task_filter?>&period_late_filter=<?=@$period_late_filter?>&is_specific_filter=<?=@$is_specific_filter?>">סטטוסים</a></li>
+	<li><a class="<?=trim($is_status_current)?>" href="progress_status.php?project_id=<?=@$_SESSION['id_project']?>&task_filter=<?=@$task_filter?>&progress_status_filter=<?=@$progress_status_filter?>&supplier_filter=<?=@$_GET['supplier_filter']?>&period_new_task_filter=<?=@$period_new_task_filter?>&period_late_filter=<?=@$period_late_filter?>&is_specific_filter=<?=@$is_specific_filter?>"><img src="images/status_icon.png" width="20" height="20" class="menu-item-icon" alt="" /><span>סטטוסים</span></a></li>
   </ul>
   <ul class="menu-list-preview" id="tasks_menu_list_preview">
-    <li><a class="font-weight-bold" href="custom_reports.php?project_id=<?=@$_SESSION['id_project']?>&task_filter=<?=@$task_filter?>&progress_status_filter=<?=@$progress_status_filter?>&supplier_filter=<?=@$_GET['supplier_filter']?>&period_new_task_filter=<?=@$period_new_task_filter?>&period_late_filter=<?=@$period_late_filter?>">הדוח''ות שלי</a></li>
+    <li><a class="font-weight-bold<?=$is_reports_current?>" href="custom_reports.php?project_id=<?=@$_SESSION['id_project']?>&task_filter=<?=@$task_filter?>&progress_status_filter=<?=@$progress_status_filter?>&supplier_filter=<?=@$_GET['supplier_filter']?>&period_new_task_filter=<?=@$period_new_task_filter?>&period_late_filter=<?=@$period_late_filter?>"><img src="images/my_reports_icon.png" width="20" height="20" class="menu-item-icon" alt="" /><span>הדוח''ות שלי</span></a></li>
 	<li class="separator">|</li>
-	<li><a class="font-weight-bold" href="responsibles.php?project_id=<?=@$_SESSION['id_project']?>&task_filter=<?=@$task_filter?>&progress_status_filter=<?=@$progress_status_filter?>&supplier_filter=<?=@$_GET['supplier_filter']?>&period_new_task_filter=<?=@$period_new_task_filter?>&period_late_filter=<?=@$period_late_filter?>&is_specific_filter=<?=@$is_specific_filter?>">צוות הפרוייקט</a></li>
+	<li><a class="font-weight-bold<?=$is_team_current?>" href="responsibles.php?project_id=<?=@$_SESSION['id_project']?>&task_filter=<?=@$task_filter?>&progress_status_filter=<?=@$progress_status_filter?>&supplier_filter=<?=@$_GET['supplier_filter']?>&period_new_task_filter=<?=@$period_new_task_filter?>&period_late_filter=<?=@$period_late_filter?>&is_specific_filter=<?=@$is_specific_filter?>"><img src="images/responsibles_icon.png" width="20" height="20" class="menu-item-icon" alt="" /><span>צוות הפרוייקט</span></a></li>
 	<li class="separator">|</li>
-	<li><a class="font-weight-bold" href="chapters.php?project_id=<?=@$_SESSION['id_project']?>&task_filter=<?=@$task_filter?>&progress_status_filter=<?=@$progress_status_filter?>&supplier_filter=<?=@$_GET['supplier_filter']?>&period_new_task_filter=<?=@$period_new_task_filter?>&period_late_filter=<?=@$period_late_filter?>&is_specific_filter=<?=@$is_specific_filter?>">פרקים</a></li>
+	<li><a class="font-weight-bold<?=$is_chapters_current?>" href="chapters.php?project_id=<?=@$_SESSION['id_project']?>&task_filter=<?=@$task_filter?>&progress_status_filter=<?=@$progress_status_filter?>&supplier_filter=<?=@$_GET['supplier_filter']?>&period_new_task_filter=<?=@$period_new_task_filter?>&period_late_filter=<?=@$period_late_filter?>&is_specific_filter=<?=@$is_specific_filter?>"><img src="images/chapters_icon.png" width="20" height="20" class="menu-item-icon" alt="" /><span>פרקים</span></a></li>
   </ul>
   <div class="topbar-actions">
 	  <a href="add_sup_to_proj.php?id=<?=@$_SESSION['id_project']?>" class="btn-attach-suppliers">
@@ -223,6 +232,54 @@
     font-size: 14px;
 }
 
+.menu-list li a,
+.menu-list-preview li a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding: 4px 8px;
+    border-radius: 8px;
+    transition: background-color 0.15s ease;
+}
+
+.menu-item-icon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+.menu-list li a:hover,
+.menu-list li a:active,
+.menu-list-preview li a:hover,
+.menu-list-preview li a:active {
+    background-color: rgba(255,255,255,0.2);
+}
+
+.topbar-collapsed .menu-list.open li,
+.topbar-preview .menu-list.open li {
+    width: 100%;
+}
+
+.topbar-collapsed .menu-list.open li a,
+.topbar-preview .menu-list.open li a {
+    flex-direction: row;
+    justify-content: flex-start;
+    width: 100%;
+    box-sizing: border-box;
+    gap: 8px;
+    padding: 6px 10px;
+}
+
+.topbar-collapsed .menu-list.open li a .menu-item-icon,
+.topbar-preview .menu-list.open li a .menu-item-icon {
+    padding-right: 4px;
+}
+
+.menu-item-current {
+    background-color: rgba(255,255,255,0.18);
+}
+
 @media (max-width: 600px) {
     .menu-list a,
     .menu-list-preview a {
@@ -243,9 +300,13 @@ function isTasksTopbarSingleLine(topbar){
 		return getComputedStyle(el).display !== 'none';
 	});
 	if(children.length === 0) return true;
-	let firstTop = children[0].offsetTop;
+	// centre vertical (top + height/2), pas juste "top" : avec align-items:center,
+	// des enfants de hauteurs differentes (ex: menu-list avec icones, plus haut que
+	// topbar-actions) partagent le meme centre vertical mais PAS le meme "top",
+	// donc comparer les tops donnait un faux "pas sur la meme ligne"
+	let firstCenter = children[0].offsetTop + children[0].offsetHeight / 2;
 	return children.every(function(el){
-		return Math.abs(el.offsetTop - firstTop) < 5;
+		return Math.abs((el.offsetTop + el.offsetHeight / 2) - firstCenter) < 5;
 	});
 }
 
