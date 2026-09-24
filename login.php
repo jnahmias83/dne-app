@@ -48,7 +48,8 @@ if(isset($_POST['login_btn'])) {
 		$_SESSION['user_role'] = $user_role;	
 		
 		session_write_close();
-		header("Location:projects.php");
+		echo '<script>window.location.href = "projects.php";</script>';
+		exit;
 	}
 	else { 
 		$msg_alert = "Invalid username or password!";
