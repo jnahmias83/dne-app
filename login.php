@@ -33,9 +33,8 @@ if(isset($_POST['login_btn'])) {
 		foreach($projects as $item) {
 			array_push($projects_array,$item->id.'-'.$item->nickname);
 		}
-        
-		session_start();
-		$_SESSION['projects_list'] = implode(',', $projects_array);			
+
+		$_SESSION['projects_list'] = implode(',', $projects_array);
 		$_SESSION['id_user'] = $id_user;
         $_SESSION['user_nickname'] = $nickname;
 		$_SESSION['lang'] = $lang;	
