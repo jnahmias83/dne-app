@@ -68,9 +68,9 @@ include 'menu_tasks.php';
 							<table id="responsibles_list" class="" border="1" dir="rtl">						
 								<tr class="bgColorSilver height50">   
 								    <th width="20px;" class="alignCenter"></th>
-									<th width="130px;" class="alignCenter sortable-col cursor-pointer" onclick="sortResponsiblesTable(1)">שם<br/><span class="sort-arrow">⇅</span></th>
-									<th width="130px;" class="alignCenter sortable-col cursor-pointer" onclick="sortResponsiblesTable(2)">תחום<br/><span class="sort-arrow">⇅</span></th>
-									<th width="100px;" class="alignCenter sortable-col cursor-pointer" onclick="sortResponsiblesTable(3)">משרד/חברה<br/><span class="sort-arrow">⇅</span></th>
+									<th width="130px;" class="alignCenter sortable-col cursor-pointer" onclick="sortResponsiblesTable(1)">שם<br/><span class="sort-arrow">▼</span></th>
+									<th width="130px;" class="alignCenter sortable-col cursor-pointer" onclick="sortResponsiblesTable(2)">תחום<br/><span class="sort-arrow">▼</span></th>
+									<th width="100px;" class="alignCenter sortable-col cursor-pointer" onclick="sortResponsiblesTable(3)">משרד/חברה<br/><span class="sort-arrow">▼</span></th>
 									<th width="40px;" class="alignCenter">גופן</th>
 									<th width="40px;" class="alignCenter">רקע</th>
 									<th width="60px;" class="alignCenter">דוא''ל</th>
@@ -200,13 +200,14 @@ function setResponsibleActive(id_responsible) {
 	});	
 }
 
-let responsiblesSortState = {};
+let responsiblesSortState = {1: 'asc'};
 function sortResponsiblesTable(colIndex) {
 	let table = document.getElementById('responsibles_list');
 	let tbody_rows = Array.prototype.slice.call(table.rows).slice(1);
-	let asc = !responsiblesSortState[colIndex];
+	let newDir = (responsiblesSortState[colIndex] === 'desc') ? 'asc' : 'desc';
 	responsiblesSortState = {};
-	responsiblesSortState[colIndex] = asc;
+	responsiblesSortState[colIndex] = newDir;
+	let asc = (newDir === 'asc');
 
 	tbody_rows.sort(function(rowA, rowB) {
 		let textA = rowA.cells[colIndex].innerText.trim();
@@ -219,10 +220,10 @@ function sortResponsiblesTable(colIndex) {
 	});
 
 	document.querySelectorAll('#responsibles_list .sortable-col .sort-arrow').forEach(function(el) {
-		el.textContent = '';
+		el.textContent = '▼';
 	});
 	let arrow = table.rows[0].cells[colIndex].querySelector('.sort-arrow');
-	if (arrow) arrow.textContent = asc ? ' ▲' : ' ▼';
+	if (arrow) arrow.textContent = asc ? '▼' : '▲';
 }
 
 </script>
