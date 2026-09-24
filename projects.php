@@ -3610,8 +3610,17 @@ function toTasksList(id_project){
     }
 
     #div_top_buttons {
-        flex-direction: row !important;
+        display: grid !important;
+        grid-template-columns: repeat(2, auto);
+        justify-content: center;
+        column-gap: 30px;
+        row-gap: 15px;
         width: 100% !important;
+    }
+
+    #div_top_buttons > .width25Percents {
+        width: auto !important;
+        flex: 0 1 auto !important;
     }
 
     span, .color-1A5276, .colorRed {
