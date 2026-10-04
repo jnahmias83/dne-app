@@ -260,7 +260,26 @@ include 'menu_budget_reports.php';
 </html>
 
 <script>
-$('#suppliers').chosen();
+window.addEventListener('error', function(ev){
+	try {
+		navigator.sendBeacon('log_js_error.php', JSON.stringify({
+			page: 'add_payment.php',
+			message: ev.message,
+			source: ev.filename,
+			lineno: ev.lineno,
+			colno: ev.colno,
+			stack: ev.error && ev.error.stack ? ev.error.stack : ''
+		}));
+	} catch(e) {}
+});
+
+try {
+	$('#suppliers').chosen();
+} catch(e) {
+	// si le plugin chosen echoue sur certains navigateurs/tablettes, ne pas bloquer
+	// le reste du script (bouton שמור, selection de fichiers, etc.)
+	console.error('chosen() init failed', e);
+}
 
 $('#pdf_payment,#pdf_invoice').on('change', function(){
 	$('#' + this.id + '_filename').text(this.files && this.files.length ? this.files[0].name : '');

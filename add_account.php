@@ -239,7 +239,24 @@ include 'menu_budget_reports.php';
 </html>
 
 <script>
-$('#suppliers').chosen();
+window.addEventListener('error', function(ev){
+	try {
+		navigator.sendBeacon('log_js_error.php', JSON.stringify({
+			page: 'add_account.php',
+			message: ev.message,
+			source: ev.filename,
+			lineno: ev.lineno,
+			colno: ev.colno,
+			stack: ev.error && ev.error.stack ? ev.error.stack : ''
+		}));
+	} catch(e) {}
+});
+
+try {
+	$('#suppliers').chosen();
+} catch(e) {
+	console.error('chosen() init failed', e);
+}
 
 let create_order_from_account = 0;
 

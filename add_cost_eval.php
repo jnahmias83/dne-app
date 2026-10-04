@@ -370,6 +370,19 @@ include 'menu_budget_reports.php';
 </html>
 
 <script>
+window.addEventListener('error', function(ev){
+	try {
+		navigator.sendBeacon('log_js_error.php', JSON.stringify({
+			page: 'add_cost_eval.php',
+			message: ev.message,
+			source: ev.filename,
+			lineno: ev.lineno,
+			colno: ev.colno,
+			stack: ev.error && ev.error.stack ? ev.error.stack : ''
+		}));
+	} catch(e) {}
+});
+
 let domain_type;
 
 $('#pdf_evaluation').on('change', function(){

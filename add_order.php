@@ -195,7 +195,24 @@ include 'menu_budget_reports.php';
 </html>
 
 <script>
-$('#suppliers').chosen();
+window.addEventListener('error', function(ev){
+	try {
+		navigator.sendBeacon('log_js_error.php', JSON.stringify({
+			page: 'add_order.php',
+			message: ev.message,
+			source: ev.filename,
+			lineno: ev.lineno,
+			colno: ev.colno,
+			stack: ev.error && ev.error.stack ? ev.error.stack : ''
+		}));
+	} catch(e) {}
+});
+
+try {
+	$('#suppliers').chosen();
+} catch(e) {
+	console.error('chosen() init failed', e);
+}
 
 $('#pdf_order').on('change', function(){
 	$('#pdf_order_filename').text(this.files && this.files.length ? this.files[0].name : '');
