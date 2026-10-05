@@ -2,8 +2,13 @@
 include 'functions/functions.php';
 
 $query = $mysqli->prepare("SELECT logo_stread FROM dne_logos LIMIT 1");
-$query->store_result();	
+$query->store_result();
 $logo = fetch_unique($query);
+
+$query = $mysqli->prepare("SELECT * FROM dne_inputs_colors LIMIT 1");
+$query->execute();
+$query->store_result();
+$bg_color_inputs = fetch_unique($query);
 
 if(@$_POST['all_ids_to_edit'] == '') {
 	$id = @$_POST['id_meeting'];
@@ -62,6 +67,7 @@ if(@$_POST['all_ids_to_edit'] == '') {
 	$log_meeting_updates = fetch($query);
 
 	$description = @$meeting->description;
+	$description_updates = '';
 	$all_remarks = '';
 
 	$dir_log_meeting_updates = 'alignRight';
@@ -85,8 +91,7 @@ if(@$_POST['all_ids_to_edit'] == '') {
 			$progress_status_log_updates = @$item->ps_name;
 
 		if(@$remark != ''){
-			$description .= "<div class='marginTop5 colorGreenDark ".@$dir_log_meeting_updates." ".@$padding_log_meeting_updates."' dir='".@$dir_updates."'>"
-							."<span class='badge-nickname-green'>"
+			$update_label_html = "<span class='badge-nickname-green'>"
 							.@$user_nickname
 							."</span> "
 							."<span class='log-date-grey' style='unicode-bidi:isolate;'>"
@@ -94,17 +99,24 @@ if(@$_POST['all_ids_to_edit'] == '') {
 							."</span>";
 
 			if(preg_match('/\p{L}/u', $progress_status_log_updates)){
-				$description .=  " - <span style='font-weight:bold;'>"
+				$update_label_html .=  " - <span style='font-weight:bold;'>"
 								.@$progress_status_log_updates
 								."</span>";
 			}
 
-			$description .=  " - "
-							."<span style='unicode-bidi:isolate;'>"
+			$update_label_html .= " - ";
+
+			$description_updates .= "<div class='marginTop5 colorGreenDark ".@$padding_log_meeting_updates."' dir='".@$dir_updates."' style='display:flex;align-items:baseline;'>"
+							."<span style='flex:0 0 auto;white-space:nowrap;'>".$update_label_html."</span>"
+							."<span style='flex:1;min-width:0;unicode-bidi:isolate;'>"
 							.html_entity_decode(@$remark)
 							."</span>"
 							."</div>";
 		}
+	}
+
+	if($description_updates != ''){
+		$description .= "<hr style='border:none;border-top:2px solid #999;margin:8px 0;'/><div style='margin:4px 6px;max-height:90px;overflow-y:scroll;box-sizing:border-box;'>".$description_updates."</div>";
 	}
 	
 	$tracking_remarks = '';
@@ -164,34 +176,55 @@ if(@$_POST['all_ids_to_edit'] == '') {
 
 		$tracking_table = "<table style='width:100%;table-layout:fixed;border-collapse:collapse;border:none!important;'>";
 
-		foreach($log_meeting_tracking as $item){
+		$tracking_items = array_values((array)$log_meeting_tracking);
+		$tracking_items_count = count($tracking_items);
+		$tracking_rowspans = array();
+		$tracking_group_start = 0;
+		while($tracking_group_start < $tracking_items_count){
+			$tracking_group_nickname = @$tracking_items[$tracking_group_start]->user_nickname;
+			$tracking_group_size = 1;
+			while(($tracking_group_start + $tracking_group_size) < $tracking_items_count
+					&& @$tracking_items[$tracking_group_start + $tracking_group_size]->user_nickname === $tracking_group_nickname){
+				$tracking_group_size++;
+			}
+			$tracking_rowspans[$tracking_group_start] = $tracking_group_size;
+			for($tracking_group_offset = 1; $tracking_group_offset < $tracking_group_size; $tracking_group_offset++){
+				$tracking_rowspans[$tracking_group_start + $tracking_group_offset] = 0;
+			}
+			$tracking_group_start += $tracking_group_size;
+		}
+
+		foreach($tracking_items as $tracking_row_index => $item){
 			if(@$item->remark == '')
 				$remark = 'במעקב';
 			else
 				$remark = html_entity_decode(@$item->remark);
 
 			$action_date = smartDate(@$item->action_date, @$meeting->p_lang);
+			$remark_color_class = ($tracking_row_index === 0) ? 'colorRed' : 'colorGrey';
 
-			$tracking_table .= "<tr class='bg-fceaea alignCenter'>";
-			$tracking_table .= "<td style='vertical-align:middle;text-align:right;width:9%;padding-right:8px;border:none!important;'>"
-								."<span class='border-black padding-2x-2y borderRadius20 align-items-center justify-content-center fontSize9 colorWhite bgColorBlack' style='display:inline-flex;line-height:1;vertical-align:middle;'>"
+			$tracking_table .= "<tr class='alignCenter' style='background-color:".@$bg_color_inputs->b_bgcolor.";'>";
+			if($tracking_rowspans[$tracking_row_index] > 0){
+				$tracking_table .= "<td rowspan='".$tracking_rowspans[$tracking_row_index]."' style='vertical-align:middle;text-align:center;width:9%;border:none!important;'>";
+				$tracking_table .= "<span style='display:inline-block;width:18px;height:18px;line-height:18px;border-radius:50%;background-color:#000;color:#fff;font-size:9px;text-align:center;vertical-align:middle;box-sizing:border-box;'>"
 									.@$item->user_nickname
-								."</span>"
-								."</td>";
-			$tracking_table .= "<td style='vertical-align:middle;text-align:right;padding:0 2px 0 6px;width:91%;border:none!important;'><span class='marginRight5 dir-rtl unicode-bidi-embed' style='white-space:nowrap;vertical-align:middle;'>".$action_date." -</span> <span class='colorRed dir-rtl unicode-bidi-embed' style='white-space:normal;word-wrap:break-word;overflow-wrap:break-word;vertical-align:middle;'>".html_entity_decode($remark)."</span></td>";
+								."</span>";
+				$tracking_table .= "</td>";
+			}
+			$tracking_table .= "<td style='vertical-align:middle;text-align:right;padding:0 2px 0 6px;width:91%;border:none!important;'><span class='marginRight5 dir-rtl unicode-bidi-embed' style='white-space:nowrap;vertical-align:middle;'>".$action_date." -</span> <span class='".$remark_color_class." dir-rtl unicode-bidi-embed' style='white-space:normal;word-wrap:break-word;overflow-wrap:break-word;vertical-align:middle;'>".html_entity_decode($remark)."</span></td>";
 			$tracking_table .= "</tr>";
 	    }
 
 		if($track_display_rows == 0){
 			$mm_track_label = (@$meeting->p_lang != 'HE') ? 'Task in tracking' : 'משימה במעקב';
-			$tracking_table .= "<tr class='bg-fceaea alignCenter'><td colspan='2' style='vertical-align:middle;text-align:right;padding:0 8px 0 6px;border:none!important;'><span class='colorRed dir-rtl unicode-bidi-embed' style='vertical-align:middle;'>".$mm_track_label."</span></td></tr>";
+			$tracking_table .= "<tr class='alignCenter' style='background-color:".@$bg_color_inputs->b_bgcolor.";'><td colspan='2' style='vertical-align:middle;text-align:right;padding:0 8px 0 6px;border:none!important;'><span class='colorRed dir-rtl unicode-bidi-embed' style='vertical-align:middle;'>".$mm_track_label."</span></td></tr>";
 		}
 
 		$tracking_table .= "</table>";
 
 		$tracking_remarks .= "<tr><td colspan='3'>"
-							."<div class='bg-fceaea' style='position:relative;padding:0 38px 0 53px;min-height:44px;display:flex;align-items:center;'>"
-							."<div dir='rtl' style='width:100%;max-height:112px;overflow-y:auto;'>".$tracking_table."</div>"
+							."<div style='position:relative;padding:0 38px 0 53px;min-height:44px;display:flex;align-items:center;background-color:".@$bg_color_inputs->b_bgcolor.";border:1px solid #999;border-radius:6px;box-sizing:border-box;margin:4px 6px;'>"
+							."<div dir='rtl' onclick=\"$('#tracking_btn').trigger('click');\" style='width:100%;max-height:112px;overflow-y:scroll;border:2px solid ".@$bg_color_inputs->f_bgcolor.";border-radius:4px;box-sizing:border-box;cursor:pointer;'>".$tracking_table."</div>"
 							."<div style='position:absolute;left:8px;top:0;bottom:0;width:45px;display:flex;align-items:center;justify-content:center;'>".$reminder_bell_html."</div>"
 							."<div style='position:absolute;right:4px;top:0;bottom:0;width:30px;display:flex;align-items:center;justify-content:center;'>".$red_badge_html."</div>"
 							."</div>"

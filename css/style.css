@@ -1337,6 +1337,10 @@ a {
    max-width: 550px;
 }
 
+#modalTaskFollowupActions .modal-dialog {
+   margin-top: 0.5rem;
+}
+
 #contentToScreenshot {
    position: absolute;
    left: -9999px;

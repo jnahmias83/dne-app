@@ -579,71 +579,80 @@ function fillContentTaskDetails(meeting_id,iteration,task_details,forShare,withP
 	while(task_details.length < 31) task_details.push('');
 	for(let i=0;i<task_details.length;i++) if(task_details[i] === undefined || task_details[i] === null) task_details[i] = '';
 
-	let content = '<table dir="rtl" width="100%" style="border-collapse:collapse;">';
+	let content = '<table dir="rtl" width="100%" style="border-collapse:collapse;table-layout:fixed;">';
 	if(withProjectHeader && (task_details[1] || task_details[27]))
 		content += '<tr class="alignCenter height26"><td colspan="3" style="text-decoration:none;" class="bgColorBlue2 colorWhite font-weight-bold alignCenter paddingTop2 paddingBottom5 border-blue2">'+(task_details[1] || task_details[27])+'</td></tr>';
 	content += '<tr class="alignCenter height26">';
 	let taskBg    = task_details[26] || '#5b8dd9';
 	let taskColor = task_details[28] || '#ffffff';
-	content += '<td class="fontSize14 border-left-white"><span class="colorGrey font-weight-bold">משימת</span><br/><span style="display:inline-block;padding:6px 14px;color:'+taskColor+';background-color:'+taskBg+';font-weight:bold;box-sizing:border-box;border-radius:20px;">'+task_details[14]+'</span></td>';
-	content += '<td class="fontSize14 border-left-white"><span class="colorGrey font-weight-bold">אחראי</span><br/><strong class="fontSize16 colorRed">'+task_details[2]+'</strong></td>';
-	content += '<td class="fontSize14"><span class="colorGrey font-weight-bold">להעביר ל</span><br/><span class="fontSize16 color-4d7380">'+task_details[3]+'</span></td>';
+	content += '<td colspan="3">';
+	content += '<div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(72px, 1fr));gap:4px;width:100%;box-sizing:border-box;">';
+	content += '<div class="fontSize14" style="min-width:0;max-width:100%;text-align:center;box-sizing:border-box;overflow-wrap:break-word;"><span class="colorGrey font-weight-bold">משימת</span><br/><span style="display:inline-block;max-width:100%;padding:4px 8px;color:'+taskColor+';background-color:'+taskBg+';font-weight:bold;box-sizing:border-box;border-radius:20px;overflow-wrap:break-word;">'+task_details[14]+'</span></div>';
+	content += '<div class="fontSize14" style="min-width:0;max-width:100%;text-align:center;box-sizing:border-box;overflow-wrap:break-word;"><span class="colorGrey font-weight-bold">אחראי</span><br/><strong class="fontSize16 colorRed">'+task_details[2]+'</strong></div>';
+	content += '<div class="fontSize14" style="min-width:0;max-width:100%;text-align:center;box-sizing:border-box;overflow-wrap:break-word;"><span class="colorGrey font-weight-bold">להעביר ל</span><br/><span class="fontSize16 color-4d7380">'+task_details[3]+'</span></div>';
+	if(task_details[11].length > 2){
+		content += '<div class="fontSize14" style="min-width:0;max-width:100%;text-align:center;box-sizing:border-box;overflow-wrap:break-word;"><span class="colorGrey font-weight-bold">סטטוס משימה</span><br/>';
+		content += "<span style='display:inline-block;max-width:100%;padding:4px 8px;color:"+task_details[29]+";background-color:"+task_details[30]+";font-weight:bold;box-sizing:border-box;overflow-wrap:break-word;'>"+task_details[11]+"</span></div>";
+	}
+	content += '</div>';
+	content += '</td>';
 	content += '</tr>';
-	
+
 	content += '<tr class="alignCenter height26">';
 	content += "<td class='fontSize14' colspan='3'>יצירה<span class='marginRight10 marginLeft10 color-4d7380'>"+task_details[21].substr(8,2)+"/"+task_details[21].substr(5,2)+"/"+task_details[21].substr(2,2)+"</span>יעד";
 	content += "<span class='marginRight5 colorRed font-weight-bold'>"+task_details[5].substr(8,2)+"/"+task_details[5].substr(5,2)+"/"+task_details[5].substr(2,2)+"</span>";
-    content += "</td>";	
+    content += "</td>";
 	content +='</tr>';
-	
-	if(task_details[11].length > 2){
-		content +='<tr class="alignCenter height26">';
-		content +='<td colspan="3">';	
-		content += '<div class="fontSize16 alignCenter colorGrey font-weight-bold">סטטוס משימה</div>';
-		content += '<div id="progress_status_list"></div>';
-		//populateProgressStatusDropdown(meeting_id,iteration,task_details[0],task_details[10],forShare);
-		content += "<div class='fontSize16 alignCenter'><span style='display:inline-block;padding:6px 10px;color:"+task_details[29]+";background-color:"+task_details[30]+";font-weight:bold;box-sizing:border-box;'>"+task_details[11]+"</span></div>";		
-		content +='</td>';
-		content +='</tr>';
-	}
-	
+
 	content += '<tr class="alignCenter bgColor-ebf4f5 height26"><td colspan="3" class="border-bottom-white paddingTop5 alignCenter"><strong>'+task_details[6]+'</strong></td></tr>';
 	content += '<tr class="alignCenter bgColor-ebf4f5 height26"><td colspan="3" class="border-bottom-white"><strong>'+decodeHtmlAndNl2br(task_details[12]).replace(/<br\s*\/?>|<\/?div[^>]*>/gi, '').trim()+'&nbsp;<span class="fontSize20 colorRed">|</span>&nbsp;'+decodeHtmlAndNl2br(task_details[7]).replace(/<br\s*\/?>|<\/?div[^>]*>/gi, '').trim()+'</strong></td></tr>';
-	content += '<tr class="alignRight bgColor-ebf4f5"><td colspan="3" style="padding-right:10px;"><p>'+decodeHtmlAndNl2br(task_details[8])+'</p></td></tr>';
+	content += '<tr class="alignRight bgColor-ebf4f5"><td colspan="3" style="padding-right:10px;"><p style="margin:2px 0 0 0;">'+decodeHtmlAndNl2br(task_details[8])+'</p></td></tr>';
 	
 	if(forShare && task_details[22] == 1){
 		content += task_details[23];
 	}
 	
+	let imagesHtml = '';
+
 	if(task_details[9] != ''){
 		const image1Path = 'uploads/'+task_details[9];
-		let image1_height = 360;
+		let image1_height = 150;
 		let ratio_image1 = task_details[16]/task_details[17];
 		let image1_width = image1_height*ratio_image1;
 
 		if (image1_width > 430) {
 			image1_width = 430;
 			image1_height = image1_width/ratio_image1;
+		} else if (image1_width < 200) {
+			image1_width = 200;
+			image1_height = image1_width/ratio_image1;
 		}
 
-		content += '<tr><td colspan="3" class="alignCenter"><img src="'+image1Path+'" width="'+image1_width+'" height="'+image1_height+'" alt="" /></td></tr>';    
+		imagesHtml += '<img src="'+image1Path+'" width="'+image1_width+'" height="'+image1_height+'" alt="" style="display:block;margin:0 auto 8px auto;" />';
 	}
-	
+
 	if (task_details[18] != ''){
 		const image2Path = 'uploads/'+task_details[18];
-		let image2_height = 360;
+		let image2_height = 150;
 		let ratio_image2 = task_details[19]/task_details[20];
 		let image2_width = image2_height*ratio_image2;
 
 		if(image2_width > 430) {
 			image2_width = 430;
 			image2_height = image2_width/ratio_image2;
+		} else if (image2_width < 200) {
+			image2_width = 200;
+			image2_height = image2_width/ratio_image2;
 		}
 
-		content += '<tr><td colspan="3" class="alignCenter"><img src="'+image2Path+'" width="'+image2_width+'" height="'+image2_height+'" alt="" /></td></tr>';
+		imagesHtml += '<img src="'+image2Path+'" width="'+image2_width+'" height="'+image2_height+'" alt="" style="display:block;margin:0 auto;" />';
     }
 
-	content += '<tr class="alignCenter"><td colspan="3"><img src="uploads/'+task_details[25]+'" width="480" alt="" /></td></tr>';
+	if(imagesHtml != ''){
+		content += '<tr><td colspan="3" class="alignCenter"><div style="max-height:320px;overflow-y:auto;">'+imagesHtml+'</div></td></tr>';
+	}
+
+	content += '<tr class="alignCenter"><td colspan="3"><img src="uploads/'+task_details[25]+'" style="max-width:480px;width:100%;height:auto;" alt="" /></td></tr>';
 	content += '</table>';
 	return content;
 }

@@ -466,7 +466,7 @@ foreach($all_what_news as $wn){
 					<div class="row fontSize16 position-relative" style="background-color:<?=@$bg_color_inputs->e_bgcolor?>;padding:8px 0;margin:-10px -10px 0 -10px;border-radius:10px 10px 0 0;">
 						<div class="col-12 position-relative">
 							<strong class="d-block text-center" style="color:#ffffff;font-weight:bold;">המשימות שלי<img src="images/rectangle-list-regular.svg" alt="tasks" style="width:18px;height:18px;filter:brightness(0) invert(1);margin:0 15px;vertical-align:middle;" /></strong>
-							<input type="button" id="btn-close-user-tasks" class="borderRadius10 fontSize13 font-weight-bold position-absolute" style="top:0;right:13;color:#ffffff;background-color:<?=@$bg_color_inputs->e_bgcolor?>;border:1px solid #ffffff" value="X" />
+							<input type="button" id="btn-close-user-tasks" class="borderRadius10 fontSize13 font-weight-bold position-absolute" style="top:0;right:13px;color:#ffffff;background-color:<?=@$bg_color_inputs->e_bgcolor?>;border:1px solid #ffffff" value="X" />
 						</div>
 					</div>
 
@@ -599,7 +599,7 @@ foreach($all_what_news as $wn){
 					<div class="row fontSize16 position-relative" style="background-color:<?=@$bg_color_inputs->f_bgcolor?>;padding:8px 0;margin:-10px -10px 0 -10px;border-radius:10px 10px 0 0;">
 						<div class="col-12 position-relative">
 							<strong class="d-block text-center" style="color:#ffffff;font-weight:bold;"><img src="images/white-target-icon.png" alt="target" style="width:20px;height:20px;margin:0 15px;vertical-align:middle;" />מעקב אקטיבי<img src="images/white-target-icon.png" alt="target" style="width:20px;height:20px;margin:0 15px;vertical-align:middle;" /></strong>
-							<input type="button" id="btn-close-active-tracking" class="borderRadius10 fontSize16 font-weight-bold position-absolute" style="top:0;right:13;color:#ffffff;background-color:<?=@$bg_color_inputs->f_bgcolor?>;border:1px solid #ffffff" value="X" />
+							<input type="button" id="btn-close-active-tracking" class="borderRadius10 fontSize16 font-weight-bold position-absolute" style="top:0;right:13px;color:#ffffff;background-color:<?=@$bg_color_inputs->f_bgcolor?>;border:1px solid #ffffff" value="X" />
 						</div>
 					</div>
 									
@@ -739,7 +739,7 @@ foreach($all_what_news as $wn){
 					<div class="row fontSize16 position-relative">
 						<div class="col-12 position-relative">
 							<strong class="d-block text-center" style="color:<?=@$bg_color_inputs->g_bgcolor?>">תקציב</strong>
-							<input type="button" id="btn-close-not-approved-accounts" class="borderRadius10 fontSize16 font-weight-bold position-absolute" style="top:0;right:13;color:<?=@$bg_color_inputs->g_bgcolor?>;border:1px solid <?=@$bg_color_inputs->g_bgcolor?>" value="X" />
+							<input type="button" id="btn-close-not-approved-accounts" class="borderRadius10 fontSize16 font-weight-bold position-absolute" style="top:0;right:13px;color:<?=@$bg_color_inputs->g_bgcolor?>;border:1px solid <?=@$bg_color_inputs->g_bgcolor?>" value="X" />
 						</div>
 					</div>		
 									
@@ -758,7 +758,7 @@ foreach($all_what_news as $wn){
 					<div class="row fontSize16 position-relative" style="background-color:<?=@$bg_color_inputs->h_bgcolor?>;padding:8px 0;margin:-10px -10px 0 -10px;border-radius:10px 10px 0 0;">
 						<div class="col-12 position-relative">
 							<strong class="d-block text-center what-news-title" style="color:#ffffff;font-weight:bold;"><i class="fa fa-bell" style="color:#ffffff;margin:0 15px;"></i>מה חדש</strong>
-							<div class="d-flex align-items-center position-absolute what-news-header-actions" style="top:0;right:13;gap:8px;">
+							<div class="d-flex align-items-center position-absolute what-news-header-actions" style="top:0;right:13px;gap:8px;">
 								<input type="button" id="btn-close-what-news" class="borderRadius10 fontSize16 font-weight-bold" style="color:#ffffff;background-color:<?=@$bg_color_inputs->h_bgcolor?>;border:1px solid #ffffff" value="X" />
 							</div>
 						</div>
@@ -1115,7 +1115,7 @@ foreach($all_what_news as $wn){
 										<div class="row fontSize18 alignCenter dir-rtl" style="background-color:<?=@$bg_color_inputs->e_bgcolor?>;padding:8px 0;margin:-10px -10px 0 -10px;border-radius:10px 10px 0 0;">
 											<div class="col-12 position-relative" style="min-height:38px;">
 												<strong style="color:#ffffff;font-weight:bold;">המשימות שלי<img src="images/rectangle-list-regular.svg" alt="tasks" style="width:18px;height:18px;filter:brightness(0) invert(1);margin:0 15px;vertical-align:middle;" /></strong>
-												<div class="d-flex align-items-center position-absolute" style="top:0;right:13;gap:8px;">
+												<div class="d-flex align-items-center position-absolute" style="top:0;right:13px;gap:8px;">
 													<input type="button" id="btn-close-user-tasks-<?=@$pr->id?>" class="borderRadius10 fontSize16 font-weight-bold" style="color:#ffffff;background-color:transparent;border:1px solid #ffffff" value="X" />
 												</div>
 											</div>
@@ -1241,7 +1241,7 @@ foreach($all_what_news as $wn){
 										<div class="row fontSize18 alignCenter dir-rtl" style="background-color:<?=@$bg_color_inputs->f_bgcolor?>;padding:8px 0;margin:-10px -10px 0 -10px;border-radius:10px 10px 0 0;">
 											<div class="col-12 position-relative" style="min-height:38px;">
 												<strong style="color:#ffffff;font-weight:bold;"><img src="images/white-target-icon.png" alt="target" style="width:20px;height:20px;margin:0 15px;vertical-align:middle;" />מעקב אקטיבי<img src="images/white-target-icon.png" alt="target" style="width:20px;height:20px;margin:0 15px;vertical-align:middle;" /></strong>
-												<div class="d-flex align-items-center position-absolute" style="top:0;right:13;gap:8px;">
+												<div class="d-flex align-items-center position-absolute" style="top:0;right:13px;gap:8px;">
 													<input type="button" id="btn-close-active-tracking-<?=@$pr->id?>" class="borderRadius10 fontSize16 font-weight-bold" style="color:#ffffff;background-color:transparent;border:1px solid #ffffff" value="X" />
 												</div>
 											</div>
@@ -1418,7 +1418,7 @@ foreach($all_what_news as $wn){
 										<div class="row fontSize18 alignCenter dir-rtl" style="background-color:<?=@$bg_color_inputs->h_bgcolor?>;padding:8px 0;margin:-10px -10px 0 -10px;border-radius:10px 10px 0 0;">
 											<div class="col-12 position-relative" style="min-height:38px;">
 												<strong style="color:#ffffff;font-weight:bold;">מה חדש<i class="fa fa-bell" style="color:#ffffff;margin:0 15px;"></i></strong>
-												<div class="d-flex align-items-center position-absolute" style="top:0;right:13;gap:8px;">
+												<div class="d-flex align-items-center position-absolute" style="top:0;right:13px;gap:8px;">
 													<input type="button" id="btn-close-what-news-<?=@$pr->id?>" class="borderRadius10 fontSize16 font-weight-bold" style="color:#ffffff;background-color:transparent;border:1px solid #ffffff" value="X" />
 												</div>
 											</div>
@@ -1878,9 +1878,16 @@ foreach($all_what_news as $wn){
         <div class="modal fade dir-rtl" id="modalTaskFollowupActions" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
 				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="btn-close btn-close-white-small" data-bs-dismiss="modal" aria-label="Close" style="align-self:flex-start;"></button>
-						<div class="modal-title"></div>
+					<div class="modal-header" style="flex-direction:column;align-items:stretch;">
+						<div style="display:flex;align-items:center;width:100%;">
+							<button type="button" class="btn-close btn-close-white-small" data-bs-dismiss="modal" aria-label="Close" style="align-self:flex-start;"></button>
+							<div class="modal-title" style="flex:1;"></div>
+							<span id="thank_you_anchor"></span>
+						</div>
+						<div style="position:relative;width:100%;min-height:26px;margin-top:6px;text-align:center;">
+							<a id="link_next_task" title="הבא" style="position:absolute;right:0;top:0;"><i class="fa-solid fa-forward fontSize22 colorWhite cursor-pointer"></i></a>
+							<a id="link_prev_task" title="הקודם" style="position:absolute;left:0;top:0;"><i class="fa-solid fa-backward fontSize22 colorWhite cursor-pointer"></i></a>
+						</div>
 					</div>
 					<div class="modal-body" style="padding:0;overflow:hidden;">
 					   <div id="modalContent">
@@ -1951,14 +1958,6 @@ foreach($all_what_news as $wn){
 										</div>	
 									</div>    	
 							    </div>
-								<div class="row marginTop5 dir-rtl">
-								    <div class="col-12 alignCenter">
-									   <div class="col-12 alignCenter">
-											<a id="link_next_task" title="הבא"><i class="fa-solid fa-forward marginLeft10 fontSize33 color-349feb cursor-pointer"></i></a>
-											<a id="link_prev_task" title="הקודם"><i class="fa-solid fa-backward fontSize33 color-349feb cursor-pointer"></i></a>
-								        </div>
-								    </div>
-								</div>
 						   </form>
 					   </div>
 					</div>
@@ -2991,13 +2990,13 @@ $(document).ready(function(){
 				if(data == 1) {
 					let button =
 						"<button type='button' class='btn-set-to-read vertical-align-top btn btn-primary font-weight-bold marginLeft10 fontSize16' onclick='setToReadTask()'>" +
-							"<i class='fa-solid fa-check colorGreen'></i>&nbsp;תודה על העדכון" +
+							"<i class='fa-solid fa-check colorGreen'></i>&nbsp;תודה על העדכון&nbsp;<i class='fa-solid fa-caret-left' style='color:red;font-size:20px;'></i>" +
 						"</button>";
 
-					$('#link_next_task').after(button);
+					$('#thank_you_anchor').after(button);
 				}
 			},
-		});	
+		});
 		
 		$('#modalContent input[type="hidden"]').remove();
 		$('#modalContent').append("<input type='hidden' id='hidden_project_nickname' value='"+project_nickname+"'><input type='hidden' id='hidden_lang' value='"+lang+"'><input type='hidden' id='hidden_meeting_id' value='"+meeting_id+"'><input type='hidden' id='hidden_project_id' value='"+project_id+"'><input type='hidden' id='hidden_user_id' value='"+user_id+"'><input type='hidden' id='hidden_chapter' value='"+chapter+"'><input type='hidden' id='hidden_name' value='"+subject+"'><input type='hidden' id='hidden_area' value='"+area+"'><input type='hidden' id='hidden_recipient' value='"+recipient+"'><input type='hidden' id='hidden_responsible_id' value='"+responsible_id+"'><input type='hidden' id='hidden_destination_date' value='"+destination_date+"'><input type='hidden' id='hidden_progress_status_id' name='hidden_progress_status_id' value='"+progress_status_id+"'><input type='hidden' id='hidden_is_priority' value='"+is_priority+"'><input type='hidden' id='hidden_remark' value='"+remark+"'><input type='hidden' id='hidden_track_responsible_id' value='"+track_responsible_id+"'><input type='hidden' id='hidden_track_type' value='"+track_type+"'><input type='hidden' id='hidden_reminder_date' value='"+reminder_date+"'><input type='hidden' id='hidden_reminder_time' value='"+reminder_time+"'><input type='hidden' id='hidden_is_to_do_today' value='"+is_to_do_today+"'>");
@@ -3279,7 +3278,6 @@ function setToReadTask(){
 		processData: false,
 		contentType: false,
 		success: function(data){
-			$('#modalTaskFollowupActions').modal('hide');
 			$('#left_new_content, #right_content, #div_what_news, [id^="div_what_news_"]').find('.task_name[data-meetingid="' + mid + '"]').closest('tr').remove();
 			$('._badge-switcher[data-target="what_news"] span').each(function(){
 				$(this).text(Math.max(0, (parseInt($(this).text(), 10) || 0) - 1));
@@ -3287,6 +3285,7 @@ function setToReadTask(){
 			$('.badge-switcher[data-target="what_news"][data-prid="' + $('#hidden_project_id').val() + '"] span').each(function(){
 				$(this).text(Math.max(0, (parseInt($(this).text(), 10) || 0) - 1));
 			});
+			navigateTasks($('#wn_meeting_ids').val(), 'next');
 		},
 	});
 }
@@ -3590,10 +3589,8 @@ function toTasksList(id_project){
         margin-left: 4px;
     }
 
-    .what-news-header-actions {
-        position: static !important;
-        justify-content: center !important;
-        margin-top: 8px;
+    .what-news-title {
+        padding: 0 40px;
     }
 
     .filter-radio-row {

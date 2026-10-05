@@ -3025,9 +3025,16 @@ include 'menu_tasks.php';
 		<div class="modal fade dir-rtl" id="modalTaskFollowupActions" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
 				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="btn-close btn-close-white-small" data-bs-dismiss="modal" aria-label="Close" style="align-self:flex-start;"></button>
-						<div class="modal-title"></div>
+					<div class="modal-header" style="flex-direction:column;align-items:stretch;">
+						<div style="display:flex;align-items:center;width:100%;">
+							<button type="button" class="btn-close btn-close-white-small" data-bs-dismiss="modal" aria-label="Close" style="align-self:flex-start;"></button>
+							<div class="modal-title" style="flex:1;"></div>
+							<span id="thank_you_anchor"></span>
+						</div>
+						<div style="position:relative;width:100%;min-height:26px;margin-top:6px;text-align:center;">
+							<a id="link_next_task" title="הבא" style="position:absolute;right:0;top:0;"><i class="fa-solid fa-forward fontSize22 colorWhite cursor-pointer"></i></a>
+							<a id="link_prev_task" title="הקודם" style="position:absolute;left:0;top:0;"><i class="fa-solid fa-backward fontSize22 colorWhite cursor-pointer"></i></a>
+						</div>
 					</div>
 					<div class="modal-body" style="padding:0;overflow:hidden;">
 					   <div id="modalContent">
@@ -3103,14 +3110,8 @@ include 'menu_tasks.php';
 												<strong class="fontSize14">WhatsApp</strong>
 									        </a>
 										</div>									
-									</div>    	
+									</div>
 							    </div>
-								<div class="row marginTop5 dir-rtl">
-								    <div class="col-12 alignCenter">
-									    <a id="link_next_task" title="הבא"><i class="fa-solid fa-forward marginLeft10 fontSize33 color-349feb cursor-pointer"></i></a>		   
-									    <a id="link_prev_task" title="הקודם"><i class="fa-solid fa-backward fontSize33 color-349feb cursor-pointer"></i></a>
-								    </div>
-								</div>
 						   </form>
 					   </div>
 					</div>
@@ -4115,13 +4116,13 @@ $(document).ready(function(){
 			contentType: false,
 		    success: function(data){
 				if(data == 1) {
-					let button = 
+					let button =
 						"<button type='button' class='btn-set-to-read vertical-align-top btn btn-primary font-weight-bold marginLeft10 fontSize16' onclick='setToReadTask()'>" +
-							"<i class='fa-solid fa-check colorGreen'></i>&nbsp;תודה על העדכון" +
+							"<i class='fa-solid fa-check colorGreen'></i>&nbsp;תודה על העדכון&nbsp;<i class='fa-solid fa-caret-left' style='color:red;font-size:20px;'></i>" +
 						"</button>";
 	   
-					$('#link_next_task').after(button);
-				}			
+					$('#thank_you_anchor').after(button);
+				}
 		   },
 	   });
 	   
@@ -4724,7 +4725,7 @@ function setToReadTask(){
 		processData: false,
 		contentType: false,
 		success: function(data) {
-			$('#link_next_task').trigger('click');
+			navigateTasks($('#wn_meeting_ids').val(), 'next');
 		}, 
 	});
 }
@@ -5102,6 +5103,15 @@ $('#to_add_meeting_btn').click (function (e){
 [id^="td_pass_on_"] select,
 [id^="td_progress_status_"] select {
     border-radius: 10px;
+    text-align-last: center;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='%23333' d='M8 11L3 6h10z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: left 6px center;
+    background-size: 12px;
+    padding-left: 22px;
 }
 
 .status-blank-when-empty {
