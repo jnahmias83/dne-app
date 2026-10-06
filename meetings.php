@@ -3025,18 +3025,18 @@ include 'menu_tasks.php';
 		<div class="modal fade dir-rtl" id="modalTaskFollowupActions" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
 				<div class="modal-content">
-					<div class="modal-header" style="flex-direction:column;align-items:stretch;">
+					<div class="modal-header" style="flex-direction:column;align-items:stretch;justify-content:flex-start;">
 						<div style="display:flex;align-items:center;width:100%;">
 							<button type="button" class="btn-close btn-close-white-small" data-bs-dismiss="modal" aria-label="Close" style="align-self:flex-start;"></button>
 							<div class="modal-title" style="flex:1;"></div>
 							<span id="thank_you_anchor"></span>
 						</div>
-						<div style="position:relative;width:100%;min-height:26px;margin-top:6px;text-align:center;">
+						<div style="position:relative;width:100%;min-height:26px;margin-top:0;text-align:center;">
 							<a id="link_next_task" title="הבא" style="position:absolute;right:0;top:0;"><i class="fa-solid fa-forward fontSize22 colorWhite cursor-pointer"></i></a>
 							<a id="link_prev_task" title="הקודם" style="position:absolute;left:0;top:0;"><i class="fa-solid fa-backward fontSize22 colorWhite cursor-pointer"></i></a>
 						</div>
 					</div>
-					<div class="modal-body" style="padding:0;overflow:hidden;">
+					<div class="modal-body" style="padding:0;overflow-x:hidden;">
 					   <div id="modalContent">
 					       <div id="div_content_task_details"></div>
 					       <form class="marginTop15 alignCenter">    

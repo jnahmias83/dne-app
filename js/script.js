@@ -592,7 +592,7 @@ function fillContentTaskDetails(meeting_id,iteration,task_details,forShare,withP
 	content += '<div class="fontSize14" style="min-width:0;max-width:100%;text-align:center;box-sizing:border-box;overflow-wrap:break-word;"><span class="colorGrey font-weight-bold">להעביר ל</span><br/><span class="fontSize16 color-4d7380">'+task_details[3]+'</span></div>';
 	if(task_details[11].length > 2){
 		content += '<div class="fontSize14" style="min-width:0;max-width:100%;text-align:center;box-sizing:border-box;overflow-wrap:break-word;"><span class="colorGrey font-weight-bold">סטטוס משימה</span><br/>';
-		content += "<span style='display:inline-block;max-width:100%;padding:4px 8px;color:"+task_details[29]+";background-color:"+task_details[30]+";font-weight:bold;box-sizing:border-box;overflow-wrap:break-word;'>"+task_details[11]+"</span></div>";
+		content += "<span style='display:inline-block;max-width:100%;padding:4px 8px;color:"+task_details[29]+";background-color:"+task_details[30]+";font-weight:bold;box-sizing:border-box;border-radius:20px;overflow-wrap:break-word;'>"+task_details[11]+"</span></div>";
 	}
 	content += '</div>';
 	content += '</td>';
@@ -628,7 +628,7 @@ function fillContentTaskDetails(meeting_id,iteration,task_details,forShare,withP
 			image1_height = image1_width/ratio_image1;
 		}
 
-		imagesHtml += '<img src="'+image1Path+'" width="'+image1_width+'" height="'+image1_height+'" alt="" style="display:block;margin:0 auto 8px auto;" />';
+		imagesHtml += '<img src="'+image1Path+'" width="'+image1_width+'" height="'+image1_height+'" alt="" style="display:block;margin:8px auto 8px auto;" />';
 	}
 
 	if (task_details[18] != ''){
@@ -649,7 +649,7 @@ function fillContentTaskDetails(meeting_id,iteration,task_details,forShare,withP
     }
 
 	if(imagesHtml != ''){
-		content += '<tr><td colspan="3" class="alignCenter"><div style="max-height:320px;overflow-y:auto;">'+imagesHtml+'</div></td></tr>';
+		content += '<tr><td colspan="3" class="alignCenter"><div style="max-height:220px;overflow-y:auto;">'+imagesHtml+'</div></td></tr>';
 	}
 
 	content += '<tr class="alignCenter"><td colspan="3"><img src="uploads/'+task_details[25]+'" style="max-width:480px;width:100%;height:auto;" alt="" /></td></tr>';
@@ -1233,7 +1233,7 @@ async function setProjectModalTitle(project_id, modalSelector, forShare) {
     const d = await getProjectDetails(project_id);
     let html;
     if (!forShare && d.nickname) {
-        const sub = d.name_he ? `<div style="margin-top:4px;margin-bottom:6px;">${d.name_he}</div>` : '';
+        const sub = d.name_he ? `<div style="margin-top:4px;margin-bottom:0;line-height:1.1;">${d.name_he}</div>` : '';
         html = d.nickname + sub;
     } else {
         html = d.name_he ? `<div style="margin-bottom:6px;">${d.name_he}</div>` : '';

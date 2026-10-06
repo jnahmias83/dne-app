@@ -1299,6 +1299,17 @@ a {
     padding: 14px 16px 8px 16px;
 }
 
+#modalTaskFollowupActions .modal-content {
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+}
+
+#modalTaskFollowupActions .modal-body {
+    flex: 1;
+    overflow-y: auto;
+}
+
 .modal-header::after {
     content: "";
     position: absolute;
