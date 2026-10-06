@@ -1252,11 +1252,11 @@ include 'menu_tasks.php';
 					        <col style="width:30px;">
 					        <col style="width:40px;">
 					    </colgroup>
-								<tr class="bgColor-f2f6f9 height50">
+								<tr class="bgColor-f2f6f9 height50" style="height:56px;">
 									<th class="border-top-white <?=@$border_cell_table_start?> no-border-right alignCenter" style="width:30px;overflow:visible;position:relative;">
-										<div style="display:flex;flex-direction:column;align-items:center;gap:3px;position:absolute;top:0px;right:0;z-index:3;">
-											<a class="chapter-add-chapter-btn bgColor-1A5276" onclick="location.href='chapters.php?project_id=<?=@$project_id?>'">הוסף פרק</a>
-											<span id="collapse_all_chapters_btn" class="chapter-collapse-toggle-all" title="כווץ / הרחב את כל הפרקים">▾</span>
+										<div style="display:flex;flex-direction:column;align-items:center;gap:3px;position:absolute;top:3px;<?=(@$dir=='rtl')?'right':'left'?>:0;z-index:3;">
+											<a class="chapter-add-chapter-btn bgColor-1A5276" onclick="location.href='chapters.php?project_id=<?=@$project_id?>'"><?=(@$dir=='rtl')?'הוסף פרק':'Add chapter'?></a>
+											<span id="collapse_all_chapters_btn" class="chapter-collapse-toggle-all" title="<?=(@$dir=='rtl')?'כווץ / הרחב את כל הפרקים':'Collapse / expand all chapters'?>">▾</span>
 										</div>
 									</th>
 									<th id="th_count" class="border-top-white no-border-right alignCenter" style="width:40px;"></th>
@@ -1561,7 +1561,7 @@ include 'menu_tasks.php';
 										<tr class="bgColor-cbddec height40">
 										  <td class="<?=@$border_cell_table_start?> <?=@$border_cell_table_end?>" colspan="<?=sizeof($columns_list_array)+2?>" style="<?=@$text_align?>;<?=@$padding?>:5px;position:relative;">
 											<a class="text-decoration-underline cursor-pointer chapter-name-link"><strong><?=stripNbspArtifact(@$chapter_name)?></strong></a>
-											<a class="chapter-add-task-btn" title="הוסף משימה" onclick="event.stopPropagation();redirectToAddTaskForThisChapter(<?=@$chapter_id?>);"><img src="images/plus-icon.png" width="18" height="18" alt="plus icon" /></a>
+											<a class="chapter-add-task-btn" title="<?=(@$dir=='rtl')?'הוסף משימה':'Add task'?>" onclick="event.stopPropagation();redirectToAddTaskForThisChapter(<?=@$chapter_id?>);"><img src="images/plus-icon.png" width="18" height="18" alt="plus icon" /></a>
 										  </td>
 										</tr>
 										<?php
@@ -5522,7 +5522,7 @@ $(function() {
 .chapter-add-task-btn{
 	position:absolute;
 	bottom:-13px;
-	right:25px;
+	<?=(@$dir=='rtl')?'right':'left'?>:25px;
 	display:inline-flex;
 	align-items:center;
 	justify-content:center;
