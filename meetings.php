@@ -1249,17 +1249,17 @@ include 'menu_tasks.php';
 						    ?>
 					    <table id="meetings_table" class="rounded-table" border="1">
 					    <colgroup>
-					        <col style="width:30px;">
+					        <col style="width:42px;">
 					        <col style="width:40px;">
 					    </colgroup>
 								<tr class="bgColor-f2f6f9 height50" style="height:56px;">
-									<th class="border-top-white <?=@$border_cell_table_start?> no-border-right alignCenter" style="width:30px;overflow:visible;position:relative;">
+									<th class="border-top-white <?=@$border_cell_table_start?> no-border-right alignCenter" style="width:42px;overflow:visible;position:relative;<?=(@$dir=='rtl')?'border-left':'border-right'?>:1px solid white;">
 										<div style="display:flex;flex-direction:column;align-items:center;gap:3px;position:absolute;top:3px;<?=(@$dir=='rtl')?'right':'left'?>:0;z-index:3;">
 											<a class="chapter-add-chapter-btn bgColor-1A5276" onclick="location.href='chapters.php?project_id=<?=@$project_id?>'"><?=(@$dir=='rtl')?'הוסף פרק':'Add chapter'?></a>
 											<span id="collapse_all_chapters_btn" class="chapter-collapse-toggle-all" title="<?=(@$dir=='rtl')?'כווץ / הרחב את כל הפרקים':'Collapse / expand all chapters'?>">▾</span>
 										</div>
 									</th>
-									<th id="th_count" class="border-top-white no-border-right alignCenter" style="width:40px;"></th>
+									<th id="th_count" class="border-top-white no-border-right alignCenter" style="width:40px;<?=(@$dir=='rtl')?'border-right':'border-left'?>:1px solid white;"></th>
 
 									<?php if(in_array('subject',$columns_list_array)){ ?>
 									    <th class="<?php if(end($columns_list_array) == "subject") echo $border_cell_table_end;?> border-top-white no-border-inline-end alignCenter col-w-subject" width="<?=$w_subject?>%"><?=@$subject_label?></th>
