@@ -5473,6 +5473,7 @@ $(function() {
 	align-items:center;
 	justify-content:center;
 	padding:7px;
+	<?=(@$dir=='rtl')?'padding-top:5px;padding-bottom:9px;':''?>
 	line-height:1;
 	cursor:pointer;
 	font-size:11px;
@@ -5484,7 +5485,6 @@ $(function() {
 	border-radius:4px;
 	vertical-align:middle;
 	text-decoration:none;
-	<?=(@$dir=='rtl')?'transform:translateY(1px);':''?>
 }
 .chapter-add-chapter-btn:hover{
 	opacity:0.85;
