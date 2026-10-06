@@ -5472,8 +5472,7 @@ $(function() {
 	display:inline-flex;
 	align-items:center;
 	justify-content:center;
-	height:18px;
-	padding:0 8px 2px 8px;
+	padding:5px 10px;
 	line-height:1;
 	cursor:pointer;
 	font-size:11px;
@@ -5498,6 +5497,8 @@ $(function() {
 	justify-content:center;
 	width:18px;
 	height:18px;
+	padding-top:2px;
+	box-sizing:border-box;
 	cursor:pointer;
 	font-size:12px;
 	font-weight:bold;
@@ -5520,7 +5521,7 @@ $(function() {
 /* Bouton "+" pour ajouter une tache a ce chapitre, a cheval sur le bord bas de la barre bleue */
 .chapter-add-task-btn{
 	position:absolute;
-	bottom:-9px;
+	bottom:-13px;
 	inset-inline-start:18px;
 	display:inline-flex;
 	align-items:center;
