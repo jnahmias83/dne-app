@@ -384,7 +384,11 @@ function setData(meeting_id,iteration,field,isRemark,forShare,screen_type){
 						if($freshRow.length){
 							let $freshImgRow = $freshRow.next('.tr-image-row');
 							if($currentImgRow.length) $currentImgRow.remove();
+							let hadHighlight = $currentRow.hasClass('task-row-highlight');
+							let hadDarken = $currentRow.hasClass('row-darken');
 							$currentRow.replaceWith($freshRow);
+							if(hadHighlight) $freshRow.addClass('task-row-highlight');
+							if(hadDarken) $freshRow.addClass('row-darken');
 							if($freshImgRow.length) $freshRow.after($freshImgRow);
 						}
 					});
