@@ -1254,8 +1254,10 @@ include 'menu_tasks.php';
 					    </colgroup>
 								<tr class="bgColor-f2f6f9 height50">
 									<th class="border-top-white <?=@$border_cell_table_start?> no-border-right alignCenter" style="width:90px;">
-										<a class="chapter-add-chapter-btn" onclick="location.href='chapters.php?project_id=<?=@$project_id?>'">הוסף פרק</a>
-										<span id="collapse_all_chapters_btn" class="chapter-collapse-toggle-all" title="כווץ / הרחב את כל הפרקים">▾</span>
+										<div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+											<a class="chapter-add-chapter-btn bgColor-1A5276" onclick="location.href='chapters.php?project_id=<?=@$project_id?>'">הוסף פרק</a>
+											<span id="collapse_all_chapters_btn" class="chapter-collapse-toggle-all" title="כווץ / הרחב את כל הפרקים">▾</span>
+										</div>
 									</th>
 									<th id="th_count" class="border-top-white no-border-right alignCenter" style="width:40px;"></th>
 
@@ -5245,6 +5247,7 @@ td[id^="td_area_"] > div {
 #meetings_table {
     table-layout: fixed;
     width: 100%;
+    padding-bottom: 14px;
 }
 
 #meetings_table th {
@@ -5472,18 +5475,16 @@ $(function() {
 	font-weight:bold;
 	white-space:nowrap;
 	user-select:none;
-	color:#0d2c47;
-	background:#ffffff;
+	color:#ffffff;
 	border:1px solid #7fa8c9;
 	border-radius:4px;
 	vertical-align:middle;
-	margin-inline-end:6px;
 	text-decoration:none;
 }
 .chapter-add-chapter-btn:hover{
-	background:#eaf3fb;
+	opacity:0.85;
 	text-decoration:none;
-	color:#0d2c47;
+	color:#ffffff;
 }
 
 .chapter-collapse-toggle-all{
