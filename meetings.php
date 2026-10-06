@@ -5472,7 +5472,7 @@ $(function() {
 	display:inline-flex;
 	align-items:center;
 	justify-content:center;
-	padding:5px 10px;
+	padding:7px;
 	line-height:1;
 	cursor:pointer;
 	font-size:11px;
