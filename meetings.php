@@ -1249,12 +1249,13 @@ include 'menu_tasks.php';
 						    ?>
 					    <table id="meetings_table" class="rounded-table" border="1">
 					    <colgroup>
-					        <col style="width:30px;">
+					        <col style="width:90px;">
 					        <col style="width:40px;">
 					    </colgroup>
 								<tr class="bgColor-f2f6f9 height50">
-									<th class="border-top-white <?=@$border_cell_table_start?> no-border-right alignCenter" style="width:30px;">
-										<a class="text-decoration-underline cursor-pointer" onclick="location.href='chapters.php?project_id=<?=@$project_id?>'"><img id="img_plus_rdv" src="images/plus-icon.png" width="18" height="18" alt="plus icon" /></a>
+									<th class="border-top-white <?=@$border_cell_table_start?> no-border-right alignCenter" style="width:90px;">
+										<a class="chapter-add-chapter-btn" onclick="location.href='chapters.php?project_id=<?=@$project_id?>'">הוסף פרק</a>
+										<span id="collapse_all_chapters_btn" class="chapter-collapse-toggle-all" title="כווץ / הרחב את כל הפרקים">▾</span>
 									</th>
 									<th id="th_count" class="border-top-white no-border-right alignCenter" style="width:40px;"></th>
 
@@ -1556,8 +1557,9 @@ include 'menu_tasks.php';
 									if($meetings_num_rows > 0){ ?>
 										<tbody class="chapter-group" data-chapter-id="<?=@$chapter_id?>">
 										<tr class="bgColor-cbddec height40">
-										  <td class="<?=@$border_cell_table_start?> <?=@$border_cell_table_end?>" colspan="<?=sizeof($columns_list_array)+2?>" style="<?=@$text_align?>;<?=@$padding?>:5px;">
-											<a class="text-decoration-underline cursor-pointer" onclick="redirectToAddTaskForThisChapter(<?=@$chapter_id?>);"><strong><?=stripNbspArtifact(@$chapter_name)?></strong></a>
+										  <td class="<?=@$border_cell_table_start?> <?=@$border_cell_table_end?>" colspan="<?=sizeof($columns_list_array)+2?>" style="<?=@$text_align?>;<?=@$padding?>:5px;position:relative;">
+											<a class="text-decoration-underline cursor-pointer chapter-name-link"><strong><?=stripNbspArtifact(@$chapter_name)?></strong></a>
+											<a class="chapter-add-task-btn" title="הוסף משימה" onclick="event.stopPropagation();redirectToAddTaskForThisChapter(<?=@$chapter_id?>);"><img src="images/plus-icon.png" width="18" height="18" alt="plus icon" /></a>
 										  </td>
 										</tr>
 										<?php
@@ -5458,8 +5460,33 @@ $(function() {
 </script>
 
 <style>
-/* Repli / depli des chapitres (fleche devant le nom du chapitre) */
-.chapter-collapse-toggle{
+/* Bouton "tout replier / deplier" les chapitres, dans l'en-tete du tableau */
+.chapter-add-chapter-btn{
+	display:inline-flex;
+	align-items:center;
+	justify-content:center;
+	height:18px;
+	padding:0 8px;
+	cursor:pointer;
+	font-size:11px;
+	font-weight:bold;
+	white-space:nowrap;
+	user-select:none;
+	color:#0d2c47;
+	background:#ffffff;
+	border:1px solid #7fa8c9;
+	border-radius:4px;
+	vertical-align:middle;
+	margin-inline-end:6px;
+	text-decoration:none;
+}
+.chapter-add-chapter-btn:hover{
+	background:#eaf3fb;
+	text-decoration:none;
+	color:#0d2c47;
+}
+
+.chapter-collapse-toggle-all{
 	display:inline-flex;
 	align-items:center;
 	justify-content:center;
@@ -5469,7 +5496,6 @@ $(function() {
 	font-size:12px;
 	font-weight:bold;
 	line-height:1;
-	margin-inline-end:6px;
 	user-select:none;
 	transition:transform .12s ease;
 	color:#0d2c47;
@@ -5478,11 +5504,24 @@ $(function() {
 	border-radius:4px;
 	vertical-align:middle;
 }
-.chapter-collapse-toggle:hover{
+.chapter-collapse-toggle-all:hover{
 	background:#eaf3fb;
 }
-.chapter-collapse-toggle.is-collapsed{
+.chapter-collapse-toggle-all.is-collapsed{
 	transform:rotate(-90deg);
+}
+
+/* Bouton "+" pour ajouter une tache a ce chapitre, a cheval sur le bord bas de la barre bleue */
+.chapter-add-task-btn{
+	position:absolute;
+	bottom:-9px;
+	inset-inline-start:18px;
+	display:inline-flex;
+	align-items:center;
+	justify-content:center;
+	cursor:pointer;
+	z-index:2;
+	line-height:0;
 }
 
 /* Poignee de glisser-depose pour reordonner les chapitres depuis meetings.php */
@@ -5532,6 +5571,7 @@ $(function() {
 	if(!headers.length) return;
 
 	var initiallyCollapsed = loadCollapsed();
+	var allApply = [];
 
 	headers.forEach(function(header){
 		var td = header.querySelector('td');
@@ -5545,11 +5585,7 @@ $(function() {
 		grip.title = 'גרור לשינוי סדר הפרקים';
 		td.insertBefore(grip, td.firstChild);
 
-		var toggle = document.createElement('span');
-		toggle.className = 'chapter-collapse-toggle';
-		toggle.textContent = '▾';
-		toggle.title = 'Ouvrir / fermer le chapitre';
-		td.insertBefore(toggle, grip.nextSibling);
+		var nameLink = td.querySelector('.chapter-name-link');
 
 		function groupRows(){
 			var rows = [], el = header.nextElementSibling;
@@ -5560,9 +5596,10 @@ $(function() {
 			return rows;
 		}
 
+		var collapsed = false;
 		function apply(isCollapsed, persist){
 			groupRows().forEach(function(r){ r.hidden = isCollapsed; });
-			toggle.classList.toggle('is-collapsed', isCollapsed);
+			collapsed = isCollapsed;
 			if(!persist) return;
 			var list = loadCollapsed(), i = list.indexOf(label);
 			if(isCollapsed && i === -1) list.push(label);
@@ -5570,14 +5607,26 @@ $(function() {
 			saveCollapsed(list);
 		}
 
-		toggle.addEventListener('click', function(ev){
-			ev.stopPropagation();
-			ev.preventDefault();
-			apply(!toggle.classList.contains('is-collapsed'), true);
-		});
+		if(nameLink){
+			nameLink.addEventListener('click', function(ev){
+				ev.stopPropagation();
+				ev.preventDefault();
+				apply(!collapsed, true);
+			});
+		}
 
 		if(label && initiallyCollapsed.indexOf(label) !== -1) apply(true, false);
+		allApply.push(apply);
 	});
+
+	var collapseAllBtn = document.getElementById('collapse_all_chapters_btn');
+	if(collapseAllBtn && allApply.length){
+		collapseAllBtn.addEventListener('click', function(){
+			var shouldCollapse = !collapseAllBtn.classList.contains('is-collapsed');
+			allApply.forEach(function(fn){ fn(shouldCollapse, true); });
+			collapseAllBtn.classList.toggle('is-collapsed', shouldCollapse);
+		});
+	}
 
 	if(typeof Sortable !== 'undefined'){
 		Sortable.create(table, {
@@ -5596,5 +5645,6 @@ $(function() {
 			}
 		});
 	}
+
 })();
 </script>
