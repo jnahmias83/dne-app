@@ -5484,6 +5484,7 @@ $(function() {
 	border-radius:4px;
 	vertical-align:middle;
 	text-decoration:none;
+	<?=(@$dir=='rtl')?'transform:translateY(1px);':''?>
 }
 .chapter-add-chapter-btn:hover{
 	opacity:0.85;
