@@ -302,6 +302,7 @@ $query = $mysqli->prepare("SELECT ln.id_log_meeting_updates AS id_log_meeting_up
 						   lmu.action AS lmu_action,
 						   COALESCE(TRIM(lmu.remark),'') AS lmu_remark,
                            lmt.id AS lmt_id,lmt.action_date AS lmt_action_date,
+						   lmt.updated_users AS lmt_updated_users,
 						   COALESCE(TRIM(lmt.remark),'') AS lmt_remark,
 						   m.id AS id,m.id_user AS id_user,
 						   p.id AS p_id,p.nickname AS p_nickname,
@@ -854,7 +855,7 @@ foreach($all_what_news as $wn){
 										<a id="task_name_<?=@$wn->id?>" class="text-decoration-none w-100 d-block">
 											<div class="marginTop5 marginBottom5 flex flex-wrap justify-content-center align-items-start task_name width100Percents cursor-pointer" data-projectnickname="<?=@$wn->p_nickname?>" data-meetingid="<?=@$wn->id?>" data-projectid="<?=@$wn->p_id?>" data-userid="<?=@$user_id?>" data-lang="<?=@$wn->p_lang?>" data-chapter="<?=@$wn->chapter_name?>" data-name="<?=@$wn->subject?>" data-area="<?=@$wn->area?>" data-recipient="<?=@$responsible_email?>" data-responsibleid="<?=@$wn->id_responsible?>" data-destinationdate="<?=@$wn->destination_date?>" data-progresstatusid="<?=@$wn->id_progress_status?>" data-ispriority="<?=@$wn->is_priority?>" data-trackresponsibleid="<?=@$id_track_responsible?>" data-tracktype="<?=@$track_type?>" data-reminderdate="<?=@$reminder_date?>" data-remindertime="<?=@$reminder_time?>" data-istodotoday="0">
 												<div class="width15Percents d-flex flex-row align-items-center justify-content-center" style="align-self:center;gap:10px;">
-													<input type='checkbox' class='whats-new-checkbox' title='כבר לא חדש' data-lmuid="<?=@$wn->lmu_id?>" data-updatedusers="<?=@$wn->lmu_updated_users?>" onclick="event.stopPropagation();" />
+													<input type='checkbox' class='whats-new-checkbox' title='כבר לא חדש' data-lmuid="<?=@$wn->lmu_id?>" data-updatedusers="<?=@$wn->lmu_updated_users?>" data-lmtid="<?=@$wn->lmt_id?>" data-lmtupdatedusers="<?=@$wn->lmt_updated_users?>" onclick="event.stopPropagation();" />
 													<span class="colorWhite bgColor-1a5276 border-black borderRadius10 padding-4x-4y fw-bold fontSize9">
 													  <?=@$wn->p_nickname?>
 													</span>
@@ -1041,7 +1042,9 @@ foreach($all_what_news as $wn){
 														   lmu.updated_users AS lmu_updated_users,
 														   lmu.action AS lmu_action,
 														   lmu.remark as lmu_remark,
+														   lmt.id AS lmt_id,
 														   lmt.action_date AS lmt_action_date,
+														   lmt.updated_users AS lmt_updated_users,
 														   lmt.remark as lmt_remark,
 														   p.id AS p_id,p.nickname AS p_nickname,
 														   p.lang AS p_lang,
@@ -1522,7 +1525,7 @@ foreach($all_what_news as $wn){
 															<a id="task_name_<?=@$wn->id?>" class="text-decoration-none w-100 d-block">
 																<div class="marginTop5 marginBottom5 flex flex-wrap justify-content-center align-items-start task_name width100Percents cursor-pointer" data-projectnickname="<?=@$wn->p_nickname?>" data-meetingid="<?=@$wn->id?>" data-projectid="<?=@$wn->p_id?>" data-userid="<?=@$user_id?>" data-lang="<?=@$wn->p_lang?>" data-chapter="<?=@$wn->chapter_name?>" data-name="<?=@$wn->subject?>" data-area="<?=@$wn->area?>" data-recipient="<?=@$responsible_email?>" data-responsibleid="<?=@$wn->id_responsible?>" data-destinationdate="<?=@$wn->destination_date?>" data-progresstatusid="<?=@$wn->id_progress_status?>" data-ispriority="<?=@$wn->is_priority?>" data-trackresponsibleid="<?=@$id_track_responsible?>" data-tracktype="<?=@$track_type?>" data-reminderdate="<?=@$reminder_date?>" data-remindertime="<?=@$reminder_time?>" data-istodotoday="0">
 																	<div class="width10Percents d-flex align-items-center justify-content-center">
-																		<input type='checkbox' class='whats-new-checkbox' title='כבר לא חדש' data-lmuid="<?=@$wn->lmu_id?>" data-updatedusers="<?=@$wn->lmu_updated_users?>" onclick="event.stopPropagation();" />
+																		<input type='checkbox' class='whats-new-checkbox' title='כבר לא חדש' data-lmuid="<?=@$wn->lmu_id?>" data-updatedusers="<?=@$wn->lmu_updated_users?>" data-lmtid="<?=@$wn->lmt_id?>" data-lmtupdatedusers="<?=@$wn->lmt_updated_users?>" onclick="event.stopPropagation();" />
 																	</div>
 																	<div class="width90Percents">
 																		<div class="marginRight5 flex flex-wrap justify-content-center align-items-center" style="line-height:1.3;flex-wrap:nowrap;">
@@ -3318,27 +3321,20 @@ function markCheckedWhatsNewSeen(panelSelector){
 	let $checked = $(panelSelector).find('.whats-new-checkbox:checked');
 	if($checked.length == 0) return;
 
-	let requests = [];
+	let form_data = new FormData();
 	$checked.each(function(){
-		let $checkbox = $(this);
-		let log_id = $checkbox.data('lmuid');
-		let updated_users = $checkbox.data('updatedusers');
-
-		let form_data = new FormData();
-		form_data.append('log_id', log_id);
-		form_data.append('updated_users', updated_users);
-
-		requests.push($.ajax({
-			type: 'POST',
-			url: 'set_to_read_task.php',
-			data: form_data,
-			cache: false,
-			processData: false,
-			contentType: false,
-		}));
+		let $tn = $(this).closest('tr').find('.task_name[data-meetingid]').first();
+		form_data.append('meeting_ids[]', $tn.data('meetingid'));
 	});
 
-	$.when.apply($, requests).then(function(){
+	$.ajax({
+		type: 'POST',
+		url: 'set_to_read_tasks_bulk.php',
+		data: form_data,
+		cache: false,
+		processData: false,
+		contentType: false,
+	}).then(function(){
 		let byProject = {};
 		let seen = [];
 		$checked.each(function(){
