@@ -1254,7 +1254,7 @@ include 'menu_tasks.php';
 					    </colgroup>
 								<tr class="bgColor-f2f6f9 height50" style="height:56px;">
 									<th class="border-top-white <?=@$border_cell_table_start?> no-border-right alignCenter" style="width:30px;overflow:visible;position:relative;">
-										<div style="display:flex;flex-direction:column;align-items:center;gap:3px;position:absolute;top:3px;right:0;z-index:3;padding:0 6px 0 6px;">
+										<div style="display:flex;flex-direction:column;align-items:center;gap:3px;position:absolute;top:3px;right:10px;z-index:3;padding:0 6px 0 6px;">
 											<a class="chapter-add-chapter-btn bgColor-1A5276" onclick="location.href='chapters.php?project_id=<?=@$project_id?>'">הוסף פרק</a>
 											<span id="collapse_all_chapters_btn" class="chapter-collapse-toggle-all" title="כווץ / הרחב את כל הפרקים">▾</span>
 										</div>
@@ -5522,7 +5522,7 @@ $(function() {
 .chapter-add-task-btn{
 	position:absolute;
 	bottom:-13px;
-	right:31px;
+	right:41px;
 	display:inline-flex;
 	align-items:center;
 	justify-content:center;
