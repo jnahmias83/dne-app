@@ -1249,12 +1249,12 @@ include 'menu_tasks.php';
 						    ?>
 					    <table id="meetings_table" class="rounded-table" border="1">
 					    <colgroup>
-					        <col style="width:42px;">
+					        <col style="width:85px;">
 					        <col style="width:40px;">
 					    </colgroup>
 								<tr class="bgColor-f2f6f9 height50" style="height:56px;">
-									<th class="border-top-white <?=@$border_cell_table_start?> no-border-right alignCenter" style="width:42px;overflow:visible;position:relative;<?=(@$dir=='rtl')?'border-left':'border-right'?>:1px solid white!important;">
-										<div style="display:flex;flex-direction:column;align-items:center;gap:3px;position:absolute;top:3px;left:50%;transform:translateX(calc(-50% <?=(@$dir=='rtl')?'- 14px':'+ 24px'?>));z-index:3;">
+									<th class="border-top-white <?=@$border_cell_table_start?> no-border-right alignCenter" style="width:85px;overflow:visible;position:relative;<?=(@$dir=='rtl')?'border-left':'border-right'?>:1px solid white!important;">
+										<div style="display:flex;flex-direction:column;align-items:center;gap:3px;position:absolute;top:3px;left:50%;transform:translateX(-50%);z-index:3;">
 											<a class="chapter-add-chapter-btn bgColor-1A5276" onclick="location.href='chapters.php?project_id=<?=@$project_id?>'"><?=(@$dir=='rtl')?'הוסף פרק':'Add chapter'?></a>
 											<span id="collapse_all_chapters_btn" class="chapter-collapse-toggle-all" title="<?=(@$dir=='rtl')?'כווץ / הרחב את כל הפרקים':'Collapse / expand all chapters'?>">▾</span>
 										</div>
@@ -5523,8 +5523,8 @@ $(function() {
 .chapter-add-task-btn{
 	position:absolute;
 	bottom:-13px;
-	<?=(@$dir=='rtl')?'right':'left'?>:21px;
-	transform:translateX(calc(<?=(@$dir=='rtl')?'50% - 14px':'-50% + 24px'?>));
+	<?=(@$dir=='rtl')?'right':'left'?>:42.5px;
+	transform:translateX(<?=(@$dir=='rtl')?'50%':'-50%'?>);
 	display:inline-flex;
 	align-items:center;
 	justify-content:center;
