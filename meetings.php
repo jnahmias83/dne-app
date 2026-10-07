@@ -3251,8 +3251,8 @@ include 'menu_tasks.php';
 										<div class="fw-bold fontSize13 marginTop5 text-nowrap">אחראי מעקב</div>
 									</div>
 									<div class="col-10 p-2 text-end d-flex flex-column justify-content-center align-items-center">
-										<select id="users" class="paddingRight8 fontSize13 marginBottom10">
-											<option value="0">--בחר משתמש--</option>
+										<select id="users" class="paddingRight8 fontSize11 marginBottom10">
+											<option value="0">בחר משתמש</option>
 											<?php foreach($active_users as $item){ ?>
 												<option value="<?=@$item->id?>">
 													<strong><?=@$item->nickname?></strong>
@@ -3307,11 +3307,11 @@ include 'menu_tasks.php';
 									</div>
 									<div class="col-10 ps-1 pe-2 d-flex flex-column justify-content-center align-items-center">
 										<div class="d-flex justify-content-between marginBottom5 w-100">
-											<div><a class="text-decoration-none cursor-pointer" onclick="$('#new_remark').html('')">Clear</a></div>
 											<div>
 												<a id="new_remark_tracking_en" class="text-decoration-none cursor-pointer" onclick="$('#new_remark').css({'direction':'ltr','padding-left':'5px','padding-right':'0','text-align':'left'});$(this).css('font-weight','bold');$('#new_remark_tracking_he').css('font-weight','normal');">EN</a>&nbsp;|
 												<a id="new_remark_tracking_he" class="text-decoration-none cursor-pointer" onclick="$('#new_remark').css({'direction':'rtl','padding-right':'5px','padding-left':'0','text-align':'right'});$(this).css('font-weight','bold');$('#new_remark_tracking_en').css('font-weight','normal');">ע</a>
 											</div>
+											<div><a class="text-decoration-none cursor-pointer" onclick="$('#new_remark').html('')">Clear</a></div>
 										</div>
 										<div class="bgColorWhite cursor-pointer border-black overflow-y-scroll dir-rtl w-100" style="padding:5px 8px; min-height:20px;">
 											<div name="new_remark" id="new_remark" contenteditable="true" class="editable red cursor-pointer" data-placeholder="ניתן להוסיף כאן הערה"></div>

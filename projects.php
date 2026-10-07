@@ -758,7 +758,7 @@ foreach($all_what_news as $wn){
                 <div id="div_what_news" class="display-none border-black dir-rtl">
 					<div class="row fontSize16 position-relative" style="background-color:<?=@$bg_color_inputs->h_bgcolor?>;padding:8px 0;margin:-10px -10px 0 -10px;border-radius:10px 10px 0 0;">
 						<div class="col-12 position-relative">
-							<strong class="d-block text-center what-news-title" style="color:#ffffff;font-weight:bold;"><i class="fa fa-bell" style="color:#ffffff;margin:0 15px;"></i>מה חדש</strong>
+							<strong class="d-block text-center what-news-title" style="color:#ffffff;font-weight:bold;">מה חדש<i class="fa fa-bell" style="color:#ffffff;margin:0 15px;"></i></strong>
 							<div class="d-flex align-items-center position-absolute what-news-header-actions" style="top:0;right:13px;gap:8px;">
 								<input type="button" id="btn-close-what-news" class="borderRadius10 fontSize16 font-weight-bold" style="color:#ffffff;background-color:<?=@$bg_color_inputs->h_bgcolor?>;border:1px solid #ffffff" value="X" />
 							</div>
@@ -2065,8 +2065,8 @@ foreach($all_what_news as $wn){
 										    <div class="fw-bold fontSize13 marginTop5 text-nowrap">אחראי מעקב</div>
 									    </div>
 									    <div class="col-10 p-2 text-end d-flex flex-column justify-content-center align-items-center">
-										    <select id="users" class="paddingRight8 fontSize13 marginBottom10">
-											    <option value="0">--בחר משתמש--</option>
+										    <select id="users" class="paddingRight8 fontSize11 marginBottom10">
+											    <option value="0">בחר משתמש</option>
 											    <?php
 											    foreach($active_users as $item){ ?>
 												    <option value="<?=@$item->id?>">
@@ -2123,11 +2123,11 @@ foreach($all_what_news as $wn){
 									    <div class="col-10 ps-1 pe-2 d-flex flex-column justify-content-center align-items-center">
 										    <div class="d-flex justify-content-between marginBottom5 w-100">
 											    <div>
-												    <a class="text-decoration-none cursor-pointer" onclick="$('#new_remark').html('')">Clear</a>
-											    </div>
-											    <div>
 												    <a id="new_remark_tracking_en" class="text-decoration-none cursor-pointer" onclick="$('#new_remark').css({'direction':'ltr','padding-left':'5px','padding-right':'0','text-align':'left'});$(this).css('font-weight','bold');$('#new_remark_tracking_he').css('font-weight','normal');">EN</a>&nbsp;|
 												    <a id="new_remark_tracking_he" class="text-decoration-none cursor-pointer" onclick="$('#new_remark').css({'direction':'rtl','padding-right':'5px','padding-left':'0','text-align':'right'});$(this).css('font-weight','bold');$('#new_remark_tracking_en').css('font-weight','normal');">ע</a>
+											    </div>
+											    <div>
+												    <a class="text-decoration-none cursor-pointer" onclick="$('#new_remark').html('')">Clear</a>
 											    </div>
 										    </div>
 										    <div class="bgColorWhite cursor-pointer border-black overflow-y-scroll dir-rtl w-100" style="padding:5px 8px; min-height:20px;">
