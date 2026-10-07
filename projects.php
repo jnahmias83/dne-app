@@ -599,7 +599,7 @@ foreach($all_what_news as $wn){
                 <div id="div_active_tracking" class="display-none border-black dir-rtl">
 					<div class="row fontSize16 position-relative" style="background-color:<?=@$bg_color_inputs->f_bgcolor?>;padding:8px 0;margin:-10px -10px 0 -10px;border-radius:10px 10px 0 0;">
 						<div class="col-12 position-relative">
-							<strong class="d-block text-center" style="color:#ffffff;font-weight:bold;"><img src="images/white-target-icon.png" alt="target" style="width:20px;height:20px;margin:0 15px;vertical-align:middle;" />מעקב אקטיבי<img src="images/white-target-icon.png" alt="target" style="width:20px;height:20px;margin:0 15px;vertical-align:middle;" /></strong>
+							<strong class="d-block text-center" style="color:#ffffff;font-weight:bold;">מעקב אקטיבי<img src="images/white-target-icon.png" alt="target" style="width:20px;height:20px;margin:0 15px;vertical-align:middle;" /></strong>
 							<input type="button" id="btn-close-active-tracking" class="borderRadius10 fontSize16 font-weight-bold position-absolute" style="top:0;right:13px;color:#ffffff;background-color:<?=@$bg_color_inputs->f_bgcolor?>;border:1px solid #ffffff" value="X" />
 						</div>
 					</div>
@@ -1243,7 +1243,7 @@ foreach($all_what_news as $wn){
 									<div id="div_active_tracking_<?=@$pr->id?>" class="flex margin-0-x-auto width50Percents border-black display-none dir-rtl">
 										<div class="row fontSize18 alignCenter dir-rtl" style="background-color:<?=@$bg_color_inputs->f_bgcolor?>;padding:8px 0;margin:-10px -10px 0 -10px;border-radius:10px 10px 0 0;">
 											<div class="col-12 position-relative" style="min-height:38px;">
-												<strong style="color:#ffffff;font-weight:bold;"><img src="images/white-target-icon.png" alt="target" style="width:20px;height:20px;margin:0 15px;vertical-align:middle;" />מעקב אקטיבי<img src="images/white-target-icon.png" alt="target" style="width:20px;height:20px;margin:0 15px;vertical-align:middle;" /></strong>
+												<strong style="color:#ffffff;font-weight:bold;">מעקב אקטיבי<img src="images/white-target-icon.png" alt="target" style="width:20px;height:20px;margin:0 15px;vertical-align:middle;" /></strong>
 												<div class="d-flex align-items-center position-absolute" style="top:0;right:13px;gap:8px;">
 													<input type="button" id="btn-close-active-tracking-<?=@$pr->id?>" class="borderRadius10 fontSize16 font-weight-bold" style="color:#ffffff;background-color:transparent;border:1px solid #ffffff" value="X" />
 												</div>
@@ -2070,7 +2070,7 @@ foreach($all_what_news as $wn){
 											    <?php
 											    foreach($active_users as $item){ ?>
 												    <option value="<?=@$item->id?>">
-													    <strong><?=@$item->firstname?> <?=@$item->lastname?></strong>
+													    <strong><?=@$item->nickname?></strong>
 												    </option>
 												    <?php } ?>
 										    </select>
@@ -2082,7 +2082,7 @@ foreach($all_what_news as $wn){
 								    <div class="row marginTop5" dir="rtl">
 									    <div class="col-2 p-2 text-center d-flex flex-column align-items-center justify-content-center">
 										    <img src="images/bell-solid.svg" width="20" height="20" />
-										    <div class="fw-bold fontSize13 marginTop5 text-nowrap">תזכורת מעקב</div>
+										    <div class="fw-bold fontSize13 marginTop5 text-nowrap">תזכורת</div>
 									    </div>
 									    <div class="col-10 p-2 text-end d-flex flex-column justify-content-center align-items-center">
 										    <div class="row align-items-start justify-content-start flex-nowrap gx-2" dir="rtl">
@@ -2141,7 +2141,7 @@ foreach($all_what_news as $wn){
 										<div class="col-12 d-flex justify-content-center align-items-center gap-3">
 											<button type="button" class="btn font-weight-bold px-3 text-nowrap alignCenter" style="color:#212529;"
 													onclick="fillLogTaskTracking($('#hidden_meeting_id').val(),'','for_closing',1)">
-												<img src="images/red-target-icon-transparent.png" alt="target icon" style="width:36px;height:36px;" /><br/>שמור מעקב
+												<img src="images/red-target-icon-transparent.png" alt="target icon" style="width:36px;height:36px;" /><br/>שמור
 											</button>
 											<button type="button" class="btn font-weight-bold px-3 text-nowrap alignCenter" style="color:#212529;"
 													onclick="advanceToNextTaskAndCancelTracking()">
@@ -2343,8 +2343,10 @@ $(document).ready(function(){
 		let isHE = (lang || 'HE') !== 'EN';
 
 		$('#modalUpdateTask').attr('dir', isHE ? 'rtl' : 'ltr');
-		$('#modalUpdateTask .modal-title').html("<img src='images/status-icon.png' alt='status icon' width='20' height='20'>&nbsp;&nbsp;"+(isHE?'עדכון':'Update')+"&nbsp;&nbsp;<img src='images/status-icon.png' alt='status icon' width='20' height='20'>");
-		$('.subtitle').html(chapter+"<br/>"+subject+"&nbsp;|&nbsp;"+area).css('line-height','1.1em');
+		$('#modalUpdateTask .modal-title').html(isHE
+			? "<img src='images/status-icon.png' alt='status icon' width='20' height='20'>&nbsp;&nbsp;עדכון"
+			: "Update&nbsp;&nbsp;<img src='images/status-icon.png' alt='status icon' width='20' height='20'>");
+		$('.subtitle').html(chapter+"<br/>"+subject+"&nbsp;<span class=\"fontSize20 colorRed\">|</span>&nbsp;"+area).css('line-height','1.1em');
         $('#div_remark_changes_status_update,#div_update_btns').css('direstion', isHE ? 'rtl' : 'ltr');
 	    $('#progress_status_for_update_label').html(isHE ? 'סטטוס חדש:' : 'New status:').css({'margin-bottom':'5px','margin-left':'5px'});
 	    $('#div_target_date_title').html(isHE ? 'תאריך יעד' : 'Target date');
@@ -2649,8 +2651,8 @@ $(document).ready(function(){
 		}
 
 	    let trackIconSrc = $('#hidden_track_type').val() == 1 ? 'images/red-target-icon-transparent.png' : 'images/grey-target-icon-transparent.png';
-	    $('#modalTaskTracking .modal-title').html("<img src='"+trackIconSrc+"' alt='target icon' style='width:22px;height:22px;vertical-align:middle;' />&nbsp;&nbsp;מעקב אקטיבי&nbsp;&nbsp;<img src='"+trackIconSrc+"' alt='target icon' style='width:22px;height:22px;vertical-align:middle;' />");
-		$('.subtitle').html(chapter+"<br/>"+subject+"&nbsp;|&nbsp;"+area).css('line-height','1.1em');
+	    $('#modalTaskTracking .modal-title').html("<img src='"+trackIconSrc+"' alt='target icon' style='width:22px;height:22px;vertical-align:middle;' />&nbsp;&nbsp;מעקב אקטיבי");
+		$('.subtitle').html(chapter+"<br/>"+subject+"&nbsp;<span class=\"fontSize20 colorRed\">|</span>&nbsp;"+area).css('line-height','1.1em');
 
 	    if($('#hidden_reminder_time').val() == 0){
 		  $('#not_reminders').prop('checked',true);

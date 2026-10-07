@@ -3255,7 +3255,7 @@ include 'menu_tasks.php';
 											<option value="0">--בחר משתמש--</option>
 											<?php foreach($active_users as $item){ ?>
 												<option value="<?=@$item->id?>">
-													<strong><?=@$item->firstname?> <?=@$item->lastname?></strong>
+													<strong><?=@$item->nickname?></strong>
 												</option>
 											<?php } ?>
 										</select>
@@ -3267,7 +3267,7 @@ include 'menu_tasks.php';
 								<div class="row marginTop5" dir="rtl">
 									<div class="col-2 p-2 text-center d-flex flex-column align-items-center justify-content-center">
 										<img src="images/bell-solid.svg" width="20" height="20" />
-										<div class="fw-bold fontSize13 marginTop5 text-nowrap">תזכורת מעקב</div>
+										<div class="fw-bold fontSize13 marginTop5 text-nowrap">תזכורת</div>
 									</div>
 									<div class="col-10 p-2 text-end d-flex flex-column justify-content-center align-items-center">
 										<div class="row align-items-start justify-content-start flex-nowrap gx-2" dir="rtl">
@@ -3323,7 +3323,7 @@ include 'menu_tasks.php';
 									<div class="col-12 d-flex justify-content-center align-items-center gap-3">
 										<button type="button" class="btn font-weight-bold px-3 text-nowrap alignCenter"
 												onclick="fillLogTaskTracking($('#hidden_meeting_id').val(),$('#hidden_iteration').val(),'for_closing',1)">
-											<img src="images/red-target-icon-transparent.png" alt="target icon" style="width:36px;height:36px;" /><br/>שמור מעקב
+											<img src="images/red-target-icon-transparent.png" alt="target icon" style="width:36px;height:36px;" /><br/>שמור
 										</button>
 										<button type="button" class="btn font-weight-bold px-3 text-nowrap alignCenter"
 												onclick="let meeting_ids_array=$('#meetings_table [id^=&quot;task_actions_&quot;]').map(function(){return String($(this).data('meetingid'));}).get();let current_meeting_id=$('#hidden_meeting_id').val();let index=meeting_ids_array.indexOf(current_meeting_id);index++;let next_meeting_id=(index<meeting_ids_array.length)?meeting_ids_array[index]:'';localStorage.setItem('next_meeting_id',next_meeting_id);localStorage.setItem('meeting_id',next_meeting_id);fillLogTaskTracking($('#hidden_meeting_id').val(),$('#hidden_iteration').val(),'for_closing',0,true)">
@@ -3883,8 +3883,8 @@ $(document).ready(function(){
 	  description = String($(this).data('description'));
 	  description = decodeHtml(description).replace(/\n/g,'<br>');
 	  $('#new_description').html(description);  
-	  $('.modal-title').html("<img src='images/status-icon.png' alt='status icon' width='20' height='20'>&nbsp;&nbsp;עדכון תאור&nbsp;&nbsp;<img src='images/status-icon.png' alt='status icon' width='20' height='20'>&nbsp;&nbsp;");
-	  $('.subtitle').html(chapter+"<br/>"+subject+"&nbsp;|&nbsp;"+area).css('line-height','1.1em');
+	  $('.modal-title').html("<img src='images/status-icon.png' alt='status icon' width='20' height='20'>&nbsp;&nbsp;עדכון תאור");
+	  $('.subtitle').html(chapter+"<br/>"+subject+"&nbsp;<span class=\"fontSize20 colorRed\">|</span>&nbsp;"+area).css('line-height','1.1em');
 	  $('#modalContent input[type="hidden"]').remove();
 	  $('#modalContent').append("<input type='hidden' id='hidden_meeting_id' value='"+meeting_id+"'><input type='hidden' id='hidden_iteration' value='"+iteration+"'>");
 	  $('#modalTaskDescription').modal('show');
@@ -3921,8 +3921,8 @@ $(document).ready(function(){
 	    subject = $('#hidden_subject').val();
 	    area = $('#hidden_area').val();
 
-		$('#modalTaskFollowupDelayTargetDate .modal-title').html("<img src='images/status-icon.png' alt='status icon' width='20' height='20'>&nbsp;&nbsp;עדכון תאריך יעד&nbsp;&nbsp;<img src='images/status-icon.png' alt='status icon' width='20' height='20'>");
-	    $('.subtitle').html(chapter+"<br/>"+subject+"&nbsp;|&nbsp;"+area).css('line-height','1.1em');
+		$('#modalTaskFollowupDelayTargetDate .modal-title').html("<img src='images/status-icon.png' alt='status icon' width='20' height='20'>&nbsp;&nbsp;עדכון תאריך יעד");
+	    $('.subtitle').html(chapter+"<br/>"+subject+"&nbsp;<span class=\"fontSize20 colorRed\">|</span>&nbsp;"+area).css('line-height','1.1em');
 
 	    let form_data_target_date = new FormData();
         form_data_target_date.append('id_meeting',meeting_id);
@@ -3960,8 +3960,8 @@ $(document).ready(function(){
 	    subject = $(this).data('name');
 	    area = $(this).data('area');
 	    
-		$('.modal-title').html("<img src='images/status-icon.png' alt='status icon' width='20' height='20'>&nbsp;&nbsp;עדכון סטטוס&nbsp;&nbsp;<img src='images/status-icon.png' alt='status icon' width='20' height='20'>");
-		$('.subtitle').html(chapter+"<br/>"+subject+"&nbsp;|&nbsp;"+area).css('line-height','1.1em');
+		$('.modal-title').html("<img src='images/status-icon.png' alt='status icon' width='20' height='20'>&nbsp;&nbsp;עדכון סטטוס");
+		$('.subtitle').html(chapter+"<br/>"+subject+"&nbsp;<span class=\"fontSize20 colorRed\">|</span>&nbsp;"+area).css('line-height','1.1em');
 	    
 		let form_data1 = new FormData();
 		form_data1.append('id_progress_status',$(this).val());
@@ -4184,11 +4184,11 @@ $(document).ready(function(){
         destination_date = 	$('#hidden_destination_date').val();	
 	
 		if($('#project_lang').val() == "HE")
-			$('#modalUpdateTask .modal-title').html("<img src='images/status-icon.png' alt='status icon' width='20' height='20'>&nbsp;&nbsp;עדכון&nbsp;&nbsp;<img src='images/status-icon.png' alt='status icon' width='20' height='20'>");
+			$('#modalUpdateTask .modal-title').html("<img src='images/status-icon.png' alt='status icon' width='20' height='20'>&nbsp;&nbsp;עדכון");
         else
 		    $('#modalUpdateTask .modal-title').html("Update");
 
-        $('#modalUpdateTask .subtitle').html(chapter+"<br/>"+subject+"&nbsp;|&nbsp;"+area).css('line-height','1.1em');
+        $('#modalUpdateTask .subtitle').html(chapter+"<br/>"+subject+"&nbsp;<span class=\"fontSize20 colorRed\">|</span>&nbsp;"+area).css('line-height','1.1em');
 
 		let form_data_active_remarks = new FormData();
 		form_data_active_remarks.append('id_meeting',meeting_id);
@@ -4237,8 +4237,8 @@ $(document).ready(function(){
 		}
 
 	    let trackIconSrc = $('#hidden_track_type').val() == 1 ? 'images/red-target-icon-transparent.png' : 'images/grey-target-icon-transparent.png';
-	    $('#modalTaskTracking .modal-title').html("<img src='"+trackIconSrc+"' alt='target icon' style='width:22px;height:22px;vertical-align:middle;' />&nbsp;&nbsp;מעקב אקטיבי&nbsp;&nbsp;<img src='"+trackIconSrc+"' alt='target icon' style='width:22px;height:22px;vertical-align:middle;' />");
-		$('.subtitle').html(chapter+"<br/>"+subject+"&nbsp;|&nbsp;"+area).css('line-height','1.1em');
+	    $('#modalTaskTracking .modal-title').html("<img src='"+trackIconSrc+"' alt='target icon' style='width:22px;height:22px;vertical-align:middle;' />&nbsp;&nbsp;מעקב אקטיבי");
+		$('.subtitle').html(chapter+"<br/>"+subject+"&nbsp;<span class=\"fontSize20 colorRed\">|</span>&nbsp;"+area).css('line-height','1.1em');
 
 	    if($('#hidden_reminder_time').val() == 0) {
 		  $('#not_reminders').prop('checked',true);
