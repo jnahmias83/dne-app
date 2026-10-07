@@ -3323,14 +3323,12 @@ include 'menu_tasks.php';
 									<div class="col-12 d-flex justify-content-center align-items-center gap-3">
 										<button type="button" class="btn font-weight-bold px-3 text-nowrap alignCenter"
 												onclick="fillLogTaskTracking($('#hidden_meeting_id').val(),$('#hidden_iteration').val(),'for_closing',1)">
-											<img src="images/red-target-icon-transparent.png" alt="target icon" style="width:20px;height:20px;" /><br/>שמור מעקב
+											<img src="images/red-target-icon-transparent.png" alt="target icon" style="width:28px;height:28px;" /><br/>שמור מעקב
 										</button>
 										<button type="button" class="btn font-weight-bold px-3 text-nowrap alignCenter"
 												onclick="let meeting_ids_array=$('#meetings_table [id^=&quot;task_actions_&quot;]').map(function(){return String($(this).data('meetingid'));}).get();let current_meeting_id=$('#hidden_meeting_id').val();let index=meeting_ids_array.indexOf(current_meeting_id);index++;let next_meeting_id=(index<meeting_ids_array.length)?meeting_ids_array[index]:'';localStorage.setItem('next_meeting_id',next_meeting_id);localStorage.setItem('meeting_id',next_meeting_id);fillLogTaskTracking($('#hidden_meeting_id').val(),$('#hidden_iteration').val(),'for_closing',0,true)">
-											<img src="images/grey-target-icon-transparent.png" alt="target icon" style="width:20px;height:20px;" /><br/>בטל מעקב
+											<img src="images/grey-target-icon-transparent.png" alt="target icon" style="width:28px;height:28px;" /><br/>בטל מעקב
 										</button>
-										<input type="button" id="close_tracking_btn" class="btn bg-dark text-white font-weight-bold px-3 fontSize14" value="סגור"
-											   onclick="hidePopup('modalTaskTracking',$('#hidden_iteration').val(),$('#hidden_meeting_id').val(),'fromMeetings')" />
 									</div>
 								</div>
 
@@ -5158,11 +5156,6 @@ $('#to_add_meeting_btn').click (function (e){
 #modalTaskTracking .btn {
     padding: .375rem .75rem !important;
     box-shadow: none;
-}
-
-#modalTaskTracking .btn#close_tracking_btn {
-    padding-top: 2px !important;
-    padding-bottom: 2px !important;
 }
 
 tr.task-row-highlight td {

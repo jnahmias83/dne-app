@@ -2141,14 +2141,12 @@ foreach($all_what_news as $wn){
 										<div class="col-12 d-flex justify-content-center align-items-center gap-3">
 											<button type="button" class="btn font-weight-bold px-3 text-nowrap alignCenter" style="color:#212529;"
 													onclick="fillLogTaskTracking($('#hidden_meeting_id').val(),'','for_closing',1)">
-												<img src="images/red-target-icon-transparent.png" alt="target icon" style="width:20px;height:20px;" /><br/>שמור מעקב
+												<img src="images/red-target-icon-transparent.png" alt="target icon" style="width:28px;height:28px;" /><br/>שמור מעקב
 											</button>
 											<button type="button" class="btn font-weight-bold px-3 text-nowrap alignCenter" style="color:#212529;"
 													onclick="advanceToNextTaskAndCancelTracking()">
-												<img src="images/grey-target-icon-transparent.png" alt="target icon" style="width:20px;height:20px;" /><br/>בטל מעקב
+												<img src="images/grey-target-icon-transparent.png" alt="target icon" style="width:28px;height:28px;" /><br/>בטל מעקב
 											</button>
-											<input type="button" id="close_tracking_btn" class="btn bg-dark text-white font-weight-bold px-3 fontSize14" value="סגור" style="padding-top:2px!important;padding-bottom:2px!important;"
-												   onclick="hidePopup('modalTaskTracking','',$('#hidden_meeting_id').val(),'fromProjects')" />
 										</div>
 									</div>
 							   </form>
