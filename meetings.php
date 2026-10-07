@@ -3231,7 +3231,7 @@ include 'menu_tasks.php';
 <div class="modal fade dir-rtl" id="modalTaskTracking" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
 				<div class="modal-content">
-				    <div class="modal-header">
+				    <div class="modal-header" style="background-color:<?=@$bg_color_inputs->b_bgcolor?>;">
 					    <button type="button" class="btn-close btn-close-white-small" data-bs-dismiss="modal" aria-label="Close"></button>
 						<div class="modal-title"></div>
 					</div>
@@ -4638,10 +4638,31 @@ $(document).on('click','#save_update_task_btn', function (){
 });
 
 function openTrackingPopupForMeeting(meeting_id){
-	$('#task_actions_' + meeting_id).trigger('click');
-	setTimeout(function(){
-		$('#tracking_btn').trigger('click');
-	}, 400);
+	let el = $('#task_actions_' + meeting_id);
+	if(!el.length) return;
+
+	let iteration = el.data('iteration');
+	let project_id = el.data('projectid');
+	let lang = el.data('lang');
+	let chapter = el.data('chapter');
+	let subject = el.data('name');
+	let user_id = el.data('userid');
+	let area = el.data('area');
+	let recipient = el.data('recipient');
+	let responsible_id = el.data('responsibleid');
+	let destination_date = el.data('destinationdate');
+	let progress_status_id = el.data('progresstatusid');
+	let is_priority = el.data('ispriority');
+	let remark = el.data('remark');
+	let track_responsible_id = el.data('trackresponsibleid');
+	let track_type = el.data('tracktype');
+	let reminder_time = el.data('remindertime');
+	let reminder_date = el.data('reminderdate');
+
+	$('#modalContent input[type="hidden"]').remove();
+	$('#modalContent').append("<input type='hidden' id='hidden_meeting_id' value='"+meeting_id+"'><input type='hidden' id='hidden_iteration' value='"+iteration+"'><input type='hidden' id='hidden_project_id' value='"+project_id+"'><input type='hidden' id='hidden_lang' value='"+lang+"'><input type='hidden' id='hidden_user_id' value='"+user_id+"'><input type='hidden' id='hidden_chapter' value='"+chapter+"'><input type='hidden' id='hidden_name' value='"+subject+"'><input type='hidden' id='hidden_area' value='"+area+"'><input type='hidden' id='hidden_recipient' value='"+recipient+"'><input type='hidden' id='hidden_responsible_id' value='"+responsible_id+"'><input type='hidden' id='hidden_destination_date' value='"+destination_date+"'><input type='hidden' id='hidden_progress_status_id' value='"+progress_status_id+"'><input type='hidden' id='hidden_is_priority' value='"+is_priority+"'><input type='hidden' id='hidden_remark' value='"+remark+"'><input type='hidden' id='hidden_track_responsible_id' value='"+track_responsible_id+"'><input type='hidden' id='hidden_track_type' value='"+track_type+"'><input type='hidden' id='hidden_reminder_date' value='"+reminder_date+"'><input type='hidden' id='hidden_reminder_time' value='"+reminder_time+"'>");
+
+	$('#tracking_btn').trigger('click');
 }
 
 function checkAllItems(){

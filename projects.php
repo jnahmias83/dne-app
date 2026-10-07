@@ -2045,7 +2045,7 @@ foreach($all_what_news as $wn){
 <div class="modal fade dir-rtl" id="modalTaskTracking" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
 				<div class="modal-content">
-				    <div class="modal-header">
+				    <div class="modal-header" style="background-color:<?=@$bg_color_inputs->b_bgcolor?>;">
 					    <button type="button" class="btn-close btn-close-white-small" data-bs-dismiss="modal" aria-label="Close"></button>
 						<div class="modal-title"></div>
 					</div>
