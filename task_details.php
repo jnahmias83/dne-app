@@ -115,8 +115,22 @@ if(@$_POST['all_ids_to_edit'] == '') {
 		}
 	}
 
+	$log_tracking_toggle_icon = '';
+	if(@$meeting->track_type == 1){
+		$toggle_title = (@$meeting->p_lang == 'HE') ? 'הצג/הסתר מעקב' : 'Show/hide tracking';
+		$log_tracking_toggle_icon = "<span class='cursor-pointer' onclick=\"$('#row_log_meeting_tracking').toggle();\" style='position:absolute;left:0;top:2px;z-index:2;' title='".$toggle_title."'><i class='fa-solid fa-paperclip fontSize14' style='color:#666;'></i></span>";
+	}
+
 	if($description_updates != ''){
-		$description .= "<hr style='border:none;border-top:2px solid #999;margin:8px 0;'/><div style='margin:4px 6px;max-height:90px;overflow-y:scroll;box-sizing:border-box;'>".$description_updates."</div>";
+		$description = "<div style='position:relative;'>".$description."</div>"
+			."<hr style='border:none;border-top:2px solid #999;margin:8px 0;'/>"
+			."<div style='position:relative;padding-left:22px;box-sizing:border-box;'>"
+			.$log_tracking_toggle_icon
+			."<div style='margin:4px 6px;max-height:90px;overflow-y:scroll;box-sizing:border-box;'>".$description_updates."</div>"
+			."</div>";
+	}
+	else if($log_tracking_toggle_icon != ''){
+		$description = "<div style='position:relative;padding-left:22px;box-sizing:border-box;'>".$log_tracking_toggle_icon.$description."</div>";
 	}
 	
 	$tracking_remarks = '';
@@ -222,7 +236,7 @@ if(@$_POST['all_ids_to_edit'] == '') {
 
 		$tracking_table .= "</table>";
 
-		$tracking_remarks .= "<tr><td colspan='3'>"
+		$tracking_remarks .= "<tr id='row_log_meeting_tracking'><td colspan='3'>"
 							."<div style='position:relative;padding:0 38px 0 53px;min-height:44px;display:flex;align-items:center;background-color:".@$bg_color_inputs->b_bgcolor.";border:1px solid #999;border-radius:6px;box-sizing:border-box;margin:4px 6px;'>"
 							."<div dir='rtl' onclick=\"$('#tracking_btn').trigger('click');\" style='width:100%;max-height:112px;overflow-y:scroll;border:2px solid ".@$bg_color_inputs->f_bgcolor.";border-radius:4px;box-sizing:border-box;cursor:pointer;'>".$tracking_table."</div>"
 							."<div style='position:absolute;left:8px;top:0;bottom:0;width:45px;display:flex;align-items:center;justify-content:center;'>".$reminder_bell_html."</div>"
