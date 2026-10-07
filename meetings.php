@@ -5246,6 +5246,9 @@ td[id^="td_area_"] > div {
 #meetings_table {
     table-layout: fixed;
     width: 100%;
+}
+
+#meetings_table.last-chapter-collapsed {
     padding-bottom: 14px;
 }
 
@@ -5578,6 +5581,13 @@ $(function() {
 	var headers = table.querySelectorAll('tr.bgColor-cbddec');
 	if(!headers.length) return;
 
+	function updateLastChapterPadding(){
+		var hs = table.querySelectorAll('tr.bgColor-cbddec');
+		if(!hs.length){ table.classList.remove('last-chapter-collapsed'); return; }
+		var last = hs[hs.length - 1];
+		table.classList.toggle('last-chapter-collapsed', last.dataset.collapsed === '1');
+	}
+
 	var initiallyCollapsed = loadCollapsed();
 	var allApply = [];
 
@@ -5608,6 +5618,8 @@ $(function() {
 		function apply(isCollapsed, persist){
 			groupRows().forEach(function(r){ r.hidden = isCollapsed; });
 			collapsed = isCollapsed;
+			header.dataset.collapsed = isCollapsed ? '1' : '0';
+			updateLastChapterPadding();
 			if(!persist) return;
 			var list = loadCollapsed(), i = list.indexOf(label);
 			if(isCollapsed && i === -1) list.push(label);
@@ -5642,6 +5654,7 @@ $(function() {
 			handle: '.meetings-chapter-drag-handle',
 			animation: 150,
 			onEnd: function(){
+				updateLastChapterPadding();
 				var order = Array.prototype.map.call(
 					table.querySelectorAll('tbody.chapter-group'),
 					function(tb){ return tb.getAttribute('data-chapter-id'); }
