@@ -118,7 +118,7 @@ if(@$_POST['all_ids_to_edit'] == '') {
 	$log_tracking_toggle_icon = '';
 	if(@$meeting->track_type == 1){
 		$toggle_title = (@$meeting->p_lang == 'HE') ? 'הצג/הסתר מעקב' : 'Show/hide tracking';
-		$log_tracking_toggle_icon = "<span class='cursor-pointer' onclick=\"$('#row_log_meeting_tracking').toggle();\" style='position:absolute;left:0;bottom:2px;z-index:2;' title='".$toggle_title."'><img src='images/tracking-toggle-icon.png' width='16' height='16' style='vertical-align:middle;display:block;'></span>";
+		$log_tracking_toggle_icon = "<span class='cursor-pointer' onclick=\"$('#row_log_meeting_tracking').toggle();\" style='position:absolute;left:0;bottom:1px;z-index:2;' title='".$toggle_title."'><img src='images/tracking-toggle-icon.png' width='18' height='18' style='vertical-align:middle;display:block;'></span>";
 	}
 
 	if($description_updates != ''){
