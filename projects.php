@@ -2141,11 +2141,11 @@ foreach($all_what_news as $wn){
 										<div class="col-12 d-flex justify-content-center align-items-center gap-3">
 											<button type="button" class="btn font-weight-bold px-3 text-nowrap alignCenter" style="color:#212529;"
 													onclick="fillLogTaskTracking($('#hidden_meeting_id').val(),'','for_closing',1)">
-												<img src="images/red-target-icon-transparent.png" alt="target icon" style="width:28px;height:28px;" /><br/>שמור מעקב
+												<img src="images/red-target-icon-transparent.png" alt="target icon" style="width:36px;height:36px;" /><br/>שמור מעקב
 											</button>
 											<button type="button" class="btn font-weight-bold px-3 text-nowrap alignCenter" style="color:#212529;"
 													onclick="advanceToNextTaskAndCancelTracking()">
-												<img src="images/grey-target-icon-transparent.png" alt="target icon" style="width:28px;height:28px;" /><br/>בטל מעקב
+												<img src="images/grey-target-icon-transparent.png" alt="target icon" style="width:36px;height:36px;" /><br/>בטל מעקב
 											</button>
 										</div>
 									</div>
