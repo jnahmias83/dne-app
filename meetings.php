@@ -5190,6 +5190,15 @@ $('#to_add_meeting_btn').click (function (e){
     color: transparent;
 }
 
+/* Bordure transparente deja presente : le surlignage de la ligne (row-darken) ne change que sa couleur,
+   pas la taille de la liste -> la liste deroulante ouverte ne se deplace plus */
+[id^="td_task_"] select,
+[id^="td_responsible_"] select,
+[id^="td_pass_on_"] select,
+[id^="td_progress_status_"] select {
+    border: 1px solid transparent !important;
+}
+
 .row-darken [id^="td_task_"] select,
 .row-darken [id^="td_responsible_"] select,
 .row-darken [id^="td_pass_on_"] select,
