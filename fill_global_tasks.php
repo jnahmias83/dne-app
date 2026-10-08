@@ -27,4 +27,18 @@ foreach($global_tasks as $item) {
 	    $query->execute();
 	}
 }
+
+// Default remet aussi l'ordre d'origine : id_display = 1..N dans l'ordre de creation (id)
+$query = $mysqli->prepare("SELECT id FROM dne_tasks WHERE id_project = ? ORDER BY id");
+$query->bind_param("i",$_POST['id_project']);
+$query->execute();
+$query->store_result();
+$task_rows = fetch($query);
+$update = $mysqli->prepare("UPDATE dne_tasks SET id_display = ? WHERE id = ? AND id_project = ?");
+$display = 0;
+foreach($task_rows as $row){
+	$display++;
+	$update->bind_param('iii',$display,$row->id,$_POST['id_project']);
+	$update->execute();
+}
 ?>

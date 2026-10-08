@@ -1,7 +1,7 @@
 <?php
 include 'functions/functions.php';
 
-$query = $mysqli->prepare("SELECT * FROM dne_progress_status WHERE id_project = ?");
+$query = $mysqli->prepare("SELECT * FROM dne_progress_status WHERE id_project = ? ORDER BY (id_display IS NULL OR id_display = 0), id_display, id");
 $query->bind_param("i", $_POST['id_project']);
 $query->execute();
 $progress_status = fetch($query);

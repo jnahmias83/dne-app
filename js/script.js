@@ -675,26 +675,6 @@ function changeTargetDate(meeting_id,iteration){
     setData(meeting_id,iteration,'destination_date',0,1,'popup');
 }
 
-function populateProgressStatusDropdown(meeting_id,iteration,id_project,id_progress_status){
-	let form_data = new FormData();
-	form_data.append('id_meeting',meeting_id);
-	form_data.append('iteration',iteration);
-	form_data.append('id_project',id_project);	
-	form_data.append('id_progress_status',id_progress_status);	
-
-	$.ajax({
-		type: 'POST',
-		url: 'fill_progress_status_dropdown.php',
-		data: form_data,
-		cache: false,
-		processData: false,
-		contentType: false,
-		success: function(data){
-		   $('#progress_status_list').html(data);
-		},
-	})
-}
-
 function decodeHtmlAndNl2br(str){
   let txt = document.createElement("textarea");
   txt.innerHTML = str;

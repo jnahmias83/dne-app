@@ -72,7 +72,6 @@ if(@$lang == "HE"){
     $cancel_label = "ביטול";
 	$send_whatsapp_label = "שמור ושתף";
 	$progress_tracking_and_remarks_label = "מעקב התקדמות והערות";
-	$progress_status_label = "סטטוס התקדמות";
 	$defer_to_label = "לדחות ל";
 	@$remark_label = "הערה";
 	@$loading_in_progress_label = "הטעינה מתבצעת...";
@@ -108,7 +107,6 @@ else {
 	$cancel_label = "Cancel";
 	$send_whatsapp_label = "Save & share";
 	$progress_tracking_and_remarks_label = "Progress tracking and remarks";
-	$progress_status_label = "Progress Status";
 	$defer_to_label = "Defer To";
 	@$remark_label = "Remark";
 	@$loading_in_progress_label = "Loading in progress...";
@@ -139,13 +137,6 @@ $query = $mysqli->prepare("SELECT * FROM dne_tasks_actions");
 $query->execute();
 $query->store_result();
 $tasks_actions = fetch($query);
-
-$query = $mysqli->prepare("SELECT * FROM dne_progress_status 
-                          WHERE id_project = ?");
-$query->bind_param("i",$project_id);
-$query->execute();
-$query->store_result();
-$progress_status = fetch($query);
 
 $is_user_active = 1;
 $query = $mysqli->prepare("SELECT * FROM dne_users 
@@ -290,18 +281,11 @@ $responsibles = fetch($query);
 $is_appears_tasks_list = 1;
 
 $query = $mysqli->prepare("SELECT * FROM dne_tasks WHERE id_project = ? AND is_appears_tasks_list = ?
-                          ORDER BY name_he ASC");
+                          ORDER BY id_display, id");
 $query->bind_param("ii",$project_id,$is_appears_tasks_list);
 $query->execute();
 $query->store_result();
 $tasks = fetch($query);
-
-$query = $mysqli->prepare("SELECT * FROM dne_progress_status 
-                          WHERE id_project = ?");
-$query->bind_param("i",$project_id);
-$query->execute();
-$query->store_result();
-$progress_status = fetch($query);
 
 include 'menu_tasks.php';
 ?>

@@ -28,4 +28,18 @@ foreach($global_progress_status as $item){
 	    $query->execute();
 	}
 }
+
+// Default remet aussi l'ordre d'origine : id_display = 1..N dans l'ordre de creation (id)
+$query = $mysqli->prepare("SELECT id FROM dne_progress_status WHERE id_project = ? ORDER BY id");
+$query->bind_param("i",$_POST['id_project']);
+$query->execute();
+$query->store_result();
+$ps_rows = fetch($query);
+$update = $mysqli->prepare("UPDATE dne_progress_status SET id_display = ? WHERE id = ? AND id_project = ?");
+$display = 0;
+foreach($ps_rows as $row){
+	$display++;
+	$update->bind_param('iii',$display,$row->id,$_POST['id_project']);
+	$update->execute();
+}
 ?>

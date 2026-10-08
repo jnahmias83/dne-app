@@ -605,13 +605,13 @@ $responsibles = fetch($query);
 
 $query = $mysqli->prepare("SELECT * FROM dne_tasks
                           WHERE id_project = ? AND is_appears_tasks_list = 1
-						  ORDER BY id_display");
+						  ORDER BY id_display, id");
 $query->bind_param("i",$project_id);
 $query->execute();
 $query->store_result();
 $tasks = fetch($query);
 
-$query = $mysqli->prepare("SELECT * FROM dne_progress_status WHERE id_project = ?");
+$query = $mysqli->prepare("SELECT * FROM dne_progress_status WHERE id_project = ? ORDER BY (id_display IS NULL OR id_display = 0), id_display, id");
 $query->bind_param("i",$project_id);
 $query->execute();
 $query->store_result();

@@ -16,15 +16,7 @@ $query->execute();
 $query->store_result();
 $project = fetch_unique($query);
 
-$query = $mysqli->prepare("SELECT max(id_display) AS max_id,
-                          min(id_display) AS min_id 
-						  FROM dne_tasks WHERE id_project = ?");
-$query->bind_param("i",$project_id);
-$query->execute(); 
-$query->store_result();
-$task = fetch_unique($query);
-
-$query = $mysqli->prepare("SELECT * FROM dne_tasks WHERE id_project = ? ORDER BY id_display");
+$query = $mysqli->prepare("SELECT * FROM dne_tasks WHERE id_project = ? ORDER BY id_display, id");
 $query->bind_param("i",$project_id);
 $query->execute(); 
 $query->store_result();
@@ -80,20 +72,13 @@ include 'menu_tasks.php';
 									<?php } ?>
 								</tr>
 			
+								<tbody id="tasks_tbody">
 								<?php
 								$count = 0;
 								foreach($tasks as $item) { ?>
-									<tr class="height35">
-									    <td class="alignCenter"> 
-											<?php if($item->id_display === $task->min_id) { ?>
-												<a onclick="mooveRecord(<?=@$item->id?>,<?=@$item->id_display?>,'down');">&darr;</a>
-											<?php } else if($item->id_display === $task->max_id) { ?>
-												<a onclick="mooveRecord(<?=@$item->id?>,<?=@$item->id_display?>,'up');">&uarr;</a>
-											<?php } else { ?>
-											   <a onclick="mooveRecord(<?=@$item->id?>,<?=@$item->id_display?>,'down');">&darr;</a> 
-											   &nbsp;&nbsp;  
-											   <a onclick="mooveRecord(<?=@$item->id?>,<?=@$item->id_display?>,'up');">&uarr;</a>
-											<?php } ?>
+									<tr class="height35" data-task-id="<?=@$item->id?>">
+									    <td class="alignCenter">
+											<span class="task-drag-handle" title="גרור לשינוי סדר"><i class="fa-solid fa-bars"></i></span>
 										</td>
 										<td class="alignCenter"><input type="checkbox" id="cb_<?=@$item->id?>" <?php if(@$item->is_appears_tasks_list == 1) echo "checked";?> onclick="setIsAppearsTasksList(<?=@$item->id?>);" /></td>	
 									    <td class="alignLeft paddingLeft5"><?=@$item->name?></td>
@@ -110,7 +95,8 @@ include 'menu_tasks.php';
 									<?php
 								}
 								?>
-							</table>		
+								</tbody>
+							</table>
 						</div>
 					</div>
 				<?php } ?>
@@ -119,7 +105,35 @@ include 'menu_tasks.php';
 	</body>
 </html>
 
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
 <script>
+(function(){
+	let tbody = document.getElementById('tasks_tbody');
+	if(!tbody) return;
+
+	Sortable.create(tbody, {
+		handle: '.task-drag-handle',
+		animation: 150,
+		onEnd: function(){
+			let order = Array.prototype.map.call(
+				tbody.querySelectorAll('tr[data-task-id]'),
+				function(tr){ return tr.getAttribute('data-task-id'); }
+			);
+			let form_data = new FormData();
+			form_data.append('id_project', $('#id_project').val());
+			form_data.append('order', order.join(','));
+			$.ajax({
+				type: 'POST',
+				url: 'reorder_tasks.php',
+				data: form_data,
+				cache: false,
+				processData: false,
+				contentType: false,
+			});
+		}
+	});
+})();
+
 function FillGlobalTasks(){
 	let form_data = new FormData();	
 	form_data.append('id_project',$('#id_project').val());			
@@ -134,25 +148,6 @@ function FillGlobalTasks(){
 			location.reload(true);			
 		},
 	});		
-}
-
-function mooveRecord(id,id_display,direction){
-	let form_data = new FormData();	
-	form_data.append('id',id);
-	form_data.append('id_display',id_display);	
-	form_data.append('id_project',$('#id_project').val());
-	form_data.append('direction',direction);
-	$.ajax({
-		type: 'POST',
-		url: 'moove_task.php',
-		data: form_data,
-		cache: false,
-		processData: false,
-		contentType: false,			
-		success: function(data){
-			window.location.reload(true);				
-		},
-	});
 }
 
 function setIsAppearsTasksList(id_task){
@@ -213,5 +208,23 @@ function removeTask(id){
 
 #a_project_title:hover {
 	color: grey;
+}
+
+.task-drag-handle {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 26px;
+	height: 26px;
+	cursor: grab;
+	touch-action: none;
+	color: #555;
+	font-size: 14px;
+}
+.task-drag-handle:active {
+	cursor: grabbing;
+}
+#tasks_tbody tr.sortable-ghost {
+	opacity: 0.4;
 }
 </style>
