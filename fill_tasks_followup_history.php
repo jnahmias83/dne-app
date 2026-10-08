@@ -1,8 +1,12 @@
 <?php 
 include 'functions/functions.php';
 
+// Anciennes editions (עריכה) sans changement de date cible ni de statut : masquees de l'historique (rien n'est supprime en base)
 $sql_log_meeting_updates = "SELECT * FROM dne_log_meeting_updates
-                            WHERE id_meeting = ?							
+                            WHERE id_meeting = ?
+							AND NOT (action = 'עריכה'
+							         AND (destination_date IS NULL OR destination_date = '' OR destination_date = '0000-00-00')
+							         AND id_progress_status = 0)
 							ORDER BY action_date";	
 $query = $mysqli->prepare($sql_log_meeting_updates);
 $query->bind_param("i",$_POST['id_meeting']);
@@ -70,7 +74,10 @@ if($log_meeting_updates_num_rows > 0 || $log_meeting_tracking_num_rows > 0){
 						$id_user = @$item->id_user;
 						$action_date = @$item->action_date;
                         $action = @$item->action;
-						
+						// Anciennes editions (עריכה) qui ont change la date cible ou le statut : affichees comme une mise a jour
+						if($action == 'עריכה')
+							$action = 'סטטוס/יעד/הערה';
+
 						$destination_date = '';
 						if(@$item->destination_date != '0000-00-00')
 							$destination_date = smartDate(@$item->destination_date);

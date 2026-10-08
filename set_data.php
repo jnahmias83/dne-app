@@ -43,6 +43,20 @@ if(!empty($_POST['id_custom_report']) && (int)$_POST['id_custom_report'] > 0) {
 	}
 }
 
+// Statut 0 / vide = "ללא" du projet de la tache (meme regle que la creation dans meeting_insert.php)
+if(($_POST['field'] == 'id_progress_status' || $_POST['field'] == 'update_task')
+   && (!is_numeric(@$_POST['id_progress_status']) || (int)$_POST['id_progress_status'] == 0)){
+	$q_blank = $mysqli->prepare("SELECT MIN(ps.id) AS id FROM dne_meetings m
+	                             JOIN dne_progress_status ps ON ps.id_project = m.id_project AND ps.name = ' '
+	                             WHERE m.id = ?");
+	$q_blank->bind_param('i', $_POST['meeting_id']);
+	$q_blank->execute();
+	$q_blank->store_result();
+	$blank_row = fetch_unique($q_blank);
+	if((int)@$blank_row->id > 0)
+		$_POST['id_progress_status'] = $blank_row->id;
+}
+
 if($_POST['field'] == "subject"){
 	$query = "UPDATE dne_meetings SET subject = ? WHERE id = ?";
 	$query = $mysqli->prepare($query);

@@ -31,7 +31,9 @@ else {
 		$query = fetch_unique($query);
 		$id_progress_status = $query->id;
 	}
-	
+	if((int)$id_progress_status > 0)
+		$_POST['id_progress_status'] = $id_progress_status; // l'edition utilise aussi le statut corrige (0 -> ללא du projet)
+
 	$task_creation_date = @$_POST['task_creation_date'];
 	$is_change_row_style = 0;
 	$is_appears = 1;
@@ -498,18 +500,23 @@ else {
                 if(@$elem_meeting->id_progress_status != @$_POST['id_progress_status'])
 					$log_id_progress_status = @$_POST['id_progress_status'];
 
-				$query = "INSERT INTO dne_log_meeting_updates
-						  (id_user,id_meeting,action_date,action,
-						   destination_date,remark,id_progress_status,
-						   updated_users)
-						   VALUES(?,?,?,?,?,?,?,?)";
-				$query = $mysqli->prepare($query);
-				$query->bind_param('iissssii',$_SESSION['id_user'],
-								   $all_ids_to_edit_array[$i],$_today,
-								   $_POST['action'],$log_destination_date,
-								   $log_remark,$log_id_progress_status,
-								   $_SESSION['id_user']);
-				$query->execute();
+				// Edition (עריכה) : plus d'evenement "עריכה" dans le journal.
+				// Seul un changement de date cible ou de statut est enregistre, comme une mise a jour (עדכון).
+				if($log_destination_date != '' || $log_id_progress_status != 0){
+					$log_action = 'סטטוס/יעד/הערה';
+					$query = "INSERT INTO dne_log_meeting_updates
+							  (id_user,id_meeting,action_date,action,
+							   destination_date,remark,id_progress_status,
+							   updated_users)
+							   VALUES(?,?,?,?,?,?,?,?)";
+					$query = $mysqli->prepare($query);
+					$query->bind_param('iissssii',$_SESSION['id_user'],
+									   $all_ids_to_edit_array[$i],$_today,
+									   $log_action,$log_destination_date,
+									   $log_remark,$log_id_progress_status,
+									   $_SESSION['id_user']);
+					$query->execute();
+				}
 
 				if($_POST['is_reminds']){
 					$is_remark_appears_log = 1;
@@ -594,18 +601,23 @@ else {
             if(@$meeting->id_progress_status != @$_POST['id_progress_status'])
 			   $log_id_progress_status = @$_POST['id_progress_status']; 					
 
-			$query = "INSERT INTO dne_log_meeting_updates 
-					  (id_user,id_meeting,action_date,action,
-					  destination_date,remark,id_progress_status,
-					  updated_users) 
-					  VALUES(?,?,?,?,?,?,?,?)";
-			$query = $mysqli->prepare($query);
-			$query->bind_param('iissssii',$_SESSION['id_user'],
-							    $_POST['id'],$_today,$_POST['action'],
-								$log_destination_date,$log_remark,
-								$log_id_progress_status,
-								$_SESSION['id_user']);
-			$query->execute();
+			// Edition (עריכה) : plus d'evenement "עריכה" dans le journal.
+			// Seul un changement de date cible ou de statut est enregistre, comme une mise a jour (עדכון).
+			if($log_destination_date != '' || $log_id_progress_status != 0){
+				$log_action = 'סטטוס/יעד/הערה';
+				$query = "INSERT INTO dne_log_meeting_updates
+						  (id_user,id_meeting,action_date,action,
+						  destination_date,remark,id_progress_status,
+						  updated_users)
+						  VALUES(?,?,?,?,?,?,?,?)";
+				$query = $mysqli->prepare($query);
+				$query->bind_param('iissssii',$_SESSION['id_user'],
+								    $_POST['id'],$_today,$log_action,
+									$log_destination_date,$log_remark,
+									$log_id_progress_status,
+									$_SESSION['id_user']);
+				$query->execute();
+			}
 
             if($_POST['is_reminds']){
 				$is_remark_appears_log = 1;	
