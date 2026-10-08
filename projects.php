@@ -737,10 +737,10 @@ foreach($all_what_news as $wn){
 				</div>
 
                 <div id="div_not_approved_accounts" class="display-none border-black dir-rtl" style="max-height:600px;">					
-					<div class="row fontSize16 position-relative">
+					<div class="row fontSize16 position-relative" style="background-color:<?=@$bg_color_inputs->g_bgcolor?>;padding:8px 0;margin:-10px -10px 0 -10px;border-radius:10px 10px 0 0;">
 						<div class="col-12 position-relative">
-							<strong class="d-block text-center" style="color:<?=@$bg_color_inputs->g_bgcolor?>">תקציב</strong>
-							<input type="button" id="btn-close-not-approved-accounts" class="borderRadius10 fontSize16 font-weight-bold position-absolute" style="top:0;right:13px;color:<?=@$bg_color_inputs->g_bgcolor?>;border:1px solid <?=@$bg_color_inputs->g_bgcolor?>" value="X" />
+							<strong class="d-block text-center" style="color:#ffffff;font-weight:bold;"><span dir="ltr" style="display:inline-flex;align-items:center;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" style="width:14px;height:20px;margin:0 15px;vertical-align:middle;"><path fill="#ffffff" d="M160 0c17.7 0 32 14.3 32 32l0 35.7c1.6 .2 3.1 .4 4.7 .7c.4 .1 .7 .1 1.1 .2l48 8.8c17.4 3.2 28.9 19.9 25.7 37.2s-19.9 28.9-37.2 25.7l-47.5-8.7c-31.3-5.8-58.9-4.5-78.3 3.2s-27.2 19.7-29 30.1c-2 11.9-.5 19.2 1.6 23.9c2.2 5 6.5 10.3 14.3 15.9c16.4 11.8 41.3 19.1 73.7 28.3l2.9 .8c28.6 8.2 63.6 18.2 89.8 37.3c14.7 10.7 28.3 24.9 36.5 44.1c8.3 19.5 10 41.4 5.5 64.8c-8.1 42.4-38.6 68.7-73.7 80.9c-16.3 5.7-34.1 9-52.5 10.2l0 35.9c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-36.9c-1.3-.2-2.7-.4-4-.6l-1.1-.2c-24.2-3.8-64.5-14.3-90.6-25.1c-16.3-6.8-24.1-25.5-17.3-41.8s25.5-24.1 41.8-17.3c20.9 8.7 55.5 17.6 75.7 20.7c31.4 4.9 57.3 2 74.6-4c17.1-6 25.3-14.8 27.5-26.1c1.9-10.1 .5-16.9-1.6-21.9c-2.3-5.5-6.7-11.2-14.8-17.2c-16.9-12.2-42.5-19.7-75.2-29.1l-2.5-.7c-28-8-62-17.8-87.6-36.2c-14.6-10.6-27.9-24.8-35.9-43.8C10.9 233.9 9 213 12.5 191.5C20 145.9 55 118.5 89.7 106.5c12.9-4.5 26.7-7.5 40.5-9.1L130.2 32c0-17.7 14.3-32 32-32z"/></svg><span dir="rtl">תקציב</span></span></strong>
+							<input type="button" id="btn-close-not-approved-accounts" class="borderRadius10 fontSize16 font-weight-bold position-absolute" style="top:0;right:13px;color:#ffffff;background-color:<?=@$bg_color_inputs->g_bgcolor?>;border:1px solid #ffffff" value="X" />
 						</div>
 					</div>		
 									
@@ -1391,19 +1391,16 @@ foreach($all_what_news as $wn){
 									</div>
 									
 									<div id="div_not_approved_accounts_<?=@$pr->id?>" class="flex margin-0-x-auto width50Percents border-black display-none dir-rtl" style="max-height:600px;">
-										<div class="row fontSize18 alignCenter">
-											<div class="col-12 d-flex justify-content-between align-items-center position-relative">
-												<label class="padding-4x-4y borderRadius20 bgColor-cbddec mx-auto position-absolute start-50 translate-middle-x">
-													<?=@$pr->nickname?>
-												</label>
-												<input type="button" id="btn-close-not-approved-accounts-<?=@$pr->id?>" class="borderRadius10 fontSize16 font-weight-bold ms-auto" style="color:<?=@$bg_color_inputs->g_bgcolor?>; border:1px solid <?=@$bg_color_inputs->g_bgcolor?>" value="X" />
-											</div>
-											
-											<div class="row marginTop5 fontSize16">
-												<div class="col-12 marginLeft10 alignCenter">
-													<strong style="color:<?=@$bg_color_inputs->g_bgcolor?>">תקציב</strong>
+										<div class="row fontSize18 alignCenter dir-rtl" style="background-color:<?=@$bg_color_inputs->g_bgcolor?>;padding:8px 0;margin:-10px -10px 0 -10px;border-radius:10px 10px 0 0;">
+											<div class="col-12 position-relative" style="min-height:38px;">
+												<strong style="color:#ffffff;font-weight:bold;"><span dir="ltr" style="display:inline-flex;align-items:center;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" style="width:14px;height:20px;margin:0 15px;vertical-align:middle;"><path fill="#ffffff" d="M160 0c17.7 0 32 14.3 32 32l0 35.7c1.6 .2 3.1 .4 4.7 .7c.4 .1 .7 .1 1.1 .2l48 8.8c17.4 3.2 28.9 19.9 25.7 37.2s-19.9 28.9-37.2 25.7l-47.5-8.7c-31.3-5.8-58.9-4.5-78.3 3.2s-27.2 19.7-29 30.1c-2 11.9-.5 19.2 1.6 23.9c2.2 5 6.5 10.3 14.3 15.9c16.4 11.8 41.3 19.1 73.7 28.3l2.9 .8c28.6 8.2 63.6 18.2 89.8 37.3c14.7 10.7 28.3 24.9 36.5 44.1c8.3 19.5 10 41.4 5.5 64.8c-8.1 42.4-38.6 68.7-73.7 80.9c-16.3 5.7-34.1 9-52.5 10.2l0 35.9c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-36.9c-1.3-.2-2.7-.4-4-.6l-1.1-.2c-24.2-3.8-64.5-14.3-90.6-25.1c-16.3-6.8-24.1-25.5-17.3-41.8s25.5-24.1 41.8-17.3c20.9 8.7 55.5 17.6 75.7 20.7c31.4 4.9 57.3 2 74.6-4c17.1-6 25.3-14.8 27.5-26.1c1.9-10.1 .5-16.9-1.6-21.9c-2.3-5.5-6.7-11.2-14.8-17.2c-16.9-12.2-42.5-19.7-75.2-29.1l-2.5-.7c-28-8-62-17.8-87.6-36.2c-14.6-10.6-27.9-24.8-35.9-43.8C10.9 233.9 9 213 12.5 191.5C20 145.9 55 118.5 89.7 106.5c12.9-4.5 26.7-7.5 40.5-9.1L130.2 32c0-17.7 14.3-32 32-32z"/></svg><span dir="rtl">תקציב</span></span></strong>
+												<div class="d-flex align-items-center position-absolute" style="top:0;right:13px;gap:8px;">
+													<input type="button" id="btn-close-not-approved-accounts-<?=@$pr->id?>" class="borderRadius10 fontSize16 font-weight-bold" style="color:#ffffff;background-color:transparent;border:1px solid #ffffff" value="X" />
 												</div>
 											</div>
+										</div>
+										<div class="alignCenter marginTop5">
+											<label class="padding-4x-4y borderRadius20 bgColor-cbddec"><?=@$pr->nickname?></label>
 										</div>
 										
 										<?php foreach($not_approved_accounts as $nap) { ?>
@@ -2013,15 +2010,16 @@ foreach($all_what_news as $wn){
 						<div class="modal-title"></div>
 					</div>
 					<div class="modal-body">
-                        <form action="" method="post">
+                        <form action="" method="post" onsubmit="return false;">
 						    <div class='marginTop5 subtitle color-19bf42 fontSize18 font-weight-bold alignCenter'></div>
+						    <hr class="hr-popup"/>
 						    <div class="row marginTop10">
 							    <div class="col-12 fontSize13 alignCenter">
 									<span id="progress_status_for_update_label"></span>
 								    <select id="progress_status_update"></select>
 							    </div>								
 							</div>
-							<hr class="colorGrey mb-1 mt-1"/>
+							<hr class="hr-popup"/>
 							<div id="task_active_remarks_progress_status_update"></div>
 							<div class="marginTop10 paddingRight10 alignRight height-auto bgColorWhite fontSize13 cursor-pointer border-black overflow-y-scroll dir-rtl">
 								<div name="remark_changes_status_update" id="remark_changes_status_update" contenteditable="true" class="editable green cursor-pointer" data-placeholder="ניתן להוסיף כאן הערה"></div>
@@ -2030,6 +2028,7 @@ foreach($all_what_news as $wn){
 							<div class="marginTop5 fontSize13 font-weight-bold alignCenter">
 								<input type="date" id="new_destination_date_update" class="alignCenter" />
 							</div>
+							<hr class="hr-popup"/>
 							<div id="div_update_btns" class="marginTop15 marginBottom10 alignCenter">		   
 							   	<input type="button" id="save_update_task_btn" class="btn btn-primary text-white font-weight-bold marginLeft5" value="שמור"/>
 							    <input type="button" id="cancel_update_task_btn" class="btn bg-dark text-white font-weight-bold" value="בטל" onclick="hidePopup('modalUpdateTask','',$('#hidden_meeting_id').val(),'fromProjects')" />
@@ -2042,6 +2041,30 @@ foreach($all_what_news as $wn){
 
         <input type="hidden" id="default_bgcolor_tracking" value="<?=@$bg_color_inputs->default_bgcolor?>">
         <input type="hidden" id="filled_bgcolor_tracking" value="<?=@$bg_color_inputs->filled_bgcolor?>">
+<style>
+	#modalTaskTracking .reminder-btn { background-color:#d9d9d9; border:1px solid #b5b5b5; color:#000; font-size:13px; padding:2px 10px; height:30px; min-width:48px; display:inline-flex; align-items:center; justify-content:center; transition:none; box-shadow:none; }
+	#modalTaskTracking .btn-check:checked + .reminder-btn { background-color:#2ca836; border-color:#2ca836; color:#fff; }
+	#modalTaskTracking .btn-check:checked + .reminder-btn i { color:#fff !important; }
+	#modalTaskTracking .reminder-btns { display:grid; grid-template-columns:auto auto; gap:6px 8px; justify-content:center; }
+	#modalTaskTracking .reminder-btns .reminder-btn { width:100%; }
+	#modalTaskTracking .reminder-btns { position:relative; left:calc(10% + 1.6px); }
+	#modalTaskTracking #new_remark { color:red; }
+	#modalTaskTracking form hr { margin-top:3px !important; margin-bottom:3px !important; }
+	#modalTaskTracking form > .row.marginTop5 { margin-top:0 !important; }
+	#modalTaskTracking form > .row > .col-2.p-2 { padding-top:3px !important; padding-bottom:3px !important; }
+	#modalTaskTracking form > .row > .col-2 .marginTop5 { margin-top:2px !important; }
+	#modalTaskTracking form { margin-bottom:0 !important; }
+	#modalTaskTracking .modal-body { padding-bottom:6px !important; }
+	#modalTaskTracking form .gap-3 .btn { padding-top:0 !important; padding-bottom:0 !important; }
+	#modalTaskTracking .modal-dialog { max-width:420px; }
+	@media (max-width:575px){
+		#modalTaskTracking .modal-dialog { margin:8px auto; max-width:calc(100% - 16px); }
+		#modalTaskTracking .modal-content { left:0; }
+		#modalTaskTracking .modal-body { padding-left:8px; padding-right:8px; }
+		#modalTaskTracking form > .row > .col-2 .fontSize13 { font-size:11px !important; }
+		#modalTaskTracking .reminder-btn { font-size:12px; padding:2px 6px; }
+	}
+</style>
 <div class="modal fade dir-rtl" id="modalTaskTracking" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
 				<div class="modal-content">
@@ -2058,14 +2081,16 @@ foreach($all_what_news as $wn){
 										    <div class='marginTop5 subtitle color-19bf42 fontSize18 font-weight-bold alignCenter'></div>
 									    </div>
 								    </div>
+								    <div class="row" dir="rtl"><div class="col-12"><hr class="marginTop5" style="border:none;border-top:2px solid #999;opacity:1;margin-left:-35px;margin-right:-35px;" /></div></div>
 
-								    <div class="row marginTop5" dir="rtl">
-									    <div class="col-2 p-2 text-center d-flex flex-column align-items-center justify-content-center">
+								    <div class="row marginTop5 position-relative" dir="rtl">
+									    <div class="col-2 py-1 px-2 text-center d-flex flex-column align-items-center justify-content-center">
 										    <i class="fa fa-user" style="font-size:20px;"></i>
-										    <div class="fw-bold fontSize13 marginTop5 text-nowrap">אחראי מעקב</div>
+										    <div class="fw-bold fontSize13 color-1A5276 marginTop2 text-nowrap">אחראי מעקב</div>
 									    </div>
-									    <div class="col-10 p-2 text-end d-flex flex-column justify-content-center align-items-center">
-										    <select id="users" class="paddingRight8 fontSize11 marginBottom10">
+									    <div class="col-10"></div>
+									    <div class="position-absolute d-flex justify-content-center align-items-center" style="top:0;bottom:0;left:0;right:0;pointer-events:none;">
+										    <select id="users" class="fontSize11" style="text-align:center;text-align-last:center;pointer-events:auto;">
 											    <option value="0">בחר</option>
 											    <?php
 											    foreach($active_users as $item){ ?>
@@ -2082,45 +2107,38 @@ foreach($all_what_news as $wn){
 								    <div class="row marginTop5" dir="rtl">
 									    <div class="col-2 p-2 text-center d-flex flex-column align-items-center justify-content-center">
 										    <img src="images/bell-solid.svg" width="20" height="20" />
-										    <div class="fw-bold fontSize13 marginTop5 text-nowrap">תזכורת</div>
+										    <div class="fw-bold fontSize13 color-1A5276 marginTop5 text-nowrap">תזכורת</div>
 									    </div>
 									    <div class="col-10 p-2 text-end d-flex flex-column justify-content-center align-items-center">
-										    <div class="row align-items-start justify-content-start flex-nowrap gx-2" dir="rtl">
-											    <div class="col-auto fontSize13 text-end" style="margin-left:20px;">
-												    <div><input type="radio" id="not_reminders" name="set_reminder_date_radio" value="0" > <i id="reminder_bell_icon" class="fa-solid fa-bell-slash" style="color:#888;font-size:16px;"></i></div>
-											    </div>
-											    <div class="col-auto fontSize13 text-end">
-												    <div><input type="radio" id="reminder_tomorrow" name="set_reminder_date_radio" value="1" > מחר</div>
-												    <div><input type="radio" id="reminder_after_one_week" name="set_reminder_date_radio" value="3" > בעוד שבוע</div>
-											    </div>
-											    <div class="col-auto fontSize13 text-end">
-												    <div><input type="radio" id="reminder_after_selected_date" name="set_reminder_date_radio" value="6" onclick="setReminderDate(this.value);"> בתאריך</div>
-											    </div>
-											    <div class="col-auto" id="date_col_wrapper" style="display:none;">
-												    <div id="div_reminder_date">
-													    <input type="date" class="text-center" id="reminder_date" style="font-size:11px;width:85px;" />
-												    <input type="hidden" id="computed_reminder_date" />
-												    </div>
-											    </div>
+										    <div class="reminder-btns" dir="rtl">
+										    	<input type="radio" class="btn-check" id="not_reminders" name="set_reminder_date_radio" value="0" autocomplete="off">
+										    	<label class="btn btn-sm reminder-btn" for="not_reminders"><i id="reminder_bell_icon" class="fa-solid fa-bell-slash" style="color:#888;font-size:16px;"></i></label>
+										    	<input type="radio" class="btn-check" id="reminder_tomorrow" name="set_reminder_date_radio" value="1" autocomplete="off">
+										    	<label class="btn btn-sm reminder-btn" for="reminder_tomorrow">מחר</label>
+										    	<input type="radio" class="btn-check" id="reminder_after_one_week" name="set_reminder_date_radio" value="3" autocomplete="off">
+										    	<label class="btn btn-sm reminder-btn" for="reminder_after_one_week">בעוד שבוע</label>
+										    	<input type="radio" class="btn-check" id="reminder_after_selected_date" name="set_reminder_date_radio" value="6" autocomplete="off" onclick="setReminderDate(this.value);">
+										    	<label class="btn btn-sm reminder-btn reminder-btn-date" style="position:relative;" for="reminder_after_selected_date">
+										    		<span id="reminder_date_text"></span>
+										    		<span id="date_col_wrapper"><span id="div_reminder_date">
+										    			<input type="date" id="reminder_date" tabindex="-1" style="position:absolute;left:0;bottom:0;width:1px;height:1px;opacity:0;border:0;padding:0;pointer-events:none;" />
+										    			<input type="hidden" id="computed_reminder_date" />
+										    		</span></span>
+										    	</label>
 										    </div>
 									    </div>
 								    </div>
 
 								    <div class="row" dir="rtl"><div class="col-12"><hr class="marginTop5" style="border:none;border-top:2px solid #999;opacity:1;margin-left:-35px;margin-right:-35px;" /></div></div>
 
-								    <div class="row" dir="rtl">
-									    <div class="col-2"></div>
-									    <div class="col-10">
-										    <div id="task_active_remarks_tracking"></div>
-									    </div>
-								    </div>
 
 								    <div class="row marginTop5" dir="rtl">
 									    <div class="col-2 p-2 text-center d-flex flex-column align-items-center justify-content-center">
 										    <img src="images/edit-button.svg" width="20" height="20" />
-										    <div class="fw-bold fontSize13 marginTop5">עדכון</div>
+										    <div class="fw-bold fontSize13 color-1A5276 marginTop5">עדכון</div>
 									    </div>
-									    <div class="col-10 ps-1 pe-2 d-flex flex-column justify-content-center align-items-center">
+									    <div class="col-10 px-2 d-flex flex-column justify-content-center align-items-center">
+										    <div id="task_active_remarks_tracking" class="w-100"></div>
 										    <div class="d-flex justify-content-between marginBottom5 w-100">
 											    <div>
 												    <a id="new_remark_tracking_en" class="text-decoration-none cursor-pointer" onclick="$('#new_remark').css({'direction':'ltr','padding-left':'5px','padding-right':'0','text-align':'left'});$(this).css('font-weight','bold');$('#new_remark_tracking_he').css('font-weight','normal');">EN</a>&nbsp;|
@@ -2137,13 +2155,14 @@ foreach($all_what_news as $wn){
 								    </div>
 
 		   
-									<div class="row marginTop15" dir="rtl">
+									<div class="row" dir="rtl"><div class="col-12"><hr class="marginTop5" style="border:none;border-top:2px solid #999;opacity:1;margin-left:-35px;margin-right:-35px;" /></div></div>
+									<div class="row" dir="rtl">
 										<div class="col-12 d-flex justify-content-center align-items-center gap-3">
-											<button type="button" class="btn font-weight-bold px-3 text-nowrap alignCenter" style="color:#212529;"
+											<button type="button" class="btn font-weight-bold px-3 py-0 lh-sm text-nowrap alignCenter" style="color:#212529;"
 													onclick="fillLogTaskTracking($('#hidden_meeting_id').val(),'','for_closing',1)">
 												<img src="images/red-target-icon-transparent.png" alt="target icon" style="width:36px;height:36px;" /><br/>שמור
 											</button>
-											<button type="button" class="btn font-weight-bold px-3 text-nowrap alignCenter" style="color:#212529;"
+											<button type="button" class="btn font-weight-bold px-3 py-0 lh-sm text-nowrap alignCenter" style="color:#212529;"
 													onclick="advanceToNextTaskAndCancelTracking()">
 												<img src="images/grey-target-icon-transparent.png" alt="target icon" style="width:36px;height:36px;" /><br/>בטל מעקב
 											</button>
@@ -2202,7 +2221,32 @@ foreach($all_what_news as $wn){
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.min.js"></script>
 
 <script>
-$(document).ready(function(){ 
+$(document).ready(function(){
+	// Ligne תזכורת : bouton date = texte de la date ; clic = ouvre le calendrier. Defaut : date en base si rappel "a une date", sinon aujourd'hui
+	function refreshReminderDateText(){
+		let v = $('#reminder_date').val();
+		if(!v || v == '0000-00-00'){
+			let dbDate = $('#hidden_reminder_date').val();
+			v = ($('#hidden_reminder_time').val() == 6 && dbDate && dbDate != '0000-00-00') ? dbDate : formatDate(new Date());
+			$('#reminder_date').val(v);
+		}
+		let p = v.split('-');
+		$('#reminder_date_text').text(p[2]+'/'+p[1]+'/'+p[0]);
+	}
+	$(document).on('click', '#modalTaskTracking label[for="reminder_after_selected_date"]', function(){
+		refreshReminderDateText();
+		let el = document.getElementById('reminder_date');
+		try { el.showPicker(); } catch(e) { el.style.pointerEvents = 'auto'; el.focus(); el.click(); el.style.pointerEvents = 'none'; }
+	});
+	$(document).on('change input', '#modalTaskTracking #reminder_date', function(){
+		if(!$('#reminder_after_selected_date').is(':checked'))
+			$('#reminder_after_selected_date').prop('checked', true).trigger('change');
+		refreshReminderDateText();
+	});
+	$(document).on('show.bs.modal shown.bs.modal', '#modalTaskTracking', function(){
+		setTimeout(refreshReminderDateText, 0);
+	});
+ 
     let project_id;
 	let project_nickname;
 	let lang;
@@ -2608,21 +2652,25 @@ $(document).ready(function(){
 		if(localStorage.getItem('prId') != null){
 			target = localStorage.getItem('target');
 		    prId = localStorage.getItem('prId');
-		    bgcolor = localStorage.getItem('bgcolor'); 
+		    bgcolor = $('.badge-switcher[data-target="'+target+'"][data-prid="'+prId+'"]').data('bgcolor') || localStorage.getItem('bgcolor');
 		    content = $('#div_'+target+'_'+prId).html();
 			currentBadgeTarget = target;
 		    currentProject = prId;			  
 		}
 		else if(localStorage.getItem('prId') == null){      
 			target = localStorage.getItem('target');	  
-		    bgcolor = localStorage.getItem('bgcolor'); 
+		    bgcolor = $('._badge-switcher[data-target="'+target+'"]').data('bgcolor') || localStorage.getItem('bgcolor');
 		    content = $('#div_'+target).html();
 			currentBadgeTarget = target;		
 		}
 		
+		localStorage.setItem('bgcolor',bgcolor);
 		badgeSwitcherFillContent(content,bgcolor);  
 		$('#left_initial_content').hide();	        
 	}
+
+	// Retour arriere du navigateur (page reaffichee depuis sa memoire) : recharger pour relire les couleurs des parametres graphiques
+	window.addEventListener('pageshow', function(e){ if(e.persisted) location.reload(); });
 
 	$(document).on('click','[id^="btn-close"],#logo_link',function(){
 		$('#left_initial_content').show();

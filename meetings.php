@@ -2973,10 +2973,12 @@ include 'menu_tasks.php';
 					    <div id="modalContent">	        	        
 					        <form>
 							    <div class='marginTop5 subtitle color-19bf42 fontSize18 font-weight-bold alignCenter'></div>
+							    <hr class="hr-popup"/>
                                 <div id="task_active_remarks_target_date"></div>
 								<div class="marginTop10 <?=@$padding_10?> <?=@$align?> height-auto bgColorWhite fontSize13 cursor-pointer border-black overflow-y-scroll dir-rtl">
 									<div name="remark_delay_target_date" id="remark_delay_target_date" contenteditable="true" dir="rtl" class="editable green cursor-pointer" style="text-align:right;" data-placeholder="ניתן להוסיף כאן הערה"></div>
 								</div>
+							    <hr class="hr-popup"/>
 							    <div class="marginTop15 alignCenter">
 							       	<input type="button" class="btn btn-primary text-white font-weight-bold marginLeft10" value="שמור" style="padding:.375rem .75rem!important;" onclick="setData($('#hidden_meeting_id').val(),$('#hidden_iteration').val(),'destination_date',1,0,'for_closing')" />
 									<input type="button" class="btn bg-dark text-white font-weight-bold" value="בטל" style="padding:.375rem .75rem!important;" onclick="hidePopup('modalTaskFollowupDelayTargetDate',$('#hidden_iteration').val(),$('#hidden_meeting_id').val(),'fromMeetings')" />
@@ -3001,19 +3003,20 @@ include 'menu_tasks.php';
 							    <div class='marginTop5 subtitle color-19bf42 fontSize18 font-weight-bold alignCenter'></div>
                                 <div class="margin-top-10-x-auto padding-4x-4y colorWhite bgColorBlack borderRadius10 width100 border-black fontSize13 font-weight-bold alignCenter" id="div_new_progress_status"></div>
                                 <div class="marginTop10"></div>
-								<hr class="colorGrey" style="margin:1px 0" />
+								<hr class="hr-popup"/>
 								<div id="task_active_remarks_progress_status"></div>
 								<div class="marginTop10 <?=@$padding_10?> <?=@$align?> height-auto bgColorWhite fontSize13 cursor-pointer border-black overflow-y-scroll dir-rtl">
 									<div name="remark_changes_status" id="remark_changes_status" contenteditable="true" class="editable green cursor-pointer" data-placeholder="ניתן להוסיף כאן הערה"></div>
 								</div>
 								<div class="marginTop10"></div>
-								<hr class="colorGrey" style="margin:1px 0" />
+								<hr class="hr-popup"/>
 								<div class="marginTop5 color-349feb fontSize13 font-weight-bold alignCenter">
 									יעד
 									<div class="marginTop5">
 										<input type="date" id="new_destination_date" class="alignCenter" />	
                                     </div>									
 								</div>    
+							    <hr class="hr-popup"/>
 							    <div class="marginTop15 marginBottom10 alignCenter">
 							       <input type="button" class="btn btn-primary text-white font-weight-bold marginLeft10" value="שמור" style="padding:.375rem .75rem!important;" onclick="setData($('#hidden_meeting_id').val(),$('#hidden_iteration').val(),'id_progress_status',1,0,'for_closing')" />
 							       <input type="button" class="btn bg-dark text-white font-weight-bold" value="סגור" style="padding:.375rem .75rem!important;" onclick="hidePopup('modalTaskFollowupChangeStatus',$('#hidden_iteration').val(),$('#hidden_meeting_id').val(),'fromMeetings')" />
@@ -3173,9 +3176,10 @@ include 'menu_tasks.php';
 						<button type="button" class="btn-close btn-close-white-small" data-bs-dismiss="modal" aria-label="Close"></button>
 						<div class="modal-title"></div>
 					</div>
-					<div class="modal-body"
-                        <form action="" method="post">
+					<div class="modal-body">
+                        <form action="" method="post" onsubmit="return false;">
                             <div class='marginTop5 subtitle color-19bf42 fontSize18 font-weight-bold alignCenter'></div>
+                            <hr class="hr-popup"/>
 							<div class="row marginTop10" style="direction:<?=$_pd?>">
 								<div class="col-12 fontSize13 alignCenter">
 									<strong><?=($_pl=='HE') ? 'סטטוס חדש' : 'New Status'?>:</strong>
@@ -3207,7 +3211,7 @@ include 'menu_tasks.php';
 									</select>
 								</div>
 							</div>
-                            <hr class="colorGrey mb-1 mt-1"/>
+                            <hr class="hr-popup"/>
                             <div id="task_active_remarks_progress_status_update"></div>
 							<div class="marginTop10 <?=($_pl=='HE') ? 'paddingRight10' : 'paddingLeft10'?> <?=($_pl=='HE') ? 'alignRight' : 'alignLeft'?> height-auto bgColorWhite fontSize13 cursor-pointer border-black overflow-y-scroll" style="direction:<?=$_pd?>">
 								<div name="remark_changes_status_update" id="remark_changes_status_update" contenteditable="true" class="editable green cursor-pointer" data-placeholder="<?=($_pl=='HE') ? 'ניתן להוסיף כאן הערה' : 'You can add a comment here'?>"></div>
@@ -3216,6 +3220,7 @@ include 'menu_tasks.php';
 							<div class="marginTop5 fontSize13 alignCenter" style="direction:<?=$_pd?>">
 								<input type="date" id="new_destination_date_update" class="alignCenter" />
 							</div>
+							<hr class="hr-popup"/>
 							<div class="marginTop15 marginBottom10 alignCenter" style="direction:<?=$_pd?>">
 							   	<input type="button" id="save_update_task_btn" class="btn btn-primary text-white font-weight-bold <?=($_pl=='HE') ? 'marginLeft10' : 'marginRight10'?>" value="<?=($_pl=='HE') ? 'שמור' : 'Save'?>" style="padding:.375rem .75rem!important;" />
 							    <input type="button" class="btn bg-dark text-white font-weight-bold" value="<?=($_pl=='HE') ? 'בטל' : 'Cancel'?>" style="padding:.375rem .75rem!important;" onclick="hidePopup('modalUpdateTask',$('#hidden_iteration').val(),$('#hidden_meeting_id').val(),'fromMeetings')" />
@@ -3228,6 +3233,30 @@ include 'menu_tasks.php';
 		
 		<input type="hidden" id="default_bgcolor_tracking" value="<?=@$bg_color_inputs->default_bgcolor?>">
 		<input type="hidden" id="filled_bgcolor_tracking" value="<?=@$bg_color_inputs->filled_bgcolor?>">
+<style>
+	#modalTaskTracking .reminder-btn { background-color:#d9d9d9; border:1px solid #b5b5b5; color:#000; font-size:13px; padding:2px 10px; height:30px; min-width:48px; display:inline-flex; align-items:center; justify-content:center; transition:none; box-shadow:none; }
+	#modalTaskTracking .btn-check:checked + .reminder-btn { background-color:#2ca836; border-color:#2ca836; color:#fff; }
+	#modalTaskTracking .btn-check:checked + .reminder-btn i { color:#fff !important; }
+	#modalTaskTracking .reminder-btns { display:grid; grid-template-columns:auto auto; gap:6px 8px; justify-content:center; }
+	#modalTaskTracking .reminder-btns .reminder-btn { width:100%; }
+	#modalTaskTracking .reminder-btns { position:relative; left:calc(10% + 1.6px); }
+	#modalTaskTracking #new_remark { color:red; }
+	#modalTaskTracking form hr { margin-top:3px !important; margin-bottom:3px !important; }
+	#modalTaskTracking form > .row.marginTop5 { margin-top:0 !important; }
+	#modalTaskTracking form > .row > .col-2.p-2 { padding-top:3px !important; padding-bottom:3px !important; }
+	#modalTaskTracking form > .row > .col-2 .marginTop5 { margin-top:2px !important; }
+	#modalTaskTracking form { margin-bottom:0 !important; }
+	#modalTaskTracking .modal-body { padding-bottom:6px !important; }
+	#modalTaskTracking form .gap-3 .btn { padding-top:0 !important; padding-bottom:0 !important; }
+	#modalTaskTracking .modal-dialog { max-width:420px; }
+	@media (max-width:575px){
+		#modalTaskTracking .modal-dialog { margin:8px auto; max-width:calc(100% - 16px); }
+		#modalTaskTracking .modal-content { left:0; }
+		#modalTaskTracking .modal-body { padding-left:8px; padding-right:8px; }
+		#modalTaskTracking form > .row > .col-2 .fontSize13 { font-size:11px !important; }
+		#modalTaskTracking .reminder-btn { font-size:12px; padding:2px 6px; }
+	}
+</style>
 <div class="modal fade dir-rtl" id="modalTaskTracking" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
 				<div class="modal-content">
@@ -3244,14 +3273,16 @@ include 'menu_tasks.php';
 										<div class='marginTop5 subtitle color-19bf42 fontSize18 font-weight-bold alignCenter'></div>
 									</div>
 								</div>
+								<div class="row" dir="rtl"><div class="col-12"><hr class="marginTop5" style="border:none;border-top:2px solid #999;opacity:1;margin-left:-35px;margin-right:-35px;" /></div></div>
 
-								<div class="row marginTop5" dir="rtl">
-									<div class="col-2 p-2 text-center d-flex flex-column align-items-center justify-content-center">
+								<div class="row marginTop5 position-relative" dir="rtl">
+									<div class="col-2 py-1 px-2 text-center d-flex flex-column align-items-center justify-content-center">
 										<i class="fa fa-user" style="font-size:20px;"></i>
-										<div class="fw-bold fontSize13 marginTop5 text-nowrap">אחראי מעקב</div>
+										<div class="fw-bold fontSize13 color-1A5276 marginTop2 text-nowrap">אחראי מעקב</div>
 									</div>
-									<div class="col-10 p-2 text-end d-flex flex-column justify-content-center align-items-center">
-										<select id="users" class="paddingRight8 fontSize11 marginBottom10">
+									<div class="col-10"></div>
+									<div class="position-absolute d-flex justify-content-center align-items-center" style="top:0;bottom:0;left:0;right:0;pointer-events:none;">
+										<select id="users" class="fontSize11" style="text-align:center;text-align-last:center;pointer-events:auto;">
 											<option value="0">בחר</option>
 											<?php foreach($active_users as $item){ ?>
 												<option value="<?=@$item->id?>">
@@ -3267,45 +3298,38 @@ include 'menu_tasks.php';
 								<div class="row marginTop5" dir="rtl">
 									<div class="col-2 p-2 text-center d-flex flex-column align-items-center justify-content-center">
 										<img src="images/bell-solid.svg" width="20" height="20" />
-										<div class="fw-bold fontSize13 marginTop5 text-nowrap">תזכורת</div>
+										<div class="fw-bold fontSize13 color-1A5276 marginTop5 text-nowrap">תזכורת</div>
 									</div>
 									<div class="col-10 p-2 text-end d-flex flex-column justify-content-center align-items-center">
-										<div class="row align-items-start justify-content-start flex-nowrap gx-2" dir="rtl">
-											<div class="col-auto fontSize13 text-end" style="margin-left:6px;">
-												<div><input type="radio" id="not_reminders" name="set_reminder_date_radio" value="0" > <i id="reminder_bell_icon" class="fa-solid fa-bell-slash" style="color:#888;font-size:16px;"></i></div>
-											</div>
-											<div class="col-auto fontSize13 text-end">
-												<div><input type="radio" id="reminder_tomorrow" name="set_reminder_date_radio" value="1" > מחר</div>
-												<div><input type="radio" id="reminder_after_one_week" name="set_reminder_date_radio" value="3" > בעוד שבוע</div>
-											</div>
-											<div class="col-auto fontSize13 text-end">
-												<div><input type="radio" id="reminder_after_selected_date" name="set_reminder_date_radio" value="6" onclick="setReminderDate(this.value);"> בתאריך</div>
-											</div>
-											<div class="col-auto" id="date_col_wrapper" style="display:none;">
-												<div id="div_reminder_date">
-													<input type="date" class="text-center" id="reminder_date" style="font-size:11px;width:85px;" />
-												<input type="hidden" id="computed_reminder_date" />
-												</div>
-											</div>
+										<div class="reminder-btns" dir="rtl">
+											<input type="radio" class="btn-check" id="not_reminders" name="set_reminder_date_radio" value="0" autocomplete="off">
+											<label class="btn btn-sm reminder-btn" for="not_reminders"><i id="reminder_bell_icon" class="fa-solid fa-bell-slash" style="color:#888;font-size:16px;"></i></label>
+											<input type="radio" class="btn-check" id="reminder_tomorrow" name="set_reminder_date_radio" value="1" autocomplete="off">
+											<label class="btn btn-sm reminder-btn" for="reminder_tomorrow">מחר</label>
+											<input type="radio" class="btn-check" id="reminder_after_one_week" name="set_reminder_date_radio" value="3" autocomplete="off">
+											<label class="btn btn-sm reminder-btn" for="reminder_after_one_week">בעוד שבוע</label>
+											<input type="radio" class="btn-check" id="reminder_after_selected_date" name="set_reminder_date_radio" value="6" autocomplete="off" onclick="setReminderDate(this.value);">
+											<label class="btn btn-sm reminder-btn reminder-btn-date" style="position:relative;" for="reminder_after_selected_date">
+												<span id="reminder_date_text"></span>
+												<span id="date_col_wrapper"><span id="div_reminder_date">
+													<input type="date" id="reminder_date" tabindex="-1" style="position:absolute;left:0;bottom:0;width:1px;height:1px;opacity:0;border:0;padding:0;pointer-events:none;" />
+													<input type="hidden" id="computed_reminder_date" />
+												</span></span>
+											</label>
 										</div>
 									</div>
 								</div>
 
 								<div class="row" dir="rtl"><div class="col-12"><hr class="marginTop5" style="border:none;border-top:2px solid #999;opacity:1;margin-left:-35px;margin-right:-35px;" /></div></div>
 
-								<div class="row" dir="rtl">
-									<div class="col-2"></div>
-									<div class="col-10">
-										<div id="task_active_remarks_tracking"></div>
-									</div>
-								</div>
 
 								<div class="row marginTop5" dir="rtl">
 									<div class="col-2 p-2 text-center d-flex flex-column align-items-center justify-content-center">
 										<img src="images/edit-button.svg" width="20" height="20" />
-										<div class="fw-bold fontSize13 marginTop5">עדכון</div>
+										<div class="fw-bold fontSize13 color-1A5276 marginTop5">עדכון</div>
 									</div>
-									<div class="col-10 ps-1 pe-2 d-flex flex-column justify-content-center align-items-center">
+									<div class="col-10 px-2 d-flex flex-column justify-content-center align-items-center">
+										<div id="task_active_remarks_tracking" class="w-100"></div>
 										<div class="d-flex justify-content-between marginBottom5 w-100">
 											<div>
 												<a id="new_remark_tracking_en" class="text-decoration-none cursor-pointer" onclick="$('#new_remark').css({'direction':'ltr','padding-left':'5px','padding-right':'0','text-align':'left'});$(this).css('font-weight','bold');$('#new_remark_tracking_he').css('font-weight','normal');">EN</a>&nbsp;|
@@ -3319,13 +3343,14 @@ include 'menu_tasks.php';
 									</div>
 								</div>
 
-								<div class="row marginTop15" dir="rtl">
+								<div class="row" dir="rtl"><div class="col-12"><hr class="marginTop5" style="border:none;border-top:2px solid #999;opacity:1;margin-left:-35px;margin-right:-35px;" /></div></div>
+								<div class="row" dir="rtl">
 									<div class="col-12 d-flex justify-content-center align-items-center gap-3">
-										<button type="button" class="btn font-weight-bold px-3 text-nowrap alignCenter"
+										<button type="button" class="btn font-weight-bold px-3 py-0 lh-sm text-nowrap alignCenter"
 												onclick="fillLogTaskTracking($('#hidden_meeting_id').val(),$('#hidden_iteration').val(),'for_closing',1)">
 											<img src="images/red-target-icon-transparent.png" alt="target icon" style="width:36px;height:36px;" /><br/>שמור
 										</button>
-										<button type="button" class="btn font-weight-bold px-3 text-nowrap alignCenter"
+										<button type="button" class="btn font-weight-bold px-3 py-0 lh-sm text-nowrap alignCenter"
 												onclick="let meeting_ids_array=$('#meetings_table [id^=&quot;task_actions_&quot;]').map(function(){return String($(this).data('meetingid'));}).get();let current_meeting_id=$('#hidden_meeting_id').val();let index=meeting_ids_array.indexOf(current_meeting_id);index++;let next_meeting_id=(index<meeting_ids_array.length)?meeting_ids_array[index]:'';localStorage.setItem('next_meeting_id',next_meeting_id);localStorage.setItem('meeting_id',next_meeting_id);fillLogTaskTracking($('#hidden_meeting_id').val(),$('#hidden_iteration').val(),'for_closing',0,true)">
 											<img src="images/grey-target-icon-transparent.png" alt="target icon" style="width:36px;height:36px;" /><br/>בטל מעקב
 										</button>
@@ -3431,6 +3456,31 @@ else {
 }
 	
 $(document).ready(function(){
+	// Ligne תזכורת : bouton date = texte de la date ; clic = ouvre le calendrier. Defaut : date en base si rappel "a une date", sinon aujourd'hui
+	function refreshReminderDateText(){
+		let v = $('#reminder_date').val();
+		if(!v || v == '0000-00-00'){
+			let dbDate = $('#hidden_reminder_date').val();
+			v = ($('#hidden_reminder_time').val() == 6 && dbDate && dbDate != '0000-00-00') ? dbDate : formatDate(new Date());
+			$('#reminder_date').val(v);
+		}
+		let p = v.split('-');
+		$('#reminder_date_text').text(p[2]+'/'+p[1]+'/'+p[0]);
+	}
+	$(document).on('click', '#modalTaskTracking label[for="reminder_after_selected_date"]', function(){
+		refreshReminderDateText();
+		let el = document.getElementById('reminder_date');
+		try { el.showPicker(); } catch(e) { el.style.pointerEvents = 'auto'; el.focus(); el.click(); el.style.pointerEvents = 'none'; }
+	});
+	$(document).on('change input', '#modalTaskTracking #reminder_date', function(){
+		if(!$('#reminder_after_selected_date').is(':checked'))
+			$('#reminder_after_selected_date').prop('checked', true).trigger('change');
+		refreshReminderDateText();
+	});
+	$(document).on('show.bs.modal shown.bs.modal', '#modalTaskTracking', function(){
+		setTimeout(refreshReminderDateText, 0);
+	});
+
 	localStorage.setItem('dne_last_url', window.location.href);
 	let container = $('.container');
 
@@ -5162,7 +5212,7 @@ tr.task-row-highlight td {
     background-color: #9ef7b6 !important;
 }
 
-tr.task-row-highlight td *:not(select):not([id^="destination_date_"]):not([id^="description_"]) {
+tr.task-row-highlight td *:not(select):not([id^="destination_date_"]):not([id^="description_"]):not(.badge-circle):not(.badge-circle-track):not(.badge-nickname-green) {
     background-color: transparent !important;
 }
 
@@ -5228,7 +5278,7 @@ td {
     z-index: 1;
 }
 
-.row-darken td *:not(select):not([id^="destination_date_"]):not([id^="description_"]) {
+.row-darken td *:not(select):not([id^="destination_date_"]):not([id^="description_"]):not(.badge-circle):not(.badge-circle-track):not(.badge-nickname-green) {
     background-color: transparent !important;
 }
 
