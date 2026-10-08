@@ -911,7 +911,7 @@ include 'menu_tasks.php';
 						</div>
 					</div>
 					
-					<div class="marginTop15 borderRadius20 position-relative flex flex-wrap justify-content-center dir-rtl" style="gap:10px;">
+					<div class="meetings-toolbar marginTop15 borderRadius20 position-relative flex flex-wrap justify-content-center dir-rtl" style="gap:10px;">
 						<div class="width60Percents alignCenter">	
 							<div class="fontSize12 height90 report-container">
 								<div class="badge-top-right"><img src="images/filter-solid.svg" width="16" height="12" />סינון לפי...</div>						
@@ -5367,7 +5367,7 @@ td[id^="td_area_"] > div {
 @media (max-width: 600px) {
     #meetings_table th.col-w-subject, #meetings_table td.col-w-subject { width: 15ch; }
     #meetings_table th.col-w-area, #meetings_table td.col-w-area { width: 15ch; }
-    #meetings_table th.col-w-desc, #meetings_table td.col-w-desc { width: auto; }
+    #meetings_table th.col-w-desc, #meetings_table td.col-w-desc { width: 22ch; }
 }
 
 @media (max-width: 700px) {
@@ -5495,6 +5495,16 @@ span.sf-hl {
     .top-minus-12 {
         top: 0;
     }
+}
+
+@media (max-width: 700px) {
+    .meetings-toolbar { row-gap: 18px !important; }
+    .meetings-toolbar > .width60Percents,
+    .meetings-toolbar > .width40Percents { width: 100%; }
+    .meetings-toolbar .report-container.height90 { height: auto; min-height: 90px; padding-bottom: 16px; }
+    .meetings-toolbar > .width40Percents .width30Percents,
+    .meetings-toolbar > .width40Percents .width70Percents { width: auto; }
+    .meetings-toolbar > .width40Percents .width30Percents { margin-left: 32px; }
 }
 
 @media (orientation: landscape) and (max-height: 500px) {
