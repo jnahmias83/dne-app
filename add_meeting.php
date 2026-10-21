@@ -1136,7 +1136,9 @@ function deleteTaskImage(image){
 }
 
 function makeOperations(from,id_record){
-	if(from == 'responsible' && $('#id').val() == 0) {
+	// Aide automatique du type de tache selon le responsable : seulement si aucun type n'a encore ete choisi
+	// (sinon le choix de l'utilisateur, ex. בקרת איכות, etait ecrase par ביצוע)
+	if(from == 'responsible' && $('#id').val() == 0 && !($('#task').val() > 0)) {
 		let form_data = new FormData();	
 		form_data.append('id_project',$('#project_id').val());
 		form_data.append('id_responsible',id_record);

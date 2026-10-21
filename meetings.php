@@ -4083,7 +4083,27 @@ $(document).ready(function(){
 
 					setlocalStorage(meetingId, $('#hidden_iteration').val());
 
-					if(data.progress_status_name_he == 'ארכיון'){
+					if(data.progress_status_name_he == 'ארכיון' && all_ids_to_edit != ''){
+						// Archivage EN MASSE : une fois l'enregistrement termine, la page se recharge toute seule
+						// et la tache suivante (non cochee) reste surlignee
+						let mass_ids = all_ids_to_edit.split(',');
+						let mass_list = $('#meetings_table [id^="task_actions_"]').map(function(){ return String($(this).data('meetingid')); }).get();
+						let mass_start = mass_list.indexOf(String(meeting_id));
+						let mass_next_id = '';
+						for(let k = 1; k <= mass_list.length; k++){
+							let candidate = mass_list[(mass_start + k) % mass_list.length];
+							if(candidate !== String(meeting_id) && mass_ids.indexOf(candidate) === -1){ mass_next_id = candidate; break; }
+						}
+						if(mass_next_id !== ''){
+							localStorage.setItem('meeting_id', mass_next_id);
+							localStorage.removeItem('iteration');
+							localStorage.setItem('highlight_after_reload','true');
+						}
+						localStorage.removeItem('next_meeting_id');
+						localStorage.removeItem('skip_followup_popup');
+						$(document).one('ajaxStop', function(){ location.reload(); });
+					}
+					else if(data.progress_status_name_he == 'ארכיון'){
 						let dropdown_meeting_ids_array = $('#meetings_table [id^="task_actions_"]').map(function(){ return String($(this).data('meetingid')); }).get();
 						let dropdown_index = dropdown_meeting_ids_array.indexOf(String(meeting_id));
 						if(dropdown_index !== -1){
@@ -4113,8 +4133,15 @@ $(document).ready(function(){
 				    }				
 					
 					setlocalStorage(meeting_id,iteration);
-				}	
-				
+				}
+
+				// Changement de statut EN MASSE (autre que ארכיון, deja gere plus haut) : seule la ligne choisie
+				// etait rafraichie ; on recharge la page une fois l'enregistrement termine pour voir toutes les lignes cochees
+				if(all_ids_to_edit != '' && data.progress_status_name_he != 'ארכיון'){
+					localStorage.setItem('highlight_after_reload','true');
+					$(document).one('ajaxStop', function(){ location.reload(); });
+				}
+
 				localStorage.removeItem('is_modal_task_actions_opened')
 			},
 	    });
