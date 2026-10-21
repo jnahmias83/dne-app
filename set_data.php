@@ -43,18 +43,25 @@ if(!empty($_POST['id_custom_report']) && (int)$_POST['id_custom_report'] > 0) {
 	}
 }
 
-// Statut 0 / vide = "ללא" du projet de la tache (meme regle que la creation dans meeting_insert.php)
+// Statut 0 / vide ("--סטטוס--") : la tache GARDE son statut actuel (une tache archivee reste archivee) ;
+// "ללא" du projet seulement si elle n'a aucun statut (meme regle que la creation dans meeting_insert.php)
+$keep_current_status = false;
 if(($_POST['field'] == 'id_progress_status' || $_POST['field'] == 'update_task')
    && (!is_numeric(@$_POST['id_progress_status']) || (int)$_POST['id_progress_status'] == 0)){
-	$q_blank = $mysqli->prepare("SELECT MIN(ps.id) AS id FROM dne_meetings m
-	                             JOIN dne_progress_status ps ON ps.id_project = m.id_project AND ps.name = ' '
-	                             WHERE m.id = ?");
-	$q_blank->bind_param('i', $_POST['meeting_id']);
-	$q_blank->execute();
-	$q_blank->store_result();
-	$blank_row = fetch_unique($q_blank);
-	if((int)@$blank_row->id > 0)
-		$_POST['id_progress_status'] = $blank_row->id;
+	$q_cur = $mysqli->prepare("SELECT m.id_progress_status AS cur,
+	                           (SELECT MIN(ps.id) FROM dne_progress_status ps
+	                            WHERE ps.id_project = m.id_project AND ps.name = ' ') AS blank
+	                           FROM dne_meetings m WHERE m.id = ?");
+	$q_cur->bind_param('i', $_POST['meeting_id']);
+	$q_cur->execute();
+	$q_cur->store_result();
+	$cur_row = fetch_unique($q_cur);
+	if((int)@$cur_row->cur > 0){
+		$_POST['id_progress_status'] = $cur_row->cur;
+		$keep_current_status = true;
+	}
+	else if((int)@$cur_row->blank > 0)
+		$_POST['id_progress_status'] = $cur_row->blank;
 }
 
 if($_POST['field'] == "subject"){
@@ -398,10 +405,10 @@ else if($_POST['field'] == "id_progress_status" || $_POST['field'] == "update_ta
 			    if(@$destination_date != @$_POST['new_destination_date'] 
 				   && $_POST['new_destination_date'] != '0000-00-00')
 				  $destination_date = @$_POST['new_destination_date']; 
-				if(@$id_progress_status != @$_POST['id_progress_status'])
-				   $id_progress_status = @$_POST['id_progress_status'];		
+				if(!$keep_current_status && @$id_progress_status != @$_POST['id_progress_status'])
+				   $id_progress_status = @$_POST['id_progress_status'];
 			}
-			
+
 			$query = "UPDATE dne_meetings SET destination_date = ?,
 			          id_progress_status = ? WHERE id = ?";
 			$query = $mysqli->prepare($query);
@@ -507,6 +514,8 @@ $task_creation_date = @$_POST['task_creation_date'];
 
 if($_POST['all_ids_to_edit'] != ''){
 	for($i=0;$i<sizeof($all_ids_to_edit_array);$i++){
+		// Visibilite recalculee pour CHAQUE tache (sinon une tache archivee de la selection cachait toutes les suivantes)
+		$is_appears = 1;
 		if($_POST['field'] == 'id_task'){
 			$query = "SELECT * FROM dne_tasks WHERE id = ?";
 			$query = $mysqli->prepare($query);
@@ -529,10 +538,10 @@ if($_POST['all_ids_to_edit'] != ''){
 			$task_name = $query->name_he;
 		}
 
-		if($_POST['field'] == 'id_progress_status'){
+		if($_POST['field'] == 'id_progress_status' && !$keep_current_status){
 			$query = "SELECT * FROM dne_progress_status WHERE id = ?";
 			$query = $mysqli->prepare($query);
-			$query->bind_param('i',$_POST['id_progress_status']);   
+			$query->bind_param('i',$_POST['id_progress_status']);
 			$query->execute();
 			$query->store_result();
 			$query = fetch_unique($query);
@@ -541,11 +550,11 @@ if($_POST['all_ids_to_edit'] != ''){
 		else {
 			$query = "SELECT ps.name_he AS name_he
 					  FROM dne_meetings m
-					  LEFT JOIN dne_progress_status ps 
+					  LEFT JOIN dne_progress_status ps
 					  ON m.id_progress_status = ps.id
 					  WHERE m.id = ?";
 			$query = $mysqli->prepare($query);
-			$query->bind_param('i',$all_ids_to_edit_array[$i]);   
+			$query->bind_param('i',$all_ids_to_edit_array[$i]);
 			$query->execute();
 			$query->store_result();
 			$query = fetch_unique($query);

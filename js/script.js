@@ -150,6 +150,87 @@ function continuousTask(meeting_id,progress_status,iteration,from){
 	});
 }
 
+// Ouvre la tache suivante (localStorage next_meeting_id) apres une mise a jour, SANS rien enregistrer.
+// Extrait tel quel de setData() (bloc field == 'update_task') pour pouvoir etre appele seul
+// (ex. archivage depuis la liste de statut du tableau de meetings.php).
+function openNextTaskAfterUpdate(iteration){
+				if(!localStorage.getItem('next_meeting_id')){
+					location.reload();
+					return;
+				}
+
+				let form_data1 = new FormData();
+				form_data1.append('id_meeting', localStorage.getItem('next_meeting_id'));
+
+				$.ajax({
+					type: 'POST',
+					url: 'get_meeting_item.php',
+					data: form_data1,
+					cache: false,
+					processData: false,
+					contentType: false,
+					success: function(data1){
+						let data_array = data1.split('-');
+						$('#hidden_is_priority').val(data_array[0]);
+						$('#hidden_track_type').val(data_array[1]);
+						setEmergencyTaskCSS(data_array[0]);
+						setBellBcgColor(parseInt(data_array[1]) || 0);
+
+						let form_data2 = new FormData();
+						form_data2.append('id_meeting', localStorage.getItem('next_meeting_id'));
+						form_data2.append('all_ids_to_edit', '');
+
+						$.ajax({
+							type: 'POST',
+							url: 'task_details.php',
+							data: form_data2,
+							cache: false,
+							processData: false,
+							contentType: false,
+							success: function(data2){
+								let task_details = data2.split('|~|');
+								$('#hidden_meeting_id').val(localStorage.getItem('next_meeting_id'));
+								if(task_details[0]) $('#hidden_project_id').val(task_details[0]);
+								let content = fillContentTaskDetails(localStorage.getItem('next_meeting_id'), '', task_details, true);
+								$('#div_content_task_details').html(content);
+
+								// chaque ligne a elle-meme un id (tr id="row_X"), donc closest('[id]') s'arretait
+								// sur la ligne elle-meme au lieu de remonter au tableau : on cherche directement
+								// dans tout le document (fonctionne pareil sur meetings.php et projects.php, qui
+								// n'ont pas le meme conteneur de tableau)
+								let $oldHighlight = $('tr.task-row-highlight');
+								let $highlightScope = $(document);
+								let $newHighlightRow = $highlightScope.find('tr.meeting_' + localStorage.getItem('next_meeting_id'));
+								if(!$newHighlightRow.length){
+									$newHighlightRow = $highlightScope.find('.task_name[data-meetingid="' + localStorage.getItem('next_meeting_id') + '"]').closest('tr');
+								}
+								$('tr.task-row-highlight').removeClass('task-row-highlight');
+								if($newHighlightRow.length){
+									$newHighlightRow.addClass('task-row-highlight');
+									$newHighlightRow[0].scrollIntoView({block:'center'});
+								}
+
+								$('#modalUpdateTask').modal('hide');
+								if(localStorage.getItem('is_to_do_today') == '1'){
+									localStorage.removeItem('is_to_do_today');
+									localStorage.setItem('highlight_after_reload','true');
+									location.href = 'projects.php';
+									return;
+								}
+								if(localStorage.getItem('skip_followup_popup') == '1'){
+									localStorage.removeItem('skip_followup_popup');
+								} else {
+									$('#modalTaskFollowupActions').modal('show');
+									setProjectModalTitle($('#hidden_project_id').val(), '#modalTaskFollowupActions', false);
+								}
+								setlocalStorage(localStorage.getItem('next_meeting_id'), iteration);
+							},
+							error: function(xhr, status, error) {}
+						});
+					},
+				});
+			}
+
 function setData(meeting_id,iteration,field,isRemark,forShare,screen_type){
 	let task_created_by_elem = '#task_created_by_'+meeting_id;
 	let subject_elem = '#subject_'+meeting_id;
@@ -296,77 +377,7 @@ function setData(meeting_id,iteration,field,isRemark,forShare,screen_type){
 					location.reload();
 					return;
 				}
-
-				let form_data1 = new FormData();
-				form_data1.append('id_meeting', localStorage.getItem('next_meeting_id'));
-
-				$.ajax({
-					type: 'POST',
-					url: 'get_meeting_item.php',
-					data: form_data1,
-					cache: false,
-					processData: false,
-					contentType: false,
-					success: function(data1){
-						let data_array = data1.split('-');
-						$('#hidden_is_priority').val(data_array[0]);
-						$('#hidden_track_type').val(data_array[1]);
-						setEmergencyTaskCSS(data_array[0]);
-						setBellBcgColor(parseInt(data_array[1]) || 0);
-
-						let form_data2 = new FormData();
-						form_data2.append('id_meeting', localStorage.getItem('next_meeting_id'));
-						form_data2.append('all_ids_to_edit', '');
-
-						$.ajax({
-							type: 'POST',
-							url: 'task_details.php',
-							data: form_data2,
-							cache: false,
-							processData: false,
-							contentType: false,
-							success: function(data2){
-								let task_details = data2.split('|~|');
-								$('#hidden_meeting_id').val(localStorage.getItem('next_meeting_id'));
-								if(task_details[0]) $('#hidden_project_id').val(task_details[0]);
-								let content = fillContentTaskDetails(localStorage.getItem('next_meeting_id'), '', task_details, true);
-								$('#div_content_task_details').html(content);
-
-								// chaque ligne a elle-meme un id (tr id="row_X"), donc closest('[id]') s'arretait
-								// sur la ligne elle-meme au lieu de remonter au tableau : on cherche directement
-								// dans tout le document (fonctionne pareil sur meetings.php et projects.php, qui
-								// n'ont pas le meme conteneur de tableau)
-								let $oldHighlight = $('tr.task-row-highlight');
-								let $highlightScope = $(document);
-								let $newHighlightRow = $highlightScope.find('tr.meeting_' + localStorage.getItem('next_meeting_id'));
-								if(!$newHighlightRow.length){
-									$newHighlightRow = $highlightScope.find('.task_name[data-meetingid="' + localStorage.getItem('next_meeting_id') + '"]').closest('tr');
-								}
-								$('tr.task-row-highlight').removeClass('task-row-highlight');
-								if($newHighlightRow.length){
-									$newHighlightRow.addClass('task-row-highlight');
-									$newHighlightRow[0].scrollIntoView({block:'center'});
-								}
-
-								$('#modalUpdateTask').modal('hide');
-								if(localStorage.getItem('is_to_do_today') == '1'){
-									localStorage.removeItem('is_to_do_today');
-									localStorage.setItem('highlight_after_reload','true');
-									location.href = 'projects.php';
-									return;
-								}
-								if(localStorage.getItem('skip_followup_popup') == '1'){
-									localStorage.removeItem('skip_followup_popup');
-								} else {
-									$('#modalTaskFollowupActions').modal('show');
-									setProjectModalTitle($('#hidden_project_id').val(), '#modalTaskFollowupActions', false);
-								}
-								setlocalStorage(localStorage.getItem('next_meeting_id'), iteration);
-							},
-							error: function(xhr, status, error) {}
-						});
-					},
-				});
+				openNextTaskAfterUpdate(iteration);
 			}
 			
 	        if(screen_type == 'add_meeting'){

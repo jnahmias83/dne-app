@@ -4093,7 +4093,9 @@ $(document).ready(function(){
 							localStorage.setItem('next_meeting_id', dropdown_next_meeting_id);
 							localStorage.setItem('meeting_id', dropdown_next_meeting_id);
 							localStorage.setItem('skip_followup_popup','1');
-							setData(meeting_id, '', 'update_task', 1, 0, 'for_closing');
+							// Passe a la tache suivante SANS reenregistrer la tache archivee
+							// (l'ancien setData('update_task') reecrivait statut/date/remarque avec le popup עדכון ferme et annulait l'archive)
+							openNextTaskAfterUpdate('');
 						}
 						row.next('.tr-image-row').remove();
 						row.remove();
