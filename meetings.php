@@ -5215,6 +5215,11 @@ $('#to_add_meeting_btn').click (function (e){
     padding-left: 22px;
 }
 
+/* Colonne סטטוס : fleche visible seulement quand la liste est cliquee (focus) */
+[id^="td_progress_status_"] select:not(:focus) {
+    background-image: none;
+}
+
 .status-blank-when-empty {
     color: transparent;
 }
