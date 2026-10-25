@@ -55,7 +55,7 @@ if($paid_amount_number != 0 && $vat_number != -100)
 if(empty($_POST['paid_amount']))
   { $payment_answered = true; echo 'empty'; }
 else {
-	if($_POST['id'] == 0) {
+	if((int)@$_POST['id'] == 0) {
 		if(isset($_FILES['pdf_payment']['name'])) {
 			$pdf_payment_name = 'pdf_payment_'.$project->name.'_'.str_replace(' ','_',$_FILES['pdf_payment']['name']);
 			move_uploaded_file($_FILES['pdf_payment']['tmp_name'],'uploads/'.$pdf_payment_name);
@@ -86,7 +86,7 @@ else {
 
 		$payment_answered = true; echo "inserted";
 	}
-	else if($_POST['id'] > 0) {
+	else if((int)@$_POST['id'] > 0) {
 		$query = "UPDATE dne_payments2 SET id_projects_suppliers = ?,description = ?,payment_date = ?,paid_amount = ?,
 				  paid_amount_vat_excluded = ?,invoice_date = ?,vat = ?,updated_date = ? WHERE id = ?";
 		$query = $mysqli->prepare($query);

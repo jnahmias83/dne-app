@@ -23,7 +23,7 @@ $field_of_work = fetch_unique($query);
 $ceb_name = substr(date('Y-m-d'),0,4).substr(date('Y-m-d'),5,2).substr(date('Y-m-d'),8,2).' - ' .@$field_of_work->name.' - Eval - '.@$project->nickname;
 $pdf_evaluation_name = '';
 
-if($_POST['id'] == 0) {
+if((int)@$_POST['id'] == 0) {
     $pdf_evaluation_name = '';
 	if(isset($_FILES['pdf_evaluation']['name'])) {
 		$pdf_evaluation_name = 'pdf_evaluation_'.$project->name.'_'.str_replace(' ','_',$_FILES['pdf_evaluation']['name']);
@@ -39,7 +39,7 @@ if($_POST['id'] == 0) {
 		echo $query->insert_id;
 	else echo "inserted";
 }
-else if($_POST['id'] > 0) {
+else if((int)@$_POST['id'] > 0) {
 	$query = "UPDATE dne_budget_costs_eval SET name = ?,id_field_of_work = ?,description = ?,evaluation_cost = ?,evaluation_date = ? WHERE id = ?";
 	$query = $mysqli->prepare($query);
 	$query->bind_param('sisdsi',$ceb_name,$_POST['id_field_of_work'],$_POST['description'],$_POST['evaluation_cost'],$_POST['evaluation_date'],$_POST['id']);	

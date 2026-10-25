@@ -20,7 +20,7 @@ $project = fetch_unique($query);
 $pdf_submission_name = '';
 $pdf_approval_name = '';
 
-if($_POST['id'] == 0) {
+if((int)@$_POST['id'] == 0) {
 	if(isset($_FILES['pdf_submission']['name'])) {
 		$pdf_submission_name = 'pdf_submission_'.$project->name.'_'.str_replace(' ','_',$_FILES['pdf_submission']['name']);
 		move_uploaded_file($_FILES['pdf_submission']['tmp_name'],'uploads/'.$pdf_submission_name);
@@ -62,7 +62,7 @@ if($_POST['id'] == 0) {
 	
 	echo "inserted";
 }
-else if($_POST['id'] > 0) {
+else if((int)@$_POST['id'] > 0) {
 	$query = "UPDATE dne_accounts SET id_projects_suppliers = ?,description = ?,submit_date = ?,submitted_account = ?,
 			  approval_date = ?,approved_amount = ?,vat = ?,updated_date = ? WHERE id = ?";
 	$query = $mysqli->prepare($query);

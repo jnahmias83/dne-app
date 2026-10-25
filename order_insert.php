@@ -23,7 +23,7 @@ if(empty($_POST['sum_order']) || empty($_POST['vat']) || empty($_POST['signature
 	echo "empty";
 }
 else {
-	if($_POST['id'] == 0){
+	if((int)@$_POST['id'] == 0){
 		if(isset($_FILES['pdf_order']) && $_FILES['pdf_order']['error'] === UPLOAD_ERR_OK) {
 			$original_name = basename($_FILES['pdf_order']['name']);
 			$extension = strtolower(pathinfo($original_name, PATHINFO_EXTENSION));
@@ -50,7 +50,7 @@ else {
 		$query->execute();
 		echo "inserted";
 	}
-	else if($_POST['id'] > 0){
+	else if((int)@$_POST['id'] > 0){
 		$query = "UPDATE dne_orders SET id_projects_suppliers = ?,sum_order = ?,vat = ?,
 		          signature_date = ?,description = ?,updated_date = ? WHERE id = ?";
 		$query = $mysqli->prepare($query);
