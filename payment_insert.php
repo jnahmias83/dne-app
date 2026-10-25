@@ -8,6 +8,16 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && empty($_POST) && empty($_FILES) && (
 	exit;
 }
 
+// Echec d'une requete : on l'ecrit dans le journal du serveur et on le renvoie a l'ecran
+// (avant, l'echec etait silencieux : "inserted" etait renvoye meme si rien n'etait enregistre)
+function paymentDbError($query){
+	error_log('payment_insert.php : '.$query->error);
+	echo 'error: '.$query->error;
+	exit;
+}
+
+try {
+
 $query = $mysqli->prepare("SELECT p.name AS name
                           FROM dne_projects_suppliers ps
 						  LEFT JOIN dne_projects p ON ps.id_project = p.id
@@ -19,12 +29,13 @@ $project = fetch_unique($query);
 
 $pdf_payment_name = '';
 $pdf_invoice_name = '';
+$today = date('Y-m-d');
 
 $paid_amount_vat_excluded = 0;
 if($_POST['paid_amount'] != 0)
    $paid_amount_vat_excluded = $_POST['paid_amount']/(1+($_POST['vat']/100));
 
-if(empty($_POST['paid_amount'])) 
+if(empty($_POST['paid_amount']))
   echo 'empty';
 else {
 	if($_POST['id'] == 0) {
@@ -32,30 +43,30 @@ else {
 			$pdf_payment_name = 'pdf_payment_'.$project->name.'_'.str_replace(' ','_',$_FILES['pdf_payment']['name']);
 			move_uploaded_file($_FILES['pdf_payment']['tmp_name'],'uploads/'.$pdf_payment_name);
 		}
-		
+
 		if(isset($_FILES['pdf_invoice']['name'])) {
 			$pdf_invoice_name = 'pdf_invoice_'.$project->name.'_'.str_replace(' ','_',$_FILES['pdf_invoice']['name']);
 			move_uploaded_file($_FILES['pdf_invoice']['tmp_name'],'uploads/'.$pdf_invoice_name);
 		}
-	
+
 		$query = "INSERT INTO dne_payments2 (id_projects_suppliers,description,pdf_payment,payment_date,paid_amount,
-				  paid_amount_vat_excluded,pdf_invoice,invoice_date,vat,created_date) 
+				  paid_amount_vat_excluded,pdf_invoice,invoice_date,vat,created_date)
 				  VALUES(?,?,?,?,?,?,?,?,?,?)";
 		$query = $mysqli->prepare($query);
 		$query->bind_param('isssddssds',$_POST['id_projects_suppliers'],$_POST['description'],$pdf_payment_name,$_POST['payment_date'],
-						   $_POST['paid_amount'],$paid_amount_vat_excluded,$pdf_invoice_name,$_POST['invoice_date'],$_POST['vat'],date('Y-m-d'));   
-		$query->execute();
-		
+						   $_POST['paid_amount'],$paid_amount_vat_excluded,$pdf_invoice_name,$_POST['invoice_date'],$_POST['vat'],$today);
+		if(!$query->execute()) paymentDbError($query);
+
 		$id_payment = $query->insert_id;
-		
+
 		$account_payment_type = 'payment';
-		
-		$query = "INSERT INTO dne_accounts_payments (id_payment,id_projects_suppliers,account_payment_date,account_payment_type) 
+
+		$query = "INSERT INTO dne_accounts_payments (id_payment,id_projects_suppliers,account_payment_date,account_payment_type)
 		          VALUES(?,?,?,?)";
 		$query = $mysqli->prepare($query);
-		$query->bind_param('iiss',$id_payment,$_POST['id_projects_suppliers'],$_POST['payment_date'],$account_payment_type);   
-		$query->execute();
-		
+		$query->bind_param('iiss',$id_payment,$_POST['id_projects_suppliers'],$_POST['payment_date'],$account_payment_type);
+		if(!$query->execute()) paymentDbError($query);
+
 		echo "inserted";
 	}
 	else if($_POST['id'] > 0) {
@@ -63,34 +74,39 @@ else {
 				  paid_amount_vat_excluded = ?,invoice_date = ?,vat = ?,updated_date = ? WHERE id = ?";
 		$query = $mysqli->prepare($query);
 		$query->bind_param('issddsdsi',$_POST['id_projects_suppliers'],$_POST['description'],$_POST['payment_date'],$_POST['paid_amount'],
-						  $paid_amount_vat_excluded,$_POST['invoice_date'],$_POST['vat'],date("Y-m-d"),$_POST['id']);	
-		$query->execute();
-		
+						  $paid_amount_vat_excluded,$_POST['invoice_date'],$_POST['vat'],$today,$_POST['id']);
+		if(!$query->execute()) paymentDbError($query);
+
 		$query = "UPDATE dne_accounts_payments SET id_projects_suppliers = ?,account_payment_date = ? WHERE id_payment = ?";
 		$query = $mysqli->prepare($query);
-		$query->bind_param('isi',$_POST['id_projects_suppliers'],$_POST['payment_date'],$_POST['id']);	
-		$query->execute();
-		
+		$query->bind_param('isi',$_POST['id_projects_suppliers'],$_POST['payment_date'],$_POST['id']);
+		if(!$query->execute()) paymentDbError($query);
+
 		if(isset($_FILES['pdf_payment']['name'])) {
 			$pdf_payment_name = 'pdf_payment_'.$project->name.'_'.str_replace(' ','_',$_FILES['pdf_payment']['name']);
 			move_uploaded_file($_FILES['pdf_payment']['tmp_name'],'uploads/'.$pdf_payment_name);
-			
+
 			$query = "UPDATE dne_payments2 SET pdf_payment = ? WHERE id = ?";
 			$query = $mysqli->prepare($query);
-			$query->bind_param('si',$pdf_payment_name,$_POST['id']);	
+			$query->bind_param('si',$pdf_payment_name,$_POST['id']);
 			$query->execute();
 		}
-	
+
 		if(isset($_FILES['pdf_invoice']['name'])) {
 			$pdf_invoice_name = 'pdf_invoice_'.$project->name.'_'.str_replace(' ','_',$_FILES['pdf_invoice']['name']);
 			move_uploaded_file($_FILES['pdf_invoice']['tmp_name'],'uploads/'.$pdf_invoice_name);
-			
+
 			$query = "UPDATE dne_payments2 SET pdf_invoice = ? WHERE id = ?";
 			$query = $mysqli->prepare($query);
-			$query->bind_param('si',$pdf_invoice_name,$_POST['id']);	
+			$query->bind_param('si',$pdf_invoice_name,$_POST['id']);
 			$query->execute();
 		}
 		echo 'updated';
 	}
+}
+
+} catch (Throwable $e) {
+	error_log('payment_insert.php : '.$e->getMessage().' (ligne '.$e->getLine().')');
+	echo 'error: '.$e->getMessage().' (ligne '.$e->getLine().')';
 }
 ?>

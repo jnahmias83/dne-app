@@ -330,6 +330,11 @@ $('#save_btn').click(function(e) {
 					else
 						$('#paid_amount').css('border-color','initial');
 					$('#div_message_alert_down').html("<span style='color:red;font-size:13px;'>Please fill all the mandatory fields</span>");
+				} else if(data == 'too_large') {
+					$('#div_message_alert_down').html("<span style='color:red;font-size:13px;'>PDF file too large.</span>");
+				} else if(data.indexOf('inserted') === -1 && data.indexOf('updated') === -1) {
+					// Echec reel de l'enregistrement : on reste sur la page et on affiche l'erreur
+					$('#div_message_alert_down').html($('<span style="color:red;font-size:13px;"></span>').text('Save failed: ' + data));
 				} else {
 					let url;
 					if($('#from').val() == 'budget')
