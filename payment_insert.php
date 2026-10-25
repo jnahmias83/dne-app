@@ -10,11 +10,24 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && empty($_POST) && empty($_FILES) && (
 
 // Echec d'une requete : on l'ecrit dans le journal du serveur et on le renvoie a l'ecran
 // (avant, l'echec etait silencieux : "inserted" etait renvoye meme si rien n'etait enregistre)
+$payment_answered = false;
 function paymentDbError($query){
+	global $payment_answered;
+	$payment_answered = true;
 	error_log('payment_insert.php : '.$query->error);
 	echo 'error: '.$query->error;
 	exit;
 }
+
+// Arret brutal du script (erreur fatale non capturable) : on renvoie quand meme la cause a l'ecran
+register_shutdown_function(function(){
+	global $payment_answered;
+	if($payment_answered) return;
+	$e = error_get_last();
+	$msg = $e ? $e['message'].' (ligne '.$e['line'].')' : 'arret du script sans reponse';
+	error_log('payment_insert.php fatal : '.$msg);
+	echo 'error: '.$msg;
+});
 
 try {
 
@@ -40,7 +53,7 @@ if($paid_amount_number != 0 && $vat_number != -100)
    $paid_amount_vat_excluded = $paid_amount_number/(1+($vat_number/100));
 
 if(empty($_POST['paid_amount']))
-  echo 'empty';
+  { $payment_answered = true; echo 'empty'; }
 else {
 	if($_POST['id'] == 0) {
 		if(isset($_FILES['pdf_payment']['name'])) {
@@ -71,7 +84,7 @@ else {
 		$query->bind_param('iiss',$id_payment,$_POST['id_projects_suppliers'],$_POST['payment_date'],$account_payment_type);
 		if(!$query->execute()) paymentDbError($query);
 
-		echo "inserted";
+		$payment_answered = true; echo "inserted";
 	}
 	else if($_POST['id'] > 0) {
 		$query = "UPDATE dne_payments2 SET id_projects_suppliers = ?,description = ?,payment_date = ?,paid_amount = ?,
@@ -105,12 +118,12 @@ else {
 			$query->bind_param('si',$pdf_invoice_name,$_POST['id']);
 			$query->execute();
 		}
-		echo 'updated';
+		$payment_answered = true; echo 'updated';
 	}
 }
 
 } catch (Throwable $e) {
 	error_log('payment_insert.php : '.$e->getMessage().' (ligne '.$e->getLine().')');
-	echo 'error: '.$e->getMessage().' (ligne '.$e->getLine().')';
+	$payment_answered = true; echo 'error: '.$e->getMessage().' (ligne '.$e->getLine().')';
 }
 ?>
