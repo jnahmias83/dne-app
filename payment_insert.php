@@ -31,9 +31,13 @@ $pdf_payment_name = '';
 $pdf_invoice_name = '';
 $today = date('Y-m-d');
 
+// (float) : meme resultat qu'en PHP 7.4 (texte non numerique = 0) ; sous PHP 8 (serveur),
+// diviser un texte non numerique faisait planter le script et le paiement n'etait pas enregistre
 $paid_amount_vat_excluded = 0;
-if($_POST['paid_amount'] != 0)
-   $paid_amount_vat_excluded = $_POST['paid_amount']/(1+($_POST['vat']/100));
+$paid_amount_number = (float)@$_POST['paid_amount'];
+$vat_number = (float)@$_POST['vat'];
+if($paid_amount_number != 0 && $vat_number != -100)
+   $paid_amount_vat_excluded = $paid_amount_number/(1+($vat_number/100));
 
 if(empty($_POST['paid_amount']))
   echo 'empty';
