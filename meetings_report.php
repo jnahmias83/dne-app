@@ -1067,6 +1067,7 @@ foreach($chapters as $item){
 			$subject_bgcolor = 'background-color:white';
 			$area_bgcolor = 'background-color:white';	
 			$description_bgcolor = 'background-color:white';
+			$pass_on_bgcolor = ''; // remis a zero a chaque ligne (sinon le gris d'une tache בוצע passait aux lignes suivantes)
 			
 			$query = $mysqli->prepare("SELECT * FROM dne_tasks WHERE id = ?");
 			$query->bind_param("i",$task_id);
@@ -1635,6 +1636,7 @@ foreach($chapters as $item) {
 			$subject_bgcolor = 'background-color:white';
 		    $area_bgcolor = 'background-color:white';
 			$description_bgcolor = 'background-color:white';
+			$pass_on_bgcolor = ''; // remis a zero a chaque ligne (sinon le gris d'une tache בוצע passait aux lignes suivantes)
 			
 			$query = $mysqli->prepare("SELECT * FROM dne_tasks 
 			                          WHERE id = ?");
