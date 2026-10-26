@@ -5215,7 +5215,10 @@ $('#to_add_meeting_btn').click (function (e){
     padding-left: 22px;
 }
 
-/* Colonne סטטוס : fleche visible seulement quand la liste est cliquee (focus) */
+/* Colonnes משימה / אחראי / למסור ל / סטטוס : fleche visible seulement quand la liste est cliquee (focus) */
+[id^="td_task_"] select:not(:focus),
+[id^="td_responsible_"] select:not(:focus),
+[id^="td_pass_on_"] select:not(:focus),
 [id^="td_progress_status_"] select:not(:focus) {
     background-image: none;
 }
