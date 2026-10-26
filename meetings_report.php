@@ -1556,7 +1556,7 @@ foreach($chapters as $item) {
 									  WHERE id_meeting = ? 
 						              AND is_remark_appears_log = ?
 									  AND remark <> ?
-									  ORDER BY id DESC");
+									  ORDER BY id ASC");
 			$query->bind_param("iis",$meeting_id,$one,$empty_remark);
 			$query->execute();
 			$query->store_result();	

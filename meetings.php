@@ -1655,7 +1655,7 @@ include 'menu_tasks.php';
 											                          WHERE lmu.id_meeting = ? 
 																	  AND lmu.is_remark_appears_log = ?
 																	  AND lmu.remark <> ?
-																	  ORDER BY lmu.id DESC");
+																	  ORDER BY lmu.id ASC");
 											$query->bind_param("iis",$meeting_id,$one,$empty_remark);
 											$query->execute();
 											$query->store_result();
@@ -1707,7 +1707,7 @@ include 'menu_tasks.php';
 											                           WHERE lmt.id_meeting = ? 
 																	   AND lmt.is_remark_appears_log = ?
 																	   AND lmt.remark <> ?
-																	   ORDER BY lmt.id DESC");
+																	   ORDER BY lmt.id ASC");
 											$query->bind_param("iis",$meeting_id,$one,$empty_remark);
 											$query->execute();
 											$query->store_result();	
@@ -2281,7 +2281,7 @@ include 'menu_tasks.php';
 											                               WHERE lmu.id_meeting = ? 
 																	       AND lmu.is_remark_appears_log = ?
 																	       AND lmu.remark <> ?
-																	       ORDER BY lmu.id DESC");
+																	       ORDER BY lmu.id ASC");
 											    $query->bind_param("iis",$meeting_id,$one,$empty_remark);
 											    $query->execute();
 											    $query->store_result();	
@@ -2319,7 +2319,7 @@ include 'menu_tasks.php';
 											                               WHERE lmt.id_meeting = ? 
 																	       AND lmt.is_remark_appears_log = ?
 																	       AND lmt.remark <> ?
-																	       ORDER BY lmt.id DESC");
+																	       ORDER BY lmt.id ASC");
 												$query->bind_param("iis",$meeting_id,$one,$empty_remark);
 												$query->execute();
 												$query->store_result();	

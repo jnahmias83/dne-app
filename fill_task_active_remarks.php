@@ -43,7 +43,7 @@ else {
                                 WHERE lmu.id_meeting = ?							
 							    AND lmu.is_remark_appears_log = ?
                                 AND lmu.remark <> ?								
-							    ORDER BY lmu.id DESC";	
+							    ORDER BY lmu.id ASC";	
 	$query = $mysqli->prepare($sql_log_meeting_updates);
 	$query->bind_param("iis",$_POST['id_meeting'],$one,$empty_remark);
 	$query->execute();

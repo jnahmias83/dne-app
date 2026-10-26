@@ -569,7 +569,7 @@ foreach($all_what_news as $wn){
 													</div>
 													<?php if($track_type == 1){
 														$one_ut = 1; $empty_ut = '';
-														$q_ut = $mysqli->prepare("SELECT lmt.action_date,lmt.remark,u.nickname AS user_nickname FROM dne_log_meeting_tracking lmt LEFT JOIN dne_users u ON lmt.id_user = u.id WHERE lmt.id_meeting = ? AND lmt.remark <> ? AND lmt.is_remark_appears_log = ? ORDER BY lmt.id DESC");
+														$q_ut = $mysqli->prepare("SELECT lmt.action_date,lmt.remark,u.nickname AS user_nickname FROM dne_log_meeting_tracking lmt LEFT JOIN dne_users u ON lmt.id_user = u.id WHERE lmt.id_meeting = ? AND lmt.remark <> ? AND lmt.is_remark_appears_log = ? ORDER BY lmt.id ASC");
 														$q_ut->bind_param('isi',$ut->id,$empty_ut,$one_ut);
 														$tr_ut = fetch($q_ut);
 														if($q_ut->num_rows > 0){ ?>
@@ -652,7 +652,7 @@ foreach($all_what_news as $wn){
 														   WHERE lmt.id_meeting = ?
 														   AND lmt.remark <> ?
 														   AND lmt.is_remark_appears_log = ?
-														   ORDER BY lmt.id DESC");
+														   ORDER BY lmt.id ASC");
 								$query->bind_param('isi',$at->id,$empty_remark,$one);	
 								$query->execute(); 
 								$query->store_result();
@@ -844,7 +844,7 @@ foreach($all_what_news as $wn){
 								
 								if($track_type == 1){
 									$one_wn = 1; $empty_wn = '';
-									$q_wn = $mysqli->prepare("SELECT lmt.action_date,lmt.remark,u.nickname AS user_nickname FROM dne_log_meeting_tracking lmt LEFT JOIN dne_users u ON lmt.id_user = u.id WHERE lmt.id_meeting = ? AND lmt.remark <> ? AND lmt.is_remark_appears_log = ? ORDER BY lmt.id DESC");
+									$q_wn = $mysqli->prepare("SELECT lmt.action_date,lmt.remark,u.nickname AS user_nickname FROM dne_log_meeting_tracking lmt LEFT JOIN dne_users u ON lmt.id_user = u.id WHERE lmt.id_meeting = ? AND lmt.remark <> ? AND lmt.is_remark_appears_log = ? ORDER BY lmt.id ASC");
 									$q_wn->bind_param('isi',$wn->id,$empty_wn,$one_wn);
 									$log_meeting_tracking_wn = fetch($q_wn);
 									$log_meeting_tracking_num_rows_wn = $q_wn->num_rows;
@@ -1172,7 +1172,7 @@ foreach($all_what_news as $wn){
 																			   WHERE lmu.id_meeting = ?
 																			   AND lmu.remark <> ?
 																			   AND lmu.is_remark_appears_log = ?
-																			   ORDER BY lmu.id DESC");
+																			   ORDER BY lmu.id ASC");
 													$query->bind_param('isi',$ut->id,$empty_remark,$one);	
 													$query->execute(); 
 													$query->store_result();
@@ -1213,7 +1213,7 @@ foreach($all_what_news as $wn){
 																		</div>
 																		<?php if($track_type == 1){
 																			$one_pr = 1; $empty_pr = '';
-																			$q_pr = $mysqli->prepare("SELECT lmt.action_date,lmt.remark,u.nickname AS user_nickname FROM dne_log_meeting_tracking lmt LEFT JOIN dne_users u ON lmt.id_user = u.id WHERE lmt.id_meeting = ? AND lmt.remark <> ? AND lmt.is_remark_appears_log = ? ORDER BY lmt.id DESC");
+																			$q_pr = $mysqli->prepare("SELECT lmt.action_date,lmt.remark,u.nickname AS user_nickname FROM dne_log_meeting_tracking lmt LEFT JOIN dne_users u ON lmt.id_user = u.id WHERE lmt.id_meeting = ? AND lmt.remark <> ? AND lmt.is_remark_appears_log = ? ORDER BY lmt.id ASC");
 																			$q_pr->bind_param('isi',$ut->id,$empty_pr,$one_pr);
 																			$tr_pr = fetch($q_pr);
 																			if($q_pr->num_rows > 0){ ?>
@@ -1308,7 +1308,7 @@ foreach($all_what_news as $wn){
 																			   WHERE lmt.id_meeting = ?
 																			   AND lmt.remark <> ?
 																			   AND lmt.is_remark_appears_log = ?
-																			   ORDER BY lmt.id DESC");
+																			   ORDER BY lmt.id ASC");
 													$query->bind_param('isi',$at->id,$empty_remark,$one);	
 													$query->execute(); 
 													$query->store_result();
@@ -1510,7 +1510,7 @@ foreach($all_what_news as $wn){
 													$log_meeting_tracking_num_rows_wn = 0; $log_meeting_tracking_wn = new stdClass();
 													if($track_type == 1){
 														$one_wn = 1; $empty_wn = '';
-														$q_wn = $mysqli->prepare("SELECT lmt.action_date,lmt.remark,u.nickname AS user_nickname FROM dne_log_meeting_tracking lmt LEFT JOIN dne_users u ON lmt.id_user = u.id WHERE lmt.id_meeting = ? AND lmt.remark <> ? AND lmt.is_remark_appears_log = ? ORDER BY lmt.id DESC");
+														$q_wn = $mysqli->prepare("SELECT lmt.action_date,lmt.remark,u.nickname AS user_nickname FROM dne_log_meeting_tracking lmt LEFT JOIN dne_users u ON lmt.id_user = u.id WHERE lmt.id_meeting = ? AND lmt.remark <> ? AND lmt.is_remark_appears_log = ? ORDER BY lmt.id ASC");
 														$q_wn->bind_param('isi',$wn->id,$empty_wn,$one_wn);
 														$log_meeting_tracking_wn = fetch($q_wn);
 														$log_meeting_tracking_num_rows_wn = $q_wn->num_rows;
@@ -1713,7 +1713,7 @@ foreach($all_what_news as $wn){
 																		   WHERE lmu.id_meeting = ?
 																		   AND lmu.remark <> ?
 																		   AND lmu.is_remark_appears_log = ?
-																		   ORDER BY lmu.id DESC");
+																		   ORDER BY lmu.id ASC");
 												$query->bind_param('isi',$tdt->id,$empty_remark,$one);	
 												$query->execute(); 
 												$query->store_result();
@@ -1730,7 +1730,7 @@ foreach($all_what_news as $wn){
 																		   WHERE lmt.id_meeting = ?
 																		   AND lmt.remark <> ?
 																		   AND lmt.is_remark_appears_log = ?
-																		   ORDER BY lmt.id DESC");
+																		   ORDER BY lmt.id ASC");
 												$query->bind_param('isi',$tdt->id,$empty_remark,$one);
 												$query->execute();
 												$query->store_result();
@@ -1740,7 +1740,7 @@ foreach($all_what_news as $wn){
 											$log_meeting_tracking_num_rows_ut = 0; $log_meeting_tracking_ut = new stdClass();
 											if(@$list_from == 'user_tasks' && $track_type == 1){
 												$one_tdt = 1; $empty_tdt = '';
-												$q_tdt = $mysqli->prepare("SELECT lmt.action_date,lmt.remark,u.nickname AS user_nickname FROM dne_log_meeting_tracking lmt LEFT JOIN dne_users u ON lmt.id_user = u.id WHERE lmt.id_meeting = ? AND lmt.remark <> ? AND lmt.is_remark_appears_log = ? ORDER BY lmt.id DESC");
+												$q_tdt = $mysqli->prepare("SELECT lmt.action_date,lmt.remark,u.nickname AS user_nickname FROM dne_log_meeting_tracking lmt LEFT JOIN dne_users u ON lmt.id_user = u.id WHERE lmt.id_meeting = ? AND lmt.remark <> ? AND lmt.is_remark_appears_log = ? ORDER BY lmt.id ASC");
 												$q_tdt->bind_param('isi',$tdt->id,$empty_tdt,$one_tdt);
 												$log_meeting_tracking_ut = fetch($q_tdt);
 												$log_meeting_tracking_num_rows_ut = $q_tdt->num_rows;

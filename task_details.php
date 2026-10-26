@@ -60,7 +60,7 @@ if(@$_POST['all_ids_to_edit'] == '') {
                                AND lmu.action = ?							   
 							   AND lmu.is_remark_appears_log = ?
 							   AND lmu.remark <> ?
-							   ORDER BY lmu.id DESC");
+							   ORDER BY lmu.id ASC");
 	$query->bind_param("isis",$id,$action_update_label,$one,$empty_remark);
 	$query->execute();
 	$query->store_result();	
@@ -169,7 +169,7 @@ if(@$_POST['all_ids_to_edit'] == '') {
 								   WHERE lmt.id_meeting = ?
 							       AND lmt.is_remark_appears_log = ?
 							       AND lmt.remark <> ?
-							       ORDER BY lmt.id DESC");
+							       ORDER BY lmt.id ASC");
 	    $query->bind_param("iis",$id,$one,$empty_remark);
 	    $query->execute();
 	    $query->store_result();
