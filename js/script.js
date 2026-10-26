@@ -664,7 +664,11 @@ function fillContentTaskDetails(meeting_id,iteration,task_details,forShare,withP
     }
 
 	if(imagesHtml != ''){
-		content += '<tr><td colspan="3" class="alignCenter"><div style="max-height:220px;overflow-y:auto;">'+imagesHtml+'</div></td></tr>';
+		// Image envoyee (WhatsApp / e-mail = capture JPG, non defilable) : photos en entier
+		if(withProjectHeader)
+			content += '<tr><td colspan="3" class="alignCenter">'+imagesHtml+'</td></tr>';
+		else // popup a l'ecran : defilement conserve
+			content += '<tr><td colspan="3" class="alignCenter"><div style="max-height:220px;overflow-y:auto;">'+imagesHtml+'</div></td></tr>';
 	}
 
 	content += '<tr class="alignCenter"><td colspan="3"><img src="uploads/'+task_details[25]+'" style="max-width:480px;width:100%;height:auto;" alt="" /></td></tr>';
