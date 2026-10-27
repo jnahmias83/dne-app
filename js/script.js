@@ -628,10 +628,12 @@ function fillContentTaskDetails(meeting_id,iteration,task_details,forShare,withP
 	}
 	
 	let imagesHtml = '';
+	// Image envoyee (WhatsApp / e-mail) : photos un peu plus grandes donc plus nettes ; popup a l'ecran inchange (150)
+	let images_base_height = withProjectHeader ? 220 : 150;
 
 	if(task_details[9] != ''){
 		const image1Path = 'uploads/'+task_details[9];
-		let image1_height = 150;
+		let image1_height = images_base_height;
 		let ratio_image1 = task_details[16]/task_details[17];
 		let image1_width = image1_height*ratio_image1;
 
@@ -648,7 +650,7 @@ function fillContentTaskDetails(meeting_id,iteration,task_details,forShare,withP
 
 	if (task_details[18] != ''){
 		const image2Path = 'uploads/'+task_details[18];
-		let image2_height = 150;
+		let image2_height = images_base_height;
 		let ratio_image2 = task_details[19]/task_details[20];
 		let image2_width = image2_height*ratio_image2;
 
@@ -1048,7 +1050,8 @@ function sendEmail(id_meeting,iteration,screen_type,from){
 			
 			const element = document.getElementById('contentToScreenshot');
 		
-			html2canvas(element).then(function(canvas){
+			// Capture plus nette, jamais moins qu'avant (avant : resolution de l'ecran par defaut)
+			html2canvas(element, { scale: Math.max(window.devicePixelRatio || 1, 1.5) }).then(function(canvas){
 				const imageData = canvas.toDataURL('image/jpeg');
 
 				$.ajax({

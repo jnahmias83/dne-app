@@ -2784,7 +2784,7 @@ $(document).ready(function(){
 	                const height = element.offsetHeight;
 
 					html2canvas(element, {
-	                scale: 1
+	                scale: 1.5
 	                }).then(function(canvas) {
 						let finalCanvas = document.createElement('canvas');
 	                    finalCanvas.width = width;
@@ -2846,7 +2846,7 @@ $(document).ready(function(){
                 const height = element.offsetHeight;
 
 				html2canvas(element, {
-                scale: 1 
+                scale: 1.5
                 }).then(function(canvas) {
 					let finalCanvas = document.createElement('canvas');
                     finalCanvas.width = width;

@@ -100,7 +100,7 @@ else {
 			$allowTypes = array('jpg','png','jpeg','gif');
 			if(in_array($fileType, $allowTypes)){
 				$imageTemp = $_FILES["image1"]["tmp_name"];
-				$compressedImage = compressImage($imageTemp,$imageUploadPath,75);
+				$compressedImage = compressImage($imageTemp,$imageUploadPath,90);
 				if($compressedImage){
 					list($image1_width,$image1_height) = getimagesize($imageUploadPath);
 				} else {
@@ -119,7 +119,7 @@ else {
 			$allowTypes = array('jpg','png','jpeg','gif');
 			if(in_array($fileType, $allowTypes)){
 				$imageTemp = $_FILES["image2"]["tmp_name"];
-				$compressedImage = compressImage($imageTemp, $imageUploadPath,75);
+				$compressedImage = compressImage($imageTemp, $imageUploadPath,90);
 				if($compressedImage){
 					list($image2_width,$image2_height) = getimagesize($imageUploadPath);
 				} else {
@@ -303,7 +303,7 @@ else {
 			$allowTypes = array('jpg','png','jpeg','gif');
 			if(in_array($fileType, $allowTypes)){
 				$imageTemp = $_FILES["image1"]["tmp_name"];
-				$compressedImage = compressImage($imageTemp,$imageUploadPath,75);
+				$compressedImage = compressImage($imageTemp,$imageUploadPath,90);
 				if($compressedImage){
 					list($image1_width,$image1_height) = getimagesize($imageUploadPath);
 				} else {
@@ -329,7 +329,7 @@ else {
 			$allowTypes = array('jpg','png','jpeg','gif');
 			if(in_array($fileType, $allowTypes)){
 				$imageTemp = $_FILES["image2"]["tmp_name"];
-				$compressedImage = compressImage($imageTemp,$imageUploadPath,75);
+				$compressedImage = compressImage($imageTemp,$imageUploadPath,90);
 				if($compressedImage){
 					list($image2_width,$image2_height) = getimagesize($imageUploadPath);
 				} else {
