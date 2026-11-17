@@ -3719,4 +3719,7 @@ tr.task-row-highlight td > * {
 #right_content { display: none !important; }
 .drag-task { display: none !important; }
 #left_content { margin-left: auto; margin-right: auto; }
+/* Colonne du bouton To Do Today devenue vide (listes par projet) : retiree, le texte reprend toute la largeur */
+.task_name > .width10Percents:has(> .drag-task) { display: none !important; }
+.task_name > .width10Percents:has(> .drag-task) + .width90Percents { width: 100% !important; }
 </style>
