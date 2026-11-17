@@ -3713,4 +3713,10 @@ tr.task-row-highlight td > * {
     border: 1px solid rgba(0, 0, 0, 0.18) !important;
     border-radius: 12px;
 }
+
+/* To Do Today masque a la demande du client (17/11/2026) - code conserve.
+   Pour le remettre : supprimer ce bloc. */
+#right_content { display: none !important; }
+.drag-task { display: none !important; }
+#left_content { margin-left: auto; margin-right: auto; }
 </style>
