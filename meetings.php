@@ -5673,6 +5673,25 @@ $(function() {
 .meetings-chapter-drag-handle:active{
 	cursor:grabbing;
 }
+/* Fleche de repli par chapitre (entre les 6 points et le nom) */
+.chapter-collapse-toggle{
+	display:inline-flex;
+	align-items:center;
+	justify-content:center;
+	width:16px;
+	height:18px;
+	margin-inline:2px 6px;
+	cursor:pointer;
+	font-size:12px;
+	line-height:1;
+	color:#1b3a57;
+	user-select:none;
+	vertical-align:middle;
+	transition:transform .12s ease;
+}
+.chapter-collapse-toggle.is-collapsed{
+	transform:rotate(-90deg);
+}
 #meetings_table tbody.chapter-group.sortable-ghost{
 	opacity:0.4;
 }
@@ -5724,6 +5743,13 @@ $(function() {
 		grip.title = 'גרור לשינוי סדר הפרקים';
 		td.insertBefore(grip, td.firstChild);
 
+		// Fleche de repli du chapitre, entre les 6 points et le nom
+		var toggle = document.createElement('span');
+		toggle.className = 'chapter-collapse-toggle';
+		toggle.textContent = '▾';
+		toggle.title = 'פתח / סגור פרק';
+		td.insertBefore(toggle, grip.nextSibling);
+
 		var nameLink = td.querySelector('.chapter-name-link');
 
 		function groupRows(){
@@ -5739,6 +5765,7 @@ $(function() {
 		function apply(isCollapsed, persist){
 			groupRows().forEach(function(r){ r.hidden = isCollapsed; });
 			collapsed = isCollapsed;
+			toggle.classList.toggle('is-collapsed', isCollapsed);
 			header.dataset.collapsed = isCollapsed ? '1' : '0';
 			updateLastChapterPadding();
 			if(!persist) return;
@@ -5747,6 +5774,12 @@ $(function() {
 			if(!isCollapsed && i !== -1) list.splice(i, 1);
 			saveCollapsed(list);
 		}
+
+		toggle.addEventListener('click', function(ev){
+			ev.stopPropagation();
+			ev.preventDefault();
+			apply(!collapsed, true);
+		});
 
 		if(nameLink){
 			nameLink.addEventListener('click', function(ev){
