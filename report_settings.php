@@ -256,6 +256,22 @@ function toTasksReport(){
 				  +'&sort_select_2='+$('#sort_select_2').val()
 				  +'&sort_select_3='+$('#sort_select_3').val()
             let isNativeApp = (typeof AndroidNative !== 'undefined');
+            if(isNativeApp && typeof AndroidNative.downloadPdf === 'function'){
+                // Appli Android recente : UN seul telechargement (le serveur ne fabrique le PDF qu'une fois)
+                // + ecran d'attente natif. Memes parametres que le formulaire pdfDownloadForm ci-dessous.
+                let dlUrl = location.href.replace(/[^\/]*(\?.*)?$/, '') + 'meetings_report.php'
+                          + '?project_id=' + encodeURIComponent($('#project_id').val())
+                          + '&is_specific_filter=' + encodeURIComponent($('#is_specific_filter').val())
+                          + '&all_ids_to_print=' + encodeURIComponent($('#all_ids_to_print').val())
+                          + '&pdf_direction=' + encodeURIComponent(pdf_direction) + '&mode=D';
+                // Nom de fichier identique a celui du serveur (date-texte1-texte2-projet.pdf)
+                let dlName = $('#pdf_file_name_date').val() + '-'
+                           + ($('#pdf_file_name_text_1').val() ? $('#pdf_file_name_text_1').val() + '-' : '')
+                           + ($('#pdf_file_name_text_2').val() ? $('#pdf_file_name_text_2').val() + '-' : '')
+                           + <?=json_encode((string)@$project->nickname)?> + '.pdf';
+                AndroidNative.downloadPdf(dlUrl, dlName);
+                return;
+            }
             if(!isNativeApp) window.open(baseUrl+params+'&mode=I','_blank');
 
 			setTimeout(function (){
