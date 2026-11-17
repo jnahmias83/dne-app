@@ -2443,7 +2443,8 @@ $(document).ready(function(){
 	let currentBadgeTarget = '';
 	let currentProject = 0;
 
-	$('._badge-switcher').on('click', function (){
+	$('._badge-switcher').on('click', function (e){
+		e.preventDefault(); // le navigateur ne suit plus le lien "#" : plus de # dans l'adresse
 		const bgcolor = $(this).data('bgcolor');
 		const target = $(this).data('target');
 		const content = $('#div_' + target).html();
