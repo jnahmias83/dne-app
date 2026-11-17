@@ -2376,6 +2376,7 @@ $(document).ready(function(){
 	
 	$('[id="update_btn"]').on('click', function(){
 		meeting_id = $('#hidden_meeting_id').val();
+		$('#remark_changes_status_update').html(''); // case de remarque vide a chaque ouverture de עדכון
 		project_id = $('#hidden_project_id').val();
 		project_nickname = $('#hidden_project_nickname').val();
         chapter = $('#hidden_chapter').val();
