@@ -20,3 +20,4 @@ maquettes/_snapx_*.html
 maquettes/_probe_*.html
 maquettes/_t_probe.js
 maquettes/_enhe_probe.js
+maquettes/_design/*.secret*

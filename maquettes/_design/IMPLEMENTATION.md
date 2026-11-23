@@ -24,6 +24,35 @@ Décision de l'utilisateur, le 2026-11-23 : le tableau de bord garde son CSS d'o
 - **Ne pas charger `dne-design.css` sur projects.php**, ou bien limiter ses règles aux autres pages. Sinon, les règles générales (tableaux, `.btn`, `.subtitle`…) changeraient le tableau de bord.
 - La maquette `tableau_de_bord.html` est remise à l'origine. Elle ne garde que le blocage des enregistrements (`maquette_blocage.inc`). La version précédente est sauvegardée dans `_design/backup_tableau_de_bord_avant_origine.html`.
 
+## Mettre les maquettes en ligne (pour les montrer) : procédure
+Les scripts de déploiement ignorent `maquettes/`. Une mise en ligne se fait donc toujours à la main, et seulement avec l'accord de l'utilisateur.
+
+Protections en place :
+- **Blocage des enregistrements dans les 70 maquettes.**
+  - 64 maquettes l'ont toujours actif (`maquette_design.inc` et les autres).
+  - Les 6 maquettes « vivantes » (maakav, tache, tableau, menu_tasks, rapports, responsables) l'ont **seulement hors de dne.local** (`maquette_blocage_enligne.inc`). En local, elles se comportent comme avant.
+- **`maquettes/.htaccess`** :
+  - mot de passe obligatoire hors de dne.local ;
+  - pas de liste des fichiers du dossier ;
+  - `_design/` interdit sur les serveurs ;
+  - fichiers `.secret` interdits partout ;
+  - `noindex` pour les moteurs de recherche.
+- **Mot de passe** :
+  - il est dans `_design/MOT_DE_PASSE_MAQUETTES.secret.txt` ;
+  - sa version chiffrée est dans `_design/htpasswd_maquettes.secret` ;
+  - ces deux fichiers sont exclus de git.
+
+Étapes :
+1. Envoyer `_design/htpasswd_maquettes.secret` par FTP vers **`/home/xz71g5thavyl/.htpasswd_maquettes`**, c'est-à-dire **hors** de public_html. S'il manque, le dossier des maquettes répond par une erreur (fermé), et le reste du site n'est pas touché.
+2. Envoyer `maquettes/*.html` et `maquettes/.htaccess`, sans `_design/`.
+   - Serveur dev : `/public_html/Development/maquettes/`.
+   - ⚠ Les pages ont `<base href="/">`. Sur le serveur dev, les images, le CSS et les lectures partiraient de la racine, donc du **site prod**. Il faut remplacer par `<base href="/Development/">` dans les copies envoyées sur dev.
+3. Vérifier :
+   - sans mot de passe, on doit obtenir 401 ;
+   - avec le mot de passe, la page s'affiche ;
+   - `_design/` doit répondre 403 ;
+   - un clic sur « שמור » ne doit rien enregistrer.
+
 ## Ce qui passe sur le site et ce qui reste dans les maquettes
 
 | Élément de la maquette | Sur le site ? | Pourquoi |

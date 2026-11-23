@@ -2,4 +2,28 @@
 <IfModule mod_headers.c>
   Header set Cache-Control "no-store, no-cache, must-revalidate"
   Header set Pragma "no-cache"
+  # jamais dans Google / les moteurs de recherche
+  Header set X-Robots-Tag "noindex, nofollow, noarchive"
 </IfModule>
+
+# Pas de liste des fichiers du dossier
+Options -Indexes
+
+# Sources du design (inc, scripts, aide-memoire, mots de passe) : jamais servies par le serveur
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTP_HOST} !^(dne\.local|localhost|127\.0\.0\.1)$
+  RewriteRule ^_design(/|$) - [F,L]
+  # mots de passe : interdits partout, meme en local
+  RewriteRule \.secret - [F,L]
+</IfModule>
+
+# Mot de passe obligatoire partout SAUF sur le poste local (dne.local / localhost)
+# Le fichier de mots de passe est HORS du site (pas dans public_html) : il doit etre envoye a cet endroit avant les maquettes.
+# S'il manque, le dossier des maquettes reste ferme (erreur), le reste du site n'est pas touche.
+<If "%{HTTP_HOST} !~ /^(dne\.local|localhost|127\.0\.0\.1)$/">
+  AuthType Basic
+  AuthName "Maquettes DNE"
+  AuthUserFile /home/xz71g5thavyl/.htpasswd_maquettes
+  Require valid-user
+</If>
