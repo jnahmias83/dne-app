@@ -1,0 +1,1033 @@
+
+<head><base href="/">
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DNE</title>
+
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+          crossorigin="anonymous"></script>
+		  
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
+
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+  <link href="assets/dataTables/css/jquery.dataTables.css" rel="stylesheet" type="text/css" />
+  <link href="assets/dataTables/css/jquery.dataTables_themeroller.css" rel="stylesheet" type="text/css" />
+  <script src="assets/dataTables/js/jquery.dataTables.js" type="text/javascript"></script>
+  <script src="assets/dataTables/js/jquery.dataTables.columnFilter.js" type="text/javascript"></script>
+
+  <link href="css/custom.css?v=1716132787" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="css/style.css?v=1791461203" />
+
+  <script src="js/script.js?v=1793106707" type="text/javascript"></script>
+</head>
+
+<html>
+    <body>
+	    		    <nav class="navbar navbar-expand-md navbar-dark bg-4c555e">
+			    <div class="container-fluid px-3">
+					<div class="collapse navbar-collapse d-flex justify-content-between align-items-center" id="navbarSupportedContent">
+					    <ul class="navbar-nav dir-rtl">
+							<li class="nav-item dropdown">
+							    <a class="nav-link dropdown-toggle" id="projectsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+								    פרוייקטים
+							    </a>
+							    <ul class="dropdown-menu dropdown-menu-scrollable min-with-3rem cursor-pointer alignCenter dir-rtl" aria-labelledby="projectsDropdown">
+																    </ul>
+							</li>
+							<li class="nav-item dropdown">
+								<a class="nav-link dropdown-toggle" id="suppliersDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+									ספקים
+							    </a>
+								<ul class="dropdown-menu min-with-3rem dir-rtl alignCenter" aria-labelledby="suppliersDropdown">
+									<li><a class="dropdown-item" href="suppliers.php?type=D">מתכננים/יועצים</a></li>
+									<li><a class="dropdown-item" href="suppliers.php?type=S">ספקים/קבלנים</a></li>
+									<li><a class="dropdown-item" href="domains.php?lang_screen=HE">תחומי פעילות</a></li>
+								</ul>
+							</li>
+					    </ul>				
+						<ul class="navbar-nav dir-rtl align-items-center flex-row" id="header_icons_ul">
+							<li class="nav-item dropdown text-center px-2 d-flex align-items-center gap-2">
+								<a class="nav-link cursor-pointer" id="home_link">
+									<img src="images/white_home_icon.png" alt="home icon" width="30" height="30" />
+								</a>
+								<a class="nav-link" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+									<div class="padding-4x-4y borderRadius20 border-2px-solid-white font-weight-bold">									
+										<span class="fontSize13 colorWhite">DN</span>
+									</div>	
+								</a>
+								<ul class="dropdown-menu min-width-3rem dir-rtl text-end" aria-labelledby="userDropdown">
+									<li><a class="dropdown-item" href="add_project.php?id=0">הוסף פרוייקט</a></li>
+									<li><a class="dropdown-item" href="projects.php?is_inactive_project=1">פרוייקטים רדומים</a></li>
+																			<li><a class="dropdown-item" href="users.php">ניהול משתמשים</a></li>
+																		<li><a class="dropdown-item" href="vat.php">מע''מ</a></li>
+									<li><a class="dropdown-item" href="tasks_managment.php">ניהול סוגי משימות</a></li>
+									<li><a class="dropdown-item" href="progress_status_managment.php">ניהול סטטוס</a></li>
+									<li><a class="dropdown-item" href="meeting_types_managment.php">ניהול סוגי ישיבות</a></li>
+									<li><a class="dropdown-item" href="graphic_settings.php">הגדרות גוונים ורקע</a></li>
+									<li><a class="dropdown-item" href="logo_managment.php">תמונות לוגו</a></li>
+									<li><hr class="dropdown-divider"></li>
+									<li><a class="dropdown-item" href="kill_session.php"><i class="fa-solid fa-sign-out" style="margin-left:6px;color:#000;font-size:12px;"></i>התנתקות</a></li>
+								</ul>
+							</li>
+                         </ul>
+						<div class="header-logo-wrap">
+							<img src="images/my_project_logo.png" alt="My Project" class="header-logo" />
+						</div>
+					</div>
+			    </div>
+            </nav>
+	    		
+		<script>
+		$(document).on('click','#home_link',function(){
+			$('#left_initial_content').show();
+			$('#left_new_content').hide();
+			localStorage.removeItem('target');
+			localStorage.removeItem('prId');
+			localStorage.removeItem('bgcolor');
+			location.href = 'projects.php?filter_by=projects';
+		});
+		
+		function alignHeaderLogo(){
+			let homeEl = document.getElementById('home_link');
+			let dnEl = document.getElementById('userDropdown');
+			let logoWrap = document.querySelector('.header-logo-wrap');
+			if(!homeEl || !dnEl || !logoWrap) return;
+			logoWrap.style.marginLeft = '';
+			if(window.getComputedStyle(logoWrap).position !== 'static') return;
+			let homeRect = homeEl.getBoundingClientRect();
+			let dnRect = dnEl.getBoundingClientRect();
+			let leftRect = homeRect.left < dnRect.left ? homeRect : dnRect;
+			let rightRect = homeRect.left < dnRect.left ? dnRect : homeRect;
+			let gapCenter = (leftRect.right + rightRect.left) / 2;
+			let container = logoWrap.parentElement;
+			let containerRect = container.getBoundingClientRect();
+			let containerCenter = containerRect.left + containerRect.width / 2;
+			let manualNudgeTowardDn = -3;
+			logoWrap.style.marginLeft = (gapCenter - containerCenter + manualNudgeTowardDn) + 'px';
+		}
+		$(window).on('load resize', alignHeaderLogo);
+
+		function toProjectHome(project_id){
+			let form_data = new FormData();	
+	        form_data.append('id_project',project_id);
+	
+	
+			$.ajax({
+				type: 'POST',
+				url: 'set_id_project_session.php',
+				data: form_data,
+				cache: false,
+				processData: false,
+				contentType: false,			
+				success: function(data){ 
+				   location.href = 'meetings.php?project_id='+project_id;		
+				},
+			});				
+		}
+		</script>
+		
+		<style>
+		.navbar {
+			position: relative;
+		}
+
+		.navbar-nav {
+			flex-direction: row;
+		}
+
+		.header-logo-wrap {
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			transform: translate(-50%, -50%);
+			pointer-events: none;
+		}
+
+		.header-logo {
+			height: 38px;
+			width: auto;
+			display: block;
+		}
+
+		.navbar .dropdown {
+			position: relative; 
+		}
+
+		.navbar .dropdown-menu {
+			position: absolute;  
+			top: 100%;
+            min-width: 5rem;			
+			margin-top: 0;       
+			z-index: 1050;      
+		}
+		
+		.dropdown-item {
+			padding: 1px 7px;
+			font-size: 13px;
+		}
+		
+		.nav-link {
+			font-size: 14px;
+		}
+
+		@media (max-width: 600px) {
+			.nav-link {
+				font-size: 12px;
+			}
+			#navbarSupportedContent {
+				flex-direction: column;
+				align-items: center !important;
+			}
+			#navbarSupportedContent > ul {
+				justify-content: center;
+				flex-wrap: wrap;
+			}
+			.header-logo-wrap {
+				position: static;
+				transform: none;
+				width: 100%;
+				display: flex;
+				justify-content: center;
+				margin-top: 6px;
+				pointer-events: auto;
+			}
+		}
+
+		@media (orientation: landscape) and (max-height: 500px) {
+			#navbarSupportedContent {
+				flex-direction: column;
+				align-items: center !important;
+			}
+			#navbarSupportedContent > ul {
+				justify-content: center;
+				flex-wrap: wrap;
+			}
+			.header-logo-wrap {
+				position: static;
+				transform: none;
+				width: 100%;
+				display: flex;
+				justify-content: center;
+				margin-top: 6px;
+				pointer-events: auto;
+			}
+		}
+		</style><div class="topbar bgColorBrown alignCenter" dir="rtl" id="tasks_topbar">
+  <button type="button" id="tasks_hamburger_btn" class="hamburger-btn" aria-label="menu">&#9776;</button>
+  <ul class="menu-list" id="tasks_menu_list">
+    <li><a class="font-weight-bold" href="custom_reports.php?project_id=19&task_filter=&progress_status_filter=&supplier_filter=&period_new_task_filter=&period_late_filter="><img src="images/my_reports_icon.png" width="20" height="20" class="menu-item-icon" alt="" /><span>הדוח''ות שלי</span></a></li>
+	<li class="separator">|</li>
+	<li><a class="font-weight-bold" href="responsibles.php?project_id=19&task_filter=&progress_status_filter=&supplier_filter=&period_new_task_filter=&period_late_filter=&is_specific_filter="><img src="images/responsibles_icon.png" width="20" height="20" class="menu-item-icon" alt="" /><span>צוות הפרוייקט</span></a></li>
+	<li class="separator">|</li>
+	<li><a class="font-weight-bold" href="chapters.php?project_id=19&task_filter=&progress_status_filter=&supplier_filter=&period_new_task_filter=&period_late_filter=&is_specific_filter="><img src="images/chapters_icon.png" width="20" height="20" class="menu-item-icon" alt="" /><span>פרקים</span></a></li>
+	<li class="separator">|</li>
+	<li><a class="" href="add_project.php?id=19&task_filter=&progress_status_filter=&supplier_filter=&period_new_task_filter=&period_late_filter=&is_specific_filter=&from=taskslist"><img src="images/data_icon.png" width="20" height="20" class="menu-item-icon" alt="" /><span>נתוני הפרוייקט</span></a></li>
+	<li class="separator">|</li>
+	<li><a class="" href="tasks.php?project_id=19&task_filter=&progress_status_filter=&supplier_filter=&period_new_task_filter=&period_late_filter=&is_specific_filter="><img src="images/tasks_icon.png" width="20" height="20" class="menu-item-icon" alt="" /><span>סוגי משימות</span></a></li>
+	<li class="separator">|</li>
+	<li><a class="" href="progress_status.php?project_id=19&task_filter=&progress_status_filter=&supplier_filter=&period_new_task_filter=&period_late_filter=&is_specific_filter="><img src="images/status_icon.png" width="20" height="20" class="menu-item-icon" alt="" /><span>סטטוסים</span></a></li>
+  </ul>
+  <ul class="menu-list-preview" id="tasks_menu_list_preview">
+    <li><a class="font-weight-bold" href="custom_reports.php?project_id=19&task_filter=&progress_status_filter=&supplier_filter=&period_new_task_filter=&period_late_filter="><img src="images/my_reports_icon.png" width="20" height="20" class="menu-item-icon" alt="" /><span>הדוח''ות שלי</span></a></li>
+	<li class="separator">|</li>
+	<li><a class="font-weight-bold" href="responsibles.php?project_id=19&task_filter=&progress_status_filter=&supplier_filter=&period_new_task_filter=&period_late_filter=&is_specific_filter="><img src="images/responsibles_icon.png" width="20" height="20" class="menu-item-icon" alt="" /><span>צוות הפרוייקט</span></a></li>
+	<li class="separator">|</li>
+	<li><a class="font-weight-bold" href="chapters.php?project_id=19&task_filter=&progress_status_filter=&supplier_filter=&period_new_task_filter=&period_late_filter=&is_specific_filter="><img src="images/chapters_icon.png" width="20" height="20" class="menu-item-icon" alt="" /><span>פרקים</span></a></li>
+  </ul>
+  <div class="topbar-actions">
+	  <a href="add_sup_to_proj.php?id=19" class="btn-attach-suppliers">
+		ספקים
+	  </a>
+	  <a href="budget.php?project_id=19&lang_screen=HE" class="btn-budget">
+		<i class="fa-solid fa-dollar-sign"></i>תקציב
+		<i class="fa-solid fa-share budget-btn-arrow"></i>
+	  </a>
+  </div>
+</div>
+
+<style>
+.topbar {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    direction: rtl;
+    background-color: #4d7380;
+    color: white;
+    flex-wrap: wrap;
+    position: relative;
+}
+
+.hamburger-btn {
+    display: none;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 26px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0 10px;
+    margin-left: 8px;
+}
+
+.topbar.measuring {
+    flex-wrap: nowrap;
+}
+
+.menu-list.measuring {
+    flex-wrap: nowrap;
+}
+
+.topbar-collapsed .menu-list {
+    display: none;
+}
+
+.topbar-collapsed .hamburger-btn {
+    display: inline-block;
+}
+
+.topbar-collapsed .menu-list.open {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    background-color: #4d7380;
+    z-index: 1000;
+    padding: 10px 15px;
+    border-radius: 0 0 10px 10px;
+    gap: 8px;
+    flex-wrap: nowrap;
+}
+
+.topbar-collapsed .menu-list.open li.separator {
+    display: none;
+}
+
+.menu-list-preview {
+    display: none;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+    gap: 10px;
+    color: white;
+    flex-wrap: wrap;
+}
+
+.menu-list-preview li a {
+    color: white;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.menu-list-preview li.separator {
+    color: white;
+    user-select: none;
+}
+
+.menu-list-preview a {
+    font-size: 14px;
+}
+
+.topbar-preview .menu-list-preview {
+    display: flex;
+}
+
+.topbar-preview .menu-list:not(.open) {
+    display: none;
+}
+
+.topbar-preview .hamburger-btn {
+    display: inline-block;
+}
+
+.topbar-preview .menu-list.open {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    background-color: #4d7380;
+    z-index: 1000;
+    padding: 10px 15px;
+    border-radius: 0 0 10px 10px;
+    gap: 8px;
+    flex-wrap: nowrap;
+}
+
+.topbar-preview .menu-list.open li.separator {
+    display: none;
+}
+
+.menu-list {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+    flex-grow: 1;
+    justify-content: center;
+    gap: 10px;
+    color: white;
+    flex-wrap: wrap;
+}
+
+.menu-list li a {
+    color: white;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.menu-list li.separator {
+    color: white;
+    user-select: none;
+}
+
+.topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-left: 8px;
+    margin-right: auto;
+}
+
+.btn-budget,
+.btn-attach-suppliers {
+    background-color: #6b804d;
+    color: #fff;
+    padding: 5px 15px;
+    border-radius: 10px;
+	border: 1px solid white;
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+    text-decoration: none;
+    margin-left: 0;
+    font-size: 14px;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+.btn-attach-suppliers {
+	background-color: #706f6c;
+}
+
+.btn-budget i {
+    margin-left: 10px;
+}
+
+.budget-btn-arrow {
+    color: #fff;
+    font-weight: bold;
+    margin-right: 8px;
+    transform: scaleX(-1);
+    display: inline-block;
+}
+
+.btn-budget:hover,
+.btn-attach-suppliers:hover {
+    color: rgba(255,255,255,0.55);
+}
+
+.menu-list a {
+    font-size: 14px;
+}
+
+.menu-list li a,
+.menu-list-preview li a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding: 4px 8px;
+    border-radius: 8px;
+    transition: background-color 0.15s ease;
+}
+
+.menu-item-icon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+.menu-list li a:hover,
+.menu-list li a:active,
+.menu-list-preview li a:hover,
+.menu-list-preview li a:active {
+    background-color: rgba(255,255,255,0.2);
+}
+
+.topbar-collapsed .menu-list.open li,
+.topbar-preview .menu-list.open li {
+    width: 100%;
+}
+
+.topbar-collapsed .menu-list.open li a,
+.topbar-preview .menu-list.open li a {
+    flex-direction: row;
+    justify-content: flex-start;
+    width: 100%;
+    box-sizing: border-box;
+    gap: 8px;
+    padding: 6px 10px;
+}
+
+.topbar-collapsed .menu-list.open li a .menu-item-icon,
+.topbar-preview .menu-list.open li a .menu-item-icon {
+    padding-right: 4px;
+}
+
+.menu-item-current {
+    background-color: rgba(255,255,255,0.18);
+}
+
+@media (max-width: 600px) {
+    .menu-list a,
+    .menu-list-preview a {
+        font-size: 12px;
+    }
+
+	.btn-budget,
+    .btn-attach-suppliers {
+        padding: 5px 5px;
+        margin-left: 5px;
+    }
+}
+</style>
+
+<script>
+function isTasksTopbarSingleLine(topbar){
+	let children = Array.from(topbar.children).filter(function(el){
+		return getComputedStyle(el).display !== 'none';
+	});
+	if(children.length === 0) return true;
+	// centre vertical (top + height/2), pas juste "top" : avec align-items:center,
+	// des enfants de hauteurs differentes (ex: menu-list avec icones, plus haut que
+	// topbar-actions) partagent le meme centre vertical mais PAS le meme "top",
+	// donc comparer les tops donnait un faux "pas sur la meme ligne"
+	let firstCenter = children[0].offsetTop + children[0].offsetHeight / 2;
+	return children.every(function(el){
+		return Math.abs((el.offsetTop + el.offsetHeight / 2) - firstCenter) < 5;
+	});
+}
+
+function checkTasksMenuOverflow(){
+	let topbar = document.getElementById('tasks_topbar');
+	let menuList = document.getElementById('tasks_menu_list');
+	let previewList = document.getElementById('tasks_menu_list_preview');
+	if(!topbar || !menuList || !previewList) return;
+
+	topbar.classList.remove('topbar-collapsed', 'topbar-preview');
+
+	// Etape 1 : est-ce que les 6 items + les boutons a droite tiennent reellement sur une ligne ?
+	let fullFits = isTasksTopbarSingleLine(topbar);
+	if(fullFits){
+		menuList.classList.remove('open');
+		return;
+	}
+
+	// Etape 2 : est-ce que les 3 premiers items + hamburger + les boutons a droite
+	// tiennent sur une ligne ?
+	topbar.classList.add('topbar-preview');
+	let previewFits = isTasksTopbarSingleLine(topbar);
+	if(previewFits){
+		return;
+	}
+
+	// Etape 3 : meme les 3 premiers ne rentrent pas -> hamburger seul
+	topbar.classList.remove('topbar-preview');
+	topbar.classList.add('topbar-collapsed');
+}
+
+window.addEventListener('load', checkTasksMenuOverflow);
+window.addEventListener('resize', checkTasksMenuOverflow);
+document.addEventListener('DOMContentLoaded', checkTasksMenuOverflow);
+setInterval(checkTasksMenuOverflow, 500);
+
+document.addEventListener('click', function(e){
+	let hamburger = document.getElementById('tasks_hamburger_btn');
+	let menuList = document.getElementById('tasks_menu_list');
+	if(!hamburger || !menuList) return;
+
+	if(e.target === hamburger || hamburger.contains(e.target)){
+		menuList.classList.toggle('open');
+	}
+	else if(!menuList.contains(e.target)){
+		menuList.classList.remove('open');
+	}
+});
+</script>
+
+		<form method="post" action="" enctype="multipart/form-data" class="form-inline">
+			<input type="hidden" id="id" value="92" />
+			<input type="hidden" id="project_id" value="19" />			
+
+			<div class="container">
+			  	<div class="row alignCenter marginTop25">
+					<div class="col-12">
+						<a href="projects.php"><img src="images/davidnahmias_logo.png" width="170px" height="170px" /></a>
+					</div>
+			    </div>
+				
+				<div class="row marginTop15 title dir-rtl">	
+					<div class="col-12">
+						<a id="a_project_title" class="text-decoration-none color-1A5276" href="meetings.php?project_id=19">
+						    <strong class="fontSize33 line-height-1em">BNY</strong>
+							<div class="fontSize26 font-family-david">פרוייקט הבנאי 2  ירושלים - טרא</div>
+					    </a>		
+					</div>				
+			    </div>
+
+                <div class="row marginTop10">
+				    <div class="col-1"></div>
+				    <div class="col-10 card bg-f2f6f9 border-frame borderRadius15 padding0">
+						<div class="card-header bgColor-1a5276 colorWhite alignCenter fontSize20" style="border-top-left-radius:15px;border-top-right-radius:15px;"><strong>בביצוע</strong></div>	  
+				        <div class="card-body">
+							<div class="flex margin-top-15-x-auto width50Percents dir-rtl">
+								<div class="width50Percents">	
+									<strong>שם</strong>
+									<br/>	
+									<input type="text" class="paddingRight10 marginTop5" name="name" id="name" placeholder="*שם" value="In Progress" />
+								</div>
+							
+								<div class="width50Percents">	
+									<strong>שם בעברית</strong>
+									<br/>	
+									<input type="text" class="paddingRight10 marginTop5" name="name_he" id="name_he" placeholder="*שם בעברית" value="בביצוע" 
+									readonly />	
+								</div>
+							</div>
+							
+							<div class="flex margin-top-15-x-auto width50Percents dir-rtl">
+								<div class="width50Percents">
+									<strong>צבע גופן</strong>
+									<br/>						
+									<input type="color" class="marginTop5 width200" name="color" id="color" placeholder="צבע גופן" value="#000000"  />
+								</div>
+							
+								<div class="width50Percents">
+									<strong>צבע רקע</strong>
+									<br/>					
+									<input type="color" class="marginTop5 width200" name="bgcolor" id="bgcolor" placeholder="צבע רקע" value="#56cc39"  />
+								</div>
+							</div>
+							
+							<div class="flex margin-top-15-x-auto width50Percents dir-rtl">
+								<div class="width50Percents">
+									<strong>עמודי רקע</strong>
+									<br/>						
+									<div class="marginTop5 paddingRight10 width80Percents border-black">
+										<div class="max-height-120 text-size overflow-y-scroll">
+											<div class="flex">
+												<div class="paddingTop5 width20Percents">
+													<input type="checkbox" id="bgcolor_subject" name="bgcolor_columns[]" value="subject"  />  
+												</div>
+												<div class="width80Percents">
+													נושא/תחום
+												</div>
+											</div>
+										   
+											<div class="flex">
+												<div class="paddingTop5 width20Percents">
+													<input type="checkbox" id="bgcolor_area" name="bgcolor_columns[]" value="area"  />  
+												</div>
+												<div class="width80Percents">
+													איזור/נושא
+												</div>
+											</div>
+										   
+											<div class="flex">
+												<div class="paddingTop5 width20Percents">
+													<input type="checkbox" id="bgcolor_description" name="bgcolor_columns[]" value="description"  />  
+												</div>
+												<div class="width80Percents">
+													תיאור
+												</div>
+											</div>
+
+											<div class="flex">
+												<div class="paddingTop5 width20Percents">
+													<input type="checkbox" id="bgcolor_task" name="bgcolor_columns[]" value="_task"  />  
+												</div>
+												<div class="width80Percents">
+													 סוגי משימה
+												</div>
+											</div>							    
+																		   
+											<div class="flex">
+												<div class="paddingTop5 width20Percents">
+													<input type="checkbox" id="bgcolor_responsible" name="bgcolor_columns[]" value="responsible"  />  
+												</div>
+												<div class="width80Percents">
+													 אחראיים
+												</div>
+											</div>
+											
+											<div class="flex">
+												<div class="paddingTop5 width20Percents">
+													<input type="checkbox" id="bgcolor_pass_on" name="bgcolor_columns[]" value="pass on"  />  
+												</div>
+												<div class="width80Percents">
+													 להעביר ל/לאשר מול
+												</div>
+											</div>
+											
+											<div class="flex">
+												<div class="paddingTop5 width20Percents">
+													<input type="checkbox" id="bgcolor_task_creation" name="bgcolor_columns[]" value="task creation"  />  
+												</div>
+												<div class="width80Percents">
+													 תאריך יצירת משימה
+												</div>
+											</div>
+											
+											<div class="flex">
+												<div class="paddingTop5 width20Percents">
+													<input type="checkbox" id="bgcolor_destination_date" name="bgcolor_columns[]" value="destination date"  />  
+												</div>
+												<div class="width80Percents">
+													 תאריך יעד
+												</div>
+											</div>
+											
+											<div class="flex">
+												<div class="paddingTop5 width20Percents">
+													<input type="checkbox" id="bgcolor_progress_status" name="bgcolor_columns[]" value="progress status"  />  
+												</div>
+												<div class="width80Percents">
+													 סטטוס התקדמות
+												</div>
+											</div>								
+										</div>
+									</div>
+								</div>
+									
+								<div class="width50Percents">
+									<strong>עמודי טקסט</strong>
+									<br/>						
+									<div class="marginTop5 paddingRight10 width80Percents border-black">
+										<div class="max-height-120 text-size overflow-y-scroll">
+											<div class="flex">
+												<div class="paddingTop5 width20Percents">
+													<input type="checkbox" id="text_subject" name="text_columns[]" value="subject"  />  
+												</div>
+												<div class="width80Percents">
+													נושא/תחום
+												</div>
+											</div>
+										   
+											<div class="flex">
+												<div class="paddingTop5 width20Percents">
+													<input type="checkbox" id="text_area" name="text_columns[]" value="area"  />  
+												</div>
+												<div class="width80Percents">
+													איזור/נושא
+												</div>
+											</div>
+										   
+											<div class="flex">
+												<div class="paddingTop5 width20Percents">
+													<input type="checkbox" id="text_description" name="text_columns[]" value="description"  />  
+												</div>
+												<div class="width80Percents">
+													תיאור
+												</div>
+											</div>
+
+											<div class="flex">
+												<div class="paddingTop5 width20Percents">
+													<input type="checkbox" id="text_task" name="text_columns[]" value="_task"  />  
+												</div>
+												<div class="width80Percents">
+													 סוגי משימה
+												</div>
+											</div>										
+																		   
+											<div class="flex">
+												<div class="paddingTop5 width20Percents">
+													<input type="checkbox" id="text_responsible" name="text_columns[]" value="responsible"  />  
+												</div>
+												<div class="width80Percents">
+													 אחראיים
+												</div>
+											</div>
+											
+											<div class="flex">
+												<div class="paddingTop5 width20Percents">
+													<input type="checkbox" id="text_pass_on" name="text_columns[]" value="pass on"  />  
+												</div>
+												<div class="width80Percents">
+													 להעביר ל/לאשר מול
+												</div>
+											</div>
+											
+											<div class="flex">
+												<div class="paddingTop5 width20Percents">
+													<input type="checkbox" id="text_task_creation" name="text_columns[]" value="task creation"  />  
+												</div>
+												<div class="width80Percents">
+													 תאריך יצירת משימה
+												</div>
+											</div>
+											
+											<div class="flex">
+												<div class="paddingTop5 width20Percents">
+													<input type="checkbox" id="text_destination_date" name="text_columns[]" value="destination date"  />  
+												</div>
+												<div class="width80Percents">
+													 תאריך יעד
+												</div>
+											</div>
+											
+											<div class="flex">
+												<div class="paddingTop5 width20Percents">
+													<input type="checkbox" id="text_progress_status" name="text_columns[]" value="progress status"  />  
+												</div>
+												<div class="width80Percents">
+													 סטטוס התקדמות
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							
+							<div class="row marginTop20 alignCenter dir-rtl">
+								<div class="col-12">
+									<div id="div_message_alert_down"></div>	
+									<input type="button" id="save_btn" name="save_btn" class="btn bgColorBlue colorWhite mb-2" value="שמור" />		
+									<input type="button" id="cancel_btn" class="btn marginRight10 bgColorBlack colorWhite mb-2" value="ביטול" />				
+								</div>
+							</div>		
+						</div>
+					</div>
+				</div>	        		
+            </div>			
+		</form>
+
+        <div id="progress-popup">
+            <p>Loading in progress...</p>
+            <div id="div-progress-bar">
+                <div id="progress-bar"></div>
+            </div>
+        </div>		
+    
+
+
+
+<style id="maquette-sc">
+/* ===== MAQUETTE - tous les boutons Enregistrer / Annuler / Fermer (pages ET popups) : meme style partout =====
+   enregistrer = fond bleu du site (#218FD6, bgColorBlue), annuler/fermer = fond noir (bgColorBlack), texte blanc, forme arrondie
+   seule l'apparence change : memes boutons, memes id, memes actions */
+html body .mq-sc.mq-sc.mq-sc.mq-sc.mq-sc { background:#218FD6 !important; color:#fff !important; border:1.5px solid #218FD6 !important; border-radius:999px !important;
+  padding:6px 18px !important; font-weight:700 !important; font-size:14px !important; box-shadow:none !important; height:auto !important;
+  width:auto !important; min-width:0 !important; line-height:1.4 !important; }
+html body .mq-sc.mq-sc.mq-sc.mq-sc.mq-sc:hover:not(:disabled) { background:#1a7bbd !important; border-color:#1a7bbd !important; }
+html body .mq-sc.mq-sc.mq-sc.mq-sc.mq-sc i { color:#fff !important; }
+html body .mq-sc.mq-sc.mq-sc.mq-sc.mq-sc.mq-sc-cancel { background:#000 !important; border-color:#000 !important; color:#fff !important; }
+html body .mq-sc.mq-sc.mq-sc.mq-sc.mq-sc.mq-sc-cancel:hover:not(:disabled) { background:#333 !important; border-color:#333 !important; }
+html body .mq-sc.mq-sc.mq-sc.mq-sc.mq-sc:disabled { opacity:.4; }
+</style>
+<script>
+(function(){
+  var SAVE = /^(\+\s*)?(שמור|שמירה|עדכן|save|update|ok|אישור|עבור לצוות ניהול|המשך|הבא)/i, CANCEL = /^(ביטול|סגור|בטל|cancel|close)/i;
+  function mark(){
+    document.querySelectorAll('input[type="button"], input[type="submit"], button, a.btn').forEach(function(b){
+      if(b.classList.contains('mq-sc') || b.closest('.topbar') || b.classList.contains('close') || b.classList.contains('btn-close')) return;
+      if(b.querySelector('img')) return;   // boutons-icones (grille d'actions des popups) : on n'y touche pas
+      var txt = ((b.value || b.textContent) || '').replace(/\s+/g, ' ').trim();
+      if(!txt) return;
+      if(CANCEL.test(txt)){ b.classList.add('mq-sc', 'mq-sc-cancel'); }
+      else if(SAVE.test(txt)){ b.classList.add('mq-sc'); }
+    });
+  }
+  mark();
+  window.addEventListener('load', function(){ mark(); setTimeout(mark, 800); });
+  document.addEventListener('shown.bs.modal', mark);   // popups : quand ils s'ouvrent
+  if(window.jQuery) jQuery(document).on('shown.bs.modal', mark);
+})();
+</script>
+
+<style id="maquette-champs">
+/* ===== MAQUETTE - memes regles de champs que les fiches du budget (commande, compte, paiement...) =====
+   listes deroulantes et zones de texte : 300px ; champs simples (texte court, montant, date) : 150px ; tous centres ;
+   la mise en colonnes de chaque fiche (1, 2 ou 3 colonnes) ne change pas. Seule l'apparence change. */
+.card.border-frame .card-body select:not([multiple]):not([id*="lang"]),
+.card.border-frame .card-body .chosen-container,
+.card.border-frame .card-body .select2-container,
+.card.border-frame .card-body textarea {
+  width:300px !important; max-width:100% !important; box-sizing:border-box; display:block; margin-left:auto !important; margin-right:auto !important; }
+.card.border-frame .card-body input.mq-full { width:150px !important; max-width:100% !important; box-sizing:border-box; display:block; margin-left:auto !important; margin-right:auto !important; }
+.card.border-frame .card-body .card.width95Percents { margin-left:auto !important; margin-right:auto !important; }
+/* liens d'action sans adresse (EN / HE...) : main au survol */
+.card.border-frame .card-body a[onclick] { cursor:pointer; }
+</style>
+<script>
+(function(){
+  function mark(){
+    document.querySelectorAll('.card.border-frame .card-body input').forEach(function(e){
+      if(e.classList.contains('mq-full') || e.classList.contains('mq-small')) return;
+      if(!/^(text|number|date|email|tel|password)$/.test(e.type)) return;
+      // champ de recherche interne aux listes deroulantes : on n'y touche pas
+      if(e.closest('.chosen-container, .select2-container, .select2-dropdown')) return;
+      // plusieurs champs sur la meme ligne (ex. nom du PDF en morceaux) : la ligne reste telle quelle
+      if(e.parentElement.querySelectorAll(':scope > input[type=text], :scope > input[type=number]').length > 1){ e.classList.add('mq-small'); return; }
+      e.classList.add(e.getBoundingClientRect().width >= 140 ? 'mq-full' : 'mq-small');
+    });
+  }
+  mark();
+  window.addEventListener('load', function(){ mark(); setTimeout(mark, 800); });
+})();
+</script>
+
+<style id="maquette-statut-form">
+/* ===== MAQUETTE - add_progress_status.php - aucun fichier du site modifie ===== */
+/* cadre moins large : la carte ne prend plus 10/12 de l'ecran, elle est centree a 560px maxi (colonnes vides de cote masquees) */
+.mq-form-row > .col-1 { display:none !important; }
+.mq-form-row > .card { flex:0 0 auto !important; width:560px !important; max-width:100% !important; margin:0 auto !important; }
+/* les blocs interieurs (2 colonnes) prennent toute la largeur de la carte au lieu de la moitie */
+.mq-form-row .card-body > .flex.width50Percents { width:100% !important; padding:0 10px; box-sizing:border-box; gap:16px; }
+/* champs et listes a cocher : la largeur de leur colonne */
+.mq-form-row .card-body input[type="text"] { width:100% !important; box-sizing:border-box; }
+.mq-form-row .card-body input[type="color"] { width:100% !important; max-width:200px; }
+.mq-form-row .card-body .width80Percents.border-black { width:100% !important; box-sizing:border-box; }
+/* titre EN FACE de son champ : chaque colonne est centree (titre + champ), les champs de couleur centres comme les champs texte */
+.mq-form-row .card-body > .flex.width50Percents > div { text-align:center; flex:1 1 0; min-width:0; }
+.mq-form-row .card-body > .flex.width50Percents > div > input[type="color"] { display:block; width:150px !important; max-width:100%; margin-left:auto !important; margin-right:auto !important; }
+.mq-form-row .card-body > .flex.width50Percents > div > .border-black { text-align:right; }   /* listes a cocher : texte a droite (hebreu) */
+/* tous les titres a la meme taille ; champs texte 220px maxi, centres */
+.mq-form-row .card-body > .flex.width50Percents > div > strong { font-size:16px !important; }
+.mq-form-row .card-body > .flex.width50Percents > div > input[type="text"] { display:block; max-width:220px !important; margin-left:auto !important; margin-right:auto !important; }
+/* smartphone : les 2 colonnes l'une sous l'autre */
+@media (max-width:560px){
+  .mq-form-row .card-body > .flex.width50Percents { flex-direction:column; gap:14px; }
+  .mq-form-row .card-body > .flex.width50Percents > div { flex:0 0 auto; width:100% !important; }
+}
+</style>
+<script>
+(function(){
+  // MAQUETTE SEULEMENT : "שמור" n'enregistre rien (pose au chargement complet, apres les scripts de la page)
+  window.addEventListener('load', function(){
+    if(window.jQuery){
+      var realAjax = jQuery.ajax;
+      jQuery.ajax = function(opts){
+        if(/progress_status_insert\.php/.test((opts && opts.url) || '')) return jQuery.Deferred().promise();
+        return realAjax.apply(this, arguments);
+      };
+    }
+  });
+  // repere la rangee de la carte (col-1 / col-10 card / col-1)
+  var card = document.querySelector('.card.border-frame');
+  if(card && card.parentElement) card.parentElement.classList.add('mq-form-row');
+})();
+</script>
+</body>
+</html>
+
+<script>
+$('#save_btn').click (function (e){ 
+    let bgcolor_columns = $('input[name="bgcolor_columns[]"]:checked')
+    .map(function() {
+          return this.value;
+    }).get().join(',');
+	
+	let text_columns = $('input[name="text_columns[]"]:checked')
+    .map(function() {
+          return this.value;
+    }).get().join(',');
+	
+	let form_data = new FormData();	
+	form_data.append('id',$('#id').val());
+	form_data.append('id_project',$('#project_id').val());
+	form_data.append('name',$('#name').val());
+	form_data.append('name_he',$('#name_he').val());
+	form_data.append('color',$('#color').val());
+	form_data.append('bgcolor',$('#bgcolor').val());
+	form_data.append('bgcolor_columns',bgcolor_columns);
+	form_data.append('text_columns',text_columns);
+	
+	$.ajax({
+		type: 'POST',
+		url: 'progress_status_insert.php',
+		data: form_data,
+		cache: false,
+		processData: false,
+		contentType: false,	
+        beforeSend: function() {
+			$("#progress-popup").show();
+			let progress = 0;
+			let interval = setInterval(function() {
+				if (progress < 90) {
+					progress += 10;
+					$("#progress-bar").css("width", progress + "%");
+				} else {
+					clearInterval(interval);
+				}
+			}, 200);
+			$("#progress-popup").data("interval", interval);
+		},		
+		success: function(data){ 
+		    if(data == 'hebrewchars') 
+				alert('The name contains hebrew characters.');
+			else if(data == 'englishchars')
+				alert('The hebrew name contains english characters.');					
+			else if(data == 'empty'){	
+                if($('#name').val().length == 0)			
+					$('#name').css('border-color','red');
+				else if(!($('#name').val().length == 0))
+					$('#name').css('border-color','initial');	
+				
+				if($('#name_he').val().length == 0)			
+					$('#name_he').css('border-color','red');
+				else if(!($('#name_he').val().length == 0))
+					$('#name_he').css('border-color','initial');	
+				
+				$('#div_message_alert_down').html("<span style=color:red;font-size:13px;>נא למלה את כל השדות החובות</span>");
+			}
+			else if(data == 'exists') 
+				$('#div_message_alert_down').html("<span style=color:red;font-size:13px;>טטוס התקדמות זה כבר קיים בפרוייקט זה</span>");
+			else 
+				location.href = 'progress_status.php?project_id='+$('#project_id').val();		
+		}
+	});												       			   
+})
+
+$('#cancel_btn').click(function(){
+    location.href = "progress_status.php?project_id="+$('#project_id').val();	
+})
+</script>
+
+<style>
+.btn:hover {
+   color: white;
+}
+
+.bgColorBlack:hover {
+	background-color: #45484d;
+}
+
+.bgColorBlue:hover {
+	background-color:#3370d6;
+}
+
+#a_project_title:hover {
+	color: grey;
+}
+</style>

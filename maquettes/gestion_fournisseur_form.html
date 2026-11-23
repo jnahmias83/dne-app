@@ -1,0 +1,1054 @@
+
+<head><base href="/">
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DNE</title>
+
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+          crossorigin="anonymous"></script>
+		  
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
+
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+  <link href="assets/dataTables/css/jquery.dataTables.css" rel="stylesheet" type="text/css" />
+  <link href="assets/dataTables/css/jquery.dataTables_themeroller.css" rel="stylesheet" type="text/css" />
+  <script src="assets/dataTables/js/jquery.dataTables.js" type="text/javascript"></script>
+  <script src="assets/dataTables/js/jquery.dataTables.columnFilter.js" type="text/javascript"></script>
+
+  <link href="css/custom.css?v=1716132787" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="css/style.css?v=1791461203" />
+
+  <script src="js/script.js?v=1793106707" type="text/javascript"></script>
+</head>
+
+<html>
+    <body>
+	    		    <nav class="navbar navbar-expand-md navbar-dark bg-4c555e">
+			    <div class="container-fluid px-3">
+					<div class="collapse navbar-collapse d-flex justify-content-between align-items-center" id="navbarSupportedContent">
+					    <ul class="navbar-nav dir-rtl">
+							<li class="nav-item dropdown">
+							    <a class="nav-link dropdown-toggle" id="projectsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+								    פרוייקטים
+							    </a>
+							    <ul class="dropdown-menu dropdown-menu-scrollable min-with-3rem cursor-pointer alignCenter dir-rtl" aria-labelledby="projectsDropdown">
+																    </ul>
+							</li>
+							<li class="nav-item dropdown">
+								<a class="nav-link dropdown-toggle" id="suppliersDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+									ספקים
+							    </a>
+								<ul class="dropdown-menu min-with-3rem dir-rtl alignCenter" aria-labelledby="suppliersDropdown">
+									<li><a class="dropdown-item" href="suppliers.php?type=D">מתכננים/יועצים</a></li>
+									<li><a class="dropdown-item" href="suppliers.php?type=S">ספקים/קבלנים</a></li>
+									<li><a class="dropdown-item" href="domains.php?lang_screen=HE">תחומי פעילות</a></li>
+								</ul>
+							</li>
+					    </ul>				
+						<ul class="navbar-nav dir-rtl align-items-center flex-row" id="header_icons_ul">
+							<li class="nav-item dropdown text-center px-2 d-flex align-items-center gap-2">
+								<a class="nav-link cursor-pointer" id="home_link">
+									<img src="images/white_home_icon.png" alt="home icon" width="30" height="30" />
+								</a>
+								<a class="nav-link" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+									<div class="padding-4x-4y borderRadius20 border-2px-solid-white font-weight-bold">									
+										<span class="fontSize13 colorWhite">DN</span>
+									</div>	
+								</a>
+								<ul class="dropdown-menu min-width-3rem dir-rtl text-end" aria-labelledby="userDropdown">
+									<li><a class="dropdown-item" href="add_project.php?id=0">הוסף פרוייקט</a></li>
+									<li><a class="dropdown-item" href="projects.php?is_inactive_project=1">פרוייקטים רדומים</a></li>
+																			<li><a class="dropdown-item" href="users.php">ניהול משתמשים</a></li>
+																		<li><a class="dropdown-item" href="vat.php">מע''מ</a></li>
+									<li><a class="dropdown-item" href="tasks_managment.php">ניהול סוגי משימות</a></li>
+									<li><a class="dropdown-item" href="progress_status_managment.php">ניהול סטטוס</a></li>
+									<li><a class="dropdown-item" href="meeting_types_managment.php">ניהול סוגי ישיבות</a></li>
+									<li><a class="dropdown-item" href="graphic_settings.php">הגדרות גוונים ורקע</a></li>
+									<li><a class="dropdown-item" href="logo_managment.php">תמונות לוגו</a></li>
+									<li><hr class="dropdown-divider"></li>
+									<li><a class="dropdown-item" href="kill_session.php"><i class="fa-solid fa-sign-out" style="margin-left:6px;color:#000;font-size:12px;"></i>התנתקות</a></li>
+								</ul>
+							</li>
+                         </ul>
+						<div class="header-logo-wrap">
+							<img src="images/my_project_logo.png" alt="My Project" class="header-logo" />
+						</div>
+					</div>
+			    </div>
+            </nav>
+	    		
+		<script>
+		$(document).on('click','#home_link',function(){
+			$('#left_initial_content').show();
+			$('#left_new_content').hide();
+			localStorage.removeItem('target');
+			localStorage.removeItem('prId');
+			localStorage.removeItem('bgcolor');
+			location.href = 'projects.php?filter_by=projects';
+		});
+		
+		function alignHeaderLogo(){
+			let homeEl = document.getElementById('home_link');
+			let dnEl = document.getElementById('userDropdown');
+			let logoWrap = document.querySelector('.header-logo-wrap');
+			if(!homeEl || !dnEl || !logoWrap) return;
+			logoWrap.style.marginLeft = '';
+			if(window.getComputedStyle(logoWrap).position !== 'static') return;
+			let homeRect = homeEl.getBoundingClientRect();
+			let dnRect = dnEl.getBoundingClientRect();
+			let leftRect = homeRect.left < dnRect.left ? homeRect : dnRect;
+			let rightRect = homeRect.left < dnRect.left ? dnRect : homeRect;
+			let gapCenter = (leftRect.right + rightRect.left) / 2;
+			let container = logoWrap.parentElement;
+			let containerRect = container.getBoundingClientRect();
+			let containerCenter = containerRect.left + containerRect.width / 2;
+			let manualNudgeTowardDn = -3;
+			logoWrap.style.marginLeft = (gapCenter - containerCenter + manualNudgeTowardDn) + 'px';
+		}
+		$(window).on('load resize', alignHeaderLogo);
+
+		function toProjectHome(project_id){
+			let form_data = new FormData();	
+	        form_data.append('id_project',project_id);
+	
+	
+			$.ajax({
+				type: 'POST',
+				url: 'set_id_project_session.php',
+				data: form_data,
+				cache: false,
+				processData: false,
+				contentType: false,			
+				success: function(data){ 
+				   location.href = 'meetings.php?project_id='+project_id;		
+				},
+			});				
+		}
+		</script>
+		
+		<style>
+		.navbar {
+			position: relative;
+		}
+
+		.navbar-nav {
+			flex-direction: row;
+		}
+
+		.header-logo-wrap {
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			transform: translate(-50%, -50%);
+			pointer-events: none;
+		}
+
+		.header-logo {
+			height: 38px;
+			width: auto;
+			display: block;
+		}
+
+		.navbar .dropdown {
+			position: relative; 
+		}
+
+		.navbar .dropdown-menu {
+			position: absolute;  
+			top: 100%;
+            min-width: 5rem;			
+			margin-top: 0;       
+			z-index: 1050;      
+		}
+		
+		.dropdown-item {
+			padding: 1px 7px;
+			font-size: 13px;
+		}
+		
+		.nav-link {
+			font-size: 14px;
+		}
+
+		@media (max-width: 600px) {
+			.nav-link {
+				font-size: 12px;
+			}
+			#navbarSupportedContent {
+				flex-direction: column;
+				align-items: center !important;
+			}
+			#navbarSupportedContent > ul {
+				justify-content: center;
+				flex-wrap: wrap;
+			}
+			.header-logo-wrap {
+				position: static;
+				transform: none;
+				width: 100%;
+				display: flex;
+				justify-content: center;
+				margin-top: 6px;
+				pointer-events: auto;
+			}
+		}
+
+		@media (orientation: landscape) and (max-height: 500px) {
+			#navbarSupportedContent {
+				flex-direction: column;
+				align-items: center !important;
+			}
+			#navbarSupportedContent > ul {
+				justify-content: center;
+				flex-wrap: wrap;
+			}
+			.header-logo-wrap {
+				position: static;
+				transform: none;
+				width: 100%;
+				display: flex;
+				justify-content: center;
+				margin-top: 6px;
+				pointer-events: auto;
+			}
+		}
+		</style>          
+
+		<form method="post" action="" enctype="multipart/form-data" class="form-inline">
+			<input type="hidden" id="id" value="1" />
+            <input type="hidden" id="project_id" value="" /> 			
+			<input type="hidden" id="type" value="D" />
+			<input type="hidden" id="from" value="" />
+			
+			<div class="container">
+			    <br/>
+
+				<div class="row alignCenter">
+					<div class="col-12">
+						<a href="projects.php"><img src="images/DNE logo.png" width="170" height="170" /></a>
+					</div>
+			    </div>
+			
+				<div class="row marginTop5">
+					<div class="col-12 title fontSize20">
+						פרטי מתכנן <br/> הוספה/עדכון					</div>
+				</div>
+
+                <div class="row marginTop10">
+				    <div class="col-2"></div>
+					<div class="col-8 border-frame">
+					    <div class="flex justify-content-space-around flex-wrap marginTop20 dir-rtl">
+							<div class="alignCenter width-one-of-three">
+                                <strong class="text-size">
+								   שם מתכנן בעברית								</strong>
+								
+								<div class="row marginTop10">
+									<div class="col-12">
+									    <input type="text" class="paddingRight10 width90Percents" name="supplier_name_he" id="supplier_name_he" placeholder="שם בעברית" value="ע ם. מתכות" />    
+									</div>
+								</div>
+							</div>
+
+                            <div class="alignCenter width-one-of-three">
+                                <strong class="text-size">EN</strong>
+								
+								<div class="row marginTop10">
+									<div class="col-12">
+									    <input type="text" class="paddingLeft10 width90Percents alignLeft" name="supplier_name" id="supplier_name" placeholder="Name" value="Maged" />    
+									</div>
+								</div>
+							</div>
+
+                            <div class="alignCenter width-one-of-three">
+                                <strong class="text-size">
+								   Nickname EN
+								</strong>
+								
+								<div class="row marginTop10">
+									<div class="col-12">
+									    <input type="text" class="paddingLeft10 width90Percents alignLeft" name="supplier_nickname" id="supplier_nickname" placeholder="Nickname" value="Maged" />    
+									</div>
+								</div>
+							</div>							
+                        </div>
+
+                        							<div id="suppliers_list_div">							
+								<div class="row marginTop20 alignCenter">
+									<div class="col-12">
+										<strong class="text-size">
+											תחום יעוץ/תכנון										</strong>
+									</div>
+								</div>												
+								<div class="row marginTop10 alignCenter">
+									<div class="col-12">
+										<select id="sup_field_of_work" class="paddingRight10 dir-rtl">							
+																									<option value="54" >
+															אגרונום														</option>
+																												<option value="13" >
+															אדריכלות														</option>
+																												<option value="128" >
+															הדמיות														</option>
+																												<option value="56" >
+															יועץ איטום														</option>
+																												<option value="5" >
+															יועץ אינסטלציה														</option>
+																												<option value="65" >
+															יועץ אלומניום														</option>
+																												<option value="55" >
+															יועץ אקוסטיקה														</option>
+																												<option value="57" >
+															יועץ בטיחות														</option>
+																												<option value="72" >
+															יועץ בטיחות														</option>
+																												<option value="103" >
+															יועץ בניה ירוקה														</option>
+																												<option value="70" >
+															יועץ בריכות														</option>
+																												<option value="130" >
+															יועץ גז														</option>
+																												<option value="66" >
+															יועץ הידרולוגיה														</option>
+																												<option value="3" >
+															יועץ חשמל														</option>
+																												<option value="75" >
+															יועץ טרמי														</option>
+																												<option value="76" >
+															יועץ כמויות														</option>
+																												<option value="124" >
+															יועץ מיגון														</option>
+																												<option value="6" >
+															יועץ מיזוג														</option>
+																												<option value="52" >
+															יועץ מעליות														</option>
+																												<option value="106" >
+															יועץ מעליות חניה 														</option>
+																												<option value="100" >
+															יועץ נגישות 														</option>
+																												<option value="17" >
+															יועץ קונסטרוקציה														</option>
+																												<option value="4" >
+															יועץ קרקע														</option>
+																												<option value="122" >
+															יועץ שימור														</option>
+																												<option value="50" >
+															יועץ תאורה														</option>
+																												<option value="10" >
+															יועץ תנועה														</option>
+																												<option value="8" >
+															מודד														</option>
+																												<option value="51" >
+															מכון העתקות														</option>
+																												<option value="47" >
+															ניהול פרויקט														</option>
+																												<option value="61" >
+															ניהול תיק היתר														</option>
+																												<option value="85" >
+															ענן לניהול פרויקט														</option>
+																												<option value="60" >
+															פיקוח														</option>
+																												<option value="68" >
+															פיתוח														</option>
+																												<option value="102" >
+															רישוי 														</option>
+																				
+										</select>
+									 </div>
+								</div>								
+							</div>
+                        					   
+						
+						<div class="flex justify-content-space-around flex-wrap marginTop20">
+							<div class="alignCenter width-one-of-three">
+							    <strong class="text-size">Cellular</strong>
+								
+							    <div class="row marginTop10">
+									<div class="col-12">				
+						                <input type="text" class="paddingLeft10 width90Percents" name="supplier_mobile" id="supplier_mobile" placeholder="Cellular" value="0526704630" />	
+							        </div>
+								</div>
+							</div>
+							
+							<div class="alignCenter width-one-of-three">
+                                <strong class="text-size">Phone</strong>
+								 
+							    <div class="row marginTop10">
+									<div class="col-12">
+                                        <input type="text" class="paddingLeft10 width90Percents" name="supplier_phone" id="supplier_phone" placeholder="Phone" value="025833208" />	
+							        </div>
+								</div>
+							</div>
+							
+							<div class="alignCenter width-one-of-three">
+							    <strong class="text-size">Email office</strong>
+							    
+                                <div class="row marginTop10">
+									<div class="col-12">								
+						                <input type="email" class="paddingLeft10 width90Percents" name="supplier_email_office" id="supplier_email_office" placeholder="*Email office" value="majedsalymah@gmail.com" />				    
+							        </div>
+							    </div>
+							</div>
+						</div>
+						
+						<div class="row marginTop20 fontSize18 alignCenter">
+							<div class="col-12">
+								Bank details							</div>					
+				       </div>
+					   
+					   <div class="flex justify-content-space-around flex-wrap marginTop20">
+							<div class="alignCenter width-one-of-three">
+							    <strong class="text-size">Account owner</strong>
+								
+							    <div class="row marginTop10">
+									<div class="col-12">			
+						                <input type="text" class="paddingLeft10 width90Percents" name="supplier_account_owner" id="supplier_account_owner" placeholder="Account owner" value="סלימה מאג'ד וסלימה רדוון" />
+                                    </div>	
+                                </div>
+                                
+                                <div class="row marginTop5">
+								     <div class="col-12 fontSize12 alignCenter">
+									     שם חברה כפי שהיא מופיעה <br/> בהזמנה/חשבונית 									 </div>
+                                </div>								
+							</div>
+							
+							<div class="alignCenter width-one-of-three">
+							    <strong class="text-size">Bank</strong>
+								
+							    <div class="row marginTop10">
+									<div class="col-12">				
+						                <input type="text" class="paddingLeft10 width90Percents" name="supplier_bank_name" id="supplier_bank_name" placeholder="Bank" value="10" />				 
+							        </div>
+							    </div>
+							</div>
+							
+							<div class="alignCenter width-one-of-three">
+							    <strong class="text-size">Branch</strong>
+								
+							    <div class="row marginTop10">
+									<div class="col-12">		
+						                <input type="text" class="paddingLeft10 width90Percents" name="supplier_bank_branche" id="supplier_bank_branche" placeholder="Branch" value="905" />
+							        </div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="flex justify-content-space-around flex-wrap marginTop20">
+						    <div class="alignCenter width-one-of-three">
+                                <strong class="text-size">Account #</strong>
+								
+								<div class="row marginTop10">
+									<div class="col-12">	
+									    <input type="text" class="paddingLeft10 width90Percents" name="supplier_account_number" id="supplier_account_number" placeholder="Account #" value="1424094" />	
+									</div>
+								</div>
+							</div>
+
+                            <div class="alignCenter width-one-of-three">
+                                <strong class="text-size">Swift</strong>
+								
+								<div class="row marginTop10">
+									<div class="col-12">	
+									    <input type="text" class="paddingLeft10 width90Percents" name="supplier_swift" id="supplier_swift" placeholder="Swift" value="swift1" />	
+									</div>
+								</div>
+						    </div>
+
+                            <div class="alignCenter width-one-of-three">
+                                 <strong class="text-size">Iban</strong>
+								 
+								 <div class="row marginTop10">
+									<div class="col-12">	
+									    <input type="text" class="paddingLeft10 width90Percents" name="supplier_iban" id="supplier_iban" placeholder="Iban" value="iban1" />	
+									</div>
+								</div>
+						    </div>							
+						</div>
+						
+						<div class="row marginTop20 alignCenter dir-rtl">
+							<div class="col-12">
+								<div id="div_message_alert_down"></div>	
+								<input type="button" id="cancel_btn" class="btn marginTop10 bgColorBlack colorWhite marginLeft8 mb-2" value="ביטול" />
+								<input type="button" id="save_btn" name="save_btn" class="btn marginTop10 colorWhite bgColorBlue mb-2" value="שמור" />						
+							</div>
+				        </div>	
+					</div>
+					<div class="col-2"></div>
+				</div>									
+            </div> 																					
+		</form>
+		
+		<div id="progress-popup">
+            <p>Loading in progress...</p>
+            <div id="div-progress-bar">
+                <div id="progress-bar"></div>
+            </div>
+        </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style id="maquette-sc">
+/* ===== MAQUETTE - tous les boutons Enregistrer / Annuler / Fermer (pages ET popups) : meme style partout =====
+   enregistrer = fond bleu du site (#218FD6, bgColorBlue), annuler/fermer = fond noir (bgColorBlack), texte blanc, forme arrondie
+   seule l'apparence change : memes boutons, memes id, memes actions */
+html body .mq-sc.mq-sc.mq-sc.mq-sc.mq-sc { background:#218FD6 !important; color:#fff !important; border:1.5px solid #218FD6 !important; border-radius:999px !important;
+  padding:6px 18px !important; font-weight:700 !important; font-size:14px !important; box-shadow:none !important; height:auto !important;
+  width:auto !important; min-width:0 !important; line-height:1.4 !important; }
+html body .mq-sc.mq-sc.mq-sc.mq-sc.mq-sc:hover:not(:disabled) { background:#1a7bbd !important; border-color:#1a7bbd !important; }
+html body .mq-sc.mq-sc.mq-sc.mq-sc.mq-sc i { color:#fff !important; }
+html body .mq-sc.mq-sc.mq-sc.mq-sc.mq-sc.mq-sc-cancel { background:#000 !important; border-color:#000 !important; color:#fff !important; }
+html body .mq-sc.mq-sc.mq-sc.mq-sc.mq-sc.mq-sc-cancel:hover:not(:disabled) { background:#333 !important; border-color:#333 !important; }
+html body .mq-sc.mq-sc.mq-sc.mq-sc.mq-sc:disabled { opacity:.4; }
+</style>
+<script>
+(function(){
+  var SAVE = /^(\+\s*)?(שמור|שמירה|עדכן|save|update|ok|אישור|עבור לצוות ניהול|המשך|הבא)/i, CANCEL = /^(ביטול|סגור|בטל|cancel|close)/i;
+  function mark(){
+    document.querySelectorAll('input[type="button"], input[type="submit"], button, a.btn').forEach(function(b){
+      if(b.classList.contains('mq-sc') || b.closest('.topbar') || b.classList.contains('close') || b.classList.contains('btn-close')) return;
+      if(b.querySelector('img')) return;   // boutons-icones (grille d'actions des popups) : on n'y touche pas
+      var txt = ((b.value || b.textContent) || '').replace(/\s+/g, ' ').trim();
+      if(!txt) return;
+      if(CANCEL.test(txt)){ b.classList.add('mq-sc', 'mq-sc-cancel'); }
+      else if(SAVE.test(txt)){ b.classList.add('mq-sc'); }
+    });
+  }
+  mark();
+  window.addEventListener('load', function(){ mark(); setTimeout(mark, 800); });
+  document.addEventListener('shown.bs.modal', mark);   // popups : quand ils s'ouvrent
+  if(window.jQuery) jQuery(document).on('shown.bs.modal', mark);
+})();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style id="maquette-design">
+/* ===== MAQUETTE - design commun (ecrans projet + budget) - aucun fichier du site modifie =====
+   meme logique que les maquettes deja validees : fond blanc casse, tableaux arrondis sans quadrillage, en-tete #dedede,
+   lignes bleu fonce / bleu moins fonce, boutons arrondis bordes de bleu, listes arrondies, langue avec globe */
+html, body { background:#f6f5f1 !important; }
+
+/* tableaux */
+table.mq-t { border-collapse:separate !important; border-spacing:0 !important; border:1px solid #C5B8AA !important; border-radius:14px !important;
+  overflow:hidden; background:#fff; }
+table.mq-t th, table.mq-t td { border:none !important; border-bottom:1px solid #eef0f3 !important; }
+table.mq-t tr:last-child > td { border-bottom:none !important; }
+/* en-tetes : gris clair, SAUF ceux qui ont une couleur de sens (beige = hors TVA, bleu ciel = TVA incluse...) qui la gardent */
+table.mq-t th:not([class*="bgColor"]), table.mq-t tr.mq-head > td:not([class*="bgColor"]) { background:#dedede !important; color:#1a5276 !important; font-weight:700; }
+table.mq-t th[class*="bgColor"] { color:#1a5276 !important; font-weight:700; }
+/* colonne blanche de separation (budget) : reste blanche, sans trait */
+table.mq-t .bgColorWhite { background:#fff !important; border-bottom-color:#fff !important; }
+/* tableau coupe en blocs par une colonne blanche (budget : hors TVA | TVA incluse) : un cadre arrondi par bloc */
+table.mq-t.mq-seg { border:none !important; border-radius:0 !important; overflow:visible; background:transparent; }
+table.mq-t.mq-seg .mq-sepcol { background:#f6f5f1 !important; border:none !important; }   /* couleur du fond de page (la couleur de la ligne ne doit pas passer dessous) */
+/* bords du cadre en cotes physiques (certaines cases des chiffres sont en sens gauche-droite) */
+table.mq-t.mq-seg .mq-e-r { border-right:1px solid #C5B8AA !important; }
+table.mq-t.mq-seg .mq-e-l { border-left:1px solid #C5B8AA !important; }
+table.mq-t.mq-seg .mq-e-t { border-top:1px solid #C5B8AA !important; }
+table.mq-t.mq-seg .mq-e-b { border-bottom:1px solid #C5B8AA !important; }
+table.mq-t.mq-seg .mq-e-t.mq-e-r { border-top-right-radius:14px; }
+table.mq-t.mq-seg .mq-e-t.mq-e-l { border-top-left-radius:14px; }
+table.mq-t.mq-seg .mq-e-b.mq-e-r { border-bottom-right-radius:14px; }
+table.mq-t.mq-seg .mq-e-b.mq-e-l { border-bottom-left-radius:14px; }
+/* budget : montants centres sous leur en-tete (en-tetes centres, montants colles a un bord -> decales) */
+/* blocs internes a 95% (ex. חשבון שהוגש / חשבון מאושר) : centres dans le cadre */
+.mq-form-row > .card .card-body .card.width95Percents { margin-left:auto !important; margin-right:auto !important; }
+table.mq-seg .td_budget_elem { text-align:center !important; padding-left:6px !important; padding-right:6px !important; }
+/* ligne vide de separation (ex. entre fournisseurs et totaux) : un vrai espace, sans couleur */
+table.mq-t tr.mq-spacer > td { background:transparent !important; border:none !important; height:16px; padding:0 !important; }
+/* plusieurs tableaux l'un sous l'autre : de l'air entre eux */
+table.mq-t { margin-bottom:18px; }
+table.mq-t tr.mq-dark > td.mq-bg { background-color:#a9c6e0 !important; }
+table.mq-t tr.mq-light > td.mq-bg { background-color:#d4e4f2 !important; }
+table.mq-t td img[src*="delete"], table.mq-t td img[src*="edit-button"] { padding:5px; box-sizing:content-box; border-radius:50%; transition:background .15s; }
+table.mq-t td img[src*="delete"]:hover { background:#fde6e6; }
+table.mq-t td img[src*="edit-button"]:hover { background:#e7eef5; }
+
+/* cartes */
+.card.border-frame { border:1px solid #C5B8AA !important; border-radius:15px !important; overflow:hidden; }
+
+/* boutons de la page (pas ceux de l'en-tete) : arrondis, bordes de bleu, sans fond */
+.container .btn, .container input[type="button"], .container input[type="submit"], .container-fluid .btn, .container-fluid input[type="button"] {
+  background:transparent !important; color:#1a5276 !important; border:1.5px solid #1a5276 !important; border-radius:999px !important;
+  padding:6px 16px !important; font-weight:700; font-size:14px !important; box-shadow:none !important; height:auto !important; }
+.container .btn:hover:not(:disabled), .container input[type="button"]:hover:not(:disabled), .container-fluid .btn:hover:not(:disabled) { background:#e3eef6 !important; }
+.container .btn i, .container-fluid .btn i { color:#1a5276 !important; }
+.container .btn.bgColorBlack, .container input.bgColorBlack, .container-fluid .btn.bgColorBlack { color:#4a4a4a !important; border-color:#8a8a8a !important; }
+.container .btn:disabled, .container input[type="button"]:disabled { opacity:.4; }
+
+/* cadres des formulaires (sans tableau) : centres, 620px au lieu de presque tout l'ecran */
+.mq-form-row > .col-1, .mq-form-row > .col-2, .mq-form-row > .col-3 { display:none !important; }
+/* fiches : une seule colonne de champs, tous a la meme largeur (300px), centres ; cadre de 400px aligne dessus */
+.mq-form-row > .card { flex:0 0 auto !important; width:400px !important; max-width:100% !important; margin-left:auto !important; margin-right:auto !important; }
+.mq-form-row:not(.mq-form-wide) > .card .card-body select,
+.mq-form-row:not(.mq-form-wide) > .card .card-body textarea,
+.mq-form-row:not(.mq-form-wide) > .card .card-body input.mq-full,
+.mq-form-row:not(.mq-form-wide) > .card .card-body .chosen-container,
+.mq-form-row:not(.mq-form-wide) > .card .card-body .select2-container {
+  width:300px !important; max-width:300px !important; box-sizing:border-box; display:block; margin-left:auto !important; margin-right:auto !important; }
+/* colonnes du site dans la fiche (col-8 entre deux col-2 vides...) : la colonne pleine prend toute la largeur, les vides disparaissent -> champs vraiment centres */
+.mq-form-row:not(.mq-form-wide) > .card .card-body .row > [class*="col-"]:empty { display:none !important; }
+.mq-form-row:not(.mq-form-wide) > .card .card-body .row > [class*="col-"]:not(:empty) { flex:0 0 100% !important; max-width:100% !important; }
+/* le parent d'une zone de saisie ne doit pas la retrecir (colonnes etroites du site) */
+.mq-form-row:not(.mq-form-wide) > .card .card-body :has(> textarea) { max-width:none !important; width:auto !important; flex:1 1 auto !important; }
+.mq-form-row:not(.mq-form-wide) > .card .card-body textarea { min-height:90px; }
+/* "EN | HE" au-dessus d'une zone de texte : aligne sur le bord de la zone (300px), pas sur le bord du cadre */
+.mq-form-row:not(.mq-form-wide) > .card .card-body :has(> textarea) > div.alignRight, .mq-form-row:not(.mq-form-wide) > .card .card-body :has(> textarea) > div.alignLeft { width:300px; max-width:100%; margin-left:auto; margin-right:auto; }
+/* EN | HE dans le meme bloc que la zone de texte (compte_form) */
+.mq-form-row:not(.mq-form-wide) > .card .card-body .row > [class*="col-"]:has(> a[onclick]):has(> div > textarea) { width:300px !important; max-width:100% !important; flex:0 0 auto !important; margin-left:auto !important; margin-right:auto !important; padding-left:0 !important; padding-right:0 !important; text-align:right; }
+/* EN | HE dans une ligne a part au-dessus de la zone de texte (paiement_form) */
+.mq-form-row:not(.mq-form-wide) > .card .card-body .row:has(+ .row textarea) > div:has(> a[onclick]) { flex:0 0 300px !important; width:300px !important; max-width:100% !important; margin-left:auto !important; margin-right:auto !important; padding-left:0 !important; padding-right:0 !important; text-align:right; }
+.mq-form-row:not(.mq-form-wide) > .card .card-body .row:has(+ .row textarea):has(> div > a[onclick]) > div:empty { display:none; }
+/* liens d'action sans adresse (EN / HE...) : main au survol */
+.card .card-body a[onclick], .container a[onclick] { cursor:pointer; }
+/* champs simples (montant, date, texte court) : plus etroits que la liste et la zone de texte, toujours centres */
+.mq-form-row:not(.mq-form-wide) > .card .card-body input.mq-full { width:150px !important; max-width:150px !important; }
+/* liens et textes longs (noms de fichiers PDF...) : passent a la ligne dans la meme largeur */
+.mq-form-row > .card .card-body a { overflow-wrap:anywhere; word-break:break-word; }
+.mq-form-row:not(.mq-form-wide) > .card .card-body a[href*=".pdf"], .mq-form-row:not(.mq-form-wide) > .card .card-body a[href*="uploads"] { display:inline-block; max-width:300px; }
+/* fiche large (avec un tableau, ex. estimation) : la zone de texte hors tableau est quand meme centree a 300px, EN | HE aligne dessus */
+.mq-form-row.mq-form-wide > .card .card-body .row:has(> [class*="col-"] > textarea) > [class*="col-"]:empty { display:none !important; }
+.mq-form-row.mq-form-wide > .card .card-body .row > [class*="col-"]:has(> textarea) { flex:0 0 100% !important; max-width:100% !important; }
+.mq-form-row.mq-form-wide > .card .card-body .row > [class*="col-"] > textarea { width:300px !important; max-width:100% !important; box-sizing:border-box; display:block; margin-left:auto !important; margin-right:auto !important; }
+.mq-form-row.mq-form-wide > .card .card-body .row > [class*="col-"]:has(> textarea) > div.alignRight { width:300px; max-width:100%; margin-left:auto; margin-right:auto; }
+/* ===== DEBUT BLOC DATATABLES : CSS seul, a coller tel quel sur le site APRES jquery.dataTables.css =====
+   (fournisseurs, domaines, utilisateurs... : aucune classe ajoutee par JS, tient apres tri / recherche / changement de page) */
+/* le tableau prend la largeur de son contenu (pas tout l'ecran), centre ; la ligne Show / Search se cale dessus */
+.dataTables_wrapper { width:fit-content !important; max-width:min(100%, 1100px) !important; margin-left:auto !important; margin-right:auto !important; }
+table.dataTable { width:auto !important; max-width:100% !important; border-collapse:separate !important; border-spacing:0 !important;
+  border:1px solid #C5B8AA !important; border-radius:14px !important; overflow:hidden; margin-bottom:18px; }
+/* DataTables ecrit une largeur en dur sur chaque titre : ignoree, les colonnes peuvent retrecir */
+table.dataTable thead th, table.dataTable tfoot th { width:auto !important; }
+/* titres : background-COLOR seulement (pas "background"), sinon les fleches de tri de DataTables disparaissent */
+table.dataTable thead th, table.dataTable thead td { background-color:#dedede !important; color:#1a5276 !important; font-weight:700;
+  padding:10px 22px 10px 8px !important; border:none !important; border-bottom:1px solid #C5B8AA !important; }
+/* lignes : bleu fonce / bleu clair en alternance, en CSS (juste apres chaque tri, filtre, page) */
+table.dataTable tbody tr:nth-child(odd) > td, table.dataTable tbody tr:nth-child(odd) > td.sorting_1 { background-color:#a9c6e0 !important; }
+table.dataTable tbody tr:nth-child(even) > td, table.dataTable tbody tr:nth-child(even) > td.sorting_1 { background-color:#d4e4f2 !important; }
+table.dataTable tbody td { padding:8px !important; border:none !important; overflow-wrap:anywhere; }   /* e-mails longs : passent a la ligne */
+/* filtres de colonne (columnFilter) : prennent la largeur de leur colonne au lieu d'imposer 140px */
+table.dataTable tfoot th, table.dataTable tfoot td { padding:6px 4px !important; background-color:#fff !important; border:none !important; position:relative; height:40px; }
+/* le filtre est pose par-dessus sa case : il suit la largeur de la colonne sans l'elargir (sinon ~180px minimum par colonne) */
+.dataTables_wrapper table.dataTable tfoot th input.text_filter, .dataTables_wrapper table.dataTable tfoot td input.text_filter, table.dataTable tfoot th input, table.dataTable tfoot td input { position:absolute !important; left:4px; right:4px; top:6px; width:calc(100% - 8px) !important; }
+.dataTables_wrapper input.text_filter, table.dataTable tfoot input, table.dataTable thead input { width:100% !important; min-width:0 !important; max-width:100% !important; box-sizing:border-box !important; padding-left:6px !important; padding-right:6px !important; }
+/* fournisseurs / concepteurs : les 2 colonnes de telephone ne se coupent jamais (seuls les e-mails passent a la ligne) */
+#suppliers_list tbody td:nth-child(5), #suppliers_list tbody td:nth-child(6),
+#designers_list tbody td:nth-child(5), #designers_list tbody td:nth-child(6) { white-space:nowrap; overflow-wrap:normal; }
+/* colonne Nickname (3e) plus etroite : le texte passe a la ligne */
+#suppliers_list thead th:nth-child(3), #designers_list thead th:nth-child(3) { width:70px !important; }
+#suppliers_list tbody td:nth-child(3), #designers_list tbody td:nth-child(3) { width:70px; }
+/* ===== FIN BLOC DATATABLES ===== */
+/* fiche utilisateur (ajout / modification) : champs 200px (au lieu de 250), centres ; 3 -> 2 -> 1 par ligne selon l'ecran */
+.container:has(#privileges) input.width250 { width:200px !important; max-width:100% !important; box-sizing:border-box; }
+.container:has(#privileges) .row:has(> .col-4 > input.width250) { justify-content:center; }
+@media (max-width:900px){ .container:has(#privileges) .row > .col-4:has(> input.width250){ flex:0 0 50% !important; max-width:50% !important; } }
+@media (max-width:560px){ .container:has(#privileges) .row > .col-4:has(> input.width250){ flex:0 0 100% !important; max-width:100% !important; } }
+/* gestion des statuts : colonne "שם בעברית" (2e) resserree sur son texte (100px -> 70px) */
+#progress_status_list tr > :nth-child(2) { width:1px !important; white-space:nowrap; padding-left:8px !important; padding-right:8px !important; }
+/* colonnes couleur (3e et 4e) : 90px pour une pastille de 30px -> 50px */
+#progress_status_list tr > :nth-child(3), #progress_status_list tr > :nth-child(4) { width:50px !important; padding-left:4px !important; padding-right:4px !important; }
+/* couleurs (צבע רקע / צבע גופן) dans les tableaux : pastille ronde au lieu d'un rectangle ; meme champ, meme clic, meme action */
+table input[type="color"] { -webkit-appearance:none; appearance:none; width:30px !important; height:30px !important; min-width:30px; padding:0 !important; margin:2px auto !important; display:block;
+  border:1.5px solid #c9d7e3 !important; border-radius:50% !important; background:none !important; cursor:pointer; overflow:hidden; box-sizing:border-box; }
+table input[type="color"]::-webkit-color-swatch-wrapper { padding:0; }
+table input[type="color"]::-webkit-color-swatch { border:none; border-radius:50%; }
+table input[type="color"]::-moz-color-swatch { border:none; border-radius:50%; }
+/* cadre bleu du module d'estimation : marge interieure pour que la zone de texte ne colle pas a la bordure */
+#costs_eval_modul_div { padding-left:16px !important; padding-right:16px !important; box-sizing:border-box; }
+#costs_eval_modul_div > .row { margin-left:0 !important; margin-right:0 !important; }
+/* tableau des lignes du module : centre dans le cadre bleu ; sur petit ecran il defile au lieu de deborder */
+#costs_eval_modul_div > .row > .col-12:has(> table) { margin-left:0 !important; margin-right:0 !important; padding-left:0 !important; padding-right:0 !important; overflow-x:auto; }
+#costs_eval_modul_div table { margin-left:auto !important; margin-right:auto !important; }
+.mq-form-row.mq-form-wide > .card { width:fit-content !important; min-width:400px; max-width:min(760px, 100%) !important; }
+/* pages de formulaire sans cadre (ex. utilisateur, fournisseur) : la zone du formulaire est resserree au lieu de prendre tout l'ecran */
+body.mq-form-page .container { max-width:780px !important; }
+
+/* langue : pilule avec globe */
+.mq-lang-box { position:relative; display:inline-flex; align-items:center; direction:rtl; }
+.mq-lang-box > i { position:absolute; right:10px; color:#1a5276; font-size:14px; pointer-events:none; }
+.mq-lang-box > select { -webkit-appearance:none; appearance:none; width:auto !important; min-width:110px; height:32px !important; margin:0 !important;
+  padding:0 30px 0 28px !important; border:1.5px solid #c9d7e3 !important; border-radius:999px !important; background-color:#fff; color:#1a5276; font-weight:700; cursor:pointer;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%231a5276'/%3E%3C/svg%3E");
+  background-repeat:no-repeat; background-position:left 11px center; }
+
+/* bouton "תקציב" du menu : moins large (meme reglage que les autres maquettes) */
+.btn-budget { padding:5px 10px !important; }
+.btn-budget i { margin-left:6px !important; }
+.btn-budget .budget-btn-arrow { margin-right:4px !important; margin-left:0 !important; }
+</style>
+<script>
+(function(){
+  // ---------- MAQUETTE SEULEMENT : aucun enregistrement possible ----------
+  // tout appel qui ecrit (insert / delete / update / set_ / reorder / upload / send...) est bloque ; les lectures restent
+  var WRITE = /(insert|delete|update|_set|set_|reorder|remove|save|upload|send|fill_global|duplicate|archive|cleanup|unset|_add|add_to)/i;
+  var oOpen = XMLHttpRequest.prototype.open, oSend = XMLHttpRequest.prototype.send;
+  // + les fichiers "setXxx.php" sans souligne (ex. setEtrpData.php, setNewTaskData.php)
+  // + tout appel en arriere-plan vers "add_xxx.php" (ex. add_meeting_to_do_today.php, appele automatiquement par le tableau de bord)
+  var isWrite = function(u){ u = String(u || ''); return WRITE.test(u) || /(^|\/)set[A-Z]/.test(u) || /(^|\/)add_/.test(u); };
+  XMLHttpRequest.prototype.open = function(m, u){ this._mqBlock = isWrite(u); return oOpen.apply(this, arguments); };
+  XMLHttpRequest.prototype.send = function(){ if(this._mqBlock) return; return oSend.apply(this, arguments); };
+  if(window.fetch){ var oFetch = window.fetch; window.fetch = function(u){ if(isWrite(u && u.url || u)) return new Promise(function(){}); return oFetch.apply(this, arguments); }; }
+  document.addEventListener('submit', function(e){ e.preventDefault(); e.stopPropagation(); }, true);   // aucun formulaire envoye
+  // langue dans l'adresse (?lang_screen=EN) : sur le site, PHP preselectionne la langue au rechargement ; ici on fait pareil
+  (function(){
+    var q = new URLSearchParams(location.search).get('lang_screen');
+    if(q !== 'EN' && q !== 'HE') return;
+    var s = document.getElementById('lang'), ls = document.getElementById('lang_screen');
+    if(s){ s.value = q; }
+    if(ls){ ls.value = q; }
+  })();
+  // langue de l'ecran (budget...) : sur le site, le choix est enregistre puis la page se recharge ; ici l'enregistrement est bloque,
+  // donc on met la langue choisie dans le champ cache #lang_screen AVANT le code de la page, qui reecrit alors les libelles
+  document.addEventListener('change', function(e){
+    var ls = document.getElementById('lang_screen');
+    if(e.target && e.target.id === 'lang' && ls){ ls.value = e.target.value; setTimeout(style, 150); }
+  }, true);
+
+  function style(){
+    // page de formulaire (des champs, aucune liste d'enregistrements, aucun cadre de formulaire) : zone resserree
+    if(!document.body.classList.contains('mq-form-page') && !document.querySelector('.card.border-frame')
+       && document.querySelectorAll('.container input[type="text"], .container input[type="email"], .container input[type="password"], .container select, .container textarea').length >= 3
+       && !Array.prototype.some.call(document.querySelectorAll('.container table'), function(t){ return t.querySelectorAll('tr').length > 3; })){
+      document.body.classList.add('mq-form-page');
+    }
+    // cadres des formulaires sans tableau : moins larges
+    document.querySelectorAll('.card.border-frame').forEach(function(c){
+      var row = c.parentElement;
+      if(!row || row.classList.contains('mq-form-row')) return;
+      if(c.querySelector('table')) row.classList.add('mq-form-wide');   // cadre avec un tableau dedans (ex. modules d'une estimation) : un peu plus large
+      if(/col-(1|2|3)\b/.test(Array.prototype.map.call(row.children, function(x){ return x.className; }).join(' '))) row.classList.add('mq-form-row');
+    });
+    // champs de saisie "pleine largeur" (pas les petits champs comme "מע''מ %", qui gardent leur taille a cote de leur libelle)
+    document.querySelectorAll('.mq-form-row:not(.mq-form-wide) > .card .card-body input').forEach(function(e){
+      if(e.classList.contains('mq-full') || e.classList.contains('mq-small')) return;
+      // champ de recherche INTERNE aux listes deroulantes (chosen / select2) : on n'y touche pas, il suit la largeur de sa liste
+      if(e.closest('.chosen-container, .select2-container, .select2-dropdown')) return;
+      if(!/^(text|number|date|email|tel|password)$/.test(e.type)) return;
+      // plusieurs champs sur la meme ligne (ex. nom du PDF en plusieurs morceaux) : on garde la ligne telle quelle
+      if(e.parentElement.querySelectorAll(':scope > input[type=text], :scope > input[type=number]').length > 1){ e.classList.add('mq-small'); return; }
+      e.classList.add(e.getBoundingClientRect().width >= 140 ? 'mq-full' : 'mq-small');
+    });
+    // si des champs places cote a cote ne tiennent pas dans 400px (ex. reglages PDF : 4 champs), la fiche passe en version large
+    document.querySelectorAll('.mq-form-row:not(.mq-form-wide) > .card').forEach(function(c){
+      var r = c.getBoundingClientRect();
+      var over = Array.prototype.some.call(c.querySelectorAll('.card-body input, .card-body select, .card-body textarea, .card-body button'), function(e){ var b = e.getBoundingClientRect(); return b.width && (b.left < r.left - 5 || b.right > r.right + 5); });
+      if(over) c.parentElement.classList.add('mq-form-wide');
+    });
+    // un tableau qui contient en fait DEUX tableaux (ligne vide puis un nouvel en-tete, ex. budget : fournisseurs / totaux)
+    // -> affiche comme deux tableaux distincts, chacun avec son cadre, colonnes alignees ; memes cases, memes id
+    document.querySelectorAll('.container table, .container-fluid table').forEach(function(t){
+      if(t.dataset.mqSplit || t.closest('.topbar')) return;
+      var rows = Array.prototype.slice.call(t.querySelectorAll(':scope > tr, :scope > tbody > tr'));
+      for(var k = 1; k < rows.length - 1; k++){
+        var r = rows[k], next = rows[k + 1];
+        var empty = !r.textContent.replace(/ /g, ' ').trim() && !r.querySelector('img, input, select, a, i');
+        if(!empty || !next.querySelector('th')) continue;
+        // largeurs des colonnes du 1er tableau (d'apres une ligne complete), pour aligner le 2e
+        var full = rows.filter(function(x){ return !x.querySelector('[colspan]'); })[0];
+        var widths = full ? Array.prototype.map.call(full.children, function(c){ return c.getBoundingClientRect().width; }) : [];
+        var total = t.getBoundingClientRect().width;
+        var t2 = document.createElement('table');
+        Array.prototype.forEach.call(t.attributes, function(a){ if(a.name !== 'id') t2.setAttribute(a.name, a.value); });
+        var body2 = document.createElement('tbody'); t2.appendChild(body2);
+        rows.slice(k + 1).forEach(function(x){ body2.appendChild(x); });
+        r.parentNode.removeChild(r);                      // la ligne vide devient l'espace entre les deux tableaux
+        t.parentNode.insertBefore(t2, t.nextSibling);
+        [t, t2].forEach(function(x){
+          x.style.width = total + 'px'; x.style.tableLayout = 'fixed';
+          if(widths.length){ var cg = document.createElement('colgroup'); widths.forEach(function(w){ var c = document.createElement('col'); c.style.width = w + 'px'; cg.appendChild(c); }); x.insertBefore(cg, x.firstChild); }
+        });
+        t2.style.direction = t.style.direction;
+        // la page change le sens (hebreu / anglais) sur le 1er tableau : le 2e suit
+        new MutationObserver(function(){ t2.style.direction = t.style.direction; }).observe(t, {attributes:true, attributeFilter:['style']});
+        break;
+      }
+      t.dataset.mqSplit = '1';
+    });
+    // tableaux de la page (pas ceux de l'en-tete)
+    document.querySelectorAll('.container table, .container-fluid table').forEach(function(t){
+      if(t.closest('.topbar') || t.querySelectorAll('tr').length < 2) return;
+      // tableaux DataTables : design en CSS seul (bloc DATATABLES), aucune classe posee ici -> comme sur le vrai site
+      if(t.classList.contains('dataTable') || (window.jQuery && jQuery.fn.dataTable && jQuery.fn.dataTable.fnIsDataTable && jQuery.fn.dataTable.fnIsDataTable(t))){
+        t.classList.remove('mq-t');
+        t.querySelectorAll('tr').forEach(function(r){ r.classList.remove('mq-head', 'mq-dark', 'mq-light', 'mq-spacer'); });
+        t.querySelectorAll('td.mq-bg').forEach(function(td){ td.classList.remove('mq-bg'); });
+        return;
+      }
+      t.classList.add('mq-t');
+      // recalcul a chaque passage : la page remplit certains textes (ex. "סה''כ") apres le premier passage
+      t.querySelectorAll('tr').forEach(function(r){ r.classList.remove('mq-head', 'mq-dark', 'mq-light', 'mq-spacer'); });
+      t.querySelectorAll('td.mq-bg').forEach(function(td){ td.classList.remove('mq-bg'); });
+      // tableau de mise en page (listes de cases a cocher, champs...) : cadre arrondi seulement, pas de lignes bleues
+      if(t.querySelectorAll('input[type="checkbox"], input[type="radio"], input[type="text"], select, textarea').length > t.querySelectorAll('tr').length){
+        t.querySelectorAll('tr').forEach(function(r){ if(r.querySelector('th')) r.classList.add('mq-head'); });
+        return;
+      }
+      var i = 0;
+      var rows = t.querySelectorAll(':scope > tr, :scope > tbody > tr, :scope > thead > tr');
+      // ligne de total (סה"כ / Total / en gras) : garde la couleur definie par le site, jamais d'alternance
+      var isTotal = function(r){ return /סה[^\sא-ת]{1,3}כ|total/i.test(r.textContent) || /font-weight-bold/.test(r.className); };
+      // tableau sans ligne d'en-tete = petit tableau de synthese (ex. pourcentages payes) : pas une liste d'enregistrements
+      var hasHead = Array.prototype.some.call(rows, function(r){ return r.querySelector('th') || r.classList.contains('bgColorSilver'); });
+      var afterTotal = false;   // tout ce qui suit une ligne de total = lignes de synthese (ex. "סכום לתשלום")
+      rows.forEach(function(r){
+        if(r.querySelector('th') || r.classList.contains('bgColorSilver')){ r.classList.add('mq-head'); return; }
+        if(isTotal(r)) afterTotal = true;
+        if(afterTotal || !hasHead) return;
+        // ligne vide = separation : on la laisse vide
+        // (une ligne vide dont une case a sa propre couleur n'est PAS une separation : elle garde sa couleur)
+        var hasColor = r.querySelector('td[class*="bgColor"]:not(.bgColorWhite), td[style*="background"]');
+        if(!hasColor && !r.textContent.replace(/ /g, ' ').trim() && !r.querySelector('img, input, select, a, i')){ r.classList.add('mq-spacer'); return; }
+        // ligne qui a deja sa propre couleur (totaux, mise en evidence...) : elle la garde
+        // (sauf le simple "une ligne sur deux" gris/blanc du site, ex. budget : remplace par l'alternance bleue)
+        var rb = (r.style.backgroundColor || '').replace(/\s/g, '');
+        var zebra = rb === '' || rb === 'rgb(255,255,255)' || rb === 'rgb(222,222,222)';
+        // ligne d'enregistrement (commande, paiement, compte...) : toujours en bleu, la 1re en bleu fonce, meme si elle est seule
+        if(!zebra || /bgColor|bg-/.test(r.className) || isTotal(r)) return;
+        if(rb) r.style.backgroundColor = '';
+        r.classList.add(i % 2 === 0 ? 'mq-dark' : 'mq-light'); i++;
+        r.querySelectorAll(':scope > td').forEach(function(td){
+          // les cases qui ont deja leur propre couleur (statut, alerte...) la gardent
+          if(!td.style.backgroundColor && !/bgColor|bg-/.test(td.className)) td.classList.add('mq-bg');
+        });
+      });
+    });
+    // blocs separes par une colonne blanche (.bgColorWhite dans chaque ligne a la meme position) : un cadre par bloc
+    document.querySelectorAll('table.mq-t').forEach(function(t){
+      var rows = Array.prototype.filter.call(t.querySelectorAll(':scope > tr, :scope > tbody > tr'), function(r){ return !r.classList.contains('mq-spacer'); });
+      if(rows.length < 2) return;
+      // position (en colonnes) de chaque case
+      var grid = rows.map(function(r){ var col = 0; return Array.prototype.map.call(r.children, function(c){ var s = col; col += (c.colSpan || 1); return {c:c, s:s, e:col - 1}; }); });
+      var sepCols = null;
+      grid.forEach(function(cells){
+        var mine = cells.filter(function(x){ return x.c.classList.contains('bgColorWhite') && x.s === x.e; }).map(function(x){ return x.s; });
+        sepCols = sepCols === null ? mine : sepCols.filter(function(v){ return mine.indexOf(v) >= 0; });
+      });
+      if(!sepCols || !sepCols.length) return;
+      t.classList.add('mq-seg');
+      var rtl = getComputedStyle(t).direction === 'rtl';
+      var ncols = Math.max.apply(null, grid.map(function(cells){ return cells.length ? cells[cells.length - 1].e + 1 : 0; }));
+      // blocs = plages de colonnes entre les colonnes blanches
+      var blocks = [], start = 0;
+      sepCols.concat([ncols]).sort(function(a, b){ return a - b; }).forEach(function(sc){ if(sc > start) blocks.push([start, sc - 1]); start = sc + 1; });
+      grid.forEach(function(cells, ri){
+        cells.forEach(function(x){
+          x.c.classList.remove('mq-e-r', 'mq-e-l', 'mq-e-t', 'mq-e-b', 'mq-sepcol');
+          if(sepCols.indexOf(x.s) >= 0 && x.s === x.e){ x.c.classList.add('mq-sepcol'); return; }
+          blocks.forEach(function(b){
+            if(x.s === b[0]) x.c.classList.add(rtl ? 'mq-e-r' : 'mq-e-l');   // debut du bloc : a droite en hebreu
+            if(x.e === b[1]) x.c.classList.add(rtl ? 'mq-e-l' : 'mq-e-r');
+          });
+          if(ri === 0) x.c.classList.add('mq-e-t');
+          if(ri === grid.length - 1) x.c.classList.add('mq-e-b');
+        });
+      });
+    });
+    // langue : globe
+    document.querySelectorAll('select[id*="lang"]').forEach(function(s){
+      if(s.parentElement.classList.contains('mq-lang-box') || s.closest('.topbar')) return;
+      var col = s.parentElement, old = col ? col.querySelector(':scope > i.fa-globe') : null; if(old) old.style.display = 'none';
+      var box = document.createElement('span'); box.className = 'mq-lang-box'; box.innerHTML = '<i class="fa-solid fa-globe"></i>';
+      s.parentNode.insertBefore(box, s); box.appendChild(s);
+    });
+  }
+  style();
+  window.addEventListener('load', function(){ style(); setTimeout(style, 800); });
+})();
+</script>
+</body>
+</html>
+
+<script>
+$('#field_of_work_name').on('change', function (){
+	$('#suppliers_list_div').hide();
+});
+
+$('#sup_field_of_work').chosen();
+
+$('#save_btn').click (function (e){  
+    let supplier_type = 'S';
+    if($('#type').val() == 'D') 
+	   supplier_type = 'D';
+    if($('#type').val() == 'M') 
+	   supplier_type = 'M';
+  
+	let form_data = new FormData();	
+	form_data.append('id',$('#id').val());
+	form_data.append('supplier_name',$('#supplier_name').val());
+	form_data.append('supplier_name_he',$('#supplier_name_he').val());
+	form_data.append('supplier_nickname',$('#supplier_nickname').val());
+	form_data.append('supplier_type',supplier_type);
+	form_data.append('id_field_of_work',$('#sup_field_of_work').val());
+	form_data.append('supplier_phone',$('#supplier_phone').val());
+	form_data.append('supplier_mobile',$('#supplier_mobile').val());
+	form_data.append('supplier_email_office',$('#supplier_email_office').val());
+	form_data.append('supplier_account_owner',$('#supplier_account_owner').val());
+	form_data.append('supplier_bank_name',$('#supplier_bank_name').val());
+	form_data.append('supplier_bank_branche',$('#supplier_bank_branche').val());
+	form_data.append('supplier_account_number',$('#supplier_account_number').val());
+	form_data.append('supplier_swift',$('#supplier_swift').val());
+	form_data.append('supplier_iban',$('#supplier_iban').val());
+	
+	$.ajax({
+		type: 'POST',
+		url: 'supplier_insert.php',
+		data: form_data,
+		cache: false,
+		processData: false,
+		contentType: false,	
+        	beforeSend: function() {
+			$("#progress-popup").show();
+			let progress = 0;
+			let interval = setInterval(function() {
+				if (progress < 90) {
+					progress += 10;
+					$("#progress-bar").css("width", progress + "%");
+				} else {
+					clearInterval(interval);
+				}
+			}, 200);
+			$("#progress-popup").data("interval", interval);
+		},		
+		success: function(data){  
+		    if(data == 'hebrewchars') 
+				alert('The supplier name or the supplier nickname contains hebrew characters.');
+			else if(data == 'englishchars')
+				alert('The supplier hebrew name contains english characters.');
+			else if(data == 'illegalbankname')
+				alert('Illegal bank name - numeric & two digits.');
+			else if(data == 'illegalbankbranche')
+				alert('Illegal bank branche - numeric & three digits.');
+			else if(data == 'empty') {
+				if($('#supplier_name').val().length == 0)			
+					$('#supplier_name').css('border-color','red');
+				else if(!($('#supplier_name').val().length == 0))
+					$('#supplier_name').css('border-color','initial');	
+				
+				if($('#supplier_email_office').val().length == 0)			
+					$('#supplier_email_office').css('border-color','red');
+				else if(!($('#supplier_email_office').val().length == 0))
+					$('#supplier_email_office').css('border-color','initial');	
+				
+				$('#div_message_alert_down').html("<span style=color:red;font-size:13px;>Please fill all the mandatory fields.</span>"); 
+			}
+			else if(data == 'exists') 
+				$('#div_message_alert_down').html("<span style=color:red;font-size:13px;>Please enter a domain that not already exist on the following list.</span>"); 
+			else {
+			    let url = 'suppliers.php?type='+$('#type').val();
+				if($('#type').val() == 'M')
+					url = 'users.php';
+			    if($('#from').val() == 'add_sup_to_proj')
+			       url = 'add_sup_to_proj.php?id='+$('#project_id').val();
+			    else if($('#from').val() == 'payments_wires')
+			       url = 'payments_wires.php?project_id='+$('#project_id').val();
+			    location.href = url;  
+			}			   
+		},
+	});												       			   
+})
+
+$('#cancel_btn').click(function(){
+	let url = 'suppliers.php?type='+$('#type').val();
+	if($('#type').val() == 'M')
+		url = 'users.php';
+	if($('#from').val() == 'add_sup_to_proj')
+	   url = 'add_sup_to_proj.php?id='+$('#project_id').val();
+	else if($('#from').val() == 'payments_wires')
+	   url = 'payments_wires.php?project_id='+$('#project_id').val();
+    location.href = url;  
+});
+</script>
+
+<style>
+.btn:hover {
+   color: white;
+}
+
+.bgColorBlack:hover {
+	background-color: #45484d;
+}
+
+.bgColorBlue:hover {
+	background-color:#3370d6;
+}
+
+@media (max-width: 1500px) {
+	.text-size {
+	   font-size: 12px;
+    }
+}
+
+@media (max-width: 1024px) {
+	.text-size {
+	   font-size: 11px;
+    }
+}
+
+@media (max-width: 640px) {
+	.text-size {
+	   font-size: 0.6rem;
+    }
+}
+
+@media (max-width: 520px) {
+	.text-size {
+	   font-size: 0.7rem;
+    }
+}
+</style>

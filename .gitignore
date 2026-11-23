@@ -12,3 +12,11 @@ deploy-test.log
 deploy-prod.log
 .last-deploy-prod
 .last-deploy-test
+
+# maquettes : fichiers de mesure temporaires (filet anti-regression), jamais versionnes
+maquettes/_design/snap_*/
+maquettes/_snap_*.html
+maquettes/_snapx_*.html
+maquettes/_probe_*.html
+maquettes/_t_probe.js
+maquettes/_enhe_probe.js

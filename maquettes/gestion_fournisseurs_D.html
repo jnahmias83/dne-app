@@ -1,0 +1,2234 @@
+
+<head><base href="/">
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DNE</title>
+
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+          crossorigin="anonymous"></script>
+		  
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
+
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+  <link href="assets/dataTables/css/jquery.dataTables.css" rel="stylesheet" type="text/css" />
+  <link href="assets/dataTables/css/jquery.dataTables_themeroller.css" rel="stylesheet" type="text/css" />
+  <script src="assets/dataTables/js/jquery.dataTables.js" type="text/javascript"></script>
+  <script src="assets/dataTables/js/jquery.dataTables.columnFilter.js" type="text/javascript"></script>
+
+  <link href="css/custom.css?v=1716132787" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="css/style.css?v=1791461203" />
+
+  <script src="js/script.js?v=1793106707" type="text/javascript"></script>
+</head>
+
+<html>
+    <body>
+	    		    <nav class="navbar navbar-expand-md navbar-dark bg-4c555e">
+			    <div class="container-fluid px-3">
+					<div class="collapse navbar-collapse d-flex justify-content-between align-items-center" id="navbarSupportedContent">
+					    <ul class="navbar-nav dir-rtl">
+							<li class="nav-item dropdown">
+							    <a class="nav-link dropdown-toggle" id="projectsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+								    פרוייקטים
+							    </a>
+							    <ul class="dropdown-menu dropdown-menu-scrollable min-with-3rem cursor-pointer alignCenter dir-rtl" aria-labelledby="projectsDropdown">
+																    </ul>
+							</li>
+							<li class="nav-item dropdown">
+								<a class="nav-link dropdown-toggle" id="suppliersDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+									ספקים
+							    </a>
+								<ul class="dropdown-menu min-with-3rem dir-rtl alignCenter" aria-labelledby="suppliersDropdown">
+									<li><a class="dropdown-item" href="suppliers.php?type=D">מתכננים/יועצים</a></li>
+									<li><a class="dropdown-item" href="suppliers.php?type=S">ספקים/קבלנים</a></li>
+									<li><a class="dropdown-item" href="domains.php?lang_screen=HE">תחומי פעילות</a></li>
+								</ul>
+							</li>
+					    </ul>				
+						<ul class="navbar-nav dir-rtl align-items-center flex-row" id="header_icons_ul">
+							<li class="nav-item dropdown text-center px-2 d-flex align-items-center gap-2">
+								<a class="nav-link cursor-pointer" id="home_link">
+									<img src="images/white_home_icon.png" alt="home icon" width="30" height="30" />
+								</a>
+								<a class="nav-link" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+									<div class="padding-4x-4y borderRadius20 border-2px-solid-white font-weight-bold">									
+										<span class="fontSize13 colorWhite">DN</span>
+									</div>	
+								</a>
+								<ul class="dropdown-menu min-width-3rem dir-rtl text-end" aria-labelledby="userDropdown">
+									<li><a class="dropdown-item" href="add_project.php?id=0">הוסף פרוייקט</a></li>
+									<li><a class="dropdown-item" href="projects.php?is_inactive_project=1">פרוייקטים רדומים</a></li>
+																			<li><a class="dropdown-item" href="users.php">ניהול משתמשים</a></li>
+																		<li><a class="dropdown-item" href="vat.php">מע''מ</a></li>
+									<li><a class="dropdown-item" href="tasks_managment.php">ניהול סוגי משימות</a></li>
+									<li><a class="dropdown-item" href="progress_status_managment.php">ניהול סטטוס</a></li>
+									<li><a class="dropdown-item" href="meeting_types_managment.php">ניהול סוגי ישיבות</a></li>
+									<li><a class="dropdown-item" href="graphic_settings.php">הגדרות גוונים ורקע</a></li>
+									<li><a class="dropdown-item" href="logo_managment.php">תמונות לוגו</a></li>
+									<li><hr class="dropdown-divider"></li>
+									<li><a class="dropdown-item" href="kill_session.php"><i class="fa-solid fa-sign-out" style="margin-left:6px;color:#000;font-size:12px;"></i>התנתקות</a></li>
+								</ul>
+							</li>
+                         </ul>
+						<div class="header-logo-wrap">
+							<img src="images/my_project_logo.png" alt="My Project" class="header-logo" />
+						</div>
+					</div>
+			    </div>
+            </nav>
+	    		
+		<script>
+		$(document).on('click','#home_link',function(){
+			$('#left_initial_content').show();
+			$('#left_new_content').hide();
+			localStorage.removeItem('target');
+			localStorage.removeItem('prId');
+			localStorage.removeItem('bgcolor');
+			location.href = 'projects.php?filter_by=projects';
+		});
+		
+		function alignHeaderLogo(){
+			let homeEl = document.getElementById('home_link');
+			let dnEl = document.getElementById('userDropdown');
+			let logoWrap = document.querySelector('.header-logo-wrap');
+			if(!homeEl || !dnEl || !logoWrap) return;
+			logoWrap.style.marginLeft = '';
+			if(window.getComputedStyle(logoWrap).position !== 'static') return;
+			let homeRect = homeEl.getBoundingClientRect();
+			let dnRect = dnEl.getBoundingClientRect();
+			let leftRect = homeRect.left < dnRect.left ? homeRect : dnRect;
+			let rightRect = homeRect.left < dnRect.left ? dnRect : homeRect;
+			let gapCenter = (leftRect.right + rightRect.left) / 2;
+			let container = logoWrap.parentElement;
+			let containerRect = container.getBoundingClientRect();
+			let containerCenter = containerRect.left + containerRect.width / 2;
+			let manualNudgeTowardDn = -3;
+			logoWrap.style.marginLeft = (gapCenter - containerCenter + manualNudgeTowardDn) + 'px';
+		}
+		$(window).on('load resize', alignHeaderLogo);
+
+		function toProjectHome(project_id){
+			let form_data = new FormData();	
+	        form_data.append('id_project',project_id);
+	
+	
+			$.ajax({
+				type: 'POST',
+				url: 'set_id_project_session.php',
+				data: form_data,
+				cache: false,
+				processData: false,
+				contentType: false,			
+				success: function(data){ 
+				   location.href = 'meetings.php?project_id='+project_id;		
+				},
+			});				
+		}
+		</script>
+		
+		<style>
+		.navbar {
+			position: relative;
+		}
+
+		.navbar-nav {
+			flex-direction: row;
+		}
+
+		.header-logo-wrap {
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			transform: translate(-50%, -50%);
+			pointer-events: none;
+		}
+
+		.header-logo {
+			height: 38px;
+			width: auto;
+			display: block;
+		}
+
+		.navbar .dropdown {
+			position: relative; 
+		}
+
+		.navbar .dropdown-menu {
+			position: absolute;  
+			top: 100%;
+            min-width: 5rem;			
+			margin-top: 0;       
+			z-index: 1050;      
+		}
+		
+		.dropdown-item {
+			padding: 1px 7px;
+			font-size: 13px;
+		}
+		
+		.nav-link {
+			font-size: 14px;
+		}
+
+		@media (max-width: 600px) {
+			.nav-link {
+				font-size: 12px;
+			}
+			#navbarSupportedContent {
+				flex-direction: column;
+				align-items: center !important;
+			}
+			#navbarSupportedContent > ul {
+				justify-content: center;
+				flex-wrap: wrap;
+			}
+			.header-logo-wrap {
+				position: static;
+				transform: none;
+				width: 100%;
+				display: flex;
+				justify-content: center;
+				margin-top: 6px;
+				pointer-events: auto;
+			}
+		}
+
+		@media (orientation: landscape) and (max-height: 500px) {
+			#navbarSupportedContent {
+				flex-direction: column;
+				align-items: center !important;
+			}
+			#navbarSupportedContent > ul {
+				justify-content: center;
+				flex-wrap: wrap;
+			}
+			.header-logo-wrap {
+				position: static;
+				transform: none;
+				width: 100%;
+				display: flex;
+				justify-content: center;
+				margin-top: 6px;
+				pointer-events: auto;
+			}
+		}
+		</style>
+        <form method="post" action="" class="form-inline">
+		    <input type="hidden" id="type" value="D" />
+			
+            <div class="container">
+			    <div class="row alignCenter marginTop25">
+					<div class="col-12">
+						<a href="projects.php"><img src="images/DNE logo.png" width="170" height="170" /></a>
+					</div>
+			    </div>
+				
+				<div class="row marginTop5 title fontSize22">
+						<div class="col-12">
+							רשימת מתכננים ויועצים						</div>					
+				</div>
+			
+				<div class="row marginTop10 alignCenter">
+					<div class="col-12">
+						<a class="btn" onclick="location.href='add_supplier.php?type_sup=D&id=0';" >מתכנן/יועץ&nbsp;<i class='fa fa-plus'></i></a>
+					</div>
+				</div>		
+				
+						
+					<div class="row fontSize18 marginTop15 dir-rtl">
+						<div class="col-12 mx-2">
+							<div class="table-responsive">
+								<table class="table" id="designers_list" border="1">
+									<thead>
+										<tr>
+										    <th>שם בעברית</th>
+											<th>שם באנגלית</th>		
+											<th>Nickname</th>
+											<th>תחום</th>
+											<th>טלפון</th>
+											<th>נייד</th>
+											<th>דוא''ל</th>				
+											<th width="30px;">&nbsp;</th>
+											<th width="30px;">&nbsp;</th>
+										</tr>										
+									</thead>
+									
+									<tfoot>
+										<tr>
+											<th>שם בעברית</th>
+											<th>שם באנגלית</th>
+											<th>Nickname</th>
+											<th>תחום</th>
+											<th>טלפון</th>
+											<th>נייד</th>
+											<th>דוא''ל</th>									
+											<th width="30px;">&nbsp;</th>
+											<th width="30px;">&nbsp;</th>
+										</tr>										
+									</tfoot>
+							
+																			<tr>
+										    <td>איימי כהן</td>
+											<td> Amy Cohn</td>
+											<td>Amy</td>
+											<td>אדריכלות</td>
+											<td></td>
+											<td></td>
+											<td>amy@amyzcohn.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=74'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(74);" /></td>										
+										</tr>
+																				<tr>
+										    <td>תמר גרוסמן </td>
+											<td> Grosman tamar</td>
+											<td> Tamar.G</td>
+											<td>יועץ נגישות </td>
+											<td>0533130875</td>
+											<td></td>
+											<td>tamar0875@gmail.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=743'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(743);" /></td>										
+										</tr>
+																				<tr>
+										    <td>נובק יעוץ</td>
+											<td> Novak AC Consulting</td>
+											<td>Novak</td>
+											<td>יועץ מיזוג</td>
+											<td>0504690681</td>
+											<td></td>
+											<td>stefano@ynovak.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=557'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(557);" /></td>										
+										</tr>
+																				<tr>
+										    <td>סיטון + טנוס אדריכלים</td>
+											<td> Siton + Tanus Arch.</td>
+											<td>S+T</td>
+											<td>אדריכלות</td>
+											<td>0526223875</td>
+											<td></td>
+											<td>office@s-plus-t.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=670'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(670);" /></td>										
+										</tr>
+																				<tr>
+										    <td>עבאסי</td>
+											<td>Abassi</td>
+											<td>Abassi</td>
+											<td>מודד</td>
+											<td>025838502</td>
+											<td>0502566208</td>
+											<td>ZD5838502@gmail.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=704'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(704);" /></td>										
+										</tr>
+																				<tr>
+										    <td>אדיר ייעוץ ופיקוח נופי</td>
+											<td>Adir alves</td>
+											<td>Adir alves</td>
+											<td>אגרונום</td>
+											<td>039032190</td>
+											<td>0522333555</td>
+											<td>office@adir-nof.co..il</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=73'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(73);" /></td>										
+										</tr>
+																				<tr>
+										    <td>אגסי רימון</td>
+											<td>Agasi Rimon</td>
+											<td>Agassi</td>
+											<td>יועץ קרקע</td>
+											<td>0772007672</td>
+											<td></td>
+											<td>office@agasi-rimon.co.il</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=113'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(113);" /></td>										
+										</tr>
+																				<tr>
+										    <td>אלברט עמר </td>
+											<td>Albert Amar</td>
+											<td>Albert A</td>
+											<td>יועץ גז</td>
+											<td></td>
+											<td></td>
+											<td>aalbert908@gmail.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=742'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(742);" /></td>										
+										</tr>
+																				<tr>
+										    <td>משה אלבוחר</td>
+											<td>Alboher Moshe</td>
+											<td>Moshe A.</td>
+											<td>יועץ תנועה</td>
+											<td>02-6795581</td>
+											<td></td>
+											<td>office@albocher-eng.co.il</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=49'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(49);" /></td>										
+										</tr>
+																				<tr>
+										    <td>אשר אלפר</td>
+											<td>Alper Asher</td>
+											<td>Alper</td>
+											<td>יועץ אקוסטיקה</td>
+											<td></td>
+											<td></td>
+											<td>info@aeacoustics.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=95'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(95);" /></td>										
+										</tr>
+																				<tr>
+										    <td>אמציה אהרונסון</td>
+											<td>Amatsia Aharonson</td>
+											<td>Amatzia</td>
+											<td>אדריכלות</td>
+											<td>026234420</td>
+											<td>0544385707</td>
+											<td>amazia@aaronson-arc.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=45'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(45);" /></td>										
+										</tr>
+																				<tr>
+										    <td>עמית פוקס </td>
+											<td>amit fox</td>
+											<td>amit</td>
+											<td>יועץ קונסטרוקציה</td>
+											<td>0546733810</td>
+											<td></td>
+											<td>amit1.fox@gmail.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=744'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(744);" /></td>										
+										</tr>
+																				<tr>
+										    <td>אנה לדיז'סקו</td>
+											<td>Ana Ladizinsku</td>
+											<td>Ana L</td>
+											<td>יועץ שימור</td>
+											<td></td>
+											<td></td>
+											<td>anaarch.ia@gmail.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=659'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(659);" /></td>										
+										</tr>
+																				<tr>
+										    <td>אריאל ביטון</td>
+											<td>Ariel Biton</td>
+											<td>Ariel B</td>
+											<td>יועץ קונסטרוקציה</td>
+											<td>0507830719</td>
+											<td>0507830719</td>
+											<td>galihyam@gmail.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=24'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(24);" /></td>										
+										</tr>
+																				<tr>
+										    <td>אסף בן דור </td>
+											<td>Asaf Ben Dor</td>
+											<td>Bendor</td>
+											<td>אדריכלות</td>
+											<td>054-4663304</td>
+											<td></td>
+											<td>asaph-b@013.net</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=291'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(291);" /></td>										
+										</tr>
+																				<tr>
+										    <td>אבני אפרת </td>
+											<td>Avney Efrat</td>
+											<td>Avney</td>
+											<td>יועץ בטיחות</td>
+											<td></td>
+											<td></td>
+											<td>office@avefrat.co.il</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=50'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(50);" /></td>										
+										</tr>
+																				<tr>
+										    <td>איילה וברכה</td>
+											<td>Ayala & Braha</td>
+											<td>Ayala</td>
+											<td>ניהול תיק היתר</td>
+											<td></td>
+											<td></td>
+											<td>office@abcp.co.il</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=692'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(692);" /></td>										
+										</tr>
+																				<tr>
+										    <td>איילה גהלי</td>
+											<td>Ayala Gali</td>
+											<td>Gali</td>
+											<td>יועץ מיגון</td>
+											<td>0504696322</td>
+											<td></td>
+											<td>migun@ayalagahali.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=675'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(675);" /></td>										
+										</tr>
+																				<tr>
+										    <td>בת שבע גרידינגר</td>
+											<td>Bat sheva </td>
+											<td>  Bat sheva shielding </td>
+											<td>יועץ מיגון</td>
+											<td>026637980</td>
+											<td></td>
+											<td>Batsheva.iriz@gmail.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=739'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(739);" /></td>										
+										</tr>
+																				<tr>
+										    <td>בת שבע גרידינגר </td>
+											<td>Bat sheva</td>
+											<td>Bat sheva</td>
+											<td>אגרונום</td>
+											<td>0527180625</td>
+											<td></td>
+											<td>batsheva.rizi@gmail.com‬‏</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=750'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(750);" /></td>										
+										</tr>
+																				<tr>
+										    <td>בית אל מקדס</td>
+											<td>Bet el mikdas</td>
+											<td>Muhmad</td>
+											<td>מודד</td>
+											<td></td>
+											<td>0526889931</td>
+											<td>nah,ias@gmail.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=660'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(660);" /></td>										
+										</tr>
+																				<tr>
+										    <td>ביג סיטי</td>
+											<td>Big city</td>
+											<td>Ilya</td>
+											<td>יועץ חשמל</td>
+											<td></td>
+											<td></td>
+											<td>ilia.tsepakin@gmail.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=705'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(705);" /></td>										
+										</tr>
+																				<tr>
+										    <td>בינוביץ</td>
+											<td>Binovitch</td>
+											<td>Binovitch</td>
+											<td>יועץ בריכות</td>
+											<td>088674247</td>
+											<td></td>
+											<td>info@gsbgroup.co.il</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=65'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(65);" /></td>										
+										</tr>
+																				<tr>
+										    <td>בועז וסרמן</td>
+											<td>Boaz vaserman</td>
+											<td>Boaz vaserman</td>
+											<td>יועץ חשמל</td>
+											<td>099511016</td>
+											<td>0543103112</td>
+											<td>boaz@wasserman.co.il</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=79'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(79);" /></td>										
+										</tr>
+																				<tr>
+										    <td>ברנד חיים</td>
+											<td>Brand Haim</td>
+											<td>Brand</td>
+											<td>יועץ אינסטלציה</td>
+											<td>026798206</td>
+											<td></td>
+											<td>eng@brandhaim.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=752'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(752);" /></td>										
+										</tr>
+																				<tr>
+										    <td>בראון</td>
+											<td>Braun</td>
+											<td>Braun</td>
+											<td>יועץ בטיחות</td>
+											<td>0543831367</td>
+											<td>0543831367</td>
+											<td>office@braunfire.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=66'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(66);" /></td>										
+										</tr>
+																				<tr>
+										    <td>בורושנסקי אנטולי</td>
+											<td>Burachanski Anatholi</td>
+											<td>Burachanski</td>
+											<td>יועץ קונסטרוקציה</td>
+											<td></td>
+											<td></td>
+											<td>boru1048@bezeqint.net</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=730'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(730);" /></td>										
+										</tr>
+																				<tr>
+										    <td>כרמל פאר</td>
+											<td>Carmel peer</td>
+											<td>Carmel peer</td>
+											<td>יועץ אקוסטיקה</td>
+											<td></td>
+											<td></td>
+											<td>peeracoustics@gmail.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=746'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(746);" /></td>										
+										</tr>
+																				<tr>
+										    <td>קומפורט - יעוץ אקוסטי </td>
+											<td>COMFORT - YEUTZ ACOUSTI</td>
+											<td>zuckerman</td>
+											<td>יועץ אקוסטיקה</td>
+											<td>054-4764808</td>
+											<td>054-4764808</td>
+											<td>zuckerman.alex@gmail.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=137'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(137);" /></td>										
+										</tr>
+																				<tr>
+										    <td>דליה וולקוף </td>
+											<td>Dalyah Volkof </td>
+											<td>volcoff</td>
+											<td>יועץ נגישות </td>
+											<td>050-8296455</td>
+											<td></td>
+											<td>delia@volcoff.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=131'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(131);" /></td>										
+										</tr>
+																				<tr>
+										    <td>דוד נחמיאס</td>
+											<td>David Nahmias</td>
+											<td>David N</td>
+											<td>ניהול פרויקט</td>
+											<td>0547449019</td>
+											<td></td>
+											<td>david@nahmias-eng.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=12'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(12);" /></td>										
+										</tr>
+																				<tr>
+										    <td>דוד יקותיאל</td>
+											<td>David yekutiel</td>
+											<td>David yekutiel</td>
+											<td>יועץ כמויות</td>
+											<td>036394018</td>
+											<td></td>
+											<td>Yekdavid@gmail.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=69'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(69);" /></td>										
+										</tr>
+																				<tr>
+										    <td>דרך ארץ הנדסה בע</td>
+											<td>DERECH ERETSHA NDASA</td>
+											<td>DerehEretz</td>
+											<td>יועץ בניה ירוקה</td>
+											<td>0539399992</td>
+											<td>073-374-4468</td>
+											<td>naama@de-eng.co.il</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=130'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(130);" /></td>										
+										</tr>
+																				<tr>
+										    <td>דרך ארץ</td>
+											<td>Dereh heretz</td>
+											<td>Dereh heretz</td>
+											<td>יועץ תנועה</td>
+											<td>0733744468</td>
+											<td></td>
+											<td>avi@de-eng.co.il</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=758'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(758);" /></td>										
+										</tr>
+																				<tr>
+										    <td>ברוך דיל</td>
+											<td>Dill Baruh</td>
+											<td>Dill</td>
+											<td>יועץ חשמל</td>
+											<td>0526662260</td>
+											<td>0526662260</td>
+											<td>‏‪dill.mb@hotmail.com‬‏</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=114'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(114);" /></td>										
+										</tr>
+																				<tr>
+										    <td>דורון שלו</td>
+											<td>Doron shalev</td>
+											<td>Doron shalev</td>
+											<td>יועץ קונסטרוקציה</td>
+											<td>035322531</td>
+											<td></td>
+											<td>doron@doron-eng.co.il</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=71'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(71);" /></td>										
+										</tr>
+																				<tr>
+										    <td>אדלמן כהן שניצר אדריכלים </td>
+											<td>Edelman Cohen Shnizer Architects</td>
+											<td>Edelman</td>
+											<td>אדריכלות</td>
+											<td>02-6485100</td>
+											<td>052-8808643</td>
+											<td>ecs.arc@gmail.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=290'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(290);" /></td>										
+										</tr>
+																				<tr>
+										    <td>  אלדד נתן </td>
+											<td>Eldad Natan</td>
+											<td>Natanarch</td>
+											<td>אדריכלות</td>
+											<td>02-6259292</td>
+											<td>050-5408886</td>
+											<td>eldad@natanarch.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=103'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(103);" /></td>										
+										</tr>
+																				<tr>
+										    <td>אלי בנואליד</td>
+											<td>Eli Benoualid</td>
+											<td>Eli B.</td>
+											<td>יועץ קונסטרוקציה</td>
+											<td></td>
+											<td></td>
+											<td>corinne7@zahav.net.il</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=46'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(46);" /></td>										
+										</tr>
+																				<tr>
+										    <td>אלי רוזנטל</td>
+											<td>Eli Rosental</td>
+											<td>Eli R</td>
+											<td>יועץ אינסטלציה</td>
+											<td></td>
+											<td></td>
+											<td>office@handasa1.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=47'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(47);" /></td>										
+										</tr>
+																				<tr>
+										    <td>אלקי דייטש</td>
+											<td>Elki Deutsh</td>
+											<td>Elki</td>
+											<td>הדמיות</td>
+											<td>052-7114568</td>
+											<td>02-5387047</td>
+											<td>elky5050@gmail.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=128'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(128);" /></td>										
+										</tr>
+																				<tr>
+										    <td>אלישיב מדידות </td>
+											<td>elyashiv</td>
+											<td>elyashiv  Surveying  </td>
+											<td>מודד</td>
+											<td>026793012</td>
+											<td>026793012</td>
+											<td>office@elyashiv1.co.il</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=737'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(737);" /></td>										
+										</tr>
+																				<tr>
+										    <td>אלישיב מדידות והנדסה בע</td>
+											<td>ELYASHIV MEDIDOT VEHANDASA</td>
+											<td>Elyashiv</td>
+											<td>מודד</td>
+											<td>02-6793012  </td>
+											<td>052-2458658  </td>
+											<td>office@elyashiv1.co.il</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=121'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(121);" /></td>										
+										</tr>
+																				<tr>
+										    <td>ארז קלפן</td>
+											<td>Erez Kaplan</td>
+											<td>Erez K</td>
+											<td>אגרונום</td>
+											<td>052-6408054</td>
+											<td></td>
+											<td>kaplanerez@gmail.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=35'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(35);" /></td>										
+										</tr>
+																				<tr>
+										    <td>אתי וייג </td>
+											<td>ETI VEG</td>
+											<td>Veg</td>
+											<td>יועץ תנועה</td>
+											<td>02-6361070</td>
+											<td>052-7609409</td>
+											<td>eti@veg-eng.co.il</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=127'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(127);" /></td>										
+										</tr>
+																				<tr>
+										    <td>אייל שר-שלום הנדסת חשמל בע''ם</td>
+											<td>Eyal Sar Shalom</td>
+											<td>Eyal Eng</td>
+											<td>יועץ חשמל</td>
+											<td>02789654</td>
+											<td>0541236783</td>
+											<td>office@e-sar.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=30'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(30);" /></td>										
+										</tr>
+																				<tr>
+										    <td>ישראל פאוסט</td>
+											<td>Foust Israel</td>
+											<td>Foust</td>
+											<td>רישוי </td>
+											<td></td>
+											<td></td>
+											<td>yf@foust.co.il</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=507'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(507);" /></td>										
+										</tr>
+																				<tr>
+										    <td>גינאייר</td>
+											<td>Genair</td>
+											<td>Genair</td>
+											<td>יועץ מיזוג</td>
+											<td>02-9401100</td>
+											<td>054-6388435</td>
+											<td>Yossi@genair.co.il</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=281'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(281);" /></td>										
+										</tr>
+																				<tr>
+										    <td>גרפאור א.נ העתקות בע</td>
+											<td>Graphor </td>
+											<td>Graphor</td>
+											<td>מכון העתקות</td>
+											<td></td>
+											<td></td>
+											<td>info@3-d.co.il</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=27'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(27);" /></td>										
+										</tr>
+																				<tr>
+										    <td>גרידינגר בת שבע </td>
+											<td>Gridinger Batsheva</td>
+											<td>Batsheva</td>
+											<td>יועץ מיגון</td>
+											<td>0527180625</td>
+											<td></td>
+											<td>batsheva.rizi@gmail.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=118'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(118);" /></td>										
+										</tr>
+																				<tr>
+										    <td>חדד מהנדסים </td>
+											<td>Hadad</td>
+											<td>Hadad </td>
+											<td>יועץ חשמל</td>
+											<td>026732028</td>
+											<td></td>
+											<td>hadad@hadadeng.co.il</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=759'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(759);" /></td>										
+										</tr>
+																				<tr>
+										    <td>חדד אייל</td>
+											<td>Hadad Eyal</td>
+											<td>Hadad</td>
+											<td>יועץ אינסטלציה</td>
+											<td>052-7370775</td>
+											<td></td>
+											<td>eyalwater@gmail.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=797'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(797);" /></td>										
+										</tr>
+																				<tr>
+										    <td>חנה</td>
+											<td>HANA</td>
+											<td>HANA</td>
+											<td>אדריכלות</td>
+											<td></td>
+											<td></td>
+											<td>hannaoik@gmail.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=87'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(87);" /></td>										
+										</tr>
+																				<tr>
+										    <td>היתר - תיכנון ורישוי</td>
+											<td>HETER</td>
+											<td>Heter</td>
+											<td>רישוי </td>
+											<td>050-3544666</td>
+											<td></td>
+											<td>jer.heter12@gmail.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=129'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(129);" /></td>										
+										</tr>
+																				<tr>
+										    <td>היתר</td>
+											<td>Heter</td>
+											<td>Heter</td>
+											<td>אגרונום</td>
+											<td>0524216244</td>
+											<td></td>
+											<td>office@</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=703'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(703);" /></td>										
+										</tr>
+																				<tr>
+										    <td>חזקיה פרידבורג</td>
+											<td>Hezki Fridburg</td>
+											<td>Hezki</td>
+											<td>יועץ אינסטלציה</td>
+											<td></td>
+											<td>0528857670</td>
+											<td>frideng@gmail.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=43'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(43);" /></td>										
+										</tr>
+																				<tr>
+										    <td>אינה פריזיבלסקי </td>
+											<td>inna</td>
+											<td>inna</td>
+											<td>יועץ מיזוג</td>
+											<td>0545816228</td>
+											<td></td>
+											<td>inna.hvac@gmail.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=745'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(745);" /></td>										
+										</tr>
+																				<tr>
+										    <td>אירנה רובין </td>
+											<td>Irena Rubin</td>
+											<td>Irena</td>
+											<td>יועץ נגישות </td>
+											<td>052-3815372</td>
+											<td></td>
+											<td>negishutir@gmail.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=136'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(136);" /></td>										
+										</tr>
+																				<tr>
+										    <td>ישראל קלר </td>
+											<td>israel klar </td>
+											<td>Klar</td>
+											<td>יועץ קרקע</td>
+											<td>04-8401397</td>
+											<td></td>
+											<td>office@klar.co.il</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=117'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(117);" /></td>										
+										</tr>
+																				<tr>
+										    <td>אתי שלם</td>
+											<td>Itai Shalem</td>
+											<td>Shalem</td>
+											<td>אגרונום</td>
+											<td></td>
+											<td>0544315224</td>
+											<td>itaisalem@gmail.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=656'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(656);" /></td>										
+										</tr>
+																				<tr>
+										    <td>איטקין בלום</td>
+											<td>Itkun Blum</td>
+											<td>Eran B.</td>
+											<td>יועץ חשמל</td>
+											<td></td>
+											<td></td>
+											<td>eran@e-blum.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=48'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(48);" /></td>										
+										</tr>
+																				<tr>
+										    <td>יצחק כהן</td>
+											<td>Itshak Kahn</td>
+											<td>Kahn</td>
+											<td>יועץ קונסטרוקציה</td>
+											<td>026512817</td>
+											<td></td>
+											<td>office@jkp.co.il</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=31'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(31);" /></td>										
+										</tr>
+																				<tr>
+										    <td>ז'אן ברקוביץ מהנדסים בע"o</td>
+											<td>Jean Berkovitz</td>
+											<td>Berkovitz</td>
+											<td>יועץ איטום</td>
+											<td></td>
+											<td></td>
+											<td>jeanb@netvision.net.il</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=37'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(37);" /></td>										
+										</tr>
+																				<tr>
+										    <td>קי או טי אדריכלים </td>
+											<td>K O T Architects</td>
+											<td></td>
+											<td>אדריכלות</td>
+											<td>0523347301</td>
+											<td></td>
+											<td>thekotproject@gmaul.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=653'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(653);" /></td>										
+										</tr>
+																				<tr>
+										    <td>לאה קוזווקין</td>
+											<td>L.k migun</td>
+											<td>L.k migun</td>
+											<td>יועץ מיגון</td>
+											<td>0527681532</td>
+											<td></td>
+											<td>lk@etrog.net.il</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=760'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(760);" /></td>										
+										</tr>
+																				<tr>
+										    <td>רות לנדאו</td>
+											<td>Landau Ruth</td>
+											<td>Landau</td>
+											<td>אדריכלות</td>
+											<td></td>
+											<td>0549738553</td>
+											<td>ruthybaum@gmail.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=76'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(76);" /></td>										
+										</tr>
+																				<tr>
+										    <td>לנדמן</td>
+											<td>landman</td>
+											<td>landman</td>
+											<td>יועץ אלומניום</td>
+											<td>0549518000</td>
+											<td></td>
+											<td>office@lan-alum.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=60'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(60);" /></td>										
+										</tr>
+																				<tr>
+										    <td>לודמיר ישראל</td>
+											<td>Ludmir Israel</td>
+											<td>Ludmir</td>
+											<td>רישוי </td>
+											<td></td>
+											<td>0527693761</td>
+											<td>il400400@gmail.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=469'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(469);" /></td>										
+										</tr>
+																				<tr>
+										    <td>מנחם שטרן</td>
+											<td>Manahem Shtern</td>
+											<td>Shtern</td>
+											<td>רישוי </td>
+											<td></td>
+											<td>0504132123</td>
+											<td>908504132123</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=642'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(642);" /></td>										
+										</tr>
+																				<tr>
+										    <td>מרינה פרץ</td>
+											<td>Marina Peretz</td>
+											<td>Marina</td>
+											<td>יועץ מיגון</td>
+											<td>025832121</td>
+											<td>0503484276</td>
+											<td>mmperetz@gmail.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=10'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(10);" /></td>										
+										</tr>
+																				<tr>
+										    <td>מסד</td>
+											<td>Masad</td>
+											<td>Masad</td>
+											<td>אדריכלות</td>
+											<td>035273230</td>
+											<td></td>
+											<td>sales@massad-group.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=638'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(638);" /></td>										
+										</tr>
+																				<tr>
+										    <td>מתן זקן</td>
+											<td>Matan Zaken</td>
+											<td>Matan</td>
+											<td>יועץ קונסטרוקציה</td>
+											<td>0545931070</td>
+											<td>0545931070</td>
+											<td>zm@alumni.technion.ac.il</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=44'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(44);" /></td>										
+										</tr>
+																				<tr>
+										    <td>מתי רוזנשיין</td>
+											<td>Matti Rosenshein</td>
+											<td>Matti</td>
+											<td>אדריכלות</td>
+											<td></td>
+											<td></td>
+											<td>matti@mra.co.il</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=9'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(9);" /></td>										
+										</tr>
+																				<tr>
+										    <td>מידווד כלכלה הנדסית </td>
+											<td>Mdved engeneering economics </td>
+											<td>Midved</td>
+											<td>יועץ כמויות</td>
+											<td>076-5404306</td>
+											<td></td>
+											<td>office@midved.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=134'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(134);" /></td>										
+										</tr>
+																				<tr>
+										    <td>מימד - אלסטר ראובן</td>
+											<td>Meimad</td>
+											<td>Meimad</td>
+											<td>מודד</td>
+											<td>026522294</td>
+											<td></td>
+											<td>meimad@meimad-sur.co.il</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=80'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(80);" /></td>										
+										</tr>
+																				<tr>
+										    <td>מ.ג. יועצים לאקוסטיקה בע</td>
+											<td>Mem Gimel Accustica</td>
+											<td>M.G</td>
+											<td>יועץ אקוסטיקה</td>
+											<td>09-9553858</td>
+											<td></td>
+											<td>mg@mem-gimel.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=57'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(57);" /></td>										
+										</tr>
+																				<tr>
+										    <td>מנחם שטיין </td>
+											<td>Menachem Shtine</td>
+											<td>Shtein</td>
+											<td>יועץ קונסטרוקציה</td>
+											<td>0527688511</td>
+											<td></td>
+											<td>ms0527688511@gmail.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=111'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(111);" /></td>										
+										</tr>
+																				<tr>
+										    <td>מרפיר פרויקטים</td>
+											<td>Merphir</td>
+											<td>Merphir</td>
+											<td>יועץ הידרולוגיה</td>
+											<td>0543188381</td>
+											<td></td>
+											<td>office@merphir.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=61'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(61);" /></td>										
+										</tr>
+																				<tr>
+										    <td>מלכה איגר אדריכלים</td>
+											<td>Mihi Iger</td>
+											<td>Mihi iger</td>
+											<td>יועץ נגישות </td>
+											<td></td>
+											<td>0505446434</td>
+											<td>le.archirectura@gmail.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=68'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(68);" /></td>										
+										</tr>
+																				<tr>
+										    <td>מייק דוקוטובסקי</td>
+											<td>Mike Doktovsky</td>
+											<td>Doktovsky</td>
+											<td>יועץ קרקע</td>
+											<td>054-4347075</td>
+											<td></td>
+											<td>mdgeotech@gmail.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=293'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(293);" /></td>										
+										</tr>
+																				<tr>
+										    <td>מיבדק</td>
+											<td>Mivdak</td>
+											<td>Mivdak</td>
+											<td>יועץ בטיחות</td>
+											<td></td>
+											<td></td>
+											<td>bagadm@gmail.comâ€</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=51'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(51);" /></td>										
+										</tr>
+																				<tr>
+										    <td>משה פיק הנדסה</td>
+											<td>Moshe pick</td>
+											<td>Moshe pick</td>
+											<td>יועץ כמויות</td>
+											<td>026514843</td>
+											<td>0548140080</td>
+											<td>pick.engineer@gmail.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=72'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(72);" /></td>										
+										</tr>
+																				<tr>
+										    <td>משה שפירה</td>
+											<td>Moshe Shapira </td>
+											<td>Shapira</td>
+											<td>אדריכלות</td>
+											<td>026255520</td>
+											<td></td>
+											<td>office@shapiroarc.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=77'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(77);" /></td>										
+										</tr>
+																				<tr>
+										    <td>נעמי זילברמן</td>
+											<td>Naomi Zilberman</td>
+											<td>Naomi</td>
+											<td>יועץ תנועה</td>
+											<td></td>
+											<td></td>
+											<td>naomife@gmail.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=93'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(93);" /></td>										
+										</tr>
+																				<tr>
+										    <td>ניצן שלומי</td>
+											<td>Nitsan Shlomi</td>
+											<td>Nitsan</td>
+											<td>אדריכלות</td>
+											<td></td>
+											<td>0505518527</td>
+											<td>nitsan.shlomi@gmail.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=40'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(40);" /></td>										
+										</tr>
+																				<tr>
+										    <td>נוף בירוק</td>
+											<td>Nof beyarok</td>
+											<td>Nof beyarok</td>
+											<td>פיתוח</td>
+											<td></td>
+											<td>0546887080</td>
+											<td>nofbeyarok@gmail.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=63'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(63);" /></td>										
+										</tr>
+																				<tr>
+										    <td>עודד ברוך </td>
+											<td>Oded Baruch</td>
+											<td>OdedBaruh</td>
+											<td>יועץ מעליות חניה </td>
+											<td>052-5344471</td>
+											<td></td>
+											<td>ob0525344471@gmail.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=138'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(138);" /></td>										
+										</tr>
+																				<tr>
+										    <td>עודד דבורי</td>
+											<td>Oded Dvori</td>
+											<td>Oded</td>
+											<td>פיקוח</td>
+											<td>oded</td>
+											<td>0507471115</td>
+											<td>dvorio@gmail.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=52'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(52);" /></td>										
+										</tr>
+																				<tr>
+										    <td>פרדסי ברקוביץ</td>
+											<td>pardessi</td>
+											<td>pardessi</td>
+											<td>יועץ מיזוג</td>
+											<td>0526230496</td>
+											<td></td>
+											<td>lousofer@gmail.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=59'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(59);" /></td>										
+										</tr>
+																				<tr>
+										    <td>פנינית אזולאי - שרת</td>
+											<td>Pninit Sharet</td>
+											<td>Pninit</td>
+											<td>אדריכלות</td>
+											<td></td>
+											<td></td>
+											<td>pninit@pninit.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=192'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(192);" /></td>										
+										</tr>
+																				<tr>
+										    <td>אחים רזניקוב </td>
+											<td>Reznikov</td>
+											<td>Reznikov</td>
+											<td>יועץ אינסטלציה</td>
+											<td>0545714323</td>
+											<td>026523518</td>
+											<td>www.reznikov-b.co.il</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=751'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(751);" /></td>										
+										</tr>
+																				<tr>
+										    <td>רוזה גולד הנדסה</td>
+											<td>Roza</td>
+											<td>Roza</td>
+											<td>יועץ טרמי</td>
+											<td></td>
+											<td></td>
+											<td>חסר</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=70'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(70);" /></td>										
+										</tr>
+																				<tr>
+										    <td>רוזן הנדסה</td>
+											<td>Rozen Hndsa </td>
+											<td>Rozen </td>
+											<td>יועץ אינסטלציה</td>
+											<td>0506795144</td>
+											<td>050 - 6795144</td>
+											<td>eliran@rozeneng.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=105'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(105);" /></td>										
+										</tr>
+																				<tr>
+										    <td>ליאור רוזפלד</td>
+											<td>Rozenfeld Lior</td>
+											<td>Lior</td>
+											<td>אדריכלות</td>
+											<td></td>
+											<td>0524323034</td>
+											<td>office@sr-arc.co.il</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=75'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(75);" /></td>										
+										</tr>
+																				<tr>
+										    <td>ס. דניאל </td>
+											<td>S. Daniel</td>
+											<td>S. Daniel</td>
+											<td>יועץ איטום</td>
+											<td>046802824</td>
+											<td>0505707338</td>
+											<td>Sofir.daniel@gmail.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=391'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(391);" /></td>										
+										</tr>
+																				<tr>
+										    <td>ש. לוסטיק</td>
+											<td>S. Lustik</td>
+											<td>Lustik</td>
+											<td>יועץ מעליות</td>
+											<td>03-5236633</td>
+											<td></td>
+											<td>office@lustig.co.il</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=294'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(294);" /></td>										
+										</tr>
+																				<tr>
+										    <td>שגיא שקרגי</td>
+											<td>Sagi Shakraji</td>
+											<td>Sagi </td>
+											<td>פיתוח</td>
+											<td></td>
+											<td>0523666039</td>
+											<td>K</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=97'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(97);" /></td>										
+										</tr>
+																				<tr>
+										    <td>משה סלומון</td>
+											<td>Salomon Moshe</td>
+											<td>Salomon</td>
+											<td>אדריכלות</td>
+											<td>02 5666735</td>
+											<td></td>
+											<td>salomonm@tauex.tau.ac.il</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=677'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(677);" /></td>										
+										</tr>
+																				<tr>
+										    <td>שמואל אלביליה</td>
+											<td>Samuel Elbilia</td>
+											<td>Elbilia</td>
+											<td>אדריכלות</td>
+											<td></td>
+											<td></td>
+											<td>samuel@samuelelbilia.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=558'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(558);" /></td>										
+										</tr>
+																				<tr>
+										    <td>שקד</td>
+											<td>SHAKED</td>
+											<td>SHAKED</td>
+											<td>אדריכלות</td>
+											<td></td>
+											<td></td>
+											<td>archshaked@gmail.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=86'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(86);" /></td>										
+										</tr>
+																				<tr>
+										    <td>שפר מהנדסים </td>
+											<td>Shefer Mehandesim</td>
+											<td>Shefer </td>
+											<td>יועץ קונסטרוקציה</td>
+											<td>02-6784640</td>
+											<td></td>
+											<td>office@danshefer.co.il</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=299'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(299);" /></td>										
+										</tr>
+																				<tr>
+										    <td>שפר רונן</td>
+											<td>Shefer ronen</td>
+											<td>Shefer</td>
+											<td>יועץ קונסטרוקציה</td>
+											<td>026221072</td>
+											<td></td>
+											<td>office@shimureng.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=56'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(56);" /></td>										
+										</tr>
+																				<tr>
+										    <td>בר שיפמן - נתן </td>
+											<td>SHIFMAN</td>
+											<td>SHF</td>
+											<td>אדריכלות</td>
+											<td>02-6740674</td>
+											<td>054-6212370</td>
+											<td>yuval@baer.co.il</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=115'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(115);" /></td>										
+										</tr>
+																				<tr>
+										    <td>שליסר</td>
+											<td>Shliser</td>
+											<td>שליסר מיזוג</td>
+											<td>יועץ מיזוג</td>
+											<td>050 - 4230312</td>
+											<td></td>
+											<td>shliser.eng@gmail.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=106'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(106);" /></td>										
+										</tr>
+																				<tr>
+										    <td>שלמה פוקס</td>
+											<td>Shlomo Fucks</td>
+											<td>Shlomo</td>
+											<td>ניהול תיק היתר</td>
+											<td></td>
+											<td>0525 54 20 25</td>
+											<td>shlomof100@gmail.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=55'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(55);" /></td>										
+										</tr>
+																				<tr>
+										    <td>שלמה מגיד</td>
+											<td>Shlomo magid </td>
+											<td>shlomo-m</td>
+											<td>מודד</td>
+											<td>0548478668</td>
+											<td></td>
+											<td>ms0548478668@gmail.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=738'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(738);" /></td>										
+										</tr>
+																				<tr>
+										    <td>שמוליק</td>
+											<td>SHMULIK</td>
+											<td>SHMULIK</td>
+											<td>יועץ מעליות</td>
+											<td></td>
+											<td></td>
+											<td>yselev@gmail.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=89'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(89);" /></td>										
+										</tr>
+																				<tr>
+										    <td>סטפאן</td>
+											<td>Stephane Roux</td>
+											<td> Aarka</td>
+											<td>אדריכלות</td>
+											<td></td>
+											<td>+33682832049</td>
+											<td>contacte@aarka.fr</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=636'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(636);" /></td>										
+										</tr>
+																				<tr>
+										    <td>סטודיו תמא</td>
+											<td>Studio Tema</td>
+											<td>TEMA</td>
+											<td>אדריכלות</td>
+											<td>026728017</td>
+											<td></td>
+											<td>office@tema-studio.co.il</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=84'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(84);" /></td>										
+										</tr>
+																				<tr>
+										    <td>צח כהן תכנון תאורה</td>
+											<td>Tsah Cohen</td>
+											<td>TZC</td>
+											<td>יועץ תאורה</td>
+											<td>028987897</td>
+											<td>057897898</td>
+											<td></td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=26'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(26);" /></td>										
+										</tr>
+																				<tr>
+										    <td>צביליג אבי</td>
+											<td>Tsvilig Avi</td>
+											<td>Avi T</td>
+											<td>יועץ חשמל</td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=21'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(21);" /></td>										
+										</tr>
+																				<tr>
+										    <td>אור הדנסה - תורג‘מן</td>
+											<td>Turgeman</td>
+											<td>Turgeman</td>
+											<td>יועץ קונסטרוקציה</td>
+											<td>0502796811</td>
+											<td>0502796811</td>
+											<td>Office@or-handassa.co.il</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=763'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(763);" /></td>										
+										</tr>
+																				<tr>
+										    <td>צבי טל ושות</td>
+											<td>Tzvi tal</td>
+											<td>צבי טל </td>
+											<td>יועץ איטום</td>
+											<td>073-3735090</td>
+											<td></td>
+											<td>office@zvital.co.il</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=135'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(135);" /></td>										
+										</tr>
+																				<tr>
+										    <td>וורוניק טוביאנה</td>
+											<td>Veronique Toubiana</td>
+											<td>Veronique</td>
+											<td>אדריכלות</td>
+											<td></td>
+											<td></td>
+											<td>maison@veroniquetoubiana.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=392'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(392);" /></td>										
+										</tr>
+																				<tr>
+										    <td>ויקטור ניסנוב</td>
+											<td>Victor Nisanove</td>
+											<td>ויקטור ניסנוב</td>
+											<td>יועץ אינסטלציה</td>
+											<td>0544-833075</td>
+											<td></td>
+											<td>victor@nsv.co.il</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=292'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(292);" /></td>										
+										</tr>
+																				<tr>
+										    <td>ויתקין שמואל</td>
+											<td>VIS Vitkin Shmuel</td>
+											<td>VIS</td>
+											<td>יועץ מעליות</td>
+											<td></td>
+											<td>0505299533</td>
+											<td>vis@vis.co.il</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=34'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(34);" /></td>										
+										</tr>
+																				<tr>
+										    <td>י. כ. מעליות </td>
+											<td>Y C MALIYOT </td>
+											<td>YCMaaliot</td>
+											<td>יועץ מעליות</td>
+											<td>09-7614392</td>
+											<td>050-6724141</td>
+											<td>yc1elev@gmail.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=126'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(126);" /></td>										
+										</tr>
+																				<tr>
+										    <td>י.ג. יעוץ הנדסי </td>
+											<td>Y.Goldring</td>
+											<td>Goldring</td>
+											<td>יועץ תנועה</td>
+											<td>0524155774</td>
+											<td></td>
+											<td>office@ygyg.co.il</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=673'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(673);" /></td>										
+										</tr>
+																				<tr>
+										    <td>י.ש הנדסת מעליות</td>
+											<td>Y.S mahaliyot</td>
+											<td>Y.S</td>
+											<td>יועץ מעליות</td>
+											<td>097480524</td>
+											<td></td>
+											<td>yselev@gmail.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=757'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(757);" /></td>										
+										</tr>
+																				<tr>
+										    <td>ירדנה אתגר  	</td>
+											<td>Yardena Etgar</td>
+											<td>Yrdena</td>
+											<td>יועץ קונסטרוקציה</td>
+											<td></td>
+											<td></td>
+											<td>etgareng@gmail.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=41'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(41);" /></td>										
+										</tr>
+																				<tr>
+										    <td>ירון שדה</td>
+											<td>Yaron Sade</td>
+											<td>Yaron</td>
+											<td>יועץ קונסטרוקציה</td>
+											<td>046100203</td>
+											<td>0523014445</td>
+											<td>office@sade.co.il</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=42'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(42);" /></td>										
+										</tr>
+																				<tr>
+										    <td>יהודה נעמן</td>
+											<td>YEHUDA NAAMAN</td>
+											<td>YEHUDA NAAMAN</td>
+											<td>פיקוח</td>
+											<td></td>
+											<td></td>
+											<td>yynaaman@gmail.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=83'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(83);" /></td>										
+										</tr>
+																				<tr>
+										    <td>יהודה כהן </td>
+											<td>Yeuda choen </td>
+											<td>Yeuda. c</td>
+											<td>יועץ מעליות</td>
+											<td>097614392</td>
+											<td></td>
+											<td>yc1elev@gmail.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=740'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(740);" /></td>										
+										</tr>
+																				<tr>
+										    <td>יהונתן ילובסקי</td>
+											<td>Ylovsky Yehonathan</td>
+											<td>Ylovsky</td>
+											<td>יועץ בטיחות</td>
+											<td>0504306999</td>
+											<td>0504306999</td>
+											<td>yesafety@gmail.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=119'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(119);" /></td>										
+										</tr>
+																				<tr>
+										    <td>יומא אדריכלים	</td>
+											<td>Yoma Architects</td>
+											<td>Yoma</td>
+											<td>אדריכלות</td>
+											<td>0773221223</td>
+											<td>0549989109</td>
+											<td>office@yoma-architects.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=29'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(29);" /></td>										
+										</tr>
+																				<tr>
+										    <td>יונתן אילוביצקי </td>
+											<td>YONATA ILUVITZKI</td>
+											<td>ILUVITZKI</td>
+											<td>יועץ בטיחות</td>
+											<td>050-4306999</td>
+											<td></td>
+											<td>yesafety@gmail.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=116'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(116);" /></td>										
+										</tr>
+																				<tr>
+										    <td>אמנון יושע מהנדסים יועצים בע''ם</td>
+											<td>Yosha</td>
+											<td>Yosha</td>
+											<td>יועץ אינסטלציה</td>
+											<td>0543366677</td>
+											<td>0543366677</td>
+											<td>yair@yosha.co.il</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=33'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(33);" /></td>										
+										</tr>
+																				<tr>
+										    <td>יוסי טלסניק</td>
+											<td>Yossi Telsnik</td>
+											<td>Telsnik</td>
+											<td>יועץ אינסטלציה</td>
+											<td></td>
+											<td>0522494375</td>
+											<td>yosef@talesnikeng.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=54'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(54);" /></td>										
+										</tr>
+																				<tr>
+										    <td>יצחק פייפ טק </td>
+											<td>Ytzhak pipe</td>
+											<td>Ytzhak. P</td>
+											<td>יועץ אינסטלציה</td>
+											<td>0584044220</td>
+											<td></td>
+											<td>maruani@pipe-t.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=741'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(741);" /></td>										
+										</tr>
+																				<tr>
+										    <td>יורי לדיזינסקי</td>
+											<td>Yuri</td>
+											<td>Yuri</td>
+											<td>יועץ בטיחות</td>
+											<td></td>
+											<td>0547769804</td>
+											<td>layuri102@gmail.com</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=67'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(67);" /></td>										
+										</tr>
+																				<tr>
+										    <td>זליו דיאמנדי</td>
+											<td>Zelio Diamandi</td>
+											<td>Zelio</td>
+											<td>יועץ קרקע</td>
+											<td>03-5756517</td>
+											<td></td>
+											<td>office@zelio.co.il</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=32'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(32);" /></td>										
+										</tr>
+																				<tr>
+										    <td>זיו מערכות</td>
+											<td>Ziv System</td>
+											<td>Ziv</td>
+											<td>ענן לניהול פרויקט</td>
+											<td></td>
+											<td></td>
+											<td>ziv@ziv.global</td>
+											<td><img src="images/edit-button.svg" class="paddingTop10 cursor-pointer" title="עדכן" onclick="location.href='add_supplier.php?type_sup=D&id=91'" /></td>
+											<td><img src="images/delete.svg" class="paddingTop10 cursor-pointer" title="מחוק" onclick="return removeSupplier(91);" /></td>										
+										</tr>
+																		</table>		
+							</div>	
+						</div>
+					</div>
+						    </div>
+		</form> 
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style id="maquette-sc">
+/* ===== MAQUETTE - tous les boutons Enregistrer / Annuler / Fermer (pages ET popups) : meme style partout =====
+   enregistrer = fond bleu du site (#218FD6, bgColorBlue), annuler/fermer = fond noir (bgColorBlack), texte blanc, forme arrondie
+   seule l'apparence change : memes boutons, memes id, memes actions */
+html body .mq-sc.mq-sc.mq-sc.mq-sc.mq-sc { background:#218FD6 !important; color:#fff !important; border:1.5px solid #218FD6 !important; border-radius:999px !important;
+  padding:6px 18px !important; font-weight:700 !important; font-size:14px !important; box-shadow:none !important; height:auto !important;
+  width:auto !important; min-width:0 !important; line-height:1.4 !important; }
+html body .mq-sc.mq-sc.mq-sc.mq-sc.mq-sc:hover:not(:disabled) { background:#1a7bbd !important; border-color:#1a7bbd !important; }
+html body .mq-sc.mq-sc.mq-sc.mq-sc.mq-sc i { color:#fff !important; }
+html body .mq-sc.mq-sc.mq-sc.mq-sc.mq-sc.mq-sc-cancel { background:#000 !important; border-color:#000 !important; color:#fff !important; }
+html body .mq-sc.mq-sc.mq-sc.mq-sc.mq-sc.mq-sc-cancel:hover:not(:disabled) { background:#333 !important; border-color:#333 !important; }
+html body .mq-sc.mq-sc.mq-sc.mq-sc.mq-sc:disabled { opacity:.4; }
+</style>
+<script>
+(function(){
+  var SAVE = /^(\+\s*)?(שמור|שמירה|עדכן|save|update|ok|אישור|עבור לצוות ניהול|המשך|הבא)/i, CANCEL = /^(ביטול|סגור|בטל|cancel|close)/i;
+  function mark(){
+    document.querySelectorAll('input[type="button"], input[type="submit"], button, a.btn').forEach(function(b){
+      if(b.classList.contains('mq-sc') || b.closest('.topbar') || b.classList.contains('close') || b.classList.contains('btn-close')) return;
+      if(b.querySelector('img')) return;   // boutons-icones (grille d'actions des popups) : on n'y touche pas
+      var txt = ((b.value || b.textContent) || '').replace(/\s+/g, ' ').trim();
+      if(!txt) return;
+      if(CANCEL.test(txt)){ b.classList.add('mq-sc', 'mq-sc-cancel'); }
+      else if(SAVE.test(txt)){ b.classList.add('mq-sc'); }
+    });
+  }
+  mark();
+  window.addEventListener('load', function(){ mark(); setTimeout(mark, 800); });
+  document.addEventListener('shown.bs.modal', mark);   // popups : quand ils s'ouvrent
+  if(window.jQuery) jQuery(document).on('shown.bs.modal', mark);
+})();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style id="maquette-design">
+/* ===== MAQUETTE - design commun (ecrans projet + budget) - aucun fichier du site modifie =====
+   meme logique que les maquettes deja validees : fond blanc casse, tableaux arrondis sans quadrillage, en-tete #dedede,
+   lignes bleu fonce / bleu moins fonce, boutons arrondis bordes de bleu, listes arrondies, langue avec globe */
+html, body { background:#f6f5f1 !important; }
+
+/* tableaux */
+table.mq-t { border-collapse:separate !important; border-spacing:0 !important; border:1px solid #C5B8AA !important; border-radius:14px !important;
+  overflow:hidden; background:#fff; }
+table.mq-t th, table.mq-t td { border:none !important; border-bottom:1px solid #eef0f3 !important; }
+table.mq-t tr:last-child > td { border-bottom:none !important; }
+/* en-tetes : gris clair, SAUF ceux qui ont une couleur de sens (beige = hors TVA, bleu ciel = TVA incluse...) qui la gardent */
+table.mq-t th:not([class*="bgColor"]), table.mq-t tr.mq-head > td:not([class*="bgColor"]) { background:#dedede !important; color:#1a5276 !important; font-weight:700; }
+table.mq-t th[class*="bgColor"] { color:#1a5276 !important; font-weight:700; }
+/* colonne blanche de separation (budget) : reste blanche, sans trait */
+table.mq-t .bgColorWhite { background:#fff !important; border-bottom-color:#fff !important; }
+/* tableau coupe en blocs par une colonne blanche (budget : hors TVA | TVA incluse) : un cadre arrondi par bloc */
+table.mq-t.mq-seg { border:none !important; border-radius:0 !important; overflow:visible; background:transparent; }
+table.mq-t.mq-seg .mq-sepcol { background:#f6f5f1 !important; border:none !important; }   /* couleur du fond de page (la couleur de la ligne ne doit pas passer dessous) */
+/* bords du cadre en cotes physiques (certaines cases des chiffres sont en sens gauche-droite) */
+table.mq-t.mq-seg .mq-e-r { border-right:1px solid #C5B8AA !important; }
+table.mq-t.mq-seg .mq-e-l { border-left:1px solid #C5B8AA !important; }
+table.mq-t.mq-seg .mq-e-t { border-top:1px solid #C5B8AA !important; }
+table.mq-t.mq-seg .mq-e-b { border-bottom:1px solid #C5B8AA !important; }
+table.mq-t.mq-seg .mq-e-t.mq-e-r { border-top-right-radius:14px; }
+table.mq-t.mq-seg .mq-e-t.mq-e-l { border-top-left-radius:14px; }
+table.mq-t.mq-seg .mq-e-b.mq-e-r { border-bottom-right-radius:14px; }
+table.mq-t.mq-seg .mq-e-b.mq-e-l { border-bottom-left-radius:14px; }
+/* budget : montants centres sous leur en-tete (en-tetes centres, montants colles a un bord -> decales) */
+/* blocs internes a 95% (ex. חשבון שהוגש / חשבון מאושר) : centres dans le cadre */
+.mq-form-row > .card .card-body .card.width95Percents { margin-left:auto !important; margin-right:auto !important; }
+table.mq-seg .td_budget_elem { text-align:center !important; padding-left:6px !important; padding-right:6px !important; }
+/* ligne vide de separation (ex. entre fournisseurs et totaux) : un vrai espace, sans couleur */
+table.mq-t tr.mq-spacer > td { background:transparent !important; border:none !important; height:16px; padding:0 !important; }
+/* plusieurs tableaux l'un sous l'autre : de l'air entre eux */
+table.mq-t { margin-bottom:18px; }
+table.mq-t tr.mq-dark > td.mq-bg { background-color:#a9c6e0 !important; }
+table.mq-t tr.mq-light > td.mq-bg { background-color:#d4e4f2 !important; }
+table.mq-t td img[src*="delete"], table.mq-t td img[src*="edit-button"] { padding:5px; box-sizing:content-box; border-radius:50%; transition:background .15s; }
+table.mq-t td img[src*="delete"]:hover { background:#fde6e6; }
+table.mq-t td img[src*="edit-button"]:hover { background:#e7eef5; }
+
+/* cartes */
+.card.border-frame { border:1px solid #C5B8AA !important; border-radius:15px !important; overflow:hidden; }
+
+/* boutons de la page (pas ceux de l'en-tete) : arrondis, bordes de bleu, sans fond */
+.container .btn, .container input[type="button"], .container input[type="submit"], .container-fluid .btn, .container-fluid input[type="button"] {
+  background:transparent !important; color:#1a5276 !important; border:1.5px solid #1a5276 !important; border-radius:999px !important;
+  padding:6px 16px !important; font-weight:700; font-size:14px !important; box-shadow:none !important; height:auto !important; }
+.container .btn:hover:not(:disabled), .container input[type="button"]:hover:not(:disabled), .container-fluid .btn:hover:not(:disabled) { background:#e3eef6 !important; }
+.container .btn i, .container-fluid .btn i { color:#1a5276 !important; }
+.container .btn.bgColorBlack, .container input.bgColorBlack, .container-fluid .btn.bgColorBlack { color:#4a4a4a !important; border-color:#8a8a8a !important; }
+.container .btn:disabled, .container input[type="button"]:disabled { opacity:.4; }
+
+/* cadres des formulaires (sans tableau) : centres, 620px au lieu de presque tout l'ecran */
+.mq-form-row > .col-1, .mq-form-row > .col-2, .mq-form-row > .col-3 { display:none !important; }
+/* fiches : une seule colonne de champs, tous a la meme largeur (300px), centres ; cadre de 400px aligne dessus */
+.mq-form-row > .card { flex:0 0 auto !important; width:400px !important; max-width:100% !important; margin-left:auto !important; margin-right:auto !important; }
+.mq-form-row:not(.mq-form-wide) > .card .card-body select,
+.mq-form-row:not(.mq-form-wide) > .card .card-body textarea,
+.mq-form-row:not(.mq-form-wide) > .card .card-body input.mq-full,
+.mq-form-row:not(.mq-form-wide) > .card .card-body .chosen-container,
+.mq-form-row:not(.mq-form-wide) > .card .card-body .select2-container {
+  width:300px !important; max-width:300px !important; box-sizing:border-box; display:block; margin-left:auto !important; margin-right:auto !important; }
+/* colonnes du site dans la fiche (col-8 entre deux col-2 vides...) : la colonne pleine prend toute la largeur, les vides disparaissent -> champs vraiment centres */
+.mq-form-row:not(.mq-form-wide) > .card .card-body .row > [class*="col-"]:empty { display:none !important; }
+.mq-form-row:not(.mq-form-wide) > .card .card-body .row > [class*="col-"]:not(:empty) { flex:0 0 100% !important; max-width:100% !important; }
+/* le parent d'une zone de saisie ne doit pas la retrecir (colonnes etroites du site) */
+.mq-form-row:not(.mq-form-wide) > .card .card-body :has(> textarea) { max-width:none !important; width:auto !important; flex:1 1 auto !important; }
+.mq-form-row:not(.mq-form-wide) > .card .card-body textarea { min-height:90px; }
+/* "EN | HE" au-dessus d'une zone de texte : aligne sur le bord de la zone (300px), pas sur le bord du cadre */
+.mq-form-row:not(.mq-form-wide) > .card .card-body :has(> textarea) > div.alignRight, .mq-form-row:not(.mq-form-wide) > .card .card-body :has(> textarea) > div.alignLeft { width:300px; max-width:100%; margin-left:auto; margin-right:auto; }
+/* EN | HE dans le meme bloc que la zone de texte (compte_form) */
+.mq-form-row:not(.mq-form-wide) > .card .card-body .row > [class*="col-"]:has(> a[onclick]):has(> div > textarea) { width:300px !important; max-width:100% !important; flex:0 0 auto !important; margin-left:auto !important; margin-right:auto !important; padding-left:0 !important; padding-right:0 !important; text-align:right; }
+/* EN | HE dans une ligne a part au-dessus de la zone de texte (paiement_form) */
+.mq-form-row:not(.mq-form-wide) > .card .card-body .row:has(+ .row textarea) > div:has(> a[onclick]) { flex:0 0 300px !important; width:300px !important; max-width:100% !important; margin-left:auto !important; margin-right:auto !important; padding-left:0 !important; padding-right:0 !important; text-align:right; }
+.mq-form-row:not(.mq-form-wide) > .card .card-body .row:has(+ .row textarea):has(> div > a[onclick]) > div:empty { display:none; }
+/* liens d'action sans adresse (EN / HE...) : main au survol */
+.card .card-body a[onclick], .container a[onclick] { cursor:pointer; }
+/* champs simples (montant, date, texte court) : plus etroits que la liste et la zone de texte, toujours centres */
+.mq-form-row:not(.mq-form-wide) > .card .card-body input.mq-full { width:150px !important; max-width:150px !important; }
+/* liens et textes longs (noms de fichiers PDF...) : passent a la ligne dans la meme largeur */
+.mq-form-row > .card .card-body a { overflow-wrap:anywhere; word-break:break-word; }
+.mq-form-row:not(.mq-form-wide) > .card .card-body a[href*=".pdf"], .mq-form-row:not(.mq-form-wide) > .card .card-body a[href*="uploads"] { display:inline-block; max-width:300px; }
+/* fiche large (avec un tableau, ex. estimation) : la zone de texte hors tableau est quand meme centree a 300px, EN | HE aligne dessus */
+.mq-form-row.mq-form-wide > .card .card-body .row:has(> [class*="col-"] > textarea) > [class*="col-"]:empty { display:none !important; }
+.mq-form-row.mq-form-wide > .card .card-body .row > [class*="col-"]:has(> textarea) { flex:0 0 100% !important; max-width:100% !important; }
+.mq-form-row.mq-form-wide > .card .card-body .row > [class*="col-"] > textarea { width:300px !important; max-width:100% !important; box-sizing:border-box; display:block; margin-left:auto !important; margin-right:auto !important; }
+.mq-form-row.mq-form-wide > .card .card-body .row > [class*="col-"]:has(> textarea) > div.alignRight { width:300px; max-width:100%; margin-left:auto; margin-right:auto; }
+/* ===== DEBUT BLOC DATATABLES : CSS seul, a coller tel quel sur le site APRES jquery.dataTables.css =====
+   (fournisseurs, domaines, utilisateurs... : aucune classe ajoutee par JS, tient apres tri / recherche / changement de page) */
+/* le tableau prend la largeur de son contenu (pas tout l'ecran), centre ; la ligne Show / Search se cale dessus */
+.dataTables_wrapper { width:fit-content !important; max-width:min(100%, 1100px) !important; margin-left:auto !important; margin-right:auto !important; }
+table.dataTable { width:auto !important; max-width:100% !important; border-collapse:separate !important; border-spacing:0 !important;
+  border:1px solid #C5B8AA !important; border-radius:14px !important; overflow:hidden; margin-bottom:18px; }
+/* DataTables ecrit une largeur en dur sur chaque titre : ignoree, les colonnes peuvent retrecir */
+table.dataTable thead th, table.dataTable tfoot th { width:auto !important; }
+/* titres : background-COLOR seulement (pas "background"), sinon les fleches de tri de DataTables disparaissent */
+table.dataTable thead th, table.dataTable thead td { background-color:#dedede !important; color:#1a5276 !important; font-weight:700;
+  padding:10px 22px 10px 8px !important; border:none !important; border-bottom:1px solid #C5B8AA !important; }
+/* lignes : bleu fonce / bleu clair en alternance, en CSS (juste apres chaque tri, filtre, page) */
+table.dataTable tbody tr:nth-child(odd) > td, table.dataTable tbody tr:nth-child(odd) > td.sorting_1 { background-color:#a9c6e0 !important; }
+table.dataTable tbody tr:nth-child(even) > td, table.dataTable tbody tr:nth-child(even) > td.sorting_1 { background-color:#d4e4f2 !important; }
+table.dataTable tbody td { padding:8px !important; border:none !important; overflow-wrap:anywhere; }   /* e-mails longs : passent a la ligne */
+/* filtres de colonne (columnFilter) : prennent la largeur de leur colonne au lieu d'imposer 140px */
+table.dataTable tfoot th, table.dataTable tfoot td { padding:6px 4px !important; background-color:#fff !important; border:none !important; position:relative; height:40px; }
+/* le filtre est pose par-dessus sa case : il suit la largeur de la colonne sans l'elargir (sinon ~180px minimum par colonne) */
+.dataTables_wrapper table.dataTable tfoot th input.text_filter, .dataTables_wrapper table.dataTable tfoot td input.text_filter, table.dataTable tfoot th input, table.dataTable tfoot td input { position:absolute !important; left:4px; right:4px; top:6px; width:calc(100% - 8px) !important; }
+.dataTables_wrapper input.text_filter, table.dataTable tfoot input, table.dataTable thead input { width:100% !important; min-width:0 !important; max-width:100% !important; box-sizing:border-box !important; padding-left:6px !important; padding-right:6px !important; }
+/* fournisseurs / concepteurs : les 2 colonnes de telephone ne se coupent jamais (seuls les e-mails passent a la ligne) */
+#suppliers_list tbody td:nth-child(5), #suppliers_list tbody td:nth-child(6),
+#designers_list tbody td:nth-child(5), #designers_list tbody td:nth-child(6) { white-space:nowrap; overflow-wrap:normal; }
+/* colonne Nickname (3e) plus etroite : le texte passe a la ligne */
+#suppliers_list thead th:nth-child(3), #designers_list thead th:nth-child(3) { width:70px !important; }
+#suppliers_list tbody td:nth-child(3), #designers_list tbody td:nth-child(3) { width:70px; }
+/* ===== FIN BLOC DATATABLES ===== */
+/* fiche utilisateur (ajout / modification) : champs 200px (au lieu de 250), centres ; 3 -> 2 -> 1 par ligne selon l'ecran */
+.container:has(#privileges) input.width250 { width:200px !important; max-width:100% !important; box-sizing:border-box; }
+.container:has(#privileges) .row:has(> .col-4 > input.width250) { justify-content:center; }
+@media (max-width:900px){ .container:has(#privileges) .row > .col-4:has(> input.width250){ flex:0 0 50% !important; max-width:50% !important; } }
+@media (max-width:560px){ .container:has(#privileges) .row > .col-4:has(> input.width250){ flex:0 0 100% !important; max-width:100% !important; } }
+/* gestion des statuts : colonne "שם בעברית" (2e) resserree sur son texte (100px -> 70px) */
+#progress_status_list tr > :nth-child(2) { width:1px !important; white-space:nowrap; padding-left:8px !important; padding-right:8px !important; }
+/* colonnes couleur (3e et 4e) : 90px pour une pastille de 30px -> 50px */
+#progress_status_list tr > :nth-child(3), #progress_status_list tr > :nth-child(4) { width:50px !important; padding-left:4px !important; padding-right:4px !important; }
+/* couleurs (צבע רקע / צבע גופן) dans les tableaux : pastille ronde au lieu d'un rectangle ; meme champ, meme clic, meme action */
+table input[type="color"] { -webkit-appearance:none; appearance:none; width:30px !important; height:30px !important; min-width:30px; padding:0 !important; margin:2px auto !important; display:block;
+  border:1.5px solid #c9d7e3 !important; border-radius:50% !important; background:none !important; cursor:pointer; overflow:hidden; box-sizing:border-box; }
+table input[type="color"]::-webkit-color-swatch-wrapper { padding:0; }
+table input[type="color"]::-webkit-color-swatch { border:none; border-radius:50%; }
+table input[type="color"]::-moz-color-swatch { border:none; border-radius:50%; }
+/* cadre bleu du module d'estimation : marge interieure pour que la zone de texte ne colle pas a la bordure */
+#costs_eval_modul_div { padding-left:16px !important; padding-right:16px !important; box-sizing:border-box; }
+#costs_eval_modul_div > .row { margin-left:0 !important; margin-right:0 !important; }
+/* tableau des lignes du module : centre dans le cadre bleu ; sur petit ecran il defile au lieu de deborder */
+#costs_eval_modul_div > .row > .col-12:has(> table) { margin-left:0 !important; margin-right:0 !important; padding-left:0 !important; padding-right:0 !important; overflow-x:auto; }
+#costs_eval_modul_div table { margin-left:auto !important; margin-right:auto !important; }
+.mq-form-row.mq-form-wide > .card { width:fit-content !important; min-width:400px; max-width:min(760px, 100%) !important; }
+/* pages de formulaire sans cadre (ex. utilisateur, fournisseur) : la zone du formulaire est resserree au lieu de prendre tout l'ecran */
+body.mq-form-page .container { max-width:780px !important; }
+
+/* langue : pilule avec globe */
+.mq-lang-box { position:relative; display:inline-flex; align-items:center; direction:rtl; }
+.mq-lang-box > i { position:absolute; right:10px; color:#1a5276; font-size:14px; pointer-events:none; }
+.mq-lang-box > select { -webkit-appearance:none; appearance:none; width:auto !important; min-width:110px; height:32px !important; margin:0 !important;
+  padding:0 30px 0 28px !important; border:1.5px solid #c9d7e3 !important; border-radius:999px !important; background-color:#fff; color:#1a5276; font-weight:700; cursor:pointer;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%231a5276'/%3E%3C/svg%3E");
+  background-repeat:no-repeat; background-position:left 11px center; }
+
+/* bouton "תקציב" du menu : moins large (meme reglage que les autres maquettes) */
+.btn-budget { padding:5px 10px !important; }
+.btn-budget i { margin-left:6px !important; }
+.btn-budget .budget-btn-arrow { margin-right:4px !important; margin-left:0 !important; }
+</style>
+<script>
+(function(){
+  // ---------- MAQUETTE SEULEMENT : aucun enregistrement possible ----------
+  // tout appel qui ecrit (insert / delete / update / set_ / reorder / upload / send...) est bloque ; les lectures restent
+  var WRITE = /(insert|delete|update|_set|set_|reorder|remove|save|upload|send|fill_global|duplicate|archive|cleanup|unset|_add|add_to)/i;
+  var oOpen = XMLHttpRequest.prototype.open, oSend = XMLHttpRequest.prototype.send;
+  // + les fichiers "setXxx.php" sans souligne (ex. setEtrpData.php, setNewTaskData.php)
+  // + tout appel en arriere-plan vers "add_xxx.php" (ex. add_meeting_to_do_today.php, appele automatiquement par le tableau de bord)
+  var isWrite = function(u){ u = String(u || ''); return WRITE.test(u) || /(^|\/)set[A-Z]/.test(u) || /(^|\/)add_/.test(u); };
+  XMLHttpRequest.prototype.open = function(m, u){ this._mqBlock = isWrite(u); return oOpen.apply(this, arguments); };
+  XMLHttpRequest.prototype.send = function(){ if(this._mqBlock) return; return oSend.apply(this, arguments); };
+  if(window.fetch){ var oFetch = window.fetch; window.fetch = function(u){ if(isWrite(u && u.url || u)) return new Promise(function(){}); return oFetch.apply(this, arguments); }; }
+  document.addEventListener('submit', function(e){ e.preventDefault(); e.stopPropagation(); }, true);   // aucun formulaire envoye
+  // langue dans l'adresse (?lang_screen=EN) : sur le site, PHP preselectionne la langue au rechargement ; ici on fait pareil
+  (function(){
+    var q = new URLSearchParams(location.search).get('lang_screen');
+    if(q !== 'EN' && q !== 'HE') return;
+    var s = document.getElementById('lang'), ls = document.getElementById('lang_screen');
+    if(s){ s.value = q; }
+    if(ls){ ls.value = q; }
+  })();
+  // langue de l'ecran (budget...) : sur le site, le choix est enregistre puis la page se recharge ; ici l'enregistrement est bloque,
+  // donc on met la langue choisie dans le champ cache #lang_screen AVANT le code de la page, qui reecrit alors les libelles
+  document.addEventListener('change', function(e){
+    var ls = document.getElementById('lang_screen');
+    if(e.target && e.target.id === 'lang' && ls){ ls.value = e.target.value; setTimeout(style, 150); }
+  }, true);
+
+  function style(){
+    // page de formulaire (des champs, aucune liste d'enregistrements, aucun cadre de formulaire) : zone resserree
+    if(!document.body.classList.contains('mq-form-page') && !document.querySelector('.card.border-frame')
+       && document.querySelectorAll('.container input[type="text"], .container input[type="email"], .container input[type="password"], .container select, .container textarea').length >= 3
+       && !Array.prototype.some.call(document.querySelectorAll('.container table'), function(t){ return t.querySelectorAll('tr').length > 3; })){
+      document.body.classList.add('mq-form-page');
+    }
+    // cadres des formulaires sans tableau : moins larges
+    document.querySelectorAll('.card.border-frame').forEach(function(c){
+      var row = c.parentElement;
+      if(!row || row.classList.contains('mq-form-row')) return;
+      if(c.querySelector('table')) row.classList.add('mq-form-wide');   // cadre avec un tableau dedans (ex. modules d'une estimation) : un peu plus large
+      if(/col-(1|2|3)\b/.test(Array.prototype.map.call(row.children, function(x){ return x.className; }).join(' '))) row.classList.add('mq-form-row');
+    });
+    // champs de saisie "pleine largeur" (pas les petits champs comme "מע''מ %", qui gardent leur taille a cote de leur libelle)
+    document.querySelectorAll('.mq-form-row:not(.mq-form-wide) > .card .card-body input').forEach(function(e){
+      if(e.classList.contains('mq-full') || e.classList.contains('mq-small')) return;
+      // champ de recherche INTERNE aux listes deroulantes (chosen / select2) : on n'y touche pas, il suit la largeur de sa liste
+      if(e.closest('.chosen-container, .select2-container, .select2-dropdown')) return;
+      if(!/^(text|number|date|email|tel|password)$/.test(e.type)) return;
+      // plusieurs champs sur la meme ligne (ex. nom du PDF en plusieurs morceaux) : on garde la ligne telle quelle
+      if(e.parentElement.querySelectorAll(':scope > input[type=text], :scope > input[type=number]').length > 1){ e.classList.add('mq-small'); return; }
+      e.classList.add(e.getBoundingClientRect().width >= 140 ? 'mq-full' : 'mq-small');
+    });
+    // si des champs places cote a cote ne tiennent pas dans 400px (ex. reglages PDF : 4 champs), la fiche passe en version large
+    document.querySelectorAll('.mq-form-row:not(.mq-form-wide) > .card').forEach(function(c){
+      var r = c.getBoundingClientRect();
+      var over = Array.prototype.some.call(c.querySelectorAll('.card-body input, .card-body select, .card-body textarea, .card-body button'), function(e){ var b = e.getBoundingClientRect(); return b.width && (b.left < r.left - 5 || b.right > r.right + 5); });
+      if(over) c.parentElement.classList.add('mq-form-wide');
+    });
+    // un tableau qui contient en fait DEUX tableaux (ligne vide puis un nouvel en-tete, ex. budget : fournisseurs / totaux)
+    // -> affiche comme deux tableaux distincts, chacun avec son cadre, colonnes alignees ; memes cases, memes id
+    document.querySelectorAll('.container table, .container-fluid table').forEach(function(t){
+      if(t.dataset.mqSplit || t.closest('.topbar')) return;
+      var rows = Array.prototype.slice.call(t.querySelectorAll(':scope > tr, :scope > tbody > tr'));
+      for(var k = 1; k < rows.length - 1; k++){
+        var r = rows[k], next = rows[k + 1];
+        var empty = !r.textContent.replace(/ /g, ' ').trim() && !r.querySelector('img, input, select, a, i');
+        if(!empty || !next.querySelector('th')) continue;
+        // largeurs des colonnes du 1er tableau (d'apres une ligne complete), pour aligner le 2e
+        var full = rows.filter(function(x){ return !x.querySelector('[colspan]'); })[0];
+        var widths = full ? Array.prototype.map.call(full.children, function(c){ return c.getBoundingClientRect().width; }) : [];
+        var total = t.getBoundingClientRect().width;
+        var t2 = document.createElement('table');
+        Array.prototype.forEach.call(t.attributes, function(a){ if(a.name !== 'id') t2.setAttribute(a.name, a.value); });
+        var body2 = document.createElement('tbody'); t2.appendChild(body2);
+        rows.slice(k + 1).forEach(function(x){ body2.appendChild(x); });
+        r.parentNode.removeChild(r);                      // la ligne vide devient l'espace entre les deux tableaux
+        t.parentNode.insertBefore(t2, t.nextSibling);
+        [t, t2].forEach(function(x){
+          x.style.width = total + 'px'; x.style.tableLayout = 'fixed';
+          if(widths.length){ var cg = document.createElement('colgroup'); widths.forEach(function(w){ var c = document.createElement('col'); c.style.width = w + 'px'; cg.appendChild(c); }); x.insertBefore(cg, x.firstChild); }
+        });
+        t2.style.direction = t.style.direction;
+        // la page change le sens (hebreu / anglais) sur le 1er tableau : le 2e suit
+        new MutationObserver(function(){ t2.style.direction = t.style.direction; }).observe(t, {attributes:true, attributeFilter:['style']});
+        break;
+      }
+      t.dataset.mqSplit = '1';
+    });
+    // tableaux de la page (pas ceux de l'en-tete)
+    document.querySelectorAll('.container table, .container-fluid table').forEach(function(t){
+      if(t.closest('.topbar') || t.querySelectorAll('tr').length < 2) return;
+      // tableaux DataTables : design en CSS seul (bloc DATATABLES), aucune classe posee ici -> comme sur le vrai site
+      if(t.classList.contains('dataTable') || (window.jQuery && jQuery.fn.dataTable && jQuery.fn.dataTable.fnIsDataTable && jQuery.fn.dataTable.fnIsDataTable(t))){
+        t.classList.remove('mq-t');
+        t.querySelectorAll('tr').forEach(function(r){ r.classList.remove('mq-head', 'mq-dark', 'mq-light', 'mq-spacer'); });
+        t.querySelectorAll('td.mq-bg').forEach(function(td){ td.classList.remove('mq-bg'); });
+        return;
+      }
+      t.classList.add('mq-t');
+      // recalcul a chaque passage : la page remplit certains textes (ex. "סה''כ") apres le premier passage
+      t.querySelectorAll('tr').forEach(function(r){ r.classList.remove('mq-head', 'mq-dark', 'mq-light', 'mq-spacer'); });
+      t.querySelectorAll('td.mq-bg').forEach(function(td){ td.classList.remove('mq-bg'); });
+      // tableau de mise en page (listes de cases a cocher, champs...) : cadre arrondi seulement, pas de lignes bleues
+      if(t.querySelectorAll('input[type="checkbox"], input[type="radio"], input[type="text"], select, textarea').length > t.querySelectorAll('tr').length){
+        t.querySelectorAll('tr').forEach(function(r){ if(r.querySelector('th')) r.classList.add('mq-head'); });
+        return;
+      }
+      var i = 0;
+      var rows = t.querySelectorAll(':scope > tr, :scope > tbody > tr, :scope > thead > tr');
+      // ligne de total (סה"כ / Total / en gras) : garde la couleur definie par le site, jamais d'alternance
+      var isTotal = function(r){ return /סה[^\sא-ת]{1,3}כ|total/i.test(r.textContent) || /font-weight-bold/.test(r.className); };
+      // tableau sans ligne d'en-tete = petit tableau de synthese (ex. pourcentages payes) : pas une liste d'enregistrements
+      var hasHead = Array.prototype.some.call(rows, function(r){ return r.querySelector('th') || r.classList.contains('bgColorSilver'); });
+      var afterTotal = false;   // tout ce qui suit une ligne de total = lignes de synthese (ex. "סכום לתשלום")
+      rows.forEach(function(r){
+        if(r.querySelector('th') || r.classList.contains('bgColorSilver')){ r.classList.add('mq-head'); return; }
+        if(isTotal(r)) afterTotal = true;
+        if(afterTotal || !hasHead) return;
+        // ligne vide = separation : on la laisse vide
+        // (une ligne vide dont une case a sa propre couleur n'est PAS une separation : elle garde sa couleur)
+        var hasColor = r.querySelector('td[class*="bgColor"]:not(.bgColorWhite), td[style*="background"]');
+        if(!hasColor && !r.textContent.replace(/ /g, ' ').trim() && !r.querySelector('img, input, select, a, i')){ r.classList.add('mq-spacer'); return; }
+        // ligne qui a deja sa propre couleur (totaux, mise en evidence...) : elle la garde
+        // (sauf le simple "une ligne sur deux" gris/blanc du site, ex. budget : remplace par l'alternance bleue)
+        var rb = (r.style.backgroundColor || '').replace(/\s/g, '');
+        var zebra = rb === '' || rb === 'rgb(255,255,255)' || rb === 'rgb(222,222,222)';
+        // ligne d'enregistrement (commande, paiement, compte...) : toujours en bleu, la 1re en bleu fonce, meme si elle est seule
+        if(!zebra || /bgColor|bg-/.test(r.className) || isTotal(r)) return;
+        if(rb) r.style.backgroundColor = '';
+        r.classList.add(i % 2 === 0 ? 'mq-dark' : 'mq-light'); i++;
+        r.querySelectorAll(':scope > td').forEach(function(td){
+          // les cases qui ont deja leur propre couleur (statut, alerte...) la gardent
+          if(!td.style.backgroundColor && !/bgColor|bg-/.test(td.className)) td.classList.add('mq-bg');
+        });
+      });
+    });
+    // blocs separes par une colonne blanche (.bgColorWhite dans chaque ligne a la meme position) : un cadre par bloc
+    document.querySelectorAll('table.mq-t').forEach(function(t){
+      var rows = Array.prototype.filter.call(t.querySelectorAll(':scope > tr, :scope > tbody > tr'), function(r){ return !r.classList.contains('mq-spacer'); });
+      if(rows.length < 2) return;
+      // position (en colonnes) de chaque case
+      var grid = rows.map(function(r){ var col = 0; return Array.prototype.map.call(r.children, function(c){ var s = col; col += (c.colSpan || 1); return {c:c, s:s, e:col - 1}; }); });
+      var sepCols = null;
+      grid.forEach(function(cells){
+        var mine = cells.filter(function(x){ return x.c.classList.contains('bgColorWhite') && x.s === x.e; }).map(function(x){ return x.s; });
+        sepCols = sepCols === null ? mine : sepCols.filter(function(v){ return mine.indexOf(v) >= 0; });
+      });
+      if(!sepCols || !sepCols.length) return;
+      t.classList.add('mq-seg');
+      var rtl = getComputedStyle(t).direction === 'rtl';
+      var ncols = Math.max.apply(null, grid.map(function(cells){ return cells.length ? cells[cells.length - 1].e + 1 : 0; }));
+      // blocs = plages de colonnes entre les colonnes blanches
+      var blocks = [], start = 0;
+      sepCols.concat([ncols]).sort(function(a, b){ return a - b; }).forEach(function(sc){ if(sc > start) blocks.push([start, sc - 1]); start = sc + 1; });
+      grid.forEach(function(cells, ri){
+        cells.forEach(function(x){
+          x.c.classList.remove('mq-e-r', 'mq-e-l', 'mq-e-t', 'mq-e-b', 'mq-sepcol');
+          if(sepCols.indexOf(x.s) >= 0 && x.s === x.e){ x.c.classList.add('mq-sepcol'); return; }
+          blocks.forEach(function(b){
+            if(x.s === b[0]) x.c.classList.add(rtl ? 'mq-e-r' : 'mq-e-l');   // debut du bloc : a droite en hebreu
+            if(x.e === b[1]) x.c.classList.add(rtl ? 'mq-e-l' : 'mq-e-r');
+          });
+          if(ri === 0) x.c.classList.add('mq-e-t');
+          if(ri === grid.length - 1) x.c.classList.add('mq-e-b');
+        });
+      });
+    });
+    // langue : globe
+    document.querySelectorAll('select[id*="lang"]').forEach(function(s){
+      if(s.parentElement.classList.contains('mq-lang-box') || s.closest('.topbar')) return;
+      var col = s.parentElement, old = col ? col.querySelector(':scope > i.fa-globe') : null; if(old) old.style.display = 'none';
+      var box = document.createElement('span'); box.className = 'mq-lang-box'; box.innerHTML = '<i class="fa-solid fa-globe"></i>';
+      s.parentNode.insertBefore(box, s); box.appendChild(s);
+    });
+  }
+  style();
+  window.addEventListener('load', function(){ style(); setTimeout(style, 800); });
+})();
+</script>
+</body>
+</html>
+
+<script>
+$(document).ready(function () {
+	$('#suppliers_list').dataTable( {
+        "aLengthMenu": [25, 50]
+    });
+	
+	jQuery('#suppliers_list').dataTable().columnFilter({
+		aoColumns: [ 
+		   {type: "text"},		
+		   {type: "text"},
+		   {type: "text"},
+		   {type: "text"},
+		   {type: "text"},
+	       {type: "text"},
+		   {type: "text"},
+			null,
+			null
+		]
+	});
+	
+	$('#designers_list').dataTable( {
+        "aLengthMenu": [25, 50]
+    });
+	
+	jQuery('#designers_list').dataTable().columnFilter({
+		aoColumns: [ 
+		   {type: "text"},		
+		   {type: "text"},
+		   {type: "text"},
+		   {type: "text"},
+		   {type: "text"},
+	       {type: "text"},
+		   {type: "text"},
+			null,
+			null
+		]
+	});
+});
+
+function removeSupplier(s_id) {
+	if(confirm("האם אתה בטוח שברצונך למחוק מתכנן זה?")) {
+        let form_data = new FormData();	
+		form_data.append('id_supplier',s_id);			
+		$.ajax({
+			type: 'POST',
+			url: 'supplier_delete.php',
+			data: form_data,
+			cache: false,
+			processData: false,
+			contentType: false,
+			success: function(data){
+				if(data == 'notallowedtoremove')
+					alert('אי אפשר למחוק מתכנן זה כי יש לאנשי הצוות שלו משימות.')
+				else
+					location.href = 'suppliers.php?type='+$('#type').val();
+			},
+		});
+    }
+    return false;
+}
+</script>
+
+<style>
+.btn {
+	background-color: #218FD6;
+	color: white;
+	margin-top: 10px;
+}
+
+.btn:hover {
+   background-color: #3370d6;
+   color: white;
+}
+</style>

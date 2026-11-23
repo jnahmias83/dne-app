@@ -1,0 +1,977 @@
+
+<head><base href="/">
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DNE</title>
+
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+          crossorigin="anonymous"></script>
+		  
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
+
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+  <link href="assets/dataTables/css/jquery.dataTables.css" rel="stylesheet" type="text/css" />
+  <link href="assets/dataTables/css/jquery.dataTables_themeroller.css" rel="stylesheet" type="text/css" />
+  <script src="assets/dataTables/js/jquery.dataTables.js" type="text/javascript"></script>
+  <script src="assets/dataTables/js/jquery.dataTables.columnFilter.js" type="text/javascript"></script>
+
+  <link href="css/custom.css?v=1716132787" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="css/style.css?v=1791461203" />
+
+  <script src="js/script.js?v=1793106707" type="text/javascript"></script>
+</head>
+
+<html>
+    <body>
+	    		    <nav class="navbar navbar-expand-md navbar-dark bg-4c555e">
+			    <div class="container-fluid px-3">
+					<div class="collapse navbar-collapse d-flex justify-content-between align-items-center" id="navbarSupportedContent">
+					    <ul class="navbar-nav dir-rtl">
+							<li class="nav-item dropdown">
+							    <a class="nav-link dropdown-toggle" id="projectsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+								    פרוייקטים
+							    </a>
+							    <ul class="dropdown-menu dropdown-menu-scrollable min-with-3rem cursor-pointer alignCenter dir-rtl" aria-labelledby="projectsDropdown">
+																    </ul>
+							</li>
+							<li class="nav-item dropdown">
+								<a class="nav-link dropdown-toggle" id="suppliersDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+									ספקים
+							    </a>
+								<ul class="dropdown-menu min-with-3rem dir-rtl alignCenter" aria-labelledby="suppliersDropdown">
+									<li><a class="dropdown-item" href="suppliers.php?type=D">מתכננים/יועצים</a></li>
+									<li><a class="dropdown-item" href="suppliers.php?type=S">ספקים/קבלנים</a></li>
+									<li><a class="dropdown-item" href="domains.php?lang_screen=HE">תחומי פעילות</a></li>
+								</ul>
+							</li>
+					    </ul>				
+						<ul class="navbar-nav dir-rtl align-items-center flex-row" id="header_icons_ul">
+							<li class="nav-item dropdown text-center px-2 d-flex align-items-center gap-2">
+								<a class="nav-link cursor-pointer" id="home_link">
+									<img src="images/white_home_icon.png" alt="home icon" width="30" height="30" />
+								</a>
+								<a class="nav-link" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+									<div class="padding-4x-4y borderRadius20 border-2px-solid-white font-weight-bold">									
+										<span class="fontSize13 colorWhite">DN</span>
+									</div>	
+								</a>
+								<ul class="dropdown-menu min-width-3rem dir-rtl text-end" aria-labelledby="userDropdown">
+									<li><a class="dropdown-item" href="add_project.php?id=0">הוסף פרוייקט</a></li>
+									<li><a class="dropdown-item" href="projects.php?is_inactive_project=1">פרוייקטים רדומים</a></li>
+																			<li><a class="dropdown-item" href="users.php">ניהול משתמשים</a></li>
+																		<li><a class="dropdown-item" href="vat.php">מע''מ</a></li>
+									<li><a class="dropdown-item" href="tasks_managment.php">ניהול סוגי משימות</a></li>
+									<li><a class="dropdown-item" href="progress_status_managment.php">ניהול סטטוס</a></li>
+									<li><a class="dropdown-item" href="meeting_types_managment.php">ניהול סוגי ישיבות</a></li>
+									<li><a class="dropdown-item" href="graphic_settings.php">הגדרות גוונים ורקע</a></li>
+									<li><a class="dropdown-item" href="logo_managment.php">תמונות לוגו</a></li>
+									<li><hr class="dropdown-divider"></li>
+									<li><a class="dropdown-item" href="kill_session.php"><i class="fa-solid fa-sign-out" style="margin-left:6px;color:#000;font-size:12px;"></i>התנתקות</a></li>
+								</ul>
+							</li>
+                         </ul>
+						<div class="header-logo-wrap">
+							<img src="images/my_project_logo.png" alt="My Project" class="header-logo" />
+						</div>
+					</div>
+			    </div>
+            </nav>
+	    		
+		<script>
+		$(document).on('click','#home_link',function(){
+			$('#left_initial_content').show();
+			$('#left_new_content').hide();
+			localStorage.removeItem('target');
+			localStorage.removeItem('prId');
+			localStorage.removeItem('bgcolor');
+			location.href = 'projects.php?filter_by=projects';
+		});
+		
+		function alignHeaderLogo(){
+			let homeEl = document.getElementById('home_link');
+			let dnEl = document.getElementById('userDropdown');
+			let logoWrap = document.querySelector('.header-logo-wrap');
+			if(!homeEl || !dnEl || !logoWrap) return;
+			logoWrap.style.marginLeft = '';
+			if(window.getComputedStyle(logoWrap).position !== 'static') return;
+			let homeRect = homeEl.getBoundingClientRect();
+			let dnRect = dnEl.getBoundingClientRect();
+			let leftRect = homeRect.left < dnRect.left ? homeRect : dnRect;
+			let rightRect = homeRect.left < dnRect.left ? dnRect : homeRect;
+			let gapCenter = (leftRect.right + rightRect.left) / 2;
+			let container = logoWrap.parentElement;
+			let containerRect = container.getBoundingClientRect();
+			let containerCenter = containerRect.left + containerRect.width / 2;
+			let manualNudgeTowardDn = -3;
+			logoWrap.style.marginLeft = (gapCenter - containerCenter + manualNudgeTowardDn) + 'px';
+		}
+		$(window).on('load resize', alignHeaderLogo);
+
+		function toProjectHome(project_id){
+			let form_data = new FormData();	
+	        form_data.append('id_project',project_id);
+	
+	
+			$.ajax({
+				type: 'POST',
+				url: 'set_id_project_session.php',
+				data: form_data,
+				cache: false,
+				processData: false,
+				contentType: false,			
+				success: function(data){ 
+				   location.href = 'meetings.php?project_id='+project_id;		
+				},
+			});				
+		}
+		</script>
+		
+		<style>
+		.navbar {
+			position: relative;
+		}
+
+		.navbar-nav {
+			flex-direction: row;
+		}
+
+		.header-logo-wrap {
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			transform: translate(-50%, -50%);
+			pointer-events: none;
+		}
+
+		.header-logo {
+			height: 38px;
+			width: auto;
+			display: block;
+		}
+
+		.navbar .dropdown {
+			position: relative; 
+		}
+
+		.navbar .dropdown-menu {
+			position: absolute;  
+			top: 100%;
+            min-width: 5rem;			
+			margin-top: 0;       
+			z-index: 1050;      
+		}
+		
+		.dropdown-item {
+			padding: 1px 7px;
+			font-size: 13px;
+		}
+		
+		.nav-link {
+			font-size: 14px;
+		}
+
+		@media (max-width: 600px) {
+			.nav-link {
+				font-size: 12px;
+			}
+			#navbarSupportedContent {
+				flex-direction: column;
+				align-items: center !important;
+			}
+			#navbarSupportedContent > ul {
+				justify-content: center;
+				flex-wrap: wrap;
+			}
+			.header-logo-wrap {
+				position: static;
+				transform: none;
+				width: 100%;
+				display: flex;
+				justify-content: center;
+				margin-top: 6px;
+				pointer-events: auto;
+			}
+		}
+
+		@media (orientation: landscape) and (max-height: 500px) {
+			#navbarSupportedContent {
+				flex-direction: column;
+				align-items: center !important;
+			}
+			#navbarSupportedContent > ul {
+				justify-content: center;
+				flex-wrap: wrap;
+			}
+			.header-logo-wrap {
+				position: static;
+				transform: none;
+				width: 100%;
+				display: flex;
+				justify-content: center;
+				margin-top: 6px;
+				pointer-events: auto;
+			}
+		}
+		</style><div class="topbar bgColorBrown alignCenter" dir="rtl" id="tasks_topbar">
+  <button type="button" id="tasks_hamburger_btn" class="hamburger-btn" aria-label="menu">&#9776;</button>
+  <ul class="menu-list" id="tasks_menu_list">
+    <li><a class="font-weight-bold" href="custom_reports.php?project_id=19&task_filter=&progress_status_filter=&supplier_filter=&period_new_task_filter=&period_late_filter="><img src="images/my_reports_icon.png" width="20" height="20" class="menu-item-icon" alt="" /><span>הדוח''ות שלי</span></a></li>
+	<li class="separator">|</li>
+	<li><a class="font-weight-bold" href="responsibles.php?project_id=19&task_filter=&progress_status_filter=&supplier_filter=&period_new_task_filter=&period_late_filter=&is_specific_filter="><img src="images/responsibles_icon.png" width="20" height="20" class="menu-item-icon" alt="" /><span>צוות הפרוייקט</span></a></li>
+	<li class="separator">|</li>
+	<li><a class="font-weight-bold" href="chapters.php?project_id=19&task_filter=&progress_status_filter=&supplier_filter=&period_new_task_filter=&period_late_filter=&is_specific_filter="><img src="images/chapters_icon.png" width="20" height="20" class="menu-item-icon" alt="" /><span>פרקים</span></a></li>
+	<li class="separator">|</li>
+	<li><a class="" href="add_project.php?id=19&task_filter=&progress_status_filter=&supplier_filter=&period_new_task_filter=&period_late_filter=&is_specific_filter=&from=taskslist"><img src="images/data_icon.png" width="20" height="20" class="menu-item-icon" alt="" /><span>נתוני הפרוייקט</span></a></li>
+	<li class="separator">|</li>
+	<li><a class="" href="tasks.php?project_id=19&task_filter=&progress_status_filter=&supplier_filter=&period_new_task_filter=&period_late_filter=&is_specific_filter="><img src="images/tasks_icon.png" width="20" height="20" class="menu-item-icon" alt="" /><span>סוגי משימות</span></a></li>
+	<li class="separator">|</li>
+	<li><a class="menu-item-current" href="progress_status.php?project_id=19&task_filter=&progress_status_filter=&supplier_filter=&period_new_task_filter=&period_late_filter=&is_specific_filter="><img src="images/status_icon.png" width="20" height="20" class="menu-item-icon" alt="" /><span>סטטוסים</span></a></li>
+  </ul>
+  <ul class="menu-list-preview" id="tasks_menu_list_preview">
+    <li><a class="font-weight-bold" href="custom_reports.php?project_id=19&task_filter=&progress_status_filter=&supplier_filter=&period_new_task_filter=&period_late_filter="><img src="images/my_reports_icon.png" width="20" height="20" class="menu-item-icon" alt="" /><span>הדוח''ות שלי</span></a></li>
+	<li class="separator">|</li>
+	<li><a class="font-weight-bold" href="responsibles.php?project_id=19&task_filter=&progress_status_filter=&supplier_filter=&period_new_task_filter=&period_late_filter=&is_specific_filter="><img src="images/responsibles_icon.png" width="20" height="20" class="menu-item-icon" alt="" /><span>צוות הפרוייקט</span></a></li>
+	<li class="separator">|</li>
+	<li><a class="font-weight-bold" href="chapters.php?project_id=19&task_filter=&progress_status_filter=&supplier_filter=&period_new_task_filter=&period_late_filter=&is_specific_filter="><img src="images/chapters_icon.png" width="20" height="20" class="menu-item-icon" alt="" /><span>פרקים</span></a></li>
+  </ul>
+  <div class="topbar-actions">
+	  <a href="add_sup_to_proj.php?id=19" class="btn-attach-suppliers">
+		ספקים
+	  </a>
+	  <a href="budget.php?project_id=19&lang_screen=HE" class="btn-budget">
+		<i class="fa-solid fa-dollar-sign"></i>תקציב
+		<i class="fa-solid fa-share budget-btn-arrow"></i>
+	  </a>
+  </div>
+</div>
+
+<style>
+.topbar {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    direction: rtl;
+    background-color: #4d7380;
+    color: white;
+    flex-wrap: wrap;
+    position: relative;
+}
+
+.hamburger-btn {
+    display: none;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 26px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0 10px;
+    margin-left: 8px;
+}
+
+.topbar.measuring {
+    flex-wrap: nowrap;
+}
+
+.menu-list.measuring {
+    flex-wrap: nowrap;
+}
+
+.topbar-collapsed .menu-list {
+    display: none;
+}
+
+.topbar-collapsed .hamburger-btn {
+    display: inline-block;
+}
+
+.topbar-collapsed .menu-list.open {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    background-color: #4d7380;
+    z-index: 1000;
+    padding: 10px 15px;
+    border-radius: 0 0 10px 10px;
+    gap: 8px;
+    flex-wrap: nowrap;
+}
+
+.topbar-collapsed .menu-list.open li.separator {
+    display: none;
+}
+
+.menu-list-preview {
+    display: none;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+    gap: 10px;
+    color: white;
+    flex-wrap: wrap;
+}
+
+.menu-list-preview li a {
+    color: white;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.menu-list-preview li.separator {
+    color: white;
+    user-select: none;
+}
+
+.menu-list-preview a {
+    font-size: 14px;
+}
+
+.topbar-preview .menu-list-preview {
+    display: flex;
+}
+
+.topbar-preview .menu-list:not(.open) {
+    display: none;
+}
+
+.topbar-preview .hamburger-btn {
+    display: inline-block;
+}
+
+.topbar-preview .menu-list.open {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    background-color: #4d7380;
+    z-index: 1000;
+    padding: 10px 15px;
+    border-radius: 0 0 10px 10px;
+    gap: 8px;
+    flex-wrap: nowrap;
+}
+
+.topbar-preview .menu-list.open li.separator {
+    display: none;
+}
+
+.menu-list {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+    flex-grow: 1;
+    justify-content: center;
+    gap: 10px;
+    color: white;
+    flex-wrap: wrap;
+}
+
+.menu-list li a {
+    color: white;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.menu-list li.separator {
+    color: white;
+    user-select: none;
+}
+
+.topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-left: 8px;
+    margin-right: auto;
+}
+
+.btn-budget,
+.btn-attach-suppliers {
+    background-color: #6b804d;
+    color: #fff;
+    padding: 5px 15px;
+    border-radius: 10px;
+	border: 1px solid white;
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+    text-decoration: none;
+    margin-left: 0;
+    font-size: 14px;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+.btn-attach-suppliers {
+	background-color: #706f6c;
+}
+
+.btn-budget i {
+    margin-left: 10px;
+}
+
+.budget-btn-arrow {
+    color: #fff;
+    font-weight: bold;
+    margin-right: 8px;
+    transform: scaleX(-1);
+    display: inline-block;
+}
+
+.btn-budget:hover,
+.btn-attach-suppliers:hover {
+    color: rgba(255,255,255,0.55);
+}
+
+.menu-list a {
+    font-size: 14px;
+}
+
+.menu-list li a,
+.menu-list-preview li a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding: 4px 8px;
+    border-radius: 8px;
+    transition: background-color 0.15s ease;
+}
+
+.menu-item-icon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+.menu-list li a:hover,
+.menu-list li a:active,
+.menu-list-preview li a:hover,
+.menu-list-preview li a:active {
+    background-color: rgba(255,255,255,0.2);
+}
+
+.topbar-collapsed .menu-list.open li,
+.topbar-preview .menu-list.open li {
+    width: 100%;
+}
+
+.topbar-collapsed .menu-list.open li a,
+.topbar-preview .menu-list.open li a {
+    flex-direction: row;
+    justify-content: flex-start;
+    width: 100%;
+    box-sizing: border-box;
+    gap: 8px;
+    padding: 6px 10px;
+}
+
+.topbar-collapsed .menu-list.open li a .menu-item-icon,
+.topbar-preview .menu-list.open li a .menu-item-icon {
+    padding-right: 4px;
+}
+
+.menu-item-current {
+    background-color: rgba(255,255,255,0.18);
+}
+
+@media (max-width: 600px) {
+    .menu-list a,
+    .menu-list-preview a {
+        font-size: 12px;
+    }
+
+	.btn-budget,
+    .btn-attach-suppliers {
+        padding: 5px 5px;
+        margin-left: 5px;
+    }
+}
+</style>
+
+<script>
+function isTasksTopbarSingleLine(topbar){
+	let children = Array.from(topbar.children).filter(function(el){
+		return getComputedStyle(el).display !== 'none';
+	});
+	if(children.length === 0) return true;
+	// centre vertical (top + height/2), pas juste "top" : avec align-items:center,
+	// des enfants de hauteurs differentes (ex: menu-list avec icones, plus haut que
+	// topbar-actions) partagent le meme centre vertical mais PAS le meme "top",
+	// donc comparer les tops donnait un faux "pas sur la meme ligne"
+	let firstCenter = children[0].offsetTop + children[0].offsetHeight / 2;
+	return children.every(function(el){
+		return Math.abs((el.offsetTop + el.offsetHeight / 2) - firstCenter) < 5;
+	});
+}
+
+function checkTasksMenuOverflow(){
+	let topbar = document.getElementById('tasks_topbar');
+	let menuList = document.getElementById('tasks_menu_list');
+	let previewList = document.getElementById('tasks_menu_list_preview');
+	if(!topbar || !menuList || !previewList) return;
+
+	topbar.classList.remove('topbar-collapsed', 'topbar-preview');
+
+	// Etape 1 : est-ce que les 6 items + les boutons a droite tiennent reellement sur une ligne ?
+	let fullFits = isTasksTopbarSingleLine(topbar);
+	if(fullFits){
+		menuList.classList.remove('open');
+		return;
+	}
+
+	// Etape 2 : est-ce que les 3 premiers items + hamburger + les boutons a droite
+	// tiennent sur une ligne ?
+	topbar.classList.add('topbar-preview');
+	let previewFits = isTasksTopbarSingleLine(topbar);
+	if(previewFits){
+		return;
+	}
+
+	// Etape 3 : meme les 3 premiers ne rentrent pas -> hamburger seul
+	topbar.classList.remove('topbar-preview');
+	topbar.classList.add('topbar-collapsed');
+}
+
+window.addEventListener('load', checkTasksMenuOverflow);
+window.addEventListener('resize', checkTasksMenuOverflow);
+document.addEventListener('DOMContentLoaded', checkTasksMenuOverflow);
+setInterval(checkTasksMenuOverflow, 500);
+
+document.addEventListener('click', function(e){
+	let hamburger = document.getElementById('tasks_hamburger_btn');
+	let menuList = document.getElementById('tasks_menu_list');
+	if(!hamburger || !menuList) return;
+
+	if(e.target === hamburger || hamburger.contains(e.target)){
+		menuList.classList.toggle('open');
+	}
+	else if(!menuList.contains(e.target)){
+		menuList.classList.remove('open');
+	}
+});
+</script>
+
+        <form method="post" action="" class="form-inline">	
+		    <input type="hidden" id="project_id" value=19 />		
+			
+			<div class="container">
+			    <div class="row alignCenter marginTop25">
+					<div class="col-12">
+						<a href="projects.php"><img src="images/davidnahmias_logo.png" width="170px" height="170px" /></a>
+					</div>
+			    </div>
+				
+				<div class="row marginTop15 title">	
+					<div class="col-12">
+						<a id="a_project_title" class="text-decoration-none color-1A5276" href="meetings.php?project_id=19&task_filter=&progress_status_filter=&supplier_filter=&period_new_task_filter=&period_late_filter=&is_specific_filter=">
+						    <strong class="fontSize33 line-height-1em">BNY</strong>
+							<div class="fontSize26 font-weight-bold font-family-david cursor-pointer">פרוייקט הבנאי 2  ירושלים - טרא</div>
+					    </a>
+                        <div class='fontSize26 font-weight-bold font-family-david cursor-pointer'>רשימת סטטוסי התקדמות</div>					
+					</div>				
+			    </div>
+				
+				<div class="row marginTop20 alignCenter dir-rtl">
+					<div class="col-12">
+						<input type="button" value="חזור לרשימת המשימות" class="btn marginLeft10" onclick="location.href='meetings.php?&project_id=19&task_filter=&progress_status_filter=&supplier_filter=&period_new_task_filter=&period_late_filter=&is_specific_filter='" />		
+						<a class="btn marginLeft10" onclick="location.href='add_progress_status.php?id=0&project_id=19';"><i class="fa fa-plus"></i> סטטוסי ההתקדמות</a>
+						<input type="button" value="Default" class="btn" onclick="FillGlobalProgressStatus();" />
+					</div>
+				</div>
+				
+				<br/>
+
+						
+					<div class="row fontSize14 alignCenter">
+						<div align="center" class="col-12 mx-2">
+							<table id="progress_status_list" border="1" dir="rtl">						
+								<tr class="bgColorSilver height50">
+								    <th class="alignCenter" width="50px;">&nbsp;</th>
+									<th width="120px;" class="alignCenter">שם</th>
+									<th width="120px;" class="alignCenter">שם בעברית</th>
+									<th width="90px;" class="alignCenter">צבע גופן</th>
+									<th width="90px;" class="alignCenter">צבע רקע</th>
+									<th width="40px;" class="alignCenter">&nbsp;</th>
+																	</tr>
+			
+								<tbody id="progress_status_tbody">
+																	<tr class="height35" data-status-id="91">
+									    <td class="alignCenter">
+											<span class="status-drag-handle" title="גרור לשינוי סדר"><i class="fa-solid fa-bars"></i></span>
+										</td>
+									    <td class="alignLeft paddingLeft5"> </td>
+										<td class="alignRight paddingRight5"> </td>
+										<td class="alignRight paddingRight5"><input type="color" class="width90" disabled="true" value="#000000" /></td>
+										<td class="alignRight paddingRight5"><input type="color" class="width90" disabled="true" value="#ffffff" /></td>
+										<td class="alignCenter"><img src="images/edit-button.svg" class="cursor-pointer" title="עדכן" onclick="location.href='add_progress_status.php?id=91&project_id=19'" /></td>									
+																			</tr>
+																		<tr class="height35" data-status-id="92">
+									    <td class="alignCenter">
+											<span class="status-drag-handle" title="גרור לשינוי סדר"><i class="fa-solid fa-bars"></i></span>
+										</td>
+									    <td class="alignLeft paddingLeft5">In Progress</td>
+										<td class="alignRight paddingRight5">בביצוע</td>
+										<td class="alignRight paddingRight5"><input type="color" class="width90" disabled="true" value="#000000" /></td>
+										<td class="alignRight paddingRight5"><input type="color" class="width90" disabled="true" value="#56cc39" /></td>
+										<td class="alignCenter"><img src="images/edit-button.svg" class="cursor-pointer" title="עדכן" onclick="location.href='add_progress_status.php?id=92&project_id=19'" /></td>									
+																			</tr>
+																		<tr class="height35" data-status-id="93">
+									    <td class="alignCenter">
+											<span class="status-drag-handle" title="גרור לשינוי סדר"><i class="fa-solid fa-bars"></i></span>
+										</td>
+									    <td class="alignLeft paddingLeft5">Delay</td>
+										<td class="alignRight paddingRight5">איחור</td>
+										<td class="alignRight paddingRight5"><input type="color" class="width90" disabled="true" value="#000000" /></td>
+										<td class="alignRight paddingRight5"><input type="color" class="width90" disabled="true" value="#fd0808" /></td>
+										<td class="alignCenter"><img src="images/edit-button.svg" class="cursor-pointer" title="עדכן" onclick="location.href='add_progress_status.php?id=93&project_id=19'" /></td>									
+																			</tr>
+																		<tr class="height35" data-status-id="94">
+									    <td class="alignCenter">
+											<span class="status-drag-handle" title="גרור לשינוי סדר"><i class="fa-solid fa-bars"></i></span>
+										</td>
+									    <td class="alignLeft paddingLeft5">Done</td>
+										<td class="alignRight paddingRight5">בוצע</td>
+										<td class="alignRight paddingRight5"><input type="color" class="width90" disabled="true" value="#000000" /></td>
+										<td class="alignRight paddingRight5"><input type="color" class="width90" disabled="true" value="#dedede" /></td>
+										<td class="alignCenter"><img src="images/edit-button.svg" class="cursor-pointer" title="עדכן" onclick="location.href='add_progress_status.php?id=94&project_id=19'" /></td>									
+																			</tr>
+																		<tr class="height35" data-status-id="96">
+									    <td class="alignCenter">
+											<span class="status-drag-handle" title="גרור לשינוי סדר"><i class="fa-solid fa-bars"></i></span>
+										</td>
+									    <td class="alignLeft paddingLeft5">Archive</td>
+										<td class="alignRight paddingRight5">ארכיון</td>
+										<td class="alignRight paddingRight5"><input type="color" class="width90" disabled="true" value="#000000" /></td>
+										<td class="alignRight paddingRight5"><input type="color" class="width90" disabled="true" value="#ffffff" /></td>
+										<td class="alignCenter"><img src="images/edit-button.svg" class="cursor-pointer" title="עדכן" onclick="location.href='add_progress_status.php?id=96&project_id=19'" /></td>									
+																			</tr>
+																		<tr class="height35" data-status-id="97">
+									    <td class="alignCenter">
+											<span class="status-drag-handle" title="גרור לשינוי סדר"><i class="fa-solid fa-bars"></i></span>
+										</td>
+									    <td class="alignLeft paddingLeft5">Decision</td>
+										<td class="alignRight paddingRight5">החלטה</td>
+										<td class="alignRight paddingRight5"><input type="color" class="width90" disabled="true" value="#000000" /></td>
+										<td class="alignRight paddingRight5"><input type="color" class="width90" disabled="true" value="#ffffff" /></td>
+										<td class="alignCenter"><img src="images/edit-button.svg" class="cursor-pointer" title="עדכן" onclick="location.href='add_progress_status.php?id=97&project_id=19'" /></td>									
+																			</tr>
+																		<tr class="height35" data-status-id="254">
+									    <td class="alignCenter">
+											<span class="status-drag-handle" title="גרור לשינוי סדר"><i class="fa-solid fa-bars"></i></span>
+										</td>
+									    <td class="alignLeft paddingLeft5">Hold</td>
+										<td class="alignRight paddingRight5">בהמתנה</td>
+										<td class="alignRight paddingRight5"><input type="color" class="width90" disabled="true" value="#000000" /></td>
+										<td class="alignRight paddingRight5"><input type="color" class="width90" disabled="true" value="#ffffff" /></td>
+										<td class="alignCenter"><img src="images/edit-button.svg" class="cursor-pointer" title="עדכן" onclick="location.href='add_progress_status.php?id=254&project_id=19'" /></td>									
+																			</tr>
+																	</tbody>
+							</table>
+						</div>
+					</div>
+							</div>
+		</form> 
+	
+
+
+
+<style id="maquette-sc">
+/* ===== MAQUETTE - tous les boutons Enregistrer / Annuler / Fermer (pages ET popups) : meme style partout =====
+   enregistrer = fond bleu du site (#218FD6, bgColorBlue), annuler/fermer = fond noir (bgColorBlack), texte blanc, forme arrondie
+   seule l'apparence change : memes boutons, memes id, memes actions */
+html body .mq-sc.mq-sc.mq-sc.mq-sc.mq-sc { background:#218FD6 !important; color:#fff !important; border:1.5px solid #218FD6 !important; border-radius:999px !important;
+  padding:6px 18px !important; font-weight:700 !important; font-size:14px !important; box-shadow:none !important; height:auto !important;
+  width:auto !important; min-width:0 !important; line-height:1.4 !important; }
+html body .mq-sc.mq-sc.mq-sc.mq-sc.mq-sc:hover:not(:disabled) { background:#1a7bbd !important; border-color:#1a7bbd !important; }
+html body .mq-sc.mq-sc.mq-sc.mq-sc.mq-sc i { color:#fff !important; }
+html body .mq-sc.mq-sc.mq-sc.mq-sc.mq-sc.mq-sc-cancel { background:#000 !important; border-color:#000 !important; color:#fff !important; }
+html body .mq-sc.mq-sc.mq-sc.mq-sc.mq-sc.mq-sc-cancel:hover:not(:disabled) { background:#333 !important; border-color:#333 !important; }
+html body .mq-sc.mq-sc.mq-sc.mq-sc.mq-sc:disabled { opacity:.4; }
+</style>
+<script>
+(function(){
+  var SAVE = /^(\+\s*)?(שמור|שמירה|עדכן|save|update|ok|אישור|עבור לצוות ניהול|המשך|הבא)/i, CANCEL = /^(ביטול|סגור|בטל|cancel|close)/i;
+  function mark(){
+    document.querySelectorAll('input[type="button"], input[type="submit"], button, a.btn').forEach(function(b){
+      if(b.classList.contains('mq-sc') || b.closest('.topbar') || b.classList.contains('close') || b.classList.contains('btn-close')) return;
+      if(b.querySelector('img')) return;   // boutons-icones (grille d'actions des popups) : on n'y touche pas
+      var txt = ((b.value || b.textContent) || '').replace(/\s+/g, ' ').trim();
+      if(!txt) return;
+      if(CANCEL.test(txt)){ b.classList.add('mq-sc', 'mq-sc-cancel'); }
+      else if(SAVE.test(txt)){ b.classList.add('mq-sc'); }
+    });
+  }
+  mark();
+  window.addEventListener('load', function(){ mark(); setTimeout(mark, 800); });
+  document.addEventListener('shown.bs.modal', mark);   // popups : quand ils s'ouvrent
+  if(window.jQuery) jQuery(document).on('shown.bs.modal', mark);
+})();
+</script>
+
+<style id="maquette-statuts">
+/* colonne "שם בעברית" (3e) resserree sur son texte (au lieu de 120px fixes) ; colonnes couleur (4e, 5e) a la taille de la pastille */
+#progress_status_list tr > :nth-child(3) { width:1px !important; white-space:nowrap; padding-left:10px !important; padding-right:10px !important; }
+#progress_status_list tr > :nth-child(4), #progress_status_list tr > :nth-child(5) { width:60px !important; }
+/* couleurs (צבע רקע / צבע גופן) dans les tableaux : pastille ronde (meme regle que maquette_design.inc) */
+table input[type="color"] { -webkit-appearance:none; appearance:none; width:30px !important; height:30px !important; min-width:30px; padding:0 !important; margin:2px auto !important; display:block;
+  border:1.5px solid #c9d7e3 !important; border-radius:50% !important; background:none !important; cursor:pointer; overflow:hidden; box-sizing:border-box; }
+table input[type="color"]::-webkit-color-swatch-wrapper { padding:0; }
+table input[type="color"]::-webkit-color-swatch { border:none; border-radius:50%; }
+table input[type="color"]::-moz-color-swatch { border:none; border-radius:50%; }
+/* ===== MAQUETTE - progress_status.php (סטטוסים) - aucun fichier du site modifie - meme logique que la maquette responsables ===== */
+html, body { background:#f6f5f1 !important; }
+
+/* bouton "הוסף סטטוס" : sans fond, texte et bord bleus, survol bleu clair ; au-dessus de la carte */
+.mq-btns { display:flex; justify-content:center; gap:12px; flex-wrap:wrap; margin-top:24px; }
+.mq-btn { display:inline-flex; align-items:center; gap:8px; padding:7px 18px; border-radius:999px; font-weight:700; font-size:15px;
+  cursor:pointer; transition:background .15s; text-decoration:none !important; flex-direction:row-reverse; }
+.mq-btn.add { background:transparent; color:#1a5276 !important; border:1.5px solid #1a5276; }
+.mq-btn.add:hover, .mq-btn.small:hover { background:#e3eef6; }
+.mq-btn i { font-size:14px; }
+/* bouton du bas "Default" : meme style, plus petit (comme "ברירת מחדל גופנים ורקעים" des responsables) */
+.mq-btns.bottom { margin-top:18px; margin-bottom:24px; }
+.mq-btn.small { background:transparent; color:#1a5276 !important; border:1.5px solid #1a5276; padding:4px 10px; font-weight:600; font-size:13px; }
+
+/* bouton "תקציב" du menu : moins large */
+.btn-budget { padding:5px 10px !important; }
+.btn-budget i { margin-left:6px !important; }
+.btn-budget .budget-btn-arrow { margin-right:4px !important; margin-left:0 !important; }
+/* "רשימת המשימות" dans le menu : icone blanche comme les autres */
+.mq-menu-icon { color:#fff; font-size:17px; width:20px; text-align:center; }
+
+/* carte comme dans add_meeting.php ; en-tete = titre avec l'icone du menu */
+.mq-card { width:fit-content; max-width:100%; margin:16px auto 0; border:1px solid #C5B8AA; border-radius:15px; background:#f2f6f9; overflow:hidden; }
+.mq-page-title { display:flex; align-items:center; justify-content:center; gap:10px; background:#1a5276; color:#fff; font-weight:700; font-size:20px;
+  padding:8px 28px; direction:rtl; }
+.mq-card-body { padding:14px 12px; overflow-x:auto; }
+
+/* tableau dans la carte : sans bordure, en-tete #dedede texte bleu */
+#progress_status_list { border-collapse:separate !important; border-spacing:0; border:none !important; background:#fff; margin:0 auto; }
+#progress_status_list th, #progress_status_list td { border:none !important; border-bottom:1px solid #eef0f3 !important; }
+#progress_status_list tr:last-child td { border-bottom:none !important; }
+#progress_status_list tr.bgColorSilver, #progress_status_list tr.bgColorSilver th { background:#dedede !important; }
+#progress_status_list th { color:#1a5276 !important; font-weight:700; font-size:14px; height:44px; padding:4px 8px !important; }
+#progress_status_list tr.height35 td { height:44px; font-size:14.5px; color:#2d3a45; padding:0 8px !important; }
+/* une ligne sur deux, en commencant par la ligne foncee (l'en-tete est hors du tbody) */
+#progress_status_tbody tr.height35:nth-child(odd) td { background:#a9c6e0 !important; }
+#progress_status_tbody tr.height35:nth-child(even) td { background:#d4e4f2 !important; }
+#progress_status_list tr.height35 td:nth-child(2), #progress_status_list tr.height35 td:nth-child(3) { color:#1a5276 !important; font-weight:600; }
+/* poignee : colonne etroite */
+#progress_status_list tr.height35 > td:nth-child(1) { width:30px !important; padding:0 4px !important; }
+#progress_status_list .status-drag-handle { color:#1a5276; }
+/* pastilles de couleur : petits ronds au lieu des grands rectangles */
+#progress_status_list input[type="color"] { width:26px !important; height:26px; padding:0; border:1px solid #999; border-radius:50%; background:none; cursor:default; }
+#progress_status_list input[type="color"]::-webkit-color-swatch-wrapper { padding:0; }
+#progress_status_list input[type="color"]::-webkit-color-swatch { border:none; border-radius:50%; }
+#progress_status_list tr.height35 td:has(input[type="color"]) { text-align:center !important; }
+/* icones modifier / supprimer */
+#progress_status_list td img { width:18px; height:18px; padding:6px; box-sizing:content-box; border-radius:50%; opacity:.75; transition:background .15s, opacity .15s; }
+#progress_status_list td img:hover { opacity:1; background:#e7eef5; }
+#progress_status_list td img[src*="delete"]:hover { background:#fde6e6; }
+</style>
+<script>
+(function(){
+  // MAQUETTE SEULEMENT : rien n'est enregistre (ordre, Default, suppression)
+  // (pose au chargement complet : les vraies fonctions sont declarees plus bas dans la page)
+  window.addEventListener('load', function(){
+    window.removeProgressStatus = function(){ return false; };
+    window.FillGlobalProgressStatus = function(){};
+    if(window.jQuery){
+      var realAjax = jQuery.ajax;
+      jQuery.ajax = function(opts){
+        if(/reorder_progress_status\.php|fill_global_progress_status\.php|progress_status_delete\.php/.test((opts && opts.url) || '')) return jQuery.Deferred().promise();
+        return realAjax.apply(this, arguments);
+      };
+    }
+  });
+
+  var back = document.getElementById('a_project_title');
+  var tasksUrl = back ? back.getAttribute('href') : 'meetings.php';
+
+  // ancien titre "רשימת סטטוסי התקדמות" sous le nom du projet : il passe dans l'en-tete de la carte
+  var oldTtl = back ? back.parentElement.querySelector(':scope > div.fontSize26') : null;
+  if(oldTtl) oldTtl.style.display = 'none';
+
+  // anciens boutons : "חזור לרשימת המשימות" (retire, passe dans le menu), "+ סוג משימה", "Default"
+  var add = document.querySelector('a.btn[onclick*="add_progress_status.php?id=0"]');
+  if(!add) return;
+  var pid = ((add.getAttribute('onclick') || '').match(/project_id=(\d+)/) || [])[1] || '';
+  var row = add.closest('.row');
+  row.style.display = 'none';
+  var br = row.nextElementSibling; if(br && br.tagName === 'BR') br.style.display = 'none';
+
+  // bouton "הוסף סטטוס" au-dessus de la carte
+  var wrap = document.createElement('div'); wrap.className = 'mq-btns';
+  var b1 = document.createElement('a'); b1.className = 'mq-btn add';
+  b1.innerHTML = '<i class="fa fa-plus"></i><span>הוסף סטטוס</span>';
+  b1.onclick = function(){ location.href = 'add_progress_status.php?id=0&project_id=' + pid; };   // meme action que le bouton actuel
+  wrap.appendChild(b1);
+
+  // bouton "Default" en bas, sous la carte (meme action : FillGlobalProgressStatus)
+  var wrapB = document.createElement('div'); wrapB.className = 'mq-btns bottom';
+  var b2 = document.createElement('a'); b2.className = 'mq-btn small'; b2.textContent = 'Default';
+  b2.onclick = function(){ if(window.FillGlobalProgressStatus) window.FillGlobalProgressStatus(); };
+  wrapB.appendChild(b2);
+
+  // carte : en-tete "סוגי משימות" + icone du menu, tableau dans le corps
+  var table = document.getElementById('progress_status_list');
+  // les statuts systeme (בביצוע, איחור...) n'ont pas de case "supprimer" : on complete par une case vide pour que le bleu aille jusqu'au bout
+  if(table){
+    var rows = table.querySelectorAll('#progress_status_tbody tr.height35'), max = 0;
+    rows.forEach(function(r){ max = Math.max(max, r.children.length); });
+    rows.forEach(function(r){ while(r.children.length < max) r.appendChild(document.createElement('td')); });
+  }
+  if(table){
+    var card = document.createElement('div'); card.className = 'mq-card';
+    var ttl = document.createElement('div'); ttl.className = 'mq-page-title';
+    ttl.innerHTML = '<img src="images/status_icon.png" width="20" height="20" class="menu-item-icon" alt=""><span>סטטוסים</span>';
+    var body = document.createElement('div'); body.className = 'mq-card-body';
+    table.parentNode.insertBefore(card, table);
+    card.appendChild(ttl); card.appendChild(body); body.appendChild(table);
+    card.parentNode.insertBefore(wrap, card);
+    card.parentNode.insertBefore(wrapB, card.nextSibling);
+  } else {
+    row.parentNode.insertBefore(wrap, row);
+    row.parentNode.insertBefore(wrapB, row.nextSibling);
+  }
+
+  // "רשימת המשימות" dans le menu, avant le 1er element, avec le "|", en gras
+  ['tasks_menu_list', 'tasks_menu_list_preview'].forEach(function(id){
+    var ul = document.getElementById(id); if(!ul || !ul.firstElementChild) return;
+    var li = document.createElement('li');
+    li.innerHTML = '<a class="font-weight-bold" href="' + tasksUrl.replace(/"/g, '&quot;') + '"><i class="fa-solid fa-table-list menu-item-icon mq-menu-icon"></i><span>רשימת המשימות</span></a>';
+    var sep = document.createElement('li'); sep.className = 'separator'; sep.textContent = '|';
+    ul.insertBefore(sep, ul.firstElementChild); ul.insertBefore(li, sep);
+  });
+})();
+</script>
+</body>
+</html>
+
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+<script>
+(function(){
+	let tbody = document.getElementById('progress_status_tbody');
+	if(!tbody) return;
+
+	Sortable.create(tbody, {
+		handle: '.status-drag-handle',
+		animation: 150,
+		onEnd: function(){
+			let order = Array.prototype.map.call(
+				tbody.querySelectorAll('tr[data-status-id]'),
+				function(tr){ return tr.getAttribute('data-status-id'); }
+			);
+			let form_data = new FormData();
+			form_data.append('id_project', $('#project_id').val());
+			form_data.append('order', order.join(','));
+			$.ajax({
+				type: 'POST',
+				url: 'reorder_progress_status.php',
+				data: form_data,
+				cache: false,
+				processData: false,
+				contentType: false,
+			});
+		}
+	});
+})();
+
+function FillGlobalProgressStatus() {
+	let form_data = new FormData();	
+	form_data.append('id_project',$('#project_id').val());
+	
+	$.ajax({
+		type: 'POST',
+		url: 'fill_global_progress_status.php',
+		data: form_data,
+		cache: false,
+		processData: false,
+		contentType: false,			
+		success: function(data){
+			location.reload(true);			
+		},
+	});		
+}
+
+function removeProgressStatus(id) {
+	if(confirm("האם אתה בטוח למחוק את הסטטוס ההתקדמות הזה ?")) {
+        let form_data = new FormData();	
+		form_data.append('global',0);
+		form_data.append('id',id);			
+		$.ajax({
+			type: 'POST',
+			url: 'progress_status_delete.php',
+			data: form_data,
+			cache: false,
+			processData: false,
+			contentType: false,
+			success: function(data){
+				if(data == 'notallowedtoremove')
+					alert('לא ניתן למחוק את סטטוס ההתקדמות הזה כי הוא משוייך למשימה אחת או יותר.')
+				else
+					location.reload(true);
+			},
+		});
+    }
+    return false;
+}
+</script>
+
+<style>
+.btn {
+   color: white;
+   background-color: #218FD6;
+}
+
+.btn:hover {
+   color: white;
+   background-color: #3370d6;
+}
+
+#a_project_title:hover {
+	color: grey;
+}
+
+.status-drag-handle {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 26px;
+	height: 26px;
+	cursor: grab;
+	touch-action: none;
+	color: #555;
+	font-size: 14px;
+}
+.status-drag-handle:active {
+	cursor: grabbing;
+}
+#progress_status_tbody tr.sortable-ghost {
+	opacity: 0.4;
+}
+</style>

@@ -1,0 +1,1144 @@
+
+<head><base href="/">
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DNE</title>
+
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+          crossorigin="anonymous"></script>
+		  
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
+
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+  <link href="assets/dataTables/css/jquery.dataTables.css" rel="stylesheet" type="text/css" />
+  <link href="assets/dataTables/css/jquery.dataTables_themeroller.css" rel="stylesheet" type="text/css" />
+  <script src="assets/dataTables/js/jquery.dataTables.js" type="text/javascript"></script>
+  <script src="assets/dataTables/js/jquery.dataTables.columnFilter.js" type="text/javascript"></script>
+
+  <link href="css/custom.css?v=1716132787" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="css/style.css?v=1791461203" />
+
+  <script src="js/script.js?v=1793106707" type="text/javascript"></script>
+</head>
+
+<html>
+    <body>
+	    		    <nav class="navbar navbar-expand-md navbar-dark bg-4c555e">
+			    <div class="container-fluid px-3">
+					<div class="collapse navbar-collapse d-flex justify-content-between align-items-center" id="navbarSupportedContent">
+					    <ul class="navbar-nav dir-rtl">
+							<li class="nav-item dropdown">
+							    <a class="nav-link dropdown-toggle" id="projectsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+								    פרוייקטים
+							    </a>
+							    <ul class="dropdown-menu dropdown-menu-scrollable min-with-3rem cursor-pointer alignCenter dir-rtl" aria-labelledby="projectsDropdown">
+																    </ul>
+							</li>
+							<li class="nav-item dropdown">
+								<a class="nav-link dropdown-toggle" id="suppliersDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+									ספקים
+							    </a>
+								<ul class="dropdown-menu min-with-3rem dir-rtl alignCenter" aria-labelledby="suppliersDropdown">
+									<li><a class="dropdown-item" href="suppliers.php?type=D">מתכננים/יועצים</a></li>
+									<li><a class="dropdown-item" href="suppliers.php?type=S">ספקים/קבלנים</a></li>
+									<li><a class="dropdown-item" href="domains.php?lang_screen=HE">תחומי פעילות</a></li>
+								</ul>
+							</li>
+					    </ul>				
+						<ul class="navbar-nav dir-rtl align-items-center flex-row" id="header_icons_ul">
+							<li class="nav-item dropdown text-center px-2 d-flex align-items-center gap-2">
+								<a class="nav-link cursor-pointer" id="home_link">
+									<img src="images/white_home_icon.png" alt="home icon" width="30" height="30" />
+								</a>
+								<a class="nav-link" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+									<div class="padding-4x-4y borderRadius20 border-2px-solid-white font-weight-bold">									
+										<span class="fontSize13 colorWhite">DN</span>
+									</div>	
+								</a>
+								<ul class="dropdown-menu min-width-3rem dir-rtl text-end" aria-labelledby="userDropdown">
+									<li><a class="dropdown-item" href="add_project.php?id=0">הוסף פרוייקט</a></li>
+									<li><a class="dropdown-item" href="projects.php?is_inactive_project=1">פרוייקטים רדומים</a></li>
+																			<li><a class="dropdown-item" href="users.php">ניהול משתמשים</a></li>
+																		<li><a class="dropdown-item" href="vat.php">מע''מ</a></li>
+									<li><a class="dropdown-item" href="tasks_managment.php">ניהול סוגי משימות</a></li>
+									<li><a class="dropdown-item" href="progress_status_managment.php">ניהול סטטוס</a></li>
+									<li><a class="dropdown-item" href="meeting_types_managment.php">ניהול סוגי ישיבות</a></li>
+									<li><a class="dropdown-item" href="graphic_settings.php">הגדרות גוונים ורקע</a></li>
+									<li><a class="dropdown-item" href="logo_managment.php">תמונות לוגו</a></li>
+									<li><hr class="dropdown-divider"></li>
+									<li><a class="dropdown-item" href="kill_session.php"><i class="fa-solid fa-sign-out" style="margin-left:6px;color:#000;font-size:12px;"></i>התנתקות</a></li>
+								</ul>
+							</li>
+                         </ul>
+						<div class="header-logo-wrap">
+							<img src="images/my_project_logo.png" alt="My Project" class="header-logo" />
+						</div>
+					</div>
+			    </div>
+            </nav>
+	    		
+		<script>
+		$(document).on('click','#home_link',function(){
+			$('#left_initial_content').show();
+			$('#left_new_content').hide();
+			localStorage.removeItem('target');
+			localStorage.removeItem('prId');
+			localStorage.removeItem('bgcolor');
+			location.href = 'projects.php?filter_by=projects';
+		});
+		
+		function alignHeaderLogo(){
+			let homeEl = document.getElementById('home_link');
+			let dnEl = document.getElementById('userDropdown');
+			let logoWrap = document.querySelector('.header-logo-wrap');
+			if(!homeEl || !dnEl || !logoWrap) return;
+			logoWrap.style.marginLeft = '';
+			if(window.getComputedStyle(logoWrap).position !== 'static') return;
+			let homeRect = homeEl.getBoundingClientRect();
+			let dnRect = dnEl.getBoundingClientRect();
+			let leftRect = homeRect.left < dnRect.left ? homeRect : dnRect;
+			let rightRect = homeRect.left < dnRect.left ? dnRect : homeRect;
+			let gapCenter = (leftRect.right + rightRect.left) / 2;
+			let container = logoWrap.parentElement;
+			let containerRect = container.getBoundingClientRect();
+			let containerCenter = containerRect.left + containerRect.width / 2;
+			let manualNudgeTowardDn = -3;
+			logoWrap.style.marginLeft = (gapCenter - containerCenter + manualNudgeTowardDn) + 'px';
+		}
+		$(window).on('load resize', alignHeaderLogo);
+
+		function toProjectHome(project_id){
+			let form_data = new FormData();	
+	        form_data.append('id_project',project_id);
+	
+	
+			$.ajax({
+				type: 'POST',
+				url: 'set_id_project_session.php',
+				data: form_data,
+				cache: false,
+				processData: false,
+				contentType: false,			
+				success: function(data){ 
+				   location.href = 'meetings.php?project_id='+project_id;		
+				},
+			});				
+		}
+		</script>
+		
+		<style>
+		.navbar {
+			position: relative;
+		}
+
+		.navbar-nav {
+			flex-direction: row;
+		}
+
+		.header-logo-wrap {
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			transform: translate(-50%, -50%);
+			pointer-events: none;
+		}
+
+		.header-logo {
+			height: 38px;
+			width: auto;
+			display: block;
+		}
+
+		.navbar .dropdown {
+			position: relative; 
+		}
+
+		.navbar .dropdown-menu {
+			position: absolute;  
+			top: 100%;
+            min-width: 5rem;			
+			margin-top: 0;       
+			z-index: 1050;      
+		}
+		
+		.dropdown-item {
+			padding: 1px 7px;
+			font-size: 13px;
+		}
+		
+		.nav-link {
+			font-size: 14px;
+		}
+
+		@media (max-width: 600px) {
+			.nav-link {
+				font-size: 12px;
+			}
+			#navbarSupportedContent {
+				flex-direction: column;
+				align-items: center !important;
+			}
+			#navbarSupportedContent > ul {
+				justify-content: center;
+				flex-wrap: wrap;
+			}
+			.header-logo-wrap {
+				position: static;
+				transform: none;
+				width: 100%;
+				display: flex;
+				justify-content: center;
+				margin-top: 6px;
+				pointer-events: auto;
+			}
+		}
+
+		@media (orientation: landscape) and (max-height: 500px) {
+			#navbarSupportedContent {
+				flex-direction: column;
+				align-items: center !important;
+			}
+			#navbarSupportedContent > ul {
+				justify-content: center;
+				flex-wrap: wrap;
+			}
+			.header-logo-wrap {
+				position: static;
+				transform: none;
+				width: 100%;
+				display: flex;
+				justify-content: center;
+				margin-top: 6px;
+				pointer-events: auto;
+			}
+		}
+		</style>          
+
+		<form method="post" action="" enctype="multipart/form-data" class="form-inline">
+			<input type="hidden" id="id" value="19" />
+			<input type="hidden" id="from" value="" />
+			<input type="hidden" id="project_name" name="project_name" value="Banay 2 - Terra" />	
+            <input type="hidden" id="project_name_he" name="project_name_he" value="הבנאי 2  ירושלים - טרא" />
+			
+			<div class="container">
+				<div class="row alignCenter marginTop25">
+					<div class="col-12">
+						<a href="projects.php"><img src="images/davidnahmias_logo.png" width="170px" height="170px" /></a>
+					</div>
+			    </div>
+			
+			    <div class="row marginTop15 title">	
+					<div class="col-12">
+						<a id="a_project_title" class="text-decoration-none color-1A5276" href="projects.php">
+						    <strong class="fontSize33 line-height-1em">BNY</strong>
+							<div id="project_name_title"></div>
+					    </a>
+                        <div id="title"></div> 						
+					</div>				
+			    </div>															
+
+				<div class="row title-2">	
+					<div id="designers_list_label" class="col-12"></div>					
+				</div>
+				
+									<div class="row marginTop10 fontSize14 dir-rtl">
+						<div align="center" class="col-12 mx-2">
+							<div class="table-responsive">
+							<table id="designers_list" border="1" cellpadding="5" cellspacing="5">
+								<tr class="bgColorSilver">
+									<th class="th_domain alignCenter" width="130px;"></th>
+									<th class="th_name alignCenter" width="180px;"></th>
+									<th class="th_phone alignCenter" width="120px;"></th>
+									<th class="th_email alignCenter" width="200px;"></th>
+									<th width="40px;">&nbsp;</th>									
+								</tr>
+											
+								<input type="hidden" class="hidden_sfow_name_1136" value="Agronom" />
+								<input type="hidden" class="hidden_sfow_name_he_1136" value="אגרונום" />		
+								<input type="hidden" class="hidden_s_name_1136" value="Adir alves" />
+								<input type="hidden" class="hidden_s_name_he_1136" value="אדיר ייעוץ ופיקוח נו" />
+								
+								<tr class="height35">
+									<td class="td_designer_elem"><a class="sfow_name_1136"></a></td>
+									<td class="td_designer_elem"><a class="s_name_1136" href="add_supplier.php?type_sup=D&id=73&project_id=19&from=add_sup_to_proj"></a></td>
+									<td class="alignCenter">039032190</td>
+									<td class="alignCenter">office@adir-nof.co..il</td>
+									<td class="alignCenter"><img class="delete_img cursor-pointer" src="images/delete.svg" title="" onclick="return removeSupplierFromProject(1136);" /></td>	
+								</tr>
+											
+								<input type="hidden" class="hidden_sfow_name_292" value="Agronom" />
+								<input type="hidden" class="hidden_sfow_name_he_292" value="אגרונום" />		
+								<input type="hidden" class="hidden_s_name_292" value="Erez Kaplan" />
+								<input type="hidden" class="hidden_s_name_he_292" value="ארז קלפן" />
+								
+								<tr class="height35">
+									<td class="td_designer_elem"><a class="sfow_name_292"></a></td>
+									<td class="td_designer_elem"><a class="s_name_292" href="add_supplier.php?type_sup=D&id=35&project_id=19&from=add_sup_to_proj"></a></td>
+									<td class="alignCenter">052-6408054</td>
+									<td class="alignCenter">kaplanerez@gmail.com</td>
+									<td class="alignCenter"><img class="delete_img cursor-pointer" src="images/delete.svg" title="" onclick="return removeSupplierFromProject(292);" /></td>	
+								</tr>
+											
+								<input type="hidden" class="hidden_sfow_name_283" value="Architect" />
+								<input type="hidden" class="hidden_sfow_name_he_283" value="אדריכלות" />		
+								<input type="hidden" class="hidden_s_name_283" value="SHIFMAN" />
+								<input type="hidden" class="hidden_s_name_he_283" value="בר שיפמן - נתן " />
+								
+								<tr class="height35">
+									<td class="td_designer_elem"><a class="sfow_name_283"></a></td>
+									<td class="td_designer_elem"><a class="s_name_283" href="add_supplier.php?type_sup=D&id=115&project_id=19&from=add_sup_to_proj"></a></td>
+									<td class="alignCenter">02-6740674</td>
+									<td class="alignCenter">yuval@baer.co.il</td>
+									<td class="alignCenter"><img class="delete_img cursor-pointer" src="images/delete.svg" title="" onclick="return removeSupplierFromProject(283);" /></td>	
+								</tr>
+											
+								<input type="hidden" class="hidden_sfow_name_847" value="Architect" />
+								<input type="hidden" class="hidden_sfow_name_he_847" value="אדריכלות" />		
+								<input type="hidden" class="hidden_s_name_847" value="Masad" />
+								<input type="hidden" class="hidden_s_name_he_847" value="מסד" />
+								
+								<tr class="height35">
+									<td class="td_designer_elem"><a class="sfow_name_847"></a></td>
+									<td class="td_designer_elem"><a class="s_name_847" href="add_supplier.php?type_sup=D&id=638&project_id=19&from=add_sup_to_proj"></a></td>
+									<td class="alignCenter">035273230</td>
+									<td class="alignCenter">sales@massad-group.com</td>
+									<td class="alignCenter"><img class="delete_img cursor-pointer" src="images/delete.svg" title="" onclick="return removeSupplierFromProject(847);" /></td>	
+								</tr>
+											
+								<input type="hidden" class="hidden_sfow_name_583" value="Sealing Eng" />
+								<input type="hidden" class="hidden_sfow_name_he_583" value="יועץ איטום" />		
+								<input type="hidden" class="hidden_s_name_583" value="S. Daniel" />
+								<input type="hidden" class="hidden_s_name_he_583" value="ס. דניאל " />
+								
+								<tr class="height35">
+									<td class="td_designer_elem"><a class="sfow_name_583"></a></td>
+									<td class="td_designer_elem"><a class="s_name_583" href="add_supplier.php?type_sup=D&id=391&project_id=19&from=add_sup_to_proj"></a></td>
+									<td class="alignCenter">046802824</td>
+									<td class="alignCenter">Sofir.daniel@gmail.com</td>
+									<td class="alignCenter"><img class="delete_img cursor-pointer" src="images/delete.svg" title="" onclick="return removeSupplierFromProject(583);" /></td>	
+								</tr>
+											
+								<input type="hidden" class="hidden_sfow_name_284" value="Plumbing Eng" />
+								<input type="hidden" class="hidden_sfow_name_he_284" value="יועץ אינסטלצ" />		
+								<input type="hidden" class="hidden_s_name_284" value="Rozen Hndsa " />
+								<input type="hidden" class="hidden_s_name_he_284" value="רוזן הנדסה" />
+								
+								<tr class="height35">
+									<td class="td_designer_elem"><a class="sfow_name_284"></a></td>
+									<td class="td_designer_elem"><a class="s_name_284" href="add_supplier.php?type_sup=D&id=105&project_id=19&from=add_sup_to_proj"></a></td>
+									<td class="alignCenter">0506795144</td>
+									<td class="alignCenter">eliran@rozeneng.com</td>
+									<td class="alignCenter"><img class="delete_img cursor-pointer" src="images/delete.svg" title="" onclick="return removeSupplierFromProject(284);" /></td>	
+								</tr>
+											
+								<input type="hidden" class="hidden_sfow_name_293" value="Safety Eng." />
+								<input type="hidden" class="hidden_sfow_name_he_293" value="יועץ בטיחות" />		
+								<input type="hidden" class="hidden_s_name_293" value="Ylovsky Yehonathan" />
+								<input type="hidden" class="hidden_s_name_he_293" value="יהונתן ילובסקי" />
+								
+								<tr class="height35">
+									<td class="td_designer_elem"><a class="sfow_name_293"></a></td>
+									<td class="td_designer_elem"><a class="s_name_293" href="add_supplier.php?type_sup=D&id=119&project_id=19&from=add_sup_to_proj"></a></td>
+									<td class="alignCenter">0504306999</td>
+									<td class="alignCenter">yesafety@gmail.com</td>
+									<td class="alignCenter"><img class="delete_img cursor-pointer" src="images/delete.svg" title="" onclick="return removeSupplierFromProject(293);" /></td>	
+								</tr>
+											
+								<input type="hidden" class="hidden_sfow_name_285" value="Electricity " />
+								<input type="hidden" class="hidden_sfow_name_he_285" value="יועץ חשמל" />		
+								<input type="hidden" class="hidden_s_name_285" value="Eyal Sar Shalom" />
+								<input type="hidden" class="hidden_s_name_he_285" value="אייל שר-שלום הנדסת ח" />
+								
+								<tr class="height35">
+									<td class="td_designer_elem"><a class="sfow_name_285"></a></td>
+									<td class="td_designer_elem"><a class="s_name_285" href="add_supplier.php?type_sup=D&id=30&project_id=19&from=add_sup_to_proj"></a></td>
+									<td class="alignCenter">02789654</td>
+									<td class="alignCenter">office@e-sar.com</td>
+									<td class="alignCenter"><img class="delete_img cursor-pointer" src="images/delete.svg" title="" onclick="return removeSupplierFromProject(285);" /></td>	
+								</tr>
+											
+								<input type="hidden" class="hidden_sfow_name_294" value="Bunker" />
+								<input type="hidden" class="hidden_sfow_name_he_294" value="יועץ מיגון" />		
+								<input type="hidden" class="hidden_s_name_294" value="Gridinger Batsheva" />
+								<input type="hidden" class="hidden_s_name_he_294" value="גרידינגר בת שבע " />
+								
+								<tr class="height35">
+									<td class="td_designer_elem"><a class="sfow_name_294"></a></td>
+									<td class="td_designer_elem"><a class="s_name_294" href="add_supplier.php?type_sup=D&id=118&project_id=19&from=add_sup_to_proj"></a></td>
+									<td class="alignCenter">0527180625</td>
+									<td class="alignCenter">batsheva.rizi@gmail.com</td>
+									<td class="alignCenter"><img class="delete_img cursor-pointer" src="images/delete.svg" title="" onclick="return removeSupplierFromProject(294);" /></td>	
+								</tr>
+											
+								<input type="hidden" class="hidden_sfow_name_461" value="Air Conditio" />
+								<input type="hidden" class="hidden_sfow_name_he_461" value="יועץ מיזוג" />		
+								<input type="hidden" class="hidden_s_name_461" value="Genair" />
+								<input type="hidden" class="hidden_s_name_he_461" value="גינאייר" />
+								
+								<tr class="height35">
+									<td class="td_designer_elem"><a class="sfow_name_461"></a></td>
+									<td class="td_designer_elem"><a class="s_name_461" href="add_supplier.php?type_sup=D&id=281&project_id=19&from=add_sup_to_proj"></a></td>
+									<td class="alignCenter">02-9401100</td>
+									<td class="alignCenter">Yossi@genair.co.il</td>
+									<td class="alignCenter"><img class="delete_img cursor-pointer" src="images/delete.svg" title="" onclick="return removeSupplierFromProject(461);" /></td>	
+								</tr>
+											
+								<input type="hidden" class="hidden_sfow_name_291" value="Elevator" />
+								<input type="hidden" class="hidden_sfow_name_he_291" value="יועץ מעליות" />		
+								<input type="hidden" class="hidden_s_name_291" value="Y C MALIYOT " />
+								<input type="hidden" class="hidden_s_name_he_291" value="י. כ. מעליות " />
+								
+								<tr class="height35">
+									<td class="td_designer_elem"><a class="sfow_name_291"></a></td>
+									<td class="td_designer_elem"><a class="s_name_291" href="add_supplier.php?type_sup=D&id=126&project_id=19&from=add_sup_to_proj"></a></td>
+									<td class="alignCenter">09-7614392</td>
+									<td class="alignCenter">yc1elev@gmail.com</td>
+									<td class="alignCenter"><img class="delete_img cursor-pointer" src="images/delete.svg" title="" onclick="return removeSupplierFromProject(291);" /></td>	
+								</tr>
+											
+								<input type="hidden" class="hidden_sfow_name_353" value="Parking Elov" />
+								<input type="hidden" class="hidden_sfow_name_he_353" value="יועץ מעליות " />		
+								<input type="hidden" class="hidden_s_name_353" value="Oded Baruch" />
+								<input type="hidden" class="hidden_s_name_he_353" value="עודד ברוך " />
+								
+								<tr class="height35">
+									<td class="td_designer_elem"><a class="sfow_name_353"></a></td>
+									<td class="td_designer_elem"><a class="s_name_353" href="add_supplier.php?type_sup=D&id=138&project_id=19&from=add_sup_to_proj"></a></td>
+									<td class="alignCenter">052-5344471</td>
+									<td class="alignCenter">ob0525344471@gmail.com</td>
+									<td class="alignCenter"><img class="delete_img cursor-pointer" src="images/delete.svg" title="" onclick="return removeSupplierFromProject(353);" /></td>	
+								</tr>
+											
+								<input type="hidden" class="hidden_sfow_name_315" value="Handicap Acc" />
+								<input type="hidden" class="hidden_sfow_name_he_315" value="יועץ נגישות " />		
+								<input type="hidden" class="hidden_s_name_315" value="Irena Rubin" />
+								<input type="hidden" class="hidden_s_name_he_315" value="אירנה רובין " />
+								
+								<tr class="height35">
+									<td class="td_designer_elem"><a class="sfow_name_315"></a></td>
+									<td class="td_designer_elem"><a class="s_name_315" href="add_supplier.php?type_sup=D&id=136&project_id=19&from=add_sup_to_proj"></a></td>
+									<td class="alignCenter">052-3815372</td>
+									<td class="alignCenter">negishutir@gmail.com</td>
+									<td class="alignCenter"><img class="delete_img cursor-pointer" src="images/delete.svg" title="" onclick="return removeSupplierFromProject(315);" /></td>	
+								</tr>
+											
+								<input type="hidden" class="hidden_sfow_name_287" value="Structure En" />
+								<input type="hidden" class="hidden_sfow_name_he_287" value="יועץ קונסטרו" />		
+								<input type="hidden" class="hidden_s_name_287" value="Ariel Biton" />
+								<input type="hidden" class="hidden_s_name_he_287" value="אריאל ביטון" />
+								
+								<tr class="height35">
+									<td class="td_designer_elem"><a class="sfow_name_287"></a></td>
+									<td class="td_designer_elem"><a class="s_name_287" href="add_supplier.php?type_sup=D&id=24&project_id=19&from=add_sup_to_proj"></a></td>
+									<td class="alignCenter">0507830719</td>
+									<td class="alignCenter">galihyam@gmail.com</td>
+									<td class="alignCenter"><img class="delete_img cursor-pointer" src="images/delete.svg" title="" onclick="return removeSupplierFromProject(287);" /></td>	
+								</tr>
+											
+								<input type="hidden" class="hidden_sfow_name_289" value="Soil Enginee" />
+								<input type="hidden" class="hidden_sfow_name_he_289" value="יועץ קרקע" />		
+								<input type="hidden" class="hidden_s_name_289" value="israel klar " />
+								<input type="hidden" class="hidden_s_name_he_289" value="ישראל קלר " />
+								
+								<tr class="height35">
+									<td class="td_designer_elem"><a class="sfow_name_289"></a></td>
+									<td class="td_designer_elem"><a class="s_name_289" href="add_supplier.php?type_sup=D&id=117&project_id=19&from=add_sup_to_proj"></a></td>
+									<td class="alignCenter">04-8401397</td>
+									<td class="alignCenter">office@klar.co.il</td>
+									<td class="alignCenter"><img class="delete_img cursor-pointer" src="images/delete.svg" title="" onclick="return removeSupplierFromProject(289);" /></td>	
+								</tr>
+											
+								<input type="hidden" class="hidden_sfow_name_297" value="Parking / Tr" />
+								<input type="hidden" class="hidden_sfow_name_he_297" value="יועץ תנועה" />		
+								<input type="hidden" class="hidden_s_name_297" value="ETI VEG" />
+								<input type="hidden" class="hidden_s_name_he_297" value="אתי וייג " />
+								
+								<tr class="height35">
+									<td class="td_designer_elem"><a class="sfow_name_297"></a></td>
+									<td class="td_designer_elem"><a class="s_name_297" href="add_supplier.php?type_sup=D&id=127&project_id=19&from=add_sup_to_proj"></a></td>
+									<td class="alignCenter">02-6361070</td>
+									<td class="alignCenter">eti@veg-eng.co.il</td>
+									<td class="alignCenter"><img class="delete_img cursor-pointer" src="images/delete.svg" title="" onclick="return removeSupplierFromProject(297);" /></td>	
+								</tr>
+											
+								<input type="hidden" class="hidden_sfow_name_1104" value="Entrepreneur" />
+								<input type="hidden" class="hidden_sfow_name_he_1104" value="יזם" />		
+								<input type="hidden" class="hidden_s_name_1104" value="" />
+								<input type="hidden" class="hidden_s_name_he_1104" value="טרא" />
+								
+								<tr class="height35">
+									<td class="td_designer_elem"><a class="sfow_name_1104"></a></td>
+									<td class="td_designer_elem"><a class="s_name_1104" href="add_supplier.php?type_sup=D&id=808&project_id=19&from=add_sup_to_proj"></a></td>
+									<td class="alignCenter"></td>
+									<td class="alignCenter"></td>
+									<td class="alignCenter"><img class="delete_img cursor-pointer" src="images/delete.svg" title="" onclick="return removeSupplierFromProject(1104);" /></td>	
+								</tr>
+											
+								<input type="hidden" class="hidden_sfow_name_296" value="Survey" />
+								<input type="hidden" class="hidden_sfow_name_he_296" value="מודד" />		
+								<input type="hidden" class="hidden_s_name_296" value="ELYASHIV MEDIDOT VEH" />
+								<input type="hidden" class="hidden_s_name_he_296" value="אלישיב מדידות והנדסה" />
+								
+								<tr class="height35">
+									<td class="td_designer_elem"><a class="sfow_name_296"></a></td>
+									<td class="td_designer_elem"><a class="s_name_296" href="add_supplier.php?type_sup=D&id=121&project_id=19&from=add_sup_to_proj"></a></td>
+									<td class="alignCenter">02-6793012  </td>
+									<td class="alignCenter">office@elyashiv1.co.il</td>
+									<td class="alignCenter"><img class="delete_img cursor-pointer" src="images/delete.svg" title="" onclick="return removeSupplierFromProject(296);" /></td>	
+								</tr>
+											
+								<input type="hidden" class="hidden_sfow_name_302" value="Project Mana" />
+								<input type="hidden" class="hidden_sfow_name_he_302" value="ניהול פרויקט" />		
+								<input type="hidden" class="hidden_s_name_302" value="David Nahmias" />
+								<input type="hidden" class="hidden_s_name_he_302" value="דוד נחמיאס" />
+								
+								<tr class="height35">
+									<td class="td_designer_elem"><a class="sfow_name_302"></a></td>
+									<td class="td_designer_elem"><a class="s_name_302" href="add_supplier.php?type_sup=D&id=12&project_id=19&from=add_sup_to_proj"></a></td>
+									<td class="alignCenter">0547449019</td>
+									<td class="alignCenter">david@nahmias-eng.com</td>
+									<td class="alignCenter"><img class="delete_img cursor-pointer" src="images/delete.svg" title="" onclick="return removeSupplierFromProject(302);" /></td>	
+								</tr>
+											
+								<input type="hidden" class="hidden_sfow_name_1022" value="Project Mana" />
+								<input type="hidden" class="hidden_sfow_name_he_1022" value="ניהול פרויקט" />		
+								<input type="hidden" class="hidden_s_name_1022" value="David Nahmias Eng." />
+								<input type="hidden" class="hidden_s_name_he_1022" value="דוד נחמיאס הנדסה" />
+								
+								<tr class="height35">
+									<td class="td_designer_elem"><a class="sfow_name_1022"></a></td>
+									<td class="td_designer_elem"><a class="s_name_1022" href="add_supplier.php?type_sup=D&id=748&project_id=19&from=add_sup_to_proj"></a></td>
+									<td class="alignCenter">0547449019</td>
+									<td class="alignCenter">david@nahmias-eng.com</td>
+									<td class="alignCenter"><img class="delete_img cursor-pointer" src="images/delete.svg" title="" onclick="return removeSupplierFromProject(1022);" /></td>	
+								</tr>
+											
+								<input type="hidden" class="hidden_sfow_name_301" value="Licensing" />
+								<input type="hidden" class="hidden_sfow_name_he_301" value="רישוי " />		
+								<input type="hidden" class="hidden_s_name_301" value="HETER" />
+								<input type="hidden" class="hidden_s_name_he_301" value="היתר - תיכנון ורישוי" />
+								
+								<tr class="height35">
+									<td class="td_designer_elem"><a class="sfow_name_301"></a></td>
+									<td class="td_designer_elem"><a class="s_name_301" href="add_supplier.php?type_sup=D&id=129&project_id=19&from=add_sup_to_proj"></a></td>
+									<td class="alignCenter">050-3544666</td>
+									<td class="alignCenter">jer.heter12@gmail.com</td>
+									<td class="alignCenter"><img class="delete_img cursor-pointer" src="images/delete.svg" title="" onclick="return removeSupplierFromProject(301);" /></td>	
+								</tr>
+															</table>
+							</div>
+						</div>
+					</div>
+					<div class="row alignCenter marginTop15 fontSize22 dir-rtl">
+						<div class="col-12">
+						    <a class="text-decoration-none marginLeft8 cursor-pointer" onclick="toProjectSuppliersPdfReport('D')">
+						       <img src="images/file-pdf-solid.svg" width="70" height="40" />
+					        </a> 				
+						</div>
+					</div>
+								<div class="row marginTop20 dir-rtl">
+					<div id="div_designer_btns" align="center" class="col-12">
+						<input type="button" id="save_des_btn" name="save_btn" class="btn mb-2" />						
+						<select id="designers_domain" class="padding10 width220 height40 fontSize14">
+							<option class="choose_designer_domain" value="0"></option>
+																	<option value="54">
+											אגרונום										</option>
+																			<option value="13">
+											אדריכלות										</option>
+																			<option value="128">
+											הדמיות										</option>
+																			<option value="56">
+											יועץ איטום										</option>
+																			<option value="5">
+											יועץ אינסטלציה										</option>
+																			<option value="65">
+											יועץ אלומניום										</option>
+																			<option value="55">
+											יועץ אקוסטיקה										</option>
+																			<option value="72">
+											יועץ בטיחות										</option>
+																			<option value="57">
+											יועץ בטיחות										</option>
+																			<option value="103">
+											יועץ בניה ירוקה										</option>
+																			<option value="70">
+											יועץ בריכות										</option>
+																			<option value="130">
+											יועץ גז										</option>
+																			<option value="66">
+											יועץ הידרולוגיה										</option>
+																			<option value="3">
+											יועץ חשמל										</option>
+																			<option value="75">
+											יועץ טרמי										</option>
+																			<option value="76">
+											יועץ כמויות										</option>
+																			<option value="124">
+											יועץ מיגון										</option>
+																			<option value="6">
+											יועץ מיזוג										</option>
+																			<option value="52">
+											יועץ מעליות										</option>
+																			<option value="106">
+											יועץ מעליות חניה 										</option>
+																			<option value="100">
+											יועץ נגישות 										</option>
+																			<option value="17">
+											יועץ קונסטרוקציה										</option>
+																			<option value="4">
+											יועץ קרקע										</option>
+																			<option value="122">
+											יועץ שימור										</option>
+																			<option value="50">
+											יועץ תאורה										</option>
+																			<option value="10">
+											יועץ תנועה										</option>
+																			<option value="8">
+											מודד										</option>
+																			<option value="51">
+											מכון העתקות										</option>
+																			<option value="47">
+											ניהול פרויקט										</option>
+																			<option value="61">
+											ניהול תיק היתר										</option>
+																			<option value="85">
+											ענן לניהול פרויקט										</option>
+																			<option value="60">
+											פיקוח										</option>
+																			<option value="68">
+											פיתוח										</option>
+																			<option value="102">
+											רישוי 										</option>
+																			
+						</select>
+						&nbsp;
+						<span id="span_designers_name"></span>
+					</div>
+				</div>	
+				
+				<div class="row title-2">	
+					<div id="suppliers_list_label" class="col-12"></div>					
+				</div>					
+				
+									<div class="row marginTop10 fontSize14 dir-rtl">
+						<div align="center" class="col-12 mx-2">
+							<div class="table-responsive">
+							<table id="suppliers_list" border="1" cellpadding="5" cellspacing="5">
+								<tr class="bgColorSilver">
+									<th class="th_domain alignCenter" width="130px;"></th>
+									<th class="th_name alignCenter" width="180px;"></th>
+									<th class="th_phone alignCenter" width="120px;"></th>
+									<th class="th_email alignCenter" width="200px;"></th>
+									<th width="40px;">&nbsp;</th>								
+								</tr>
+																<input type="hidden" class="hidden_sfow_name_520" value="Taxes & Fees" />
+								<input type="hidden" class="hidden_sfow_name_he_520" value="אגרות היטלים" />						
+								<input type="hidden" class="hidden_s_name_520" value="Taxes & Fees" />
+								<input type="hidden" class="hidden_s_name_he_520" value="אגרות והיטלים" />
+									
+								<tr class="height35">
+									<td class="td_supplier_elem"><a class="sfow_name_520"></a></td>
+									<td class="td_supplier_elem"><a class="s_name_520" href="add_supplier.php?type_sup=S&id=96&project_id=19&from=add_sup_to_proj"></a></td>
+									<td class="alignCenter"></td>
+									<td class="alignCenter">taxes @ fees</td>
+									<td class="alignCenter"><img class="delete_img cursor-pointer" src="images/delete.svg" onclick="return removeSupplierFromProject(520);" /></td>	
+								</tr>
+																<input type="hidden" class="hidden_sfow_name_1138" value="Glass" />
+								<input type="hidden" class="hidden_sfow_name_he_1138" value="זיגוג" />						
+								<input type="hidden" class="hidden_s_name_1138" value="Miklachonet" />
+								<input type="hidden" class="hidden_s_name_he_1138" value="מקלחונט" />
+									
+								<tr class="height35">
+									<td class="td_supplier_elem"><a class="sfow_name_1138"></a></td>
+									<td class="td_supplier_elem"><a class="s_name_1138" href="add_supplier.php?type_sup=S&id=598&project_id=19&from=add_sup_to_proj"></a></td>
+									<td class="alignCenter"></td>
+									<td class="alignCenter">tamir@miklachonet.co.il</td>
+									<td class="alignCenter"><img class="delete_img cursor-pointer" src="images/delete.svg" onclick="return removeSupplierFromProject(1138);" /></td>	
+								</tr>
+																<input type="hidden" class="hidden_sfow_name_1139" value="Stairs" />
+								<input type="hidden" class="hidden_sfow_name_he_1139" value="מדרגות" />						
+								<input type="hidden" class="hidden_s_name_1139" value="Sharon Stairs" />
+								<input type="hidden" class="hidden_s_name_he_1139" value="שרון מדרגות ומעקות " />
+									
+								<tr class="height35">
+									<td class="td_supplier_elem"><a class="sfow_name_1139"></a></td>
+									<td class="td_supplier_elem"><a class="s_name_1139" href="add_supplier.php?type_sup=S&id=120&project_id=19&from=add_sup_to_proj"></a></td>
+									<td class="alignCenter">036812728</td>
+									<td class="alignCenter">info@maakot.co.il</td>
+									<td class="alignCenter"><img class="delete_img cursor-pointer" src="images/delete.svg" onclick="return removeSupplierFromProject(1139);" /></td>	
+								</tr>
+																<input type="hidden" class="hidden_sfow_name_1137" value="Iron Works" />
+								<input type="hidden" class="hidden_sfow_name_he_1137" value="מסגרות" />						
+								<input type="hidden" class="hidden_s_name_1137" value="Sigment" />
+								<input type="hidden" class="hidden_s_name_he_1137" value="סיגמנט" />
+									
+								<tr class="height35">
+									<td class="td_supplier_elem"><a class="sfow_name_1137"></a></td>
+									<td class="td_supplier_elem"><a class="s_name_1137" href="add_supplier.php?type_sup=S&id=508&project_id=19&from=add_sup_to_proj"></a></td>
+									<td class="alignCenter"></td>
+									<td class="alignCenter">guy@sigment.net</td>
+									<td class="alignCenter"><img class="delete_img cursor-pointer" src="images/delete.svg" onclick="return removeSupplierFromProject(1137);" /></td>	
+								</tr>
+																<input type="hidden" class="hidden_sfow_name_317" value="Gas Supplier" />
+								<input type="hidden" class="hidden_sfow_name_he_317" value="ספק גז" />						
+								<input type="hidden" class="hidden_s_name_317" value="Paz Gaz " />
+								<input type="hidden" class="hidden_s_name_he_317" value="פז גז " />
+									
+								<tr class="height35">
+									<td class="td_supplier_elem"><a class="sfow_name_317"></a></td>
+									<td class="td_supplier_elem"><a class="s_name_317" href="add_supplier.php?type_sup=S&id=139&project_id=19&from=add_sup_to_proj"></a></td>
+									<td class="alignCenter">050-7011941</td>
+									<td class="alignCenter">itzhaky@pazgas.co.il</td>
+									<td class="alignCenter"><img class="delete_img cursor-pointer" src="images/delete.svg" onclick="return removeSupplierFromProject(317);" /></td>	
+								</tr>
+																<input type="hidden" class="hidden_sfow_name_952" value="Main contrac" />
+								<input type="hidden" class="hidden_sfow_name_he_952" value="קבלן ראשי" />						
+								<input type="hidden" class="hidden_s_name_952" value="Nitsney Hakaytz" />
+								<input type="hidden" class="hidden_s_name_he_952" value="ניצני הקיץ" />
+									
+								<tr class="height35">
+									<td class="td_supplier_elem"><a class="sfow_name_952"></a></td>
+									<td class="td_supplier_elem"><a class="s_name_952" href="add_supplier.php?type_sup=S&id=85&project_id=19&from=add_sup_to_proj"></a></td>
+									<td class="alignCenter">02-6244420</td>
+									<td class="alignCenter">026244420@014.net.il</td>
+									<td class="alignCenter"><img class="delete_img cursor-pointer" src="images/delete.svg" onclick="return removeSupplierFromProject(952);" /></td>	
+								</tr>
+															</table>
+							</div>
+						</div>
+					</div>
+
+					<div class="row marginTop15 alignCenter fontSize22 dir-rtl">
+						<div class="col-12">
+							<a class="text-decoration-none marginLeft8 cursor-pointer" onclick="toProjectSuppliersPdfReport('S')">
+						       <img src="images/file-pdf-solid.svg" width="70" height="40" />
+					        </a> 		
+						</div>
+					</div>
+							
+				<div class="row marginTop20 dir-rtl">
+					<div id="div_supplier_btns" align="center" class="col-12">
+						<input type="button" id="save_sup_btn" name="save_btn" class="btn mb-2" />						
+						&nbsp;
+						<select id="suppliers_domain" class="padding10 width220 height40 fontSize14">
+							<option class="choose_supplier_domain" value="0"></option>
+																	<option value="89">
+											אגרות היטלים והוצאות										</option>
+																			<option value="127">
+											בטיחות אתר										</option>
+																			<option value="46">
+											בית חכם										</option>
+																			<option value="120">
+											בריכות וספא										</option>
+																			<option value="94">
+											גגן										</option>
+																			<option value="14">
+											גנן										</option>
+																			<option value="110">
+											דלתות										</option>
+																			<option value="126">
+											דק פרגולה										</option>
+																			<option value="20">
+											הריסות וחפירות										</option>
+																			<option value="112">
+											זיגוג										</option>
+																			<option value="96">
+											חימום										</option>
+																			<option value="67">
+											יועץ ביטוח										</option>
+																			<option value="69">
+											מדידה										</option>
+																			<option value="99">
+											מדרגות										</option>
+																			<option value="26">
+											מיזוג אוויר										</option>
+																			<option value="49">
+											מכון בדיקות בנין										</option>
+																			<option value="123">
+											מסגרות										</option>
+																			<option value="121">
+											מעליות										</option>
+																			<option value="117">
+											מתך נמוך										</option>
+																			<option value="109">
+											נגרות										</option>
+																			<option value="29">
+											סניטריה & ריצופים										</option>
+																			<option value="107">
+											ספק גז										</option>
+																			<option value="119">
+											ספקים חד-פעמיים										</option>
+																			<option value="63">
+											עורך דין										</option>
+																			<option value="83">
+											ענן שיתופי										</option>
+																			<option value="93">
+											פרקט										</option>
+																			<option value="44">
+											פתחים & אלומניום										</option>
+																			<option value="1">
+											קבלן ראשי										</option>
+																			<option value="125">
+											קבלן תשתיות גז										</option>
+																			<option value="131">
+											ריצוף										</option>
+																			<option value="108">
+											שירותי ענן 										</option>
+																			<option value="22">
+											שיש ואבן 										</option>
+																			<option value="23">
+											תאורה										</option>
+																			
+						</select>
+						&nbsp;
+						<span id="span_suppliers_name"></span>
+					</div>
+				</div>
+				
+				<div class="row marginTop20 alignCenter">
+					<div class="col-12">
+						<select id="lang" name="lang" class="width100 height35 border-color-initial">
+							<option value="HE" selected>עברית</option>
+							<option value="EN">English</option>					   
+						</select>   
+					</div>
+				</div>
+            </div>			
+		</form>
+    <style id="maquette-np-fournisseurs">
+/* ===== MAQUETTE - add_sup_to_proj.php (nouveau projet, etape 4) - aucun fichier du site modifie - meme design que les autres maquettes ===== */
+html, body { background:#f6f5f1 !important; }
+
+/* cartes : bordure, coins 15px, en-tete bleu = libelle de la liste */
+.mq-card { width:fit-content; max-width:100%; margin:10px auto 0; border:1px solid #C5B8AA; border-radius:15px; background:#f2f6f9; overflow:hidden; padding:0 !important; }
+.mq-page-title { display:flex; align-items:center; justify-content:center; gap:10px; background:#1a5276; color:#fff; font-weight:700; font-size:20px; padding:8px 28px; direction:rtl; }
+.mq-card-body { padding:14px 12px; overflow-x:auto; }
+.mq-hidden { display:none !important; }
+
+/* tableaux : sans bordure, en-tete #dedede texte bleu, une ligne sur deux en commencant par la foncee */
+#designers_list, #suppliers_list { border-collapse:separate !important; border-spacing:0 !important; border:none !important; background:#fff; margin:0 auto; }
+#designers_list th, #designers_list td, #suppliers_list th, #suppliers_list td { border:none !important; border-bottom:1px solid #eef0f3 !important; }
+#designers_list tr.bgColorSilver th, #suppliers_list tr.bgColorSilver th { background:#dedede !important; color:#1a5276 !important; font-weight:700; height:44px; padding:4px 10px !important; }
+#designers_list tr.height35 td, #suppliers_list tr.height35 td { height:44px; padding:0 10px !important; color:#2d3a45; }
+#designers_list tr.height35:nth-child(even) td, #suppliers_list tr.height35:nth-child(even) td { background:#a9c6e0 !important; }
+#designers_list tr.height35:nth-child(odd) td, #suppliers_list tr.height35:nth-child(odd) td { background:#d4e4f2 !important; }
+#designers_list td a, #suppliers_list td a { color:#1a5276 !important; font-weight:600; }
+#designers_list td img, #suppliers_list td img { width:18px; height:18px; padding:6px; box-sizing:content-box; border-radius:50%; opacity:.75; transition:background .15s, opacity .15s; }
+#designers_list td img:hover, #suppliers_list td img:hover { opacity:1; background:#fde6e6; }
+
+/* boutons "הוסף מתכנן חדש" / "הוסף ספק חדש" : sans fond, texte et bord bleus, survol bleu clair ; listes arrondies */
+#save_des_btn, #save_sup_btn { background:transparent !important; color:#1a5276 !important; border:1.5px solid #1a5276 !important; border-radius:999px !important;
+  padding:7px 18px !important; font-weight:700; font-size:15px; box-shadow:none !important; height:auto !important; }
+#save_des_btn:hover, #save_sup_btn:hover { background:#e3eef6 !important; }
+/* langue : meme liste arrondie avec un globe que dans la maquette "נתוני הפרוייקט" */
+.mq-lang-box { position:relative; display:inline-flex; align-items:center; direction:rtl; }
+.mq-lang-box i { position:absolute; right:10px; color:#1a5276; font-size:14px; pointer-events:none; }
+.mq-lang-box select#lang { -webkit-appearance:none; appearance:none; width:auto !important; margin:0 !important; height:34px !important;
+  padding:0 32px 0 30px !important; min-width:120px; border:1.5px solid #c9d7e3 !important; border-radius:999px; background-color:#fff; color:#1a5276; font-weight:700; cursor:pointer;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%231a5276'/%3E%3C/svg%3E");
+  background-repeat:no-repeat; background-position:left 12px center; }
+.mq-lang-box select#lang:hover { border-color:#1a5276 !important; }
+.mq-lang-box select#lang:focus { outline:none; border-color:#1a5276 !important; box-shadow:0 0 0 3px rgba(26,82,118,.15); }
+#designers_domain, #suppliers_domain { border:1.5px solid #c9d7e3 !important; border-radius:999px !important; background:#fff; color:#1a5276; height:38px !important; padding:0 14px !important; }
+</style>
+<script>
+(function(){
+  // MAQUETTE SEULEMENT : rien n'est enregistre (ajout / retrait d'un fournisseur) ; pose au chargement complet
+  // langue : la meme liste #lang, mise dans une pilule avec un globe (memes choix עברית / English, meme fonctionnement)
+  var sel = document.getElementById('lang');
+  if(sel){
+    var box = document.createElement('span'); box.className = 'mq-lang-box';
+    box.innerHTML = '<i class="fa-solid fa-globe"></i>';
+    sel.parentNode.insertBefore(box, sel); box.appendChild(sel);
+  }
+
+  window.addEventListener('load', function(){
+    window.removeSupplierFromProject = function(){ return false; };
+    if(window.jQuery){
+      var realAjax = jQuery.ajax;
+      jQuery.ajax = function(opts){
+        if(/sup_from_proj_delete\.php|sup_to_proj_insert\.php/.test((opts && opts.url) || '')) return jQuery.Deferred().promise();
+        return realAjax.apply(this, arguments);
+      };
+    }
+    // cartes (apres le remplissage des libelles par la page)
+    [['designers_list', 'designers_list_label', 'fa-user-tie'], ['suppliers_list', 'suppliers_list_label', 'fa-truck']].forEach(function(c){
+      var table = document.getElementById(c[0]); if(!table) return;
+      var label = document.getElementById(c[1]);
+      var card = document.createElement('div'); card.className = 'mq-card';
+      var ttl = document.createElement('div'); ttl.className = 'mq-page-title';
+      ttl.innerHTML = '<i class="fa-solid ' + c[2] + '"></i><span></span>';
+      // le libelle est rempli par la page (hebreu / anglais) : l'en-tete le recopie et suit ses changements
+      var span = ttl.querySelector('span');
+      var copy = function(){ span.textContent = label ? label.textContent.trim() : ''; };
+      copy();
+      if(label) new MutationObserver(copy).observe(label, {childList:true, characterData:true, subtree:true});
+      var body = document.createElement('div'); body.className = 'mq-card-body';
+      var holder = table.closest('.table-responsive') || table;
+      holder.parentNode.insertBefore(card, holder);
+      card.appendChild(ttl); card.appendChild(body); body.appendChild(holder);
+      if(label && label.parentElement) label.parentElement.classList.add('mq-hidden');   // libelle deplace dans l'en-tete
+    });
+  });
+})();
+</script>
+<style id="maquette-boutons">
+/* ===== MAQUETTE - boutons des etapes "nouveau projet" et des fiches : meme style que les autres maquettes ===== */
+/* seule l'apparence change : memes boutons, memes id, memes actions */
+html, body { background:#f6f5f1 !important; }
+.card .card-body .btn, .card .card-body input.btn {
+  background:transparent !important; color:#1a5276 !important; border:1.5px solid #1a5276 !important; border-radius:999px !important;
+  padding:6px 16px !important; font-weight:700; font-size:14px !important; box-shadow:none !important; height:auto !important; }
+.card .card-body .btn:hover:not(:disabled), .card .card-body input.btn:hover:not(:disabled) { background:#e3eef6 !important; }
+.card .card-body .btn i { color:#1a5276 !important; }
+/* boutons noirs du site (ביטול / סגור) : meme forme, en gris fonce */
+.card .card-body .btn.bgColorBlack, .card .card-body input.btn.bgColorBlack { color:#4a4a4a !important; border-color:#8a8a8a !important; }
+.card .card-body .btn.bgColorBlack:hover { background:#ececec !important; }
+.card .card-body .btn:disabled, .card .card-body input.btn:disabled { opacity:.4; }
+</style>
+<script>
+/* (aucun script : les boutons gardent leurs evenements d'origine) */
+</script>
+
+
+<style id="maquette-sc">
+/* ===== MAQUETTE - tous les boutons Enregistrer / Annuler / Fermer (pages ET popups) : meme style partout =====
+   enregistrer = fond bleu du site (#218FD6, bgColorBlue), annuler/fermer = fond noir (bgColorBlack), texte blanc, forme arrondie
+   seule l'apparence change : memes boutons, memes id, memes actions */
+html body .mq-sc.mq-sc.mq-sc.mq-sc.mq-sc { background:#218FD6 !important; color:#fff !important; border:1.5px solid #218FD6 !important; border-radius:999px !important;
+  padding:6px 18px !important; font-weight:700 !important; font-size:14px !important; box-shadow:none !important; height:auto !important;
+  width:auto !important; min-width:0 !important; line-height:1.4 !important; }
+html body .mq-sc.mq-sc.mq-sc.mq-sc.mq-sc:hover:not(:disabled) { background:#1a7bbd !important; border-color:#1a7bbd !important; }
+html body .mq-sc.mq-sc.mq-sc.mq-sc.mq-sc i { color:#fff !important; }
+html body .mq-sc.mq-sc.mq-sc.mq-sc.mq-sc.mq-sc-cancel { background:#000 !important; border-color:#000 !important; color:#fff !important; }
+html body .mq-sc.mq-sc.mq-sc.mq-sc.mq-sc.mq-sc-cancel:hover:not(:disabled) { background:#333 !important; border-color:#333 !important; }
+html body .mq-sc.mq-sc.mq-sc.mq-sc.mq-sc:disabled { opacity:.4; }
+</style>
+<script>
+(function(){
+  var SAVE = /^(\+\s*)?(שמור|שמירה|עדכן|save|update|ok|אישור|עבור לצוות ניהול|המשך|הבא)/i, CANCEL = /^(ביטול|סגור|בטל|cancel|close)/i;
+  function mark(){
+    document.querySelectorAll('input[type="button"], input[type="submit"], button, a.btn').forEach(function(b){
+      if(b.classList.contains('mq-sc') || b.closest('.topbar') || b.classList.contains('close') || b.classList.contains('btn-close')) return;
+      if(b.querySelector('img')) return;   // boutons-icones (grille d'actions des popups) : on n'y touche pas
+      var txt = ((b.value || b.textContent) || '').replace(/\s+/g, ' ').trim();
+      if(!txt) return;
+      if(CANCEL.test(txt)){ b.classList.add('mq-sc', 'mq-sc-cancel'); }
+      else if(SAVE.test(txt)){ b.classList.add('mq-sc'); }
+    });
+  }
+  mark();
+  window.addEventListener('load', function(){ mark(); setTimeout(mark, 800); });
+  document.addEventListener('shown.bs.modal', mark);   // popups : quand ils s'ouvrent
+  if(window.jQuery) jQuery(document).on('shown.bs.modal', mark);
+})();
+</script>
+</body>
+</html>
+
+<script>
+$(document).ready(function() {
+   setLabels();
+   
+   function setLabels(){ 
+      $('#create_pdf_btn').css({"direction":"rtl","margin-right":"10px"});
+	  $('#lang').css({"padding-left":"10px"});
+	  
+	  if($('#lang').val() == 'EN'){
+		  $('#project_name_title').html('<span class="fontSize26 font-weight-bold cursor-pointer">Project '+$('#project_name').val()+'</span>');
+          $('#title').html('<span class="fontSize26 font-weight-bold cursor-pointer">Contacts List</span>');
+		  $('#designers_list_label').html('List of planners and consultants');
+		  $('#designers_list').css({"direction":"ltr"});
+		  $('.th_domain').html('Domain');
+		  $('.th_name').html('Name');
+		  $('.th_phone').html('Phone');
+		  $('.th_email').html('Email');
+		  $('.td_designer_elem').css({"text-align":"left","padding-left":"5px"});
+		  
+		  $('a[class^="s_name"]').each(function () {
+			  let elem = 'hidden_'+$(this).attr('class');
+			  $(this).html($('.'+elem).val());
+		  });
+		  
+		  $('a[class^="sfow_name"]').each(function () {
+			  let elem = 'hidden_'+$(this).attr('class');
+			  $(this).html($('.'+elem).val());
+			  $(this).css({"text-decoration":"none"});
+		  });
+		 
+		  $('.delete_img').attr('title','Delete');
+          $('#div_designer_btns').css({"direction":"ltr"});		 
+		  $('.create_pdf_btn').val("Create PDF");
+		  $('.create_pdf_btn').css({"direction":"ltr"});
+		  $('#save_des_btn').val('Add new designer');
+		  $('#save_des_btn').css({"direction":"ltr","margin-right":"10px"});
+		  $('.choose_designer_domain').html('-- Choose designer domain --')
+		  $('#suppliers_list_label').html('List of contractors and suppliers');
+		  $('#suppliers_list').css({"direction":"ltr"});
+		  $('.td_supplier_elem').css({"text-align":"left","padding-left":"5px"});
+		  $('#div_supplier_btns').css({"direction":"ltr"});	
+		  $('#save_sup_btn').val('Add new supplier');
+		  $('.choose_supplier_domain').html('-- Choose supplier domain --');
+	  }
+	  else if($('#lang').val() == 'HE') {
+		   $('#project_name_title').html('<span class="fontSize26 font-weight-bold cursor-pointer font-family-david">פרוייקט '+$('#project_name_he').val()+'</span>');
+		   $('#title').html("<span class='fontSize26 font-weight-bold font-family-david cursor-pointer'>רשימת אנשי קשר</span>"); 
+		   $('#designers_list_label').html('רשימת מתכננים ויועצים');
+		   $('#designers_list').css({"direction":"rtl"});
+		   $('.th_domain').html('תחום');
+		   $('.th_name').html('שם');
+		   $('.th_phone').html('טלפון');
+		   $('.th_email').html("דוא''ל");
+		   $('.td_designer_elem').css({"text-align":"right","padding-right":"5px"});
+		
+		  $('a[class^="s_name"]').each(function () {
+			  let elem = 'hidden_s_name_he_'+$(this).attr('class').substring(7);
+			  $(this).html($('.'+elem).val());
+		  });
+		  
+		  $('a[class^="sfow_name"]').each(function () {
+			  let elem = 'hidden_sfow_name_he_'+$(this).attr('class').substring(10);
+			  $(this).html($('.'+elem).val());
+			  $(this).css({"text-decoration":"none"});
+		  });
+		  
+		  $('.delete_img').attr('title','מחיקה');
+		  $('#div_designer_btns').css({"direction":"rtl"});	
+		  $('.create_pdf_btn').val("הפקת PDF");
+		  $('.create_pdf_btn').css({"direction":"rtl","margin-left":"10px"});
+		  $('#save_des_btn').val('הוסף מתכנן חדש');
+		  $('#save_des_btn').css({"direction":"rtl","margin-left":"10px"});
+		  $('.choose_designer_domain').html('-- בחור תחום מתכנן --');
+		  $('#suppliers_list_label').html('רשימת קבלנים וספקים');
+		  $('#suppliers_list').css({"direction":"rtl"});
+		  $('.td_supplier_elem').css({"text-align":"right","padding-right":"5px"});
+		  $('#div_supplier_btns').css({"direction":"rtl"});	
+		  $('#save_sup_btn').val('הוסף ספק חדש');
+		  $('.choose_supplier_domain').html('-- בחור תחום ספק --');
+	  }
+   }
+   
+   $("#lang").change(function(){
+      setLabels();
+   });
+});
+
+function toProjectSuppliersPdfReport(supplier_type) { 
+    let url = (supplier_type == 'D')? 'sup_to_proj_report.php?sup_type=D&project_id='+$('#id').val()+'&lang='+$('#lang').val():'sup_to_proj_report.php?sup_type=S&project_id='+$('#id').val()+'&lang='+$('#lang').val();	
+	window.open(url,'_blank');
+}
+
+function removeSupplierFromProject(ps_id) {
+	if(confirm("Are you sure to remove this supplier?")) {
+        let form_data = new FormData();	
+		form_data.append('id_projects_suppliers',ps_id);	
+     
+		$.ajax({
+			type: 'POST',
+			url: 'sup_from_proj_delete.php',
+			data: form_data,
+			cache: false,
+			processData: false,
+			contentType: false,
+			success: function(data){
+				if(data == 'notallowedtoremove')
+					alert('אי אפשר למחוק ספק זה כי יש לאנשי הצוות שלו משימות.')
+				else
+					location.href = 'add_sup_to_proj.php?id='+$('#id').val();
+			},
+		});
+    }
+    return false;
+}
+
+$('#suppliers_domain').on('change', function (){
+	$.post('populate_select_sup_name.php',{id_project:$('#id').val(),sup_type:'S',id_field_of_work:$(this).val()},function(data){
+		$('#span_suppliers_name').html(data);
+	});
+});
+
+$('#designers_domain').on('change', function (){
+	$.post('populate_select_sup_name.php',{id_project:$('#id').val(),sup_type:'D',id_field_of_work:$(this).val()},function(data){
+		$('#span_designers_name').html(data);
+	});
+});
+
+$('#save_sup_btn').click (function (e){ 
+	let form_data = new FormData();	
+	
+	form_data.append('id_project',$('#id').val());
+	form_data.append('id_supplier',$('#suppliers_name').val());			
+	$.ajax({
+		type: 'POST',
+		url: 'sup_to_proj_insert.php',
+		data: form_data,
+		cache: false,
+		processData: false,
+		contentType: false,
+		success: function(data){
+			let url;
+			if($('#from').val() == 'addResponsible')
+				url = 'add_responsible.php?id=0&project_id='+$('#id').val()+'&from=addProject&for=projectgroup&ps_id='+data;
+			else
+				url = 'add_responsible.php?id=0&project_id='+$('#id').val()+'&from=addSupToProj&for=projectgroup&ps_id='+data;
+			location.href = url;
+		},
+	});
+});
+
+$('#save_des_btn').click (function (e){
+	let form_data = new FormData();
+	form_data.append('id_project',$('#id').val());
+	form_data.append('id_supplier',$('#designers_name').val());
+	$.ajax({
+		type: 'POST',
+		url: 'sup_to_proj_insert.php',
+		data: form_data,
+		cache: false,
+		processData: false,
+		contentType: false,
+		success: function(data){
+			let url;
+			if($('#from').val() == 'addResponsible')
+				url = 'add_responsible.php?id=0&project_id='+$('#id').val()+'&from=addProject&for=projectgroup&ps_id='+data;
+			else
+				url = 'add_responsible.php?id=0&project_id='+$('#id').val()+'&from=addSupToProj&for=projectgroup&ps_id='+data;
+			location.href = url;
+		},
+	});
+});
+</script>
+
+<style>
+table,th,td{
+	border:1px solid black;
+}
+
+.btn {
+	background-color:#218FD6;
+	color: white;
+}
+
+.btn:hover {
+   background-color:#3370d6;
+   color: white;
+}
+
+#a_project_title:hover {
+	color: grey;
+}
+</style>
