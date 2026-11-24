@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/include/session_config.php';   // connexion gardee 30 jours
 session_start();
 if($_POST['id_custom_report'] > 0 && $_POST['from'] != 'setFilter') {
 	$_SESSION['filter_id_supplier'] = $_POST['id_supplier'];

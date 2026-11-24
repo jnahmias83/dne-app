@@ -1,5 +1,6 @@
 <?php 
 include 'functions/functions.php';
+require_once __DIR__ . '/include/session_config.php';   // connexion gardee 30 jours
 session_start();
 
 $ids_remark_tracking_checked_array = explode(',',$_POST['ids_remark_tracking_checked']);

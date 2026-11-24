@@ -27,6 +27,7 @@ if (session_status() === PHP_SESSION_NONE) {
         'httponly'  => true,
         'samesite'  => 'Lax',
     ]);
+    require_once __DIR__ . '/include/session_config.php';   // connexion gardee 30 jours
     session_start();
 }
 

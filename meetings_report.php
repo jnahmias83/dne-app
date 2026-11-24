@@ -1,6 +1,7 @@
 <?php
 require_once('tcpdf_min/config/tcpdf_config.php');
 require_once('tcpdf_min/tcpdf.php');
+require_once __DIR__ . '/include/session_config.php';   // connexion gardee 30 jours
 session_start();
 include 'functions/functions.php';
 error_reporting(E_ALL);
