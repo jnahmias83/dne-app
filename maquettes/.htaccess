@@ -18,12 +18,5 @@ Options -Indexes
   RewriteRule \.secret - [F,L]
 </IfModule>
 
-# Mot de passe obligatoire partout SAUF sur le poste local (dne.local / localhost)
-# Le fichier de mots de passe est HORS du site (pas dans public_html) : il doit etre envoye a cet endroit avant les maquettes.
-# S'il manque, le dossier des maquettes reste ferme (erreur), le reste du site n'est pas touche.
-<If "%{HTTP_HOST} !~ /^(dne\.local|localhost|127\.0\.0\.1)$/">
-  AuthType Basic
-  AuthName "Maquettes DNE"
-  AuthUserFile /home/xz71g5thavyl/.htpasswd_maquettes
-  Require valid-user
-</If>
+# Pas de mot de passe (choix de l'utilisateur, 2026-11-24) : les maquettes sont ouvertes a qui a l'adresse.
+# Elles ne peuvent rien enregistrer (blocage dans chaque page) et ne sont pas indexees (noindex ci-dessus).

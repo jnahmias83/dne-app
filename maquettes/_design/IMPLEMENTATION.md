@@ -32,26 +32,19 @@ Protections en place :
   - 64 maquettes l'ont toujours actif (`maquette_design.inc` et les autres).
   - Les 6 maquettes « vivantes » (maakav, tache, tableau, menu_tasks, rapports, responsables) l'ont **seulement hors de dne.local** (`maquette_blocage_enligne.inc`). En local, elles se comportent comme avant.
 - **`maquettes/.htaccess`** :
-  - mot de passe obligatoire hors de dne.local ;
+  - **pas de mot de passe** (choix de l'utilisateur, 2026-11-24) : les maquettes sont ouvertes à qui a l'adresse, données réelles comprises ;
   - pas de liste des fichiers du dossier ;
   - `_design/` interdit sur les serveurs ;
   - fichiers `.secret` interdits partout ;
   - `noindex` pour les moteurs de recherche.
-- **Mot de passe** :
-  - il est dans `_design/MOT_DE_PASSE_MAQUETTES.secret.txt` ;
-  - sa version chiffrée est dans `_design/htpasswd_maquettes.secret` ;
-  - ces deux fichiers sont exclus de git.
 
-Étapes :
-1. Envoyer `_design/htpasswd_maquettes.secret` par FTP vers **`/home/xz71g5thavyl/.htpasswd_maquettes`**, c'est-à-dire **hors** de public_html. S'il manque, le dossier des maquettes répond par une erreur (fermé), et le reste du site n'est pas touché.
-2. Envoyer `maquettes/*.html` et `maquettes/.htaccess`, sans `_design/`.
-   - Serveur dev : `/public_html/Development/maquettes/`.
-   - ⚠ Les pages ont `<base href="/">`. Sur le serveur dev, les images, le CSS et les lectures partiraient de la racine, donc du **site prod**. Il faut remplacer par `<base href="/Development/">` dans les copies envoyées sur dev.
-3. Vérifier :
-   - sans mot de passe, on doit obtenir 401 ;
-   - avec le mot de passe, la page s'affiche ;
-   - `_design/` doit répondre 403 ;
-   - un clic sur « שמור » ne doit rien enregistrer.
+Étapes : lancer `Development\deploy-maquettes.ps1`, répondre `dev` ou `prod` (et `YES` pour prod), puis le mot de passe FTP. Le script fait ce qui suit :
+1. Il envoie `maquettes/*.html` et `maquettes/.htaccess`, sans `_design/`.
+   - Serveur dev : `/public_html/Development/maquettes/`. Le script remplace `<base href="/">` par `<base href="/Development/">` dans les copies, pour que les pages ne lisent pas le site prod.
+   - Serveur prod : `/public_html/maquettes/`.
+2. Il vérifie que `…/maquettes/` répond 200.
+
+À vérifier ensuite : `_design/` doit répondre 403, et un clic sur « שמור » ne doit rien enregistrer.
 
 ## Ce qui passe sur le site et ce qui reste dans les maquettes
 
