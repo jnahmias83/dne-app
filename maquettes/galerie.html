@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow"><title>DNE Mockups - Gallery</title>
+<style>
+:root { --w:1300px; --h:900px; --s:.26; }
+body{margin:0;background:#f6f5f1;font-family:Segoe UI,Arial,sans-serif;color:#2d3a45}
+.wrap{max-width:1400px;margin:0 auto;padding:24px 16px}
+h1{color:#1a5276;font-size:24px;margin:0 0 4px}
+.sub{margin:0 0 6px;color:#5b6b78}
+.sub a{color:#1a5276;font-weight:600}
+h2{color:#1a5276;font-size:18px;margin:26px 0 12px;padding-bottom:6px;border-bottom:2px solid #C5B8AA}
+h2 span{color:#8a96a3;font-weight:400;font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(calc(var(--w) * var(--s) + 2px),1fr));gap:16px}
+.card{background:#fff;border:1px solid #C5B8AA;border-radius:12px;overflow:hidden;display:flex;flex-direction:column}
+.thumb{position:relative;width:calc(var(--w) * var(--s));height:calc(var(--h) * var(--s));overflow:hidden;margin:0 auto;background:#f2f2f2}
+.thumb iframe{position:absolute;top:0;left:0;width:var(--w);height:var(--h);border:0;transform:scale(var(--s));transform-origin:0 0;pointer-events:none;background:#fff}
+.thumb a{position:absolute;inset:0;z-index:2}
+.name{padding:8px 12px;border-top:1px solid #eef0f3;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.name a{color:#1a5276;font-weight:600;text-decoration:none}
+.name a:hover{text-decoration:underline}
+.name small{color:#8a96a3}
+@media print{ .sub a{display:none} .card{break-inside:avoid} }
+</style></head><body><div class="wrap">
+<h1>DNE Mockups - Gallery</h1>
+<p class="sub">Live previews: each thumbnail always shows the current version of the mockup. Click to open it full size. Mockups only: nothing is saved. <a href="index.html">List view</a> · Language: <a href="galerie.html">HE</a> | <a href="galerie.html?lang=EN">EN</a></p>
+<div id="groups">Loading...</div>
+</div>
+<script>
+// La liste et les groupes sont lus dans index.html : la galerie reste toujours synchronisee avec la page d'accueil.
+// Fenetres qui s'ouvrent au clic : vignettes supplementaires, placees juste apres leur maquette.
+// C'est la GALERIE qui clique dans la vignette (meme site) : les maquettes ne sont pas modifiees.
+//   etape "click:selecteur" = clique le 1er element correspondant ; plusieurs etapes separees par "|"
+var TASK_POPUPS = [
+  ['actions menu', 'click:[id^=task_actions_]'],
+  ['popup עדכון (update)', 'click:[id^=task_actions_]|click:#update_btn'],
+  ['popup מעקב (tracking)', 'click:[onclick^=openTrackingPopupForMeeting]']
+];
+var POPUPS = { 'maakav.html': TASK_POPUPS, 'tableau.html': TASK_POPUPS, 'tache.html': TASK_POPUPS,
+  'responsables.html': [['inactive row (unchecked)', 'click:#responsibles_list input[id^=is_active_]']] };
+// Langue : EN = ?lang_screen=EN (pages dont les libelles sont ecrits par la page ; les pages de taches restent en hebreu : leur anglais vient du serveur)
+var LANG = (new URLSearchParams(location.search).get('lang') || 'HE').toUpperCase();
+function withLang(href){ if(LANG !== 'EN') return href; return href + (href.indexOf('?') < 0 ? '?' : '&') + 'lang_screen=EN'; }
+function runSteps(frame, steps){
+  var w = frame.contentWindow, d = frame.contentDocument; if(!w || !d) return;
+  var st = d.createElement('style'); st.textContent = '.modal.fade,.modal-backdrop.fade{transition:none!important}'; d.head.appendChild(st);
+  var i = 0;
+  (function next(){
+    if(i >= steps.length) return;
+    var s = steps[i++].trim();
+    try { if(s.indexOf('click:') === 0){ var el = d.querySelector(s.slice(6)); if(el){ el.scrollIntoView({block:'center'}); el.click(); } } } catch(e){}
+    setTimeout(next, 900);
+  })();
+}
+function addCard(grid, href, label, sub, steps){
+  var card = document.createElement('div'); card.className = 'card';
+  card.innerHTML = '<div class="thumb"><iframe loading="lazy" tabindex="-1" title="' + label + '"></iframe><a href="' + href + '" target="_blank" aria-label="' + label + '"></a></div>'
+                 + '<div class="name"><a href="' + href + '" target="_blank">' + label + '</a><small>' + sub + '</small></div>';
+  var f = card.querySelector('iframe');
+  if(steps) f.addEventListener('load', function(){ setTimeout(function(){ runSteps(f, steps.split('|')); }, 1200); }, {once:true});
+  f.src = withLang(href);
+  grid.appendChild(card);
+}
+fetch('index.html', {cache:'no-store'}).then(function(r){ return r.text(); }).then(function(html){
+  var doc = new DOMParser().parseFromString(html, 'text/html'), out = document.getElementById('groups'), total = 0;
+  out.innerHTML = '';
+  doc.querySelectorAll('h2').forEach(function(h2){
+    var ul = h2.nextElementSibling; if(!ul || ul.tagName !== 'UL') return;
+    var t = document.createElement('h2'); t.innerHTML = h2.innerHTML; out.appendChild(t);
+    var grid = document.createElement('div'); grid.className = 'grid'; out.appendChild(grid);
+    ul.querySelectorAll('a').forEach(function(a){
+      var href = a.getAttribute('href'), label = a.textContent; total++;
+      addCard(grid, href, label, href);
+      (POPUPS[href] || []).forEach(function(p){
+        addCard(grid, href, label + ' – ' + p[0], 'popup', p[1]);
+      });
+    });
+  });
+  document.title = 'DNE Mockups - Gallery (' + total + ')';
+}).catch(function(){ document.getElementById('groups').textContent = 'Unable to load the list (index.html).'; });
+</script>
+</body></html>
