@@ -219,7 +219,7 @@ if(@$_POST['all_ids_to_edit'] == '') {
 			$tracking_table .= "<tr class='alignCenter' style='background-color:".@$bg_color_inputs->b_bgcolor.";'>";
 			if($tracking_rowspans[$tracking_row_index] > 0){
 				$tracking_table .= "<td rowspan='".$tracking_rowspans[$tracking_row_index]."' style='vertical-align:middle;text-align:center;width:9%;border:none!important;'>";
-				$tracking_table .= "<span style='display:inline-block;width:18px;height:18px;line-height:18px;border-radius:50%;background-color:#000;color:#fff;font-size:9px;font-weight:bold;text-align:center;vertical-align:middle;box-sizing:border-box;'>"
+				$tracking_table .= "<span style='display:inline-block;width:22px;height:22px;line-height:22px;border-radius:50%;background-color:#000;color:#fff;font-size:10px;font-weight:bold;text-align:center;vertical-align:middle;box-sizing:border-box;'>"
 									.@$item->user_nickname
 								."</span>";
 				$tracking_table .= "</td>";
