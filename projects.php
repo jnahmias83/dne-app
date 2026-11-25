@@ -1365,16 +1365,21 @@ foreach($all_what_news as $wn){
 																		<?php if($log_meeting_tracking_num_rows > 0){ ?>
 																				<div class="d-flex flex-column">
 													<?php foreach($log_meeting_tracking as $item){ ?>
-														<div class="marginTop5 fontSize11 text-end" style="line-height:1">
+														<?php /* remarque sur plusieurs lignes : alignee comme dans la fenetre des actions (badge/date a part, texte en bloc) */ ?>
+														<div class="marginTop5 fontSize11 text-end" style="line-height:1;display:flex;justify-content:flex-end;align-items:baseline;">
+															<span style="flex:0 0 auto;white-space:nowrap;">
 															<span class="border-black padding-2x-2y fontSize9 borderRadius20 align-items-center justify-content-center colorWhite bgColorBlack" style="display:inline-flex;line-height:1;background-color:#f2f6f9;color:#c0392b;font-weight:bold;">
 																<?=@$item->user_nickname?>
 															</span>
 															<span class="marginRight2 log-date-grey dir-rtl unicode-bidi-embed"><?=smartDate(@$item->action_date)?> -</span>
+															</span>
+															<span style="flex:0 1 auto;min-width:0;">
 															<span class="colorRed dir-rtl unicode-bidi-embed display-inline-block">
 																<?=html_entity_decode(@$item->remark) ?>
 															</span>
 															<span class="marginRight5 colorRed dir-rtl unicode-bidi-embed display-inline-block">
 																<?=@$tracking_data ?>
+															</span>
 															</span>
 														</div>
 													<?php break; } ?>
@@ -2068,7 +2073,7 @@ foreach($all_what_news as $wn){
 <div class="modal fade dir-rtl" id="modalTaskTracking" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
 				<div class="modal-content">
-				    <div class="modal-header" style="background-color:<?=@$bg_color_inputs->b_bgcolor?>;">
+				    <div class="modal-header" style="background-color:<?=@$bg_color_inputs->f_bgcolor?>;">
 					    <button type="button" class="btn-close btn-close-white-small" data-bs-dismiss="modal" aria-label="Close"></button>
 						<div class="modal-title"></div>
 					</div>

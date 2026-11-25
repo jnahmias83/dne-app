@@ -1676,7 +1676,9 @@ include 'menu_tasks.php';
 													$progress_status_log_updates = @$item->ps_name;
 
 												if(@$remark != ''){
-													$description .= "<div class='marginTop5 colorGreenDark ".@$dir_log_meeting_updates."'>"
+													// remarque sur plusieurs lignes : alignee comme dans la fenetre des actions (badge/date/statut a part, texte en bloc)
+													$description .= "<div class='marginTop5 colorGreenDark ".@$dir_log_meeting_updates."' style='display:flex;align-items:baseline;'>"
+																	."<span style='flex:0 0 auto;white-space:nowrap;'>"
 																	."<span class='badge-nickname-green'>"
 																	.@$item->user_nickname
 																	."</span> "
@@ -1691,8 +1693,8 @@ include 'menu_tasks.php';
 																		."</span>";
 													}
 
-													$description .=  " - "
-																	."<span style='unicode-bidi:isolate;'>"
+													$description .=  " - </span>"
+																	."<span style='flex:1;min-width:0;margin-inline-start:4px;unicode-bidi:isolate;'>"
 																	.html_entity_decode(@$remark)
 																	."</span>"
 																	."</div>";
@@ -1731,11 +1733,18 @@ include 'menu_tasks.php';
 
 												if(@$track_type && @$remark != ''){
 													$track_initials = mb_strtoupper(mb_substr(@$item->user_nickname, 0, 2, 'UTF-8'));
+													// remarque sur plusieurs lignes : alignee comme dans la fenetre des actions (badge/date a part, texte en bloc)
 													$description .= "<div id='div-tracking-remarks-'".@$meeting_id."' class='marginTop5 display-block ".@$dir_log_meeting_tracking."' style='line-height:1.8;'>"
+																  . "<div style='display:flex;align-items:baseline;'>"
+																  . "<span style='flex:0 0 auto;white-space:nowrap;'>"
 																  . "<span class='badge-circle' style='display:inline-flex;align-items:center;justify-content:center;background-color:#333;width:22px;height:22px;padding:2px;box-sizing:border-box;font-size:10px;vertical-align:middle;'>".$track_initials."</span>"
 																  . " <span class='colorGrey ".(@$lang=='HE' ? 'dir-rtl' : 'dir-ltr')." unicode-bidi-embed' style='vertical-align:top;'>".smartDate(@$item->action_date, $lang)."</span>"
-																  . " : <span class='colorRed ".(@$lang=='HE' ? 'dir-rtl' : 'dir-ltr')." unicode-bidi-embed'>".nl2br(html_entity_decode(@$item->remark))."</span>"
+																  . " : </span>"
+																  . "<span style='flex:1;min-width:0;margin-inline-start:4px;'>"
+																  . "<span class='colorRed ".(@$lang=='HE' ? 'dir-rtl' : 'dir-ltr')." unicode-bidi-embed'>".nl2br(html_entity_decode(@$item->remark))."</span>"
 																  . (@$tracking_data != '' ? " <span class='colorRed ".(@$lang=='HE' ? 'dir-rtl' : 'dir-ltr')." unicode-bidi-embed'>".@$tracking_data."</span>" : "")
+																  . "</span>"
+																  . "</div>"
 																  . "</div>";
 													$track_line_shown_a = true;
 													break;
@@ -2297,17 +2306,20 @@ include 'menu_tasks.php';
 													$remark = @$item->remark;
 													$action_date = @$item->action_date;
 
-													if(@$remark != '')
+													if(@$remark != '')   // remarque sur plusieurs lignes : alignee comme dans la fenetre des actions
 														$description .= "<div class='marginTop5 colorGreenDark display-block ".@$dir_log_meeting_updates."'>"
+																		."<div style='display:flex;align-items:baseline;'>"
+																		."<span style='flex:0 0 auto;white-space:nowrap;'>"
 																	    ."<span class='badge-nickname-green'>"
 																	    .@$item->user_nickname
 																	    ."</span> "
 																	    ."<span class='log-date-grey' style='unicode-bidi:isolate;'>"
 																		.smartDate(@$action_date, $lang)
-																		."</span> - "
-																		."<span style='unicode-bidi:isolate;'>"
+																		."</span> - </span>"
+																		."<span style='flex:1;min-width:0;margin-inline-start:4px;unicode-bidi:isolate;'>"
 																		.html_entity_decode(@$remark)
 																		."</span>"
+																		."</div>"
 																		 ."</div>";
 												}
 																								
@@ -2341,11 +2353,18 @@ include 'menu_tasks.php';
 											    
 													if(@$track_type && @$remark != ''){
 														$track_initials2 = mb_strtoupper(mb_substr(@$item->user_nickname, 0, 2, 'UTF-8'));
+														// remarque sur plusieurs lignes : alignee comme dans la fenetre des actions
 														$description .= "<div id='div-tracking-remarks-'".@$meeting_id."' class='marginTop5 display-block ".@$dir_log_meeting_tracking."' style='line-height:1.8;'>"
+																	  . "<div style='display:flex;align-items:baseline;'>"
+																	  . "<span style='flex:0 0 auto;white-space:nowrap;'>"
 																	  . "<span class='badge-circle' style='display:inline-flex;background-color:#333;width:22px;height:22px;font-size:10px;vertical-align:middle;'>".$track_initials2."</span>"
 																	  . " <span class='colorGrey ".(@$lang=='HE' ? 'dir-rtl' : 'dir-ltr')." unicode-bidi-embed' style='vertical-align:top;'>".smartDate(@$item->action_date, $lang)."</span>"
-																	  . " : <span class='colorRed ".(@$lang=='HE' ? 'dir-rtl' : 'dir-ltr')." unicode-bidi-embed'>".nl2br(html_entity_decode(@$item->remark))."</span>"
+																	  . " : </span>"
+																	  . "<span style='flex:1;min-width:0;margin-inline-start:4px;'>"
+																	  . "<span class='colorRed ".(@$lang=='HE' ? 'dir-rtl' : 'dir-ltr')." unicode-bidi-embed'>".nl2br(html_entity_decode(@$item->remark))."</span>"
 																	  . (@$tracking_data != '' ? " <span class='colorRed ".(@$lang=='HE' ? 'dir-rtl' : 'dir-ltr')." unicode-bidi-embed'>".@$tracking_data."</span>" : "")
+																	  . "</span>"
+																	  . "</div>"
 																	  . "</div>";
 														$track_line_shown_b = true;
 														break;
@@ -3260,7 +3279,7 @@ include 'menu_tasks.php';
 <div class="modal fade dir-rtl" id="modalTaskTracking" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
 				<div class="modal-content">
-				    <div class="modal-header" style="background-color:<?=@$bg_color_inputs->b_bgcolor?>;">
+				    <div class="modal-header" style="background-color:<?=@$bg_color_inputs->f_bgcolor?>;">
 					    <button type="button" class="btn-close btn-close-white-small" data-bs-dismiss="modal" aria-label="Close"></button>
 						<div class="modal-title"></div>
 					</div>

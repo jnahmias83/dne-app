@@ -971,8 +971,8 @@ foreach($chapters as $item){
 			$query->store_result();
 			$log_meeting_updates = fetch($query);
 			
-			if($query->num_rows > 0)
-				$description .= '<br/>';			
+			if($query->num_rows > 0)   // + petite marge entre la description et les remarques (comme marginTop5 dans meetings.php)
+				$description .= '<div style="font-size:7px;line-height:7px;">&nbsp;</div>';			
 
 			foreach($log_meeting_updates as $item){
 				$remark = html_entity_decode(@$item->remark ?? '', ENT_QUOTES, 'UTF-8');
@@ -994,16 +994,35 @@ foreach($chapters as $item){
 					$status_text = trim(@$progress_status_log_updates);
 					$show_status = preg_match('/\p{L}/u', $status_text) && $status_text != 'ללא' && $status_text != 'Without';
 
-					$description .= '<div dir="'.@$dir_table.'" style="'.@$text_align.'">';
-					$description .= '<span dir="'.@$dir_table.'" style="background-color:#2d7a52;color:white;font-weight:bold;padding:1px 4px;">'.@$item->user_nickname.'</span>';
-					$description .= ' <span dir="'.@$dir_table.'" style="color:#706f6c;">'.smartDate($action_date, $lang).'</span>';
-					$description .= ' <span dir="'.@$dir_table.'" style="color:#2d7a52;">-</span>';
+					// Demande client : plus de badge ni de nom ; date + statut, puis la remarque sur plusieurs lignes alignee comme a l'ecran
+					// (TCPDF ne gere pas flex -> petit tableau : date/statut dans une colonne, remarque dans l'autre).
+					// Largeur de la colonne date/statut = longueur REELLE du texte (mesuree par TCPDF) + 0,3 mm, rapportee a la colonne Description.
+					// En hebreu le rapport est en mode RTL (setRTL) : TCPDF place lui-meme la 1re colonne (date/statut) a droite.
+					$lmu_desc_pct = max(1, (float)rtrim(@$description_width, '%'));
+					$lmu_margins = $pdf->getMargins();
+					$lmu_cell_mm = max(10, ($pdf->getPageWidth() - $lmu_margins['left'] - $lmu_margins['right']) * $lmu_desc_pct / 100 - 2.7);
+					$lmu_label_mm = $pdf->GetStringWidth(smartDate($action_date, $lang).' -', 'dejavusans', '', 8.4)
+								  + ($show_status ? $pdf->GetStringWidth(' '.@$progress_status_log_updates.' -', 'dejavusans', 'B', 8.4) : 0);
+					$lmu_label_pct = round(min(60, max(8, $lmu_label_mm / $lmu_cell_mm * 100)), 1);
+					$lmu_rtl = (@$dir_table == 'rtl');
+					// morceaux dans l'ordre de lecture : date, -, statut, -
+					$lmu_parts = array('<span style="color:#706f6c;">'.smartDate($action_date, $lang).'</span>',
+									   '<span style="color:#2d7a52;">-</span>');
 					if($show_status) {
-						$description .= ' <span dir="'.@$dir_table.'" style="color:#2d7a52;font-weight:bold;">'.@$progress_status_log_updates.'</span>';
-						$description .= ' <span dir="'.@$dir_table.'" style="color:#2d7a52;">-</span>';
+						$lmu_parts[] = '<span style="color:#2d7a52;font-weight:bold;">'.@$progress_status_log_updates.'</span>';
+						$lmu_parts[] = '<span style="color:#2d7a52;">-</span>';
 					}
-					$description .= ' <span dir="'.@$dir_table.'" style="color:#2d7a52;">'.$remark.'</span>';
-					$description .= '</div>';
+					if($lmu_label_pct > 35){
+						// colonne Description trop etroite pour mettre date et remarque cote a cote (sinon les mots se coupent) :
+						// date/statut sur une ligne, remarque dessous sur toute la largeur (meme sens et alignement que l'ancien affichage)
+						array_pop($lmu_parts);   // le dernier tiret ne sert plus : la remarque est dessous
+						$description .= '<div dir="'.@$dir_table.'" style="'.@$text_align.'">'.implode(' ', $lmu_parts)
+									  . '<br/><span dir="'.@$dir_table.'" style="color:#2d7a52;">'.$remark.'</span></div>';
+					} else {
+						$lmu_label = '<td width="'.$lmu_label_pct.'%" style="'.@$text_align.'">'.implode(' ', $lmu_parts).'</td>';
+						$lmu_text = '<td width="'.(100 - $lmu_label_pct).'%" style="'.@$text_align.'"><span dir="'.@$dir_table.'" style="color:#2d7a52;">'.$remark.'</span></td>';
+						$description .= '<table cellpadding="0" cellspacing="0" style="width:100%;"><tr>'.$lmu_label.$lmu_text.'</tr></table>';
+					}
 				}
 			}
 			
@@ -1553,15 +1572,20 @@ foreach($chapters as $item) {
 						
 			$one = 1;
             $empty_remark = '';											
-			$query = $mysqli->prepare("SELECT * FROM dne_log_meeting_updates 
-									  WHERE id_meeting = ? 
-						              AND is_remark_appears_log = ?
-									  AND remark <> ?
-									  ORDER BY id ASC");
+			// lmu.* = memes colonnes qu'avant (SELECT *) ; + nom du statut, pour l'afficher comme dans la partie principale
+			$query = $mysqli->prepare("SELECT lmu.*, ps.name AS ps_name, ps.name_he AS ps_name_he
+									  FROM dne_log_meeting_updates lmu
+									  LEFT JOIN dne_progress_status ps ON lmu.id_progress_status = ps.id
+									  WHERE lmu.id_meeting = ?
+						              AND lmu.is_remark_appears_log = ?
+									  AND lmu.remark <> ?
+									  ORDER BY lmu.id ASC");
 			$query->bind_param("iis",$meeting_id,$one,$empty_remark);
 			$query->execute();
 			$query->store_result();	
 			$log_meeting_updates = fetch($query);
+			if($query->num_rows > 0)   // petite marge entre la description et les remarques (comme marginTop5 dans meetings.php)
+				$description .= '<div style="font-size:7px;line-height:7px;">&nbsp;</div>';
 			
 			foreach($log_meeting_updates as $item){
 				$remark = html_entity_decode(@$item->remark);
@@ -1572,8 +1596,36 @@ foreach($chapters as $item) {
 
 				$action_date = @$item->action_date;
 
-				if($remark != '')
-					$description .= '<div><span style="direction:rtl;unicode-bidi:embed;background-color:#2d7a52;color:white;font-weight:bold;padding:1px 4px;">'.@$item->user_nickname.'</span> <span style="direction:rtl;unicode-bidi:embed;color:#706f6c;">'.smartDate(@$action_date, $lang).'</span><span style="direction:rtl;unicode-bidi:embed;color:#2d7a52;"> - '.@$remark.'</span></div>';
+				if($remark != ''){
+					// Demande client : plus de badge ni de nom ; date, puis la remarque sur plusieurs lignes alignee (petit tableau, TCPDF ne gere pas flex)
+					$lmu_desc_pct2 = max(1, (float)rtrim(@$description_width, '%'));
+					$lmu_margins2 = $pdf->getMargins();   // largeur de la colonne date = longueur reelle de la date + 1,5 mm
+					$lmu_cell_mm2 = max(10, ($pdf->getPageWidth() - $lmu_margins2['left'] - $lmu_margins2['right']) * $lmu_desc_pct2 / 100 - 2.7);
+					// statut : meme regle que la partie principale (simplifie en hebreu, nom anglais en EN, rien si vide ou ללא/Without)
+					$lmu_status2 = trim((string)(@$lang == 'EN' ? @$item->ps_name : simplifyStatusLabel(@$item->ps_name_he)));
+					$lmu_show_status2 = preg_match('/\p{L}/u', $lmu_status2) && $lmu_status2 != 'ללא' && $lmu_status2 != 'Without';
+					$lmu_label_mm2 = $pdf->GetStringWidth(smartDate(@$action_date, $lang).' -', 'dejavusans', '', 8.4)
+								   + ($lmu_show_status2 ? $pdf->GetStringWidth(' '.$lmu_status2.' -', 'dejavusans', 'B', 8.4) : 0);
+					$lmu_label_pct2 = round(min(60, max(6, $lmu_label_mm2 / $lmu_cell_mm2 * 100)), 1);
+					$lmu_rtl2 = (@$dir_table == 'rtl');
+					// morceaux dans l'ordre de lecture : date, -, statut, -
+					$lmu_parts2 = array('<span style="color:#706f6c;">'.smartDate(@$action_date, $lang).'</span>', '<span style="color:#2d7a52;">-</span>');
+					if($lmu_show_status2){
+						$lmu_parts2[] = '<span style="color:#2d7a52;font-weight:bold;">'.$lmu_status2.'</span>';
+						$lmu_parts2[] = '<span style="color:#2d7a52;">-</span>';
+					}
+					// hebreu : reglage d'origine (direction:rtl) ; anglais : sans direction:rtl (sinon les mots anglais s'affichaient dans le desordre)
+					$lmu_remark2 = '<span style="'.($lmu_rtl2 ? 'direction:rtl;unicode-bidi:embed;' : '').'color:#2d7a52;">'.@$remark.'</span>';
+					if($lmu_label_pct2 > 35){
+						// colonne trop etroite pour date et remarque cote a cote : date/statut sur une ligne, remarque dessous sur toute la largeur
+						array_pop($lmu_parts2);   // le dernier tiret ne sert plus : la remarque est dessous
+						$description .= '<div dir="'.@$dir_table.'" style="'.@$text_align.'">'.implode(' ', $lmu_parts2).'<br/>'.$lmu_remark2.'</div>';
+					} else {
+						$lmu_label2 = '<td width="'.$lmu_label_pct2.'%" style="'.@$text_align.'">'.implode(' ', $lmu_parts2).'</td>';
+						$lmu_text2  = '<td width="'.(100 - $lmu_label_pct2).'%" style="'.@$text_align.'">'.$lmu_remark2.'</td>';
+						$description .= '<table cellpadding="0" cellspacing="0" style="width:100%;"><tr>'.$lmu_label2.$lmu_text2.'</tr></table>';
+					}
+				}
 			}
 
             $is_agrees = @$item->is_agrees;
