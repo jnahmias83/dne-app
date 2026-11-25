@@ -510,42 +510,63 @@ class PDF extends TCPDF {
 		$this->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);  
         $this->SetFont('freesans', '', 10);
         $this->SetY(-25);
-		$this->Ln();
+		$this->Ln(min($this->getLastH(), 5));   // saut normal d une ligne (apres une photo haute, Ln() envoyait le pied de page sous la page)
         $this->Cell(0, 0, '', 'T');
 
         $this->SetX($this->lMargin);
 
         $pagePagination = 'Page ' . $this->getAliasNumPage() . ' of ' . $this->getAliasNbPages();
 	    
-		if($_GET['pdf_direction'] == 'L') {
-			if($_SESSION['lang'] == 'HE') {
-				$this->setPrintFooter(true);
-				$this->Cell(100, 10, $project_name, 0, 0, 'R');
-				$this->Cell(60, 10, $pagePagination, 0, 0, 'C');
-				$this->Cell(120, 10, $pdf_file_name, 0, 0, 'L');
-			}
-			else {
-				$this->setPrintFooter(false);
-				$this->Cell(120, 10, $project_name, 0, 0, 'L');
-				$this->Cell(60, 10, $pagePagination, 0, 0, 'C');
-				$this->Cell(100, 10, $pdf_file_name, 0, 0, 'R');
-			}
+		// Pied de page sur TOUTES les pages (l'ancien code faisait setPrintFooter(false) en anglais : plus de pied de page ensuite).
+		// 3 cases sur toute la largeur : la partie de droite collee au bord droit, celle de gauche au bord gauche,
+		// la pagination au centre ; disposition selon le vrai sens du PDF (droite-a-gauche en hebreu), en paysage comme en portrait.
+		$footer_w = $this->getPageWidth() - $this->lMargin - $this->rMargin;
+		$footer_mid = $this->GetStringWidth('Page 999 of 999') + 6;   // case de pagination a la largeur de son texte
+		$footer_side = ($footer_w - $footer_mid) / 2;
+		$footer_al = $this->getRTL() ? array('R', 'L') : array('L', 'R');   // RTL : projet au bord droit ; LTR : projet au bord gauche
+		$this->mqFooterCell($footer_side, $project_name, $footer_al[0]);
+		$this->Cell($footer_mid, 10, $pagePagination, 0, 0, 'C');
+		$this->mqFooterCell($footer_side, $pdf_file_name, $footer_al[1]);
+		$this->SetFont('freesans', '', 10);
+	}
+
+	// texte trop long pour sa case (ex. nom de fichier) : police reduite juste pour lui, jamais de chevauchement avec la pagination
+	function mqFooterCell($w, $txt, $align){
+		$fs = 10;
+		$this->SetFont('freesans', '', $fs);
+		while($fs > 6 && $this->GetStringWidth($txt) > $w - 2){
+			$fs -= 0.5;
+			$this->SetFont('freesans', '', $fs);
 		}
-		else if ($_GET['pdf_direction'] == 'P') {
-			if($_SESSION['lang'] == 'HE') {
-				$this->setPrintFooter(true);
-				$this->Cell(50, 10, $project_name, 0, 0, 'R');
-				$this->Cell(60, 10, $pagePagination, 0, 0, 'C');
-				$this->Cell(85, 10, $pdf_file_name, 0, 0, 'L');
-			}
-			else {
-				$this->setPrintFooter(false);
-				$this->Cell(60, 10, $project_name, 0, 0, 'L');
-				$this->Cell(85, 10, $pagePagination, 0, 0, 'C');
-				$this->Cell(50, 10, $pdf_file_name, 0, 0, 'R');
-			}
-		}
+		$this->Cell($w, 10, $txt, 0, 0, $align);
+		$this->SetFont('freesans', '', 10);
     }
+
+	// cadre beige arrondi (fond creme) autour du tableau des taches, sur chaque page ou il y a du tableau.
+	// Dessine SOUS le contenu : le dessin est place au debut du contenu de la page (q ... Q, etat graphique inchange).
+	// $frames[page] = array(haut, bas) du tableau ; $x, $w = bord gauche et largeur du tableau (mm, absolus).
+	function mqDrawFrames($frames, $x, $w){
+		if(empty($frames) || $w <= 0) return;
+		$pad = 3;
+		$lastPage = $this->getPage();
+		$gv = $this->getGraphicVars();
+		foreach($frames as $p => $fy){
+			$this->setPage($p);
+			$old = $this->getPageBuffer($p);
+			$oldLen = strlen($old);
+			$prefix = isset($this->footerlen[$p]) ? $oldLen - $this->footerlen[$p] : $oldLen;
+			$this->_out('q');
+			$this->RoundedRect($x - $pad, $fy[0] - $pad, $w + 2 * $pad, $fy[1] - $fy[0] + 2 * $pad, 3, '1111', 'DF',
+				array('width' => 0.3, 'color' => array(239, 229, 215)), array(255, 250, 244));
+			$this->Rect($x, $fy[0], $w, $fy[1] - $fy[0], 'F', array(), array(255, 255, 255));   // cases sans couleur : blanches
+			$this->_out('Q');
+			$new = $this->getPageBuffer($p);
+			$chunk = substr($new, $prefix, strlen($new) - $oldLen);
+			$this->setPageBuffer($p, $chunk.$old);
+		}
+		$this->setGraphicVars($gv);
+		$this->setPage($lastPage);
+	}
 }
 
 $pdf = new PDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
@@ -567,7 +588,7 @@ $pdf->SetFont('dejavusans','',12,'',true);
 $pdf->SetTextColor(0,0,0);
 $pdf->setPrintHeader(false);
 
-$html_header = '<table><tr><td style="text-align:center;"><img src="uploads/'.@$logo->logo_stread.'" /><br/><br/></td></tr>';
+$html_header = '<table><tr><td style="text-align:center;"><img src="uploads/'.@$logo->logo_stread.'" /></td></tr>';   // pas de saut de ligne sous le logo (moins d'espace avant le titre)
 
 $new_task_legend_html = '';
 if(@$project_id != 69 && @$is_colors && !empty(@$period_new_tasks)) {
@@ -601,10 +622,10 @@ if(@$project_id != 69 && @$is_colors && !empty(@$period_new_tasks)) {
 	$new_task_legend_spacer = '<td width="'.$new_task_legend_spacer_percent.'%">&nbsp;</td>';
 	$new_task_legend_cell = '<td width="'.(100 - $new_task_legend_spacer_percent).'%">'.$new_task_legend_badge.'</td>';
 	$new_task_legend_cells = $new_task_legend_spacer.$new_task_legend_cell;
-	$new_task_legend_html = '<tr><td colspan="2"><table width="'.$new_task_legend_page_w.'mm" cellpadding="0" cellspacing="0" dir="ltr"><tr>'.$new_task_legend_cells.'</tr></table></td></tr>';
+	$new_task_legend_html = '<!--MQLEG--><tr><td colspan="2"><table width="'.$new_task_legend_page_w.'mm" cellpadding="0" cellspacing="0" dir="ltr"><tr>'.$new_task_legend_cells.'</tr></table></td></tr><!--/MQLEG-->';   // reperes : badge realigne sur le bord du tableau (mqWriteTasksByBlocks)
 }
 
-$html1_body = '<tr style="font-size:16px;"><td width="40px;">&nbsp;</td><td style="text-align:center;"><span dir="'.$dir_table.'"><strong><u>'.$title.'</u></strong></span></td></tr>'.$new_task_legend_html.'</table>';
+$html1_body = '<tr style="font-size:16px;"><td width="40px;">&nbsp;</td><td style="text-align:center;"><span dir="'.$dir_table.'"><strong><u>'.str_replace('<br/>', '</u></strong><br/><span style="font-size:5px;"><br/></span><strong><u>', $title).'</u></strong></span></td></tr>'.$new_task_legend_html.'</table>';   // petit espace entre les lignes du titre
 
 if(@$id_rdv_report > 0) { 
     $html1_body.= '<span>&nbsp;&nbsp;&nbsp;</span><strong style="text-decoration:underline;font-size:12px;">'.@$participants_label.':</strong><br/>';
@@ -718,27 +739,29 @@ foreach ($header_cell_heights as $hk => $hhw) {
 	}
 }
 
+$html1_body.='<!--MQHEAD-->';   // repere invisible : debut du tableau des taches (voir mqWriteTasksByBlocks)
 $html1_body.= '<table dir="'.$dir_table.'" style="'.$style_table.'"><tr><td></td></tr><tr><td width="1%">&nbsp;</td><td><table cellpadding="4">';
-$html1_body.='<tr style="background-color:#e5f4ff;font-size:11px;">';
-$html1_body.='<th width="'.@$count_width.'" style="text-align:center;border:1px solid black;font-size:10px;font-weight:bold;">'.(@$header_pad_lines['count']??'').'&#x2116;</th>';
+$html1_body.='<!--MQHROW-->';   // repere invisible : ligne des titres de colonnes
+$html1_body.='<tr style="background-color:#0E3C5D;color:#ffffff;font-size:11px;">';
+$html1_body.='<th width="'.@$count_width.'" style="text-align:center;border:1px solid #D6D2D2;font-size:10px;font-weight:bold;">'.(@$header_pad_lines['count']??'').'&#x2116;</th>';
 if(in_array('subject',$columns_list_array))
-  $html1_body.='<th width="'.@$subject_width.'" style="text-align:center;border:1px solid black;font-size:10px;font-weight:bold;">'.(@$header_pad_lines['subject']??'').$subject_domain_header.'</th>';
+  $html1_body.='<th width="'.@$subject_width.'" style="text-align:center;border:1px solid #D6D2D2;font-size:10px;font-weight:bold;">'.(@$header_pad_lines['subject']??'').$subject_domain_header.'</th>';
 if(in_array('area',$columns_list_array))
-  $html1_body.='<th width="'.@$area_width.'" style="text-align:center;border:1px solid black;font-size:10px;font-weight:bold;">'.(@$header_pad_lines['area']??'').$area_subject_header.'</th>';
+  $html1_body.='<th width="'.@$area_width.'" style="text-align:center;border:1px solid #D6D2D2;font-size:10px;font-weight:bold;">'.(@$header_pad_lines['area']??'').$area_subject_header.'</th>';
 if(in_array('description',$columns_list_array))
-  $html1_body.='<th width="'.@$description_width.'" style="text-align:center;border:1px solid black;font-size:10px;font-weight:bold;">'.(@$header_pad_lines['description']??'').$description_header.'</th>';
+  $html1_body.='<th width="'.@$description_width.'" style="text-align:center;border:1px solid #D6D2D2;font-size:10px;font-weight:bold;">'.(@$header_pad_lines['description']??'').$description_header.'</th>';
 if(in_array('_task',$columns_list_array))
-  $html1_body.='<th width="'.@$task_width.'" style="text-align:center;border:1px solid black;font-size:10px;font-weight:bold;">'.(@$header_pad_lines['task']??'').$task_type_header.'</th>';
+  $html1_body.='<th width="'.@$task_width.'" style="text-align:center;border:1px solid #D6D2D2;font-size:10px;font-weight:bold;">'.(@$header_pad_lines['task']??'').$task_type_header.'</th>';
 if(in_array('responsible',$columns_list_array))
-  $html1_body.='<th width="'.@$responsible_width.'" style="text-align:center;border:1px solid black;font-size:10px;font-weight:bold;">'.(@$header_pad_lines['responsible']??'').$responsible_header.'</th>';
+  $html1_body.='<th width="'.@$responsible_width.'" style="text-align:center;border:1px solid #D6D2D2;font-size:10px;font-weight:bold;">'.(@$header_pad_lines['responsible']??'').$responsible_header.'</th>';
 if(in_array('pass on',$columns_list_array))
-  $html1_body.='<th width="'.@$pass_on_width.'" style="text-align:center;border:1px solid black;font-size:10px;font-weight:bold;">'.(@$header_pad_lines['pass_on']??'').$transfer_confirm_header.'</th>';
+  $html1_body.='<th width="'.@$pass_on_width.'" style="text-align:center;border:1px solid #D6D2D2;font-size:10px;font-weight:bold;">'.(@$header_pad_lines['pass_on']??'').$transfer_confirm_header.'</th>';
 if(in_array('task creation',$columns_list_array))
-  $html1_body.='<th width="'.@$task_creation_width.'" style="text-align:center;border:1px solid black;font-size:10px;font-weight:bold;">'.(@$header_pad_lines['task_creation']??'').$task_creation_date_header.'</th>';
+  $html1_body.='<th width="'.@$task_creation_width.'" style="text-align:center;border:1px solid #D6D2D2;font-size:10px;font-weight:bold;">'.(@$header_pad_lines['task_creation']??'').$task_creation_date_header.'</th>';
 if(in_array('destination date',$columns_list_array))
-  $html1_body.='<th width="'.@$destination_date_width.'" style="text-align:center;border:1px solid black;font-size:10px;font-weight:bold;">'.(@$header_pad_lines['destination_date']??'').$destination_date_header.'</th>';
+  $html1_body.='<th width="'.@$destination_date_width.'" style="text-align:center;border:1px solid #D6D2D2;font-size:10px;font-weight:bold;">'.(@$header_pad_lines['destination_date']??'').$destination_date_header.'</th>';
 if(in_array('progress status',$columns_list_array))
-  $html1_body.='<th width="'.@$progress_status_width.'" style="text-align:center;border:1px solid black;font-size:10px;font-weight:bold;">'.(@$header_pad_lines['progress_status']??'').$progress_status_header.'</th>';
+  $html1_body.='<th width="'.@$progress_status_width.'" style="text-align:center;border:1px solid #D6D2D2;font-size:10px;font-weight:bold;">'.(@$header_pad_lines['progress_status']??'').$progress_status_header.'</th>';
 $html1_body.='</tr>';
 
 if($id_custom_report > 0 || ($id_rdv_report > 0 && $is_specific_filter)){
@@ -887,8 +910,9 @@ foreach($chapters as $item){
 	$content_width_mm = $pdf->getPageWidth() - $pdf->getMargins()['left'] - $pdf->getMargins()['right'];
 
 	if($counter_with_image > 0) {
+		$html1_body.='<!--MQSEG:C-->';   // repere invisible : ligne de chapitre (ecrite avec la 1re tache qui suit)
 		$html1_body.='<tr style="background-color:#cbddec;font-size:11px;">';
-		$html1_body.='<td colspan="'.@$colspan_image_tr.'" style="'.$text_align.','.$padding.':5px;border:1px solid black;"><strong>'.@$chapter_name.'</strong></td>';
+		$html1_body.='<td colspan="'.@$colspan_image_tr.'" style="'.$text_align.','.$padding.':5px;border:1px solid #D6D2D2;"><strong>'.@$chapter_name.'</strong></td>';
 		$html1_body.='</tr>';
 		
 		foreach($meetings as $item){
@@ -972,7 +996,7 @@ foreach($chapters as $item){
 			$log_meeting_updates = fetch($query);
 			
 			if($query->num_rows > 0)   // + petite marge entre la description et les remarques (comme marginTop5 dans meetings.php)
-				$description .= '<div style="font-size:7px;line-height:7px;">&nbsp;</div>';			
+				{ $description = preg_replace('#(\s|&nbsp;|<br\s*/?>)+$#i', '', $description); $description .= '<span style="font-size:4px;"><br/><br/></span>'; }   // sans les sauts de ligne en fin de description (sinon une ligne vide en plus)			
 
 			foreach($log_meeting_updates as $item){
 				$remark = html_entity_decode(@$item->remark ?? '', ENT_QUOTES, 'UTF-8');
@@ -1001,23 +1025,24 @@ foreach($chapters as $item){
 					$lmu_desc_pct = max(1, (float)rtrim(@$description_width, '%'));
 					$lmu_margins = $pdf->getMargins();
 					$lmu_cell_mm = max(10, ($pdf->getPageWidth() - $lmu_margins['left'] - $lmu_margins['right']) * $lmu_desc_pct / 100 - 2.7);
-					$lmu_label_mm = $pdf->GetStringWidth(smartDate($action_date, $lang).' -', 'dejavusans', '', 8.4)
-								  + ($show_status ? $pdf->GetStringWidth(' '.@$progress_status_log_updates.' -', 'dejavusans', 'B', 8.4) : 0);
+					$lmu_label_mm = $pdf->GetStringWidth(smartDate($action_date, $lang).'    ', 'dejavusans', '', 8.4)
+								  + ($show_status ? $pdf->GetStringWidth(@$progress_status_log_updates.'   ', 'dejavusans', 'B', 8.4) : 0);
 					$lmu_label_pct = round(min(60, max(8, $lmu_label_mm / $lmu_cell_mm * 100)), 1);
 					$lmu_rtl = (@$dir_table == 'rtl');
 					// morceaux dans l'ordre de lecture : date, -, statut, -
 					$lmu_parts = array('<span style="color:#706f6c;">'.smartDate($action_date, $lang).'</span>',
-									   '<span style="color:#2d7a52;">-</span>');
+									   '&nbsp;&nbsp;');
 					if($show_status) {
 						$lmu_parts[] = '<span style="color:#2d7a52;font-weight:bold;">'.@$progress_status_log_updates.'</span>';
-						$lmu_parts[] = '<span style="color:#2d7a52;">-</span>';
+						$lmu_parts[] = '&nbsp;&nbsp;';
 					}
 					if($lmu_label_pct > 35){
 						// colonne Description trop etroite pour mettre date et remarque cote a cote (sinon les mots se coupent) :
 						// date/statut sur une ligne, remarque dessous sur toute la largeur (meme sens et alignement que l'ancien affichage)
 						array_pop($lmu_parts);   // le dernier tiret ne sert plus : la remarque est dessous
-						$description .= '<div dir="'.@$dir_table.'" style="'.@$text_align.'">'.implode(' ', $lmu_parts)
-									  . '<br/><span dir="'.@$dir_table.'" style="color:#2d7a52;">'.$remark.'</span></div>';
+						// petit tableau d'une case (et non un div, qui ajoute une ligne vide au-dessus dans TCPDF)
+						$description .= '<table cellpadding="0" cellspacing="0" style="width:100%;"><tr><td dir="'.@$dir_table.'" style="'.@$text_align.'">'.implode(' ', $lmu_parts)
+									  . '<br/><span dir="'.@$dir_table.'" style="color:#2d7a52;">'.$remark.'</span></td></tr></table>';
 					} else {
 						$lmu_label = '<td width="'.$lmu_label_pct.'%" style="'.@$text_align.'">'.implode(' ', $lmu_parts).'</td>';
 						$lmu_text = '<td width="'.(100 - $lmu_label_pct).'%" style="'.@$text_align.'"><span dir="'.@$dir_table.'" style="color:#2d7a52;">'.$remark.'</span></td>';
@@ -1324,31 +1349,32 @@ foreach($chapters as $item){
 			    // historique de modifications) : evite qu'une telle ligne soit coupee au milieu de la page (ce qui
 			    // corrompt le rendu TCPDF), en la poussant entiere sur la page suivante si besoin.
 			    $row_nobr_style = ($row_max_h > 40 && $row_max_h < 220) ? 'page-break-inside:avoid;' : '';
+			    $html1_body.='<!--MQSEG:T-->';   // repere invisible : debut d'une tache (texte, puis photo eventuelle)
 			    $html1_body.='<tr style="font-size:10px;'.$row_nobr_style.@$dir_table.'">';
-                $html1_body.='<td width="'.@$count_width.'" style="text-align:center;'.@$update_cell_bgcolor.';border:1px solid black;'.$color_num.'">'.(@$row_pad_lines['count']??'').@$count1.'</td>';
+                $html1_body.='<td width="'.@$count_width.'" style="text-align:center;'.@$update_cell_bgcolor.';border:1px solid #D6D2D2;'.$color_num.'">'.(@$row_pad_lines['count']??'').@$count1.'</td>';
 			    if(in_array('subject',$columns_list_array))
-			      $html1_body.='<td width="'.@$subject_width.'" style="'.@$text_align.';'.@$padding.':5px;'.@$subject_bgcolor.';border:1px solid black;">'.(@$row_pad_lines['subject']??'').@$subject.'</td>';
+			      $html1_body.='<td width="'.@$subject_width.'" style="'.@$text_align.';'.@$padding.':5px;'.@$subject_bgcolor.';border:1px solid #D6D2D2;">'.(@$row_pad_lines['subject']??'').@$subject.'</td>';
 				if(in_array('area',$columns_list_array))
-				   $html1_body.='<td width="'.@$area_width.'" style="'.@$text_align.';'.@$padding.':5px;'.@$area_bgcolor.';border:1px solid black;">'.(@$row_pad_lines['area']??'').@$area.'</td>';
+				   $html1_body.='<td width="'.@$area_width.'" style="'.@$text_align.';'.@$padding.':5px;'.@$area_bgcolor.';border:1px solid #D6D2D2;">'.(@$row_pad_lines['area']??'').@$area.'</td>';
 
 				if(in_array('description',$columns_list_array)){
-					$html1_body.='<td width="'.@$description_width.'" style="'.@$text_align.';'.@$padding.':5px;'.@$description_bgcolor.';border:1px solid black;">';
+					$html1_body.='<td width="'.@$description_width.'" style="'.@$text_align.';'.@$padding.':5px;'.@$description_bgcolor.';border:1px solid #D6D2D2;">';
 				    $html1_body.= (@$row_pad_lines['description']??'').@$description;
 				    $html1_body.= '</td>';
 				}
 
 				if(in_array('_task',$columns_list_array))
-				   $html1_body.='<td width="'.@$task_width.'" style="text-align:center;'.@$task_color.';'.@$task_bgcolor.';border:1px solid black;">'.(@$row_pad_lines['task']??'').'<strong>'.@$task.'</strong></td>';
+				   $html1_body.='<td width="'.@$task_width.'" style="text-align:center;'.@$task_color.';'.@$task_bgcolor.';border:1px solid #D6D2D2;">'.(@$row_pad_lines['task']??'').'<strong>'.@$task.'</strong></td>';
 				if(in_array('responsible',$columns_list_array))
-				   $html1_body.='<td width="'.@$responsible_width.'" style="text-align:center;'.@$responsible_color.';'.@$responsible_bgcolor.';border:1px solid black;">'.(@$row_pad_lines['responsible']??'').'<strong>'.@$responsible.'</strong></td>';
+				   $html1_body.='<td width="'.@$responsible_width.'" style="text-align:center;'.@$responsible_color.';'.@$responsible_bgcolor.';border:1px solid #D6D2D2;">'.(@$row_pad_lines['responsible']??'').'<strong>'.@$responsible.'</strong></td>';
 				if(in_array('pass on',$columns_list_array))
-				   $html1_body.='<td width="'.@$pass_on_width.'" style="text-align:center;border:1px solid black;'.@$pass_on_bgcolor.'">'.(@$row_pad_lines['pass_on']??'').@$pass_on.'</td>';
+				   $html1_body.='<td width="'.@$pass_on_width.'" style="text-align:center;border:1px solid #D6D2D2;'.@$pass_on_bgcolor.'">'.(@$row_pad_lines['pass_on']??'').@$pass_on.'</td>';
 				if(in_array('task creation',$columns_list_array))
-				   $html1_body.='<td width="'.@$task_creation_width.'" style="text-align:center;border:1px solid black;font-size:10px;'.$task_creation_date_color.';'.$task_creation_date_bgcolor.'">'.(@$row_pad_lines['task_creation']??'').@$task_creation_date_display.'</td>';
+				   $html1_body.='<td width="'.@$task_creation_width.'" style="text-align:center;border:1px solid #D6D2D2;font-size:10px;'.$task_creation_date_color.';'.$task_creation_date_bgcolor.'">'.(@$row_pad_lines['task_creation']??'').@$task_creation_date_display.'</td>';
 				if(in_array('destination date',$columns_list_array))
-				   $html1_body.='<td width="'.@$destination_date_width.'" style="text-align:center;border:1px solid black;font-size:10px;'.@$dest_date_color.';'.$dest_date_bgcolor.';'.@$target_date_text_decoration.'">'.(@$row_pad_lines['destination_date']??'').'<strong>'.@$destination_date_display.'</strong></td>';
+				   $html1_body.='<td width="'.@$destination_date_width.'" style="text-align:center;border:1px solid #D6D2D2;font-size:10px;'.@$dest_date_color.';'.$dest_date_bgcolor.';'.@$target_date_text_decoration.'">'.(@$row_pad_lines['destination_date']??'').'<strong>'.@$destination_date_display.'</strong></td>';
 				if(in_array('progress status',$columns_list_array))
-				   $html1_body.='<td width="'.@$progress_status_width.'" style="text-align:center;'.@$progress_status_color.';'.@$progress_status_bgcolor.';border:1px solid black;">'.(@$row_pad_lines['progress_status']??'').'<strong>'.simplifyStatusLabel(@$progress_status).'</strong></td>';
+				   $html1_body.='<td width="'.@$progress_status_width.'" style="text-align:center;'.@$progress_status_color.';'.@$progress_status_bgcolor.';border:1px solid #D6D2D2;">'.(@$row_pad_lines['progress_status']??'').'<strong>'.simplifyStatusLabel(@$progress_status).'</strong></td>';
 				$html1_body.='</tr>';
 				
 				$image1_path = !empty($image1) ? realpath(__DIR__.'/uploads/'.$image1) : false;
@@ -1363,6 +1389,7 @@ foreach($chapters as $item){
 					&& strpos(@$image2,'Snag') === false
 					&& @getimagesize($image2_path) !== false)){
 					
+					$html1_body .= '<!--MQIMG-->';   // repere invisible : la ligne photo de la tache
 					$html1_body .= '<tr style="page-break-inside:avoid;"><td colspan="'.@$colspan_image_tr.'">';
 
 					if($image1_path && file_exists($image1_path) && is_readable($image1_path)
@@ -1390,37 +1417,225 @@ foreach($chapters as $item){
 							
 $html1_body.='</table></td></tr></table>';
 
+// ---- Ecriture du tableau des taches TACHE PAR TACHE (demande client) ---------------------------------------
+// On MESURE la hauteur de chaque tache / photo sur un PDF brouillon separe (jamais dans le rapport), puis on
+// decide ou l'ecrire : une tache n'est jamais coupee entre deux pages ; une photo qui ne tient pas en bas de page
+// est reduite au plus de 20 % (90 %, puis 80 %), sinon le tableau s'arrete au texte et la photo passe en haut
+// de la page suivante, a sa taille normale. Seule la taille d'affichage change : la resolution de la photo est gardee.
+// (Les transactions TCPDF ne sont pas utilisables : writeHTMLCell en utilise deja en interne.)
+function mqDraft($pdf){
+	static $draft = null;
+	if($draft === null){
+		$draft = new TCPDF(($pdf->getPageWidth() > $pdf->getPageHeight()) ? 'L' : 'P', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+		$draft->setPrintHeader(false);
+		$draft->setPrintFooter(false);
+		$m = $pdf->getMargins();
+		$draft->SetMargins($m['left'], $m['top'], $m['right']);
+		$draft->SetAutoPageBreak(true, $pdf->getBreakMargin());
+		$draft->setImageScale(PDF_IMAGE_SCALE_RATIO);
+		$draft->setFontSubsetting(true);
+		$draft->SetFont('dejavusans', '', 12, '', true);
+		$draft->setRTL($pdf->getRTL());
+	}
+	return $draft;
+}
+
+// ecrit un morceau du tableau interieur (sans l'enveloppe externe), a la meme place et largeur qu'avant
+function mqWriteCell($p, $html){
+	$p->writeHTMLCell($GLOBALS['mq_w'], 0, $GLOBALS['mq_x'], '', $html, 0, 1, 0, true, '', true);
+}
+
+// hauteur (mm) qu'occupera $html, ecrit en haut d'une page vide du brouillon
+function mqMeasure($pdf, $html){
+	$d = mqDraft($pdf);
+	$d->AddPage();
+	$p0 = $d->getPage();
+	$top = $d->GetY();
+	mqWriteCell($d, $html);
+	$pages = $d->getPage() - $p0;
+	$usable = $d->getPageHeight() - $d->getBreakMargin() - $top;
+	return $pages * $usable + ($d->GetY() - $top);
+}
+
+// Ecrit le haut du rapport (logo + titre). Le logo a ~5 mm de blanc en bas dans l'image : le titre est remonte
+// de 4 mm sur ce blanc (logo intact). Le titre garde la meme structure de tableau (1re ligne a 1 case, vide et
+// minuscule a la place du logo) pour rester centre comme avant.
+function mqWriteTop($pdf, $html){
+	$pi = strpos($html, '<img');
+	$pl = ($pi !== false) ? strpos($html, '</td></tr>', $pi) : false;
+	if($pl === false || strpos($html, '<table') !== 0){
+		$pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
+		return;
+	}
+	$emptyRow = '<tr><td style="text-align:center;font-size:1px;"></td></tr>';
+	$pdf->writeHTMLCell(0, 0, '', '', substr($html, 0, $pl + 10).'</table>', 0, 1, 0, true, '', true);
+	$y = $pdf->GetY();
+	$d = mqDraft($pdf);
+	$d->AddPage();
+	$t = $d->GetY();
+	$d->writeHTMLCell(0, 0, '', '', '<table>'.$emptyRow.'</table>', 0, 1, 0, true, '', true);
+	$pdf->SetY($y - 4 - ($d->GetY() - $t));
+	$pdf->writeHTMLCell(0, 0, '', '', '<table>'.$emptyRow.substr($html, $pl + 10), 0, 1, 0, true, '', true);
+}
+
+// place libre (mm) entre la position actuelle et le bas de la page
+function mqSpaceLeft($pdf){
+	return $pdf->getPageHeight() - $pdf->getBreakMargin() - $pdf->GetY();
+}
+
+function mqPageIsEmpty($pdf){
+	return $pdf->GetY() <= $pdf->getMargins()['top'] + 1;
+}
+
+// une tache (texte) : jamais coupee ; si elle ne tient pas, elle commence en haut de la page suivante
+function mqWriteBlockTogether($pdf, $html){
+	if(!mqPageIsEmpty($pdf) && mqMeasure($pdf, $html) > mqSpaceLeft($pdf))
+		$pdf->AddPage();
+	$p0 = $pdf->getPage(); $y0 = $pdf->GetY();
+	mqWriteCell($pdf, $html);
+	mqTrack($pdf, $p0, $y0);
+}
+
+// retient, pour chaque page, le haut et le bas du tableau ecrit (pour le cadre beige, voir PDF::mqDrawFrames)
+function mqTrack($pdf, $p0, $y0){
+	$p1 = $pdf->getPage(); $y1 = $pdf->GetY();
+	for($p = $p0; $p <= $p1; $p++){
+		$top = ($p == $p0) ? $y0 : $pdf->getMargins()['top'];
+		$bot = ($p == $p1) ? $y1 : $pdf->getPageHeight() - $pdf->getBreakMargin();
+		if(isset($GLOBALS['mq_frame'][$p])){
+			$top = min($top, $GLOBALS['mq_frame'][$p][0]);
+			$bot = max($bot, $GLOBALS['mq_frame'][$p][1]);
+		}
+		if($bot > $top) $GLOBALS['mq_frame'][$p] = array($top, $bot);
+	}
+}
+
+// la photo d'une tache : 100 %, sinon 90 %, sinon 80 % si ca tient ; sinon 100 % en haut de la page suivante
+function mqWriteImageRow($pdf, $html){
+	if(!mqPageIsEmpty($pdf)){
+		foreach(array(1, 0.9, 0.8) as $scale){
+			$h = ($scale == 1) ? $html : preg_replace_callback('/(<img\b[^>]*\bwidth=")([0-9.]+)("[^>]*\bheight=")([0-9.]+)(")/i', function($m) use ($scale){
+				return $m[1].round($m[2] * $scale, 2).$m[3].round($m[4] * $scale, 2).$m[5];
+			}, $html);
+			if(mqMeasure($pdf, $h) <= mqSpaceLeft($pdf)){ mqWriteImgCell($pdf, $h); return; }
+		}
+		$pdf->AddPage();
+	}
+	mqWriteImgCell($pdf, $html);
+}
+
+// ligne photo : reculee de la marge de cellule (cellpadding="4") pour que la 1re photo soit collee au bord du tableau
+// (a droite en hebreu, a gauche en anglais) ; hauteur inchangee
+function mqWriteImgCell($pdf, $html){
+	$x = $GLOBALS['mq_x'];
+	$GLOBALS['mq_x'] = $x - $pdf->getHTMLUnitToUnits('4', 1, 'px');
+	$p0 = $pdf->getPage(); $y0 = $pdf->GetY();
+	mqWriteCell($pdf, $html);
+	mqTrack($pdf, $p0, $y0);
+	$GLOBALS['mq_x'] = $x;
+}
+
+// Ecrit le rapport grace aux reperes invisibles MQHEAD / MQHROW / MQSEG:C / MQSEG:T / MQIMG.
+// Sans reperes (cas imprevu) : ancien comportement, un seul grand bloc.
+function mqWriteTasksByBlocks($pdf, $html){
+	$ph = strpos($html, '<!--MQHEAD-->');
+	$pr = strpos($html, '<!--MQHROW-->');
+	$ps = strpos($html, '<!--MQSEG:');
+	$close = '</table></td></tr></table>';
+	if($ps === false && $ph !== false && $pr !== false && $pr > $ph) $ps = strlen($html) - strlen($close);   // rapport sans tache : en-tete seul, meme chemin (centre aussi)
+	if($ph === false || $pr === false || $ps === false || substr($html, -strlen($close)) !== $close){
+		mqWriteTop($pdf, $html);
+		return;
+	}
+	// place et largeur du tableau interieur, exactement comme dans l'enveloppe d'origine :
+	// enveloppe = largeur utile - 2 marges de cellule ; 1re colonne = 1 % ; 2e colonne = 99 % (le tableau interieur)
+	$cp = $pdf->getCellPaddings();
+	$Wc = $pdf->getPageWidth() - $pdf->getMargins()['left'] - $pdf->getMargins()['right'] - $cp['L'] - $cp['R'];
+	$GLOBALS['mq_x'] = $pdf->getMargins()['left'] + $cp['L'] + 0.01 * $Wc;
+	$GLOBALS['mq_w'] = 0.99 * $Wc;
+	$open = '<table cellpadding="4">';
+	$top = substr($html, 0, $ph);                                   // logo + titre : tels quels
+	$headRow = substr($html, $pr + 13, $ps - $pr - 13);             // ligne des titres de colonnes
+	$rest = (string)substr($html, $ps, strlen($html) - strlen($close) - $ps);
+	// ligne vide d'origine en tete de l'enveloppe (espace sous le titre / le badge עדכון/חדש, comme avant)
+	$wrapOpen = substr($html, $ph + 13, $pr - $ph - 13);
+	$pw = strpos($wrapOpen, '<tr><td width="1%">');
+	$emptyRowTable = ($pw !== false) ? substr($wrapOpen, 0, $pw).'</table>' : '';
+	// badge עדכון/חדש : retire du haut et reecrit juste apres, colle au bord du tableau (cote fin du texte)
+	$legendBadge = '';
+	if(preg_match('#<!--MQLEG-->.*?<!--/MQLEG-->#s', $top, $ml) && !empty($GLOBALS['new_task_legend_badge'])){
+		$top = str_replace($ml[0], '', $top);
+		$legendBadge = $GLOBALS['new_task_legend_badge'];
+	}
+	// largeur totale de la ligne des titres (colonne N° en px + colonnes en %) : la ligne de chapitre, seule en tete
+	// de son petit tableau, recoit exactement cette largeur (sinon elle est plus etroite que l'en-tete)
+	$tableW = $GLOBALS['mq_w'] - $cp['L'] - $cp['R'];
+	$headW = 0;
+	if(preg_match_all('/<th\b[^>]*\bwidth="([^"]+)"/i', $headRow, $mw))
+		foreach($mw[1] as $wv) $headW += $pdf->getHTMLUnitToUnits($wv, $tableW, 'px', false);
+	// tableau centre sur la page : la colonne vide de 1 % de l'enveloppe d'origine le poussait du cote du debut du texte
+	// (a droite en hebreu, a gauche en anglais) ; largeur inchangee, donc memes retours a la ligne
+	if($headW > 0)
+		$GLOBALS['mq_x'] = ($pdf->getPageWidth() - $headW) / 2 - $cp['L'];   // bord dessine = mq_x + marge de cellule ; largeur dessinee = headW
+	mqWriteTop($pdf, $top);
+	if($legendBadge != '' && $headW > 28)
+		mqWriteCell($pdf, '<table cellpadding="0" cellspacing="0"><tr><td width="'.round($headW - 28, 3).'mm">&nbsp;</td><td width="28mm">'.$legendBadge.'</td></tr></table>');
+	if($emptyRowTable != '') $pdf->writeHTMLCell(0, 0, '', '', $emptyRowTable, 0, 1, 0, true, '', true);
+	$GLOBALS['mq_frame'] = array();
+	$GLOBALS['mq_frame_x'] = ($pdf->getPageWidth() - $headW) / 2;   // bord gauche dessine du tableau (centre)
+	$GLOBALS['mq_frame_w'] = $headW;
+	$p0 = $pdf->getPage(); $y0 = $pdf->GetY();
+	mqWriteCell($pdf, $open.$headRow.'</table>');
+	mqTrack($pdf, $p0, $y0);
+	if($headW > 0)
+		$rest = preg_replace('/(<!--MQSEG:C--><tr\b[^>]*><td colspan="[^"]*")/', '$1 width="'.round($headW, 3).'mm"', $rest);
+	$parts = preg_split('/<!--MQSEG:([CT])-->/', $rest, -1, PREG_SPLIT_DELIM_CAPTURE);
+	$pending = '';   // ligne de chapitre en attente : ecrite avec la tache qui suit (jamais seule en bas de page)
+	for($i = 1; $i < count($parts); $i += 2){
+		$chunk = isset($parts[$i + 1]) ? $parts[$i + 1] : '';
+		if($parts[$i] == 'C'){ $pending .= $chunk; continue; }
+		$pieces = explode('<!--MQIMG-->', $chunk, 2);
+		mqWriteBlockTogether($pdf, $open.$pending.$pieces[0].'</table>');
+		$pending = '';
+		if(isset($pieces[1]) && trim($pieces[1]) != '')
+			mqWriteImageRow($pdf, $open.$pieces[1].'</table>');
+	}
+	if(trim($pending) != '') mqWriteBlockTogether($pdf, $open.$pending.'</table>');
+}
+
 $html1 = $html_header.$html1_body;
 $pdf->setRTL(true);
 if($lang != 'HE')
-  $pdf->setRTL(false);	
+  $pdf->setRTL(false);
 $pdf->AddPage();
-$pdf->writeHTMLCell(0,0,'','',$html1,0,1,0,true,'',true);
+mqWriteTasksByBlocks($pdf, $html1);
+if(!empty($GLOBALS['mq_frame']) && !empty($GLOBALS['mq_frame_w']))
+	$pdf->mqDrawFrames($GLOBALS['mq_frame'], $GLOBALS['mq_frame_x'], $GLOBALS['mq_frame_w']);
 
 $html2_header = '<table><tr><td style="text-align:center;font-size:18px;">'.@$image_concentration_label.'</td></tr></table>';
 $html2_body.= '<div class="row">';
 $html2_body.= '<div class="col-md-12">';
 $html2_body.= '<table dir="'.$dir_table.'" style="'.$style_table.'"><tr><td width="1%">&nbsp;</td><td><table cellpadding="4">';
-$html2_body.='<tr style="background-color:#e5f4ff;font-size:11px;">';
-$html2_body.='<th width="'.@$count_width.'" style="text-align:center;border:1px solid black;font-size:11px;font-weight:bold;">'.(@$header_pad_lines['count']??'').'&#x2116;</th>';
+$html2_body.='<tr style="background-color:#0E3C5D;color:#ffffff;font-size:11px;">';
+$html2_body.='<th width="'.@$count_width.'" style="text-align:center;border:1px solid #D6D2D2;font-size:11px;font-weight:bold;">'.(@$header_pad_lines['count']??'').'&#x2116;</th>';
 if(in_array('subject',$columns_list_array))
-  $html2_body.='<th width="'.@$subject_width.'" style="text-align:center;border:1px solid black;font-size:11px;font-weight:bold;">'.(@$header_pad_lines['subject']??'').$subject_domain_header.'</th>';
+  $html2_body.='<th width="'.@$subject_width.'" style="text-align:center;border:1px solid #D6D2D2;font-size:11px;font-weight:bold;">'.(@$header_pad_lines['subject']??'').$subject_domain_header.'</th>';
 if(in_array('area',$columns_list_array))
-  $html2_body.='<th width="'.@$area_width.'" style="text-align:center;border:1px solid black;font-size:11px;font-weight:bold;">'.(@$header_pad_lines['area']??'').$area_subject_header.'</th>';
+  $html2_body.='<th width="'.@$area_width.'" style="text-align:center;border:1px solid #D6D2D2;font-size:11px;font-weight:bold;">'.(@$header_pad_lines['area']??'').$area_subject_header.'</th>';
 if(in_array('description',$columns_list_array))
-  $html2_body.='<th width="'.@$description_width.'" style="text-align:center;border:1px solid black;font-size:11px;font-weight:bold;">'.(@$header_pad_lines['description']??'').$description_header.'</th>';
+  $html2_body.='<th width="'.@$description_width.'" style="text-align:center;border:1px solid #D6D2D2;font-size:11px;font-weight:bold;">'.(@$header_pad_lines['description']??'').$description_header.'</th>';
 if(in_array('_task',$columns_list_array))
-  $html2_body.='<th width="'.@$task_width.'" style="text-align:center;border:1px solid black;font-size:11px;font-weight:bold;">'.(@$header_pad_lines['task']??'').$task_type_header.'</th>';
+  $html2_body.='<th width="'.@$task_width.'" style="text-align:center;border:1px solid #D6D2D2;font-size:11px;font-weight:bold;">'.(@$header_pad_lines['task']??'').$task_type_header.'</th>';
 if(in_array('responsible',$columns_list_array))
-  $html2_body.='<th width="'.@$responsible_width.'" style="text-align:center;border:1px solid black;font-size:11px;font-weight:bold;">'.(@$header_pad_lines['responsible']??'').$responsible_header.'</th>';
+  $html2_body.='<th width="'.@$responsible_width.'" style="text-align:center;border:1px solid #D6D2D2;font-size:11px;font-weight:bold;">'.(@$header_pad_lines['responsible']??'').$responsible_header.'</th>';
 if(in_array('pass on',$columns_list_array))
-  $html2_body.='<th width="'.@$pass_on_width.'" style="text-align:center;border:1px solid black;font-size:11px;font-weight:bold;">'.(@$header_pad_lines['pass_on']??'').$transfer_confirm_header.'</th>';
+  $html2_body.='<th width="'.@$pass_on_width.'" style="text-align:center;border:1px solid #D6D2D2;font-size:11px;font-weight:bold;">'.(@$header_pad_lines['pass_on']??'').$transfer_confirm_header.'</th>';
 if(in_array('task creation',$columns_list_array))
-  $html2_body.='<th width="'.@$task_creation_width.'" style="text-align:center;border:1px solid black;font-size:10px;font-weight:bold;">'.(@$header_pad_lines['task_creation']??'').$task_creation_date_header.'</th>';
+  $html2_body.='<th width="'.@$task_creation_width.'" style="text-align:center;border:1px solid #D6D2D2;font-size:10px;font-weight:bold;">'.(@$header_pad_lines['task_creation']??'').$task_creation_date_header.'</th>';
 if(in_array('destination date',$columns_list_array))
-  $html2_body.='<th width="'.@$destination_date_width.'" style="text-align:center;border:1px solid black;font-size:10px;font-weight:bold;">'.(@$header_pad_lines['destination_date']??'').$destination_date_header.'</th>';
+  $html2_body.='<th width="'.@$destination_date_width.'" style="text-align:center;border:1px solid #D6D2D2;font-size:10px;font-weight:bold;">'.(@$header_pad_lines['destination_date']??'').$destination_date_header.'</th>';
 if(in_array('progress status',$columns_list_array))
-  $html2_body.='<th width="'.@$progress_status_width.'" style="text-align:center;border:1px solid black;font-size:11px;font-weight:bold;">'.(@$header_pad_lines['progress_status']??'').$progress_status_header.'</th>';
+  $html2_body.='<th width="'.@$progress_status_width.'" style="text-align:center;border:1px solid #D6D2D2;font-size:11px;font-weight:bold;">'.(@$header_pad_lines['progress_status']??'').$progress_status_header.'</th>';
 $html2_body.='</tr>';
 
 $is_html2_appears = false;
@@ -1528,7 +1743,7 @@ foreach($chapters as $item) {
 	
 	if($counter_with_image > 0) {
 		$html2_body.='<tr style="background-color:#cbddec;font-size:11px;">';
-		$html2_body.='<td colspan="'.@$colspan_image_tr.'" style="'.$text_align.','.$padding.':5px;border:1px solid black;"><strong>'.@$chapter_name.'</strong></td>';
+		$html2_body.='<td colspan="'.@$colspan_image_tr.'" style="'.$text_align.','.$padding.':5px;border:1px solid #D6D2D2;"><strong>'.@$chapter_name.'</strong></td>';
 		$html2_body.='</tr>';
 		
 		$is_html2_appears = true;
@@ -1585,7 +1800,7 @@ foreach($chapters as $item) {
 			$query->store_result();	
 			$log_meeting_updates = fetch($query);
 			if($query->num_rows > 0)   // petite marge entre la description et les remarques (comme marginTop5 dans meetings.php)
-				$description .= '<div style="font-size:7px;line-height:7px;">&nbsp;</div>';
+				{ $description = preg_replace('#(\s|&nbsp;|<br\s*/?>)+$#i', '', $description); $description .= '<span style="font-size:4px;"><br/><br/></span>'; }   // sans les sauts de ligne en fin de description (sinon une ligne vide en plus)
 			
 			foreach($log_meeting_updates as $item){
 				$remark = html_entity_decode(@$item->remark);
@@ -1604,22 +1819,23 @@ foreach($chapters as $item) {
 					// statut : meme regle que la partie principale (simplifie en hebreu, nom anglais en EN, rien si vide ou ללא/Without)
 					$lmu_status2 = trim((string)(@$lang == 'EN' ? @$item->ps_name : simplifyStatusLabel(@$item->ps_name_he)));
 					$lmu_show_status2 = preg_match('/\p{L}/u', $lmu_status2) && $lmu_status2 != 'ללא' && $lmu_status2 != 'Without';
-					$lmu_label_mm2 = $pdf->GetStringWidth(smartDate(@$action_date, $lang).' -', 'dejavusans', '', 8.4)
-								   + ($lmu_show_status2 ? $pdf->GetStringWidth(' '.$lmu_status2.' -', 'dejavusans', 'B', 8.4) : 0);
+					$lmu_label_mm2 = $pdf->GetStringWidth(smartDate(@$action_date, $lang).'    ', 'dejavusans', '', 8.4)
+								   + ($lmu_show_status2 ? $pdf->GetStringWidth($lmu_status2.'   ', 'dejavusans', 'B', 8.4) : 0);
 					$lmu_label_pct2 = round(min(60, max(6, $lmu_label_mm2 / $lmu_cell_mm2 * 100)), 1);
 					$lmu_rtl2 = (@$dir_table == 'rtl');
 					// morceaux dans l'ordre de lecture : date, -, statut, -
-					$lmu_parts2 = array('<span style="color:#706f6c;">'.smartDate(@$action_date, $lang).'</span>', '<span style="color:#2d7a52;">-</span>');
+					$lmu_parts2 = array('<span style="color:#706f6c;">'.smartDate(@$action_date, $lang).'</span>', '&nbsp;&nbsp;');
 					if($lmu_show_status2){
 						$lmu_parts2[] = '<span style="color:#2d7a52;font-weight:bold;">'.$lmu_status2.'</span>';
-						$lmu_parts2[] = '<span style="color:#2d7a52;">-</span>';
+						$lmu_parts2[] = '&nbsp;&nbsp;';
 					}
 					// hebreu : reglage d'origine (direction:rtl) ; anglais : sans direction:rtl (sinon les mots anglais s'affichaient dans le desordre)
 					$lmu_remark2 = '<span style="'.($lmu_rtl2 ? 'direction:rtl;unicode-bidi:embed;' : '').'color:#2d7a52;">'.@$remark.'</span>';
 					if($lmu_label_pct2 > 35){
 						// colonne trop etroite pour date et remarque cote a cote : date/statut sur une ligne, remarque dessous sur toute la largeur
 						array_pop($lmu_parts2);   // le dernier tiret ne sert plus : la remarque est dessous
-						$description .= '<div dir="'.@$dir_table.'" style="'.@$text_align.'">'.implode(' ', $lmu_parts2).'<br/>'.$lmu_remark2.'</div>';
+						// petit tableau d'une case (et non un div, qui ajoute une ligne vide au-dessus dans TCPDF)
+						$description .= '<table cellpadding="0" cellspacing="0" style="width:100%;"><tr><td dir="'.@$dir_table.'" style="'.@$text_align.'">'.implode(' ', $lmu_parts2).'<br/>'.$lmu_remark2.'</td></tr></table>';
 					} else {
 						$lmu_label2 = '<td width="'.$lmu_label_pct2.'%" style="'.@$text_align.'">'.implode(' ', $lmu_parts2).'</td>';
 						$lmu_text2  = '<td width="'.(100 - $lmu_label_pct2).'%" style="'.@$text_align.'">'.$lmu_remark2.'</td>';
@@ -1861,30 +2077,30 @@ foreach($chapters as $item) {
                 $count2++;
 				
 				$html2_body.='<tr style="font-size:10px;'.$row_nobr_style.@$dir_table.'">';
-				$html2_body.='<td width="'.@$count_width.'" style="text-align:center;'.@$update_cell_bgcolor.';border:1px solid black;'.$color_num.'">'.(@$row_pad_lines['count']??'').@$count2.'</td>';
+				$html2_body.='<td width="'.@$count_width.'" style="text-align:center;'.@$update_cell_bgcolor.';border:1px solid #D6D2D2;'.$color_num.'">'.(@$row_pad_lines['count']??'').@$count2.'</td>';
 				if(in_array('subject',$columns_list_array))
-				   $html2_body.='<td width="'.@$subject_width.'" style="'.@$text_align.';'.@$padding.':5px;'.@$subject_bgcolor.';border:1px solid black;">'.(@$row_pad_lines['subject']??'').@$subject.'</td>';
+				   $html2_body.='<td width="'.@$subject_width.'" style="'.@$text_align.';'.@$padding.':5px;'.@$subject_bgcolor.';border:1px solid #D6D2D2;">'.(@$row_pad_lines['subject']??'').@$subject.'</td>';
 				if(in_array('area',$columns_list_array))
-				   $html2_body.='<td width="'.@$area_width.'" style="'.@$text_align.';'.@$padding.':5px;'.@$area_bgcolor.';border:1px solid black;">'.(@$row_pad_lines['area']??'').@$area.'</td>';
+				   $html2_body.='<td width="'.@$area_width.'" style="'.@$text_align.';'.@$padding.':5px;'.@$area_bgcolor.';border:1px solid #D6D2D2;">'.(@$row_pad_lines['area']??'').@$area.'</td>';
 
 				if(in_array('description',$columns_list_array)) {
-				   $html2_body.='<td width="'.@$description_width.'" style="'.@$text_align.';'.@$padding.':5px;'.@$description_bgcolor.';border:1px solid black;">';
+				   $html2_body.='<td width="'.@$description_width.'" style="'.@$text_align.';'.@$padding.':5px;'.@$description_bgcolor.';border:1px solid #D6D2D2;">';
 				   $html2_body.= (@$row_pad_lines['description']??'').nl2br(@$description);
 				   $html2_body.= '</td>';
 				}
 
 				if(in_array('_task',$columns_list_array))
-				   $html2_body.='<td width="'.@$task_width.'" style="text-align:center;'.@$task_color.';'.@$task_bgcolor.';border:1px solid black;">'.(@$row_pad_lines['task']??'').'<strong>'.@$task.'</strong></td>';
+				   $html2_body.='<td width="'.@$task_width.'" style="text-align:center;'.@$task_color.';'.@$task_bgcolor.';border:1px solid #D6D2D2;">'.(@$row_pad_lines['task']??'').'<strong>'.@$task.'</strong></td>';
 				if(in_array('responsible',$columns_list_array))
-				   $html2_body.='<td width="'.@$responsible_width.'" style="text-align:center;'.@$responsible_color.';'.@$responsible_bgcolor.';border:1px solid black;">'.(@$row_pad_lines['responsible']??'').'<strong>'.@$responsible.'</strong></td>';
+				   $html2_body.='<td width="'.@$responsible_width.'" style="text-align:center;'.@$responsible_color.';'.@$responsible_bgcolor.';border:1px solid #D6D2D2;">'.(@$row_pad_lines['responsible']??'').'<strong>'.@$responsible.'</strong></td>';
 				if(in_array('pass on',$columns_list_array))
-				   $html2_body.='<td width="'.@$pass_on_width.'" style="text-align:center;border:1px solid black;'.@$pass_on_bgcolor.'">'.(@$row_pad_lines['pass_on']??'').@$pass_on.'</td>';
+				   $html2_body.='<td width="'.@$pass_on_width.'" style="text-align:center;border:1px solid #D6D2D2;'.@$pass_on_bgcolor.'">'.(@$row_pad_lines['pass_on']??'').@$pass_on.'</td>';
 				if(in_array('task creation',$columns_list_array))
-				   $html2_body.='<td width="'.@$task_creation_width.'" style="text-align:center;border:1px solid black;font-size:10px;'.$task_creation_date_color.';'.$task_creation_date_bgcolor.'">'.(@$row_pad_lines['task_creation']??'').@$task_creation_date_display.'</td>';
+				   $html2_body.='<td width="'.@$task_creation_width.'" style="text-align:center;border:1px solid #D6D2D2;font-size:10px;'.$task_creation_date_color.';'.$task_creation_date_bgcolor.'">'.(@$row_pad_lines['task_creation']??'').@$task_creation_date_display.'</td>';
 				if(in_array('destination date',$columns_list_array))
-				   $html2_body.='<td width="'.@$destination_date_width.'" style="text-align:center;border:1px solid black;font-size:10px;'.@$dest_date_color.';'.$dest_date_bgcolor.';'.@$target_date_text_decoration.'">'.(@$row_pad_lines['destination_date']??'').'<strong>'.@$destination_date_display.'</strong></td>';
+				   $html2_body.='<td width="'.@$destination_date_width.'" style="text-align:center;border:1px solid #D6D2D2;font-size:10px;'.@$dest_date_color.';'.$dest_date_bgcolor.';'.@$target_date_text_decoration.'">'.(@$row_pad_lines['destination_date']??'').'<strong>'.@$destination_date_display.'</strong></td>';
 				if(in_array('progress status',$columns_list_array))
-				   $html2_body.='<td width="'.@$progress_status_width.'" style="text-align:center;'.@$progress_status_color.';'.@$progress_status_bgcolor.';border:1px solid black;">'.(@$row_pad_lines['progress_status']??'').'<strong>'.simplifyStatusLabel(@$progress_status).'</strong></td>';
+				   $html2_body.='<td width="'.@$progress_status_width.'" style="text-align:center;'.@$progress_status_color.';'.@$progress_status_bgcolor.';border:1px solid #D6D2D2;">'.(@$row_pad_lines['progress_status']??'').'<strong>'.simplifyStatusLabel(@$progress_status).'</strong></td>';
 				$html2_body.='</tr>'; 
 				
 				if(strpos($image1,'Snag') === false && strpos($image2,'Snag') === false) {

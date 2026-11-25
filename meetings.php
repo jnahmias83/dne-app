@@ -1247,7 +1247,7 @@ include 'menu_tasks.php';
 						    $w_pass_on     = $fixed['pass on'];
 						    $w_desc        = in_array('description', $columns_list_array) ? max(12, 100 - $fixed_sum) : 0;
 						    ?>
-					    <table id="meetings_table" class="rounded-table" border="1">
+					    <div class="meetings-table-frame"><table id="meetings_table" class="rounded-table" border="1">
 					    <colgroup>
 					        <col style="width:42px;">
 					        <col style="width:40px;">
@@ -1677,9 +1677,9 @@ include 'menu_tasks.php';
 
 												if(@$remark != ''){
 													// remarque sur plusieurs lignes : alignee comme dans la fenetre des actions (badge/date/statut a part, texte en bloc)
-													$description .= "<div class='marginTop5 colorGreenDark ".@$dir_log_meeting_updates."' style='display:flex;align-items:baseline;'>"
+													$description .= "<div class='marginTop5 colorGreenDark ".@$dir_log_meeting_updates."' style='display:flex;align-items:flex-start;'>"
 																	."<span style='flex:0 0 auto;white-space:nowrap;'>"
-																	."<span class='badge-nickname-green'>"
+																	."<span class='badge-nickname-green' style='width:22px;min-width:22px;height:22px;flex-shrink:0;padding:2px;box-sizing:border-box;font-size:10px;vertical-align:middle;'>"
 																	.@$item->user_nickname
 																	."</span> "
 																	."<span class='log-date-grey' style='unicode-bidi:isolate;'>"
@@ -1687,14 +1687,14 @@ include 'menu_tasks.php';
 																	."</span>";
 
 													if(preg_match('/\p{L}/u', $progress_status_log_updates)){
-														$description .=  " - "
-																		."<span style='font-weight:bold;'>"
+														$description .=  " "
+																		."<span style='font-weight:bold;margin-inline-start:6px;'>"
 																		.@$progress_status_log_updates
 																		."</span>";
 													}
 
-													$description .=  " - </span>"
-																	."<span style='flex:1;min-width:0;margin-inline-start:4px;unicode-bidi:isolate;'>"
+													$description .=  " </span>"
+																	."<span style='flex:1;min-width:0;margin-inline-start:10px;unicode-bidi:isolate;'>"
 																	.html_entity_decode(@$remark)
 																	."</span>"
 																	."</div>";
@@ -1735,12 +1735,12 @@ include 'menu_tasks.php';
 													$track_initials = mb_strtoupper(mb_substr(@$item->user_nickname, 0, 2, 'UTF-8'));
 													// remarque sur plusieurs lignes : alignee comme dans la fenetre des actions (badge/date a part, texte en bloc)
 													$description .= "<div id='div-tracking-remarks-'".@$meeting_id."' class='marginTop5 display-block ".@$dir_log_meeting_tracking."' style='line-height:1.8;'>"
-																  . "<div style='display:flex;align-items:baseline;'>"
+																  . "<div style='display:flex;align-items:flex-start;'>"
 																  . "<span style='flex:0 0 auto;white-space:nowrap;'>"
 																  . "<span class='badge-circle' style='display:inline-flex;align-items:center;justify-content:center;background-color:#333;width:22px;height:22px;padding:2px;box-sizing:border-box;font-size:10px;vertical-align:middle;'>".$track_initials."</span>"
 																  . " <span class='colorGrey ".(@$lang=='HE' ? 'dir-rtl' : 'dir-ltr')." unicode-bidi-embed' style='vertical-align:top;'>".smartDate(@$item->action_date, $lang)."</span>"
-																  . " : </span>"
-																  . "<span style='flex:1;min-width:0;margin-inline-start:4px;'>"
+																  . " </span>"
+																  . "<span style='flex:1;min-width:0;margin-inline-start:10px;'>"
 																  . "<span class='colorRed ".(@$lang=='HE' ? 'dir-rtl' : 'dir-ltr')." unicode-bidi-embed'>".nl2br(html_entity_decode(@$item->remark))."</span>"
 																  . (@$tracking_data != '' ? " <span class='colorRed ".(@$lang=='HE' ? 'dir-rtl' : 'dir-ltr')." unicode-bidi-embed'>".@$tracking_data."</span>" : "")
 																  . "</span>"
@@ -2095,7 +2095,7 @@ include 'menu_tasks.php';
 									}
 								}
 								?>
-							</table>
+							</table></div>
 						</div>
 					</div>
 					<?php }
@@ -2308,15 +2308,15 @@ include 'menu_tasks.php';
 
 													if(@$remark != '')   // remarque sur plusieurs lignes : alignee comme dans la fenetre des actions
 														$description .= "<div class='marginTop5 colorGreenDark display-block ".@$dir_log_meeting_updates."'>"
-																		."<div style='display:flex;align-items:baseline;'>"
+																		."<div style='display:flex;align-items:flex-start;'>"
 																		."<span style='flex:0 0 auto;white-space:nowrap;'>"
-																	    ."<span class='badge-nickname-green'>"
+																	    ."<span class='badge-nickname-green' style='width:22px;min-width:22px;height:22px;flex-shrink:0;padding:2px;box-sizing:border-box;font-size:10px;vertical-align:middle;'>"
 																	    .@$item->user_nickname
 																	    ."</span> "
 																	    ."<span class='log-date-grey' style='unicode-bidi:isolate;'>"
 																		.smartDate(@$action_date, $lang)
-																		."</span> - </span>"
-																		."<span style='flex:1;min-width:0;margin-inline-start:4px;unicode-bidi:isolate;'>"
+																		."</span> </span>"
+																		."<span style='flex:1;min-width:0;margin-inline-start:10px;unicode-bidi:isolate;'>"
 																		.html_entity_decode(@$remark)
 																		."</span>"
 																		."</div>"
@@ -2355,12 +2355,12 @@ include 'menu_tasks.php';
 														$track_initials2 = mb_strtoupper(mb_substr(@$item->user_nickname, 0, 2, 'UTF-8'));
 														// remarque sur plusieurs lignes : alignee comme dans la fenetre des actions
 														$description .= "<div id='div-tracking-remarks-'".@$meeting_id."' class='marginTop5 display-block ".@$dir_log_meeting_tracking."' style='line-height:1.8;'>"
-																	  . "<div style='display:flex;align-items:baseline;'>"
+																	  . "<div style='display:flex;align-items:flex-start;'>"
 																	  . "<span style='flex:0 0 auto;white-space:nowrap;'>"
 																	  . "<span class='badge-circle' style='display:inline-flex;background-color:#333;width:22px;height:22px;font-size:10px;vertical-align:middle;'>".$track_initials2."</span>"
 																	  . " <span class='colorGrey ".(@$lang=='HE' ? 'dir-rtl' : 'dir-ltr')." unicode-bidi-embed' style='vertical-align:top;'>".smartDate(@$item->action_date, $lang)."</span>"
-																	  . " : </span>"
-																	  . "<span style='flex:1;min-width:0;margin-inline-start:4px;'>"
+																	  . " </span>"
+																	  . "<span style='flex:1;min-width:0;margin-inline-start:10px;'>"
 																	  . "<span class='colorRed ".(@$lang=='HE' ? 'dir-rtl' : 'dir-ltr')." unicode-bidi-embed'>".nl2br(html_entity_decode(@$item->remark))."</span>"
 																	  . (@$tracking_data != '' ? " <span class='colorRed ".(@$lang=='HE' ? 'dir-rtl' : 'dir-ltr')." unicode-bidi-embed'>".@$tracking_data."</span>" : "")
 																	  . "</span>"
@@ -5386,6 +5386,16 @@ td[id^="td_area_"] > div {
     border-bottom: none !important;
 }
 
+/* en-tete du tableau des taches : fond bleu marine, texte blanc */
+#meetings_table tr.bgColor-f2f6f9,
+#meetings_table tr.bgColor-f2f6f9 th {
+    background-color: #0E3C5D !important;
+    color: #ffffff !important;
+}
+
+/* cadre beige arrondi autour du tableau des taches */
+.meetings-table-frame{border:1px solid #EFE5D7;border-radius:12px;background:#FFFAF4;padding:16px;box-sizing:border-box;}
+
 #meetings_table th {
     font-size: <?=(@$lang=='HE') ? '14px' : '13px';?>;
 }
@@ -5490,6 +5500,14 @@ td[id^="td_description_"] span {
     word-wrap: break-word !important;
     overflow-wrap: anywhere !important;
     display: inline !important;
+}
+
+/* badges des journaux (updates / tracking) : taille fixe 22x22, identique pour toutes les initiales */
+td[id^="td_description_"] span.badge-nickname-green,
+td[id^="td_description_"] span.badge-circle {
+    display: inline-flex !important;
+    white-space: nowrap !important;
+    font-weight: bold !important;
 }
 
 td[id^="td_description_"] span.sf-hl {

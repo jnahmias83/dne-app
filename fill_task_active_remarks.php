@@ -82,13 +82,13 @@ if(@$_POST['isTracking'] == 1){
 			$content .= "<div class='flex marginTop10 width100Percents'>";
 			$content .=      "<div id='div_log_meeting_tracking_{$item->id}' dir='".@$dir_attr."' class='".@$padding." fontSize13 width100Percents colorGrey border-black ".$align." display-block' style='line-height:1.8; padding:5px;'>";
 			// remarque sur plusieurs lignes : alignee comme dans la fenetre des actions (badge/date a part, texte en bloc)
-			$content .=      "<div style='display:flex;align-items:baseline;'>";
+			$content .=      "<div style='display:flex;align-items:flex-start;'>";
 			$content .=           "<span style='flex:0 0 auto;white-space:nowrap;'>";
 			$content .=           "<span style='display:inline-flex;align-items:center;gap:4px;vertical-align:top;'>";
-			$content .=                "<span class='badge-circle' style='display:inline-flex;align-items:center;justify-content:center;background-color:#333;width:22px;height:22px;font-size:10px;'>".$tracking_initials."</span>";
+			$content .=                "<span class='badge-circle' style='display:inline-flex;align-items:center;justify-content:center;background-color:#333;width:22px;height:22px;font-size:10px;font-weight:bold;'>".$tracking_initials."</span>";
 			$content .=                "<span class='dir-rtl unicode-bidi-embed'>".smartDate(@$item->action_date, @$_POST['lang'])."</span>";
 			$content .=           "</span>";
-			$content .= " - </span><span class='dir-rtl unicode-bidi-embed' style='flex:1;min-width:0;margin-inline-start:4px;'>".html_entity_decode(@$tracking_remark)."</span>
+			$content .= " </span><span class='dir-rtl unicode-bidi-embed' style='flex:1;min-width:0;margin-inline-start:10px;'>".html_entity_decode(@$tracking_remark)."</span>
 			              </div></div></div>";
 		}
 
@@ -125,18 +125,18 @@ else {
 
 			$content .=   "<div id='div_log_meeting_updates_{$item->id}' dir='".@$dir_attr."' class='".@$padding." fontSize13 width90Percents colorGrey border-black ".@$align." display-block' style='line-height:1.8; padding:5px;'>";
 			// remarque sur plusieurs lignes : alignee comme dans la fenetre des actions (badge/date/statut a part, texte en bloc)
-			$content .=   "<div style='display:flex;align-items:baseline;'>";
+			$content .=   "<div style='display:flex;align-items:flex-start;'>";
 			$content .=   "<span style='flex:0 0 auto;white-space:nowrap;'>";
 			$content .=   "<span style='display:inline-flex;align-items:center;gap:4px;vertical-align:top;'>";
-			$content .=        "<span class='badge-circle' style='display:inline-flex;align-items:center;justify-content:center;background-color:#333;width:22px;height:22px;font-size:10px;'>".$update_initials."</span>";
+			$content .=        "<span class='badge-circle' style='display:inline-flex;align-items:center;justify-content:center;background-color:#333;width:22px;height:22px;font-size:10px;font-weight:bold;'>".$update_initials."</span>";
 			$content .=        "<span class='dir-rtl unicode-bidi-embed'>".smartDate(@$item->action_date, @$_POST['lang'])."</span>";
 			$content .=   "</span>";
 
 			if(preg_match('/\p{L}/u', $progress_status)){
-				$content .= " - <span class='dir-rtl unicode-bidi-embed'>".@$progress_status."</span>";
+				$content .= " <span class='dir-rtl unicode-bidi-embed' style='margin-inline-start:6px;'>".@$progress_status."</span>";
 			}
 
-			$content .=  " - </span><span class='dir-rtl unicode-bidi-embed' style='flex:1;min-width:0;margin-inline-start:4px;'>".html_entity_decode(@$item->remark)."</span>
+			$content .=  " </span><span class='dir-rtl unicode-bidi-embed' style='flex:1;min-width:0;margin-inline-start:10px;'>".html_entity_decode(@$item->remark)."</span>
 			              </div></div></div>";
 		}
 

@@ -580,7 +580,7 @@ foreach($all_what_news as $wn){
 															?>
 															<div class="marginTop5 fontSize11 text-end" style="line-height:1">
 																<span class="border-black padding-2x-2y fontSize9 borderRadius20 align-items-center justify-content-center colorWhite bgColorBlack" style="display:inline-flex;line-height:1;background-color:#f2f6f9;color:#c0392b;font-weight:bold;"><?=@$tr_item->user_nickname?></span>
-																<span class="marginRight2 log-date-grey dir-rtl unicode-bidi-embed"><?=smartDate(@$tr_item->action_date)?> -</span>
+																<span class="marginRight2 log-date-grey dir-rtl unicode-bidi-embed" style="margin-inline-end:8px;"><?=smartDate(@$tr_item->action_date)?></span>
 																<span class="colorRed dir-rtl unicode-bidi-embed display-inline-block"><?=html_entity_decode(@$tr_remark)?></span>
 															</div>
 															<?php break; } ?>
@@ -897,18 +897,18 @@ foreach($all_what_news as $wn){
 																		echo smartDate(@$wn->lmu_action_date)?>
 																	</span>
 																	<?php if(@$wn->lmu_action == 'חדשה'){ ?>
-																		&nbsp;-
+																		&nbsp;
 																		<span class="colorGreenDark dir-rtl unicode-bidi-embed" style="font-weight:bold;">
 																			משימה חדשה
 																		</span>
 																	<?php } else { ?>
 																		<?php if(trim(@$wn->current_status_name_he) != ''){ ?>
-																			&nbsp;-
+																			&nbsp;
 																			<span class="color-status-green-darker dir-rtl unicode-bidi-embed" style="font-weight:bold;">
 																				<?=simplifyStatusLabel(@$wn->current_status_name_he)?>
 																			</span>
 																		<?php }
-																		    if(@$remark != '') echo ' - <span class="colorGreenDark dir-rtl unicode-bidi-embed" style="font-weight:normal;">'.$remark.'</span>';
+																		    if(@$remark != '') echo ' <span class="colorGreenDark dir-rtl unicode-bidi-embed" style="font-weight:normal;margin-inline-start:8px;">'.$remark.'</span>';
 																		    ?>
 																	<?php } ?>
 															</div>
@@ -921,7 +921,7 @@ foreach($all_what_news as $wn){
 														?>
 														<div class="marginTop5 fontSize11 text-end" style="line-height:1.4;position:relative;padding-right:26px;box-sizing:border-box;">
 															<span class="border-black padding-2x-2y fontSize9 borderRadius20 align-items-center justify-content-center colorWhite bgColorBlack" style="display:inline-flex;line-height:1;position:absolute;right:0;top:0;background-color:#f2f6f9;color:#c0392b;font-weight:bold;"><?=@$tr_item->user_nickname?></span>
-															<span class="marginRight2 log-date-grey dir-rtl unicode-bidi-embed"><?=smartDate(@$tr_item->action_date)?> -</span>
+															<span class="marginRight2 log-date-grey dir-rtl unicode-bidi-embed" style="margin-inline-end:8px;"><?=smartDate(@$tr_item->action_date)?></span>
 															<span class="colorRed dir-rtl unicode-bidi-embed" style="word-wrap:break-word;overflow-wrap:break-word;"><?=html_entity_decode(@$tr_remark)?></span>
 														</div>
 														<?php break; } ?>
@@ -930,7 +930,7 @@ foreach($all_what_news as $wn){
 													      else if(@$wn->id_log_meeting_tracking != 0 && @$wn->track_type == 1){ ?>
 													<div class="js-tracking-line-<?=@$wn->id?>" style="display:block;width:100%;">
 														<div class="marginTop5 fontSize11 text-end" style="line-height:1.4;">
-															<span class="marginRight2 log-date-grey dir-rtl unicode-bidi-embed"><?=smartDate(@$wn->lmt_action_date)?> -</span>
+															<span class="marginRight2 log-date-grey dir-rtl unicode-bidi-embed" style="margin-inline-end:8px;"><?=smartDate(@$wn->lmt_action_date)?></span>
 															<span class="colorRed dir-rtl unicode-bidi-embed">משימה במעקב</span>
 														</div>
 													</div>
@@ -1224,7 +1224,7 @@ foreach($all_what_news as $wn){
 																			?>
 																			<div class="marginTop5 fontSize11 text-end" style="line-height:1">
 																				<span class="border-black padding-2x-2y fontSize9 borderRadius20 align-items-center justify-content-center colorWhite bgColorBlack" style="display:inline-flex;line-height:1;background-color:#f2f6f9;color:#c0392b;font-weight:bold;"><?=@$tr_item->user_nickname?></span>
-																				<span class="marginRight2 log-date-grey dir-rtl unicode-bidi-embed"><?=smartDate(@$tr_item->action_date)?> -</span>
+																				<span class="marginRight2 log-date-grey dir-rtl unicode-bidi-embed" style="margin-inline-end:8px;"><?=smartDate(@$tr_item->action_date)?></span>
 																				<span class="colorRed dir-rtl unicode-bidi-embed display-inline-block"><?=html_entity_decode(@$tr_remark)?></span>
 																			</div>
 																			<?php } ?>
@@ -1371,7 +1371,7 @@ foreach($all_what_news as $wn){
 															<span class="border-black padding-2x-2y fontSize9 borderRadius20 align-items-center justify-content-center colorWhite bgColorBlack" style="display:inline-flex;line-height:1;background-color:#f2f6f9;color:#c0392b;font-weight:bold;">
 																<?=@$item->user_nickname?>
 															</span>
-															<span class="marginRight2 log-date-grey dir-rtl unicode-bidi-embed"><?=smartDate(@$item->action_date)?> -</span>
+															<span class="marginRight2 log-date-grey dir-rtl unicode-bidi-embed" style="margin-inline-end:8px;"><?=smartDate(@$item->action_date)?></span>
 															</span>
 															<span style="flex:0 1 auto;min-width:0;">
 															<span class="colorRed dir-rtl unicode-bidi-embed display-inline-block">
@@ -1574,7 +1574,7 @@ foreach($all_what_news as $wn){
 																								<?=' '.simplifyStatusLabel(@$wn->current_status_name_he)?>
 																							</span>
 																						<?php }
-																						if(@$lmu_remark_s2 != '') echo ' - <span class="colorGreenDark dir-rtl unicode-bidi-embed" style="font-weight:normal;">'.$lmu_remark_s2.'</span>';
+																						if(@$lmu_remark_s2 != '') echo ' <span class="colorGreenDark dir-rtl unicode-bidi-embed" style="font-weight:normal;margin-inline-start:8px;">'.$lmu_remark_s2.'</span>';
 																						?>
 																					<?php } ?>
 																				</div>
@@ -1587,7 +1587,7 @@ foreach($all_what_news as $wn){
 																					?>
 																					<div class="marginTop5 fontSize11 text-end" style="line-height:1.4;position:relative;padding-right:26px;box-sizing:border-box;">
 																						<span class="border-black padding-2x-2y fontSize9 borderRadius20 align-items-center justify-content-center colorWhite bgColorBlack" style="display:inline-flex;line-height:1;position:absolute;right:0;top:0;background-color:#f2f6f9;color:#c0392b;font-weight:bold;"><?=@$tr_item->user_nickname?></span>
-																						<span class="marginRight2 log-date-grey dir-rtl unicode-bidi-embed"><?=smartDate(@$tr_item->action_date)?> -</span>
+																						<span class="marginRight2 log-date-grey dir-rtl unicode-bidi-embed" style="margin-inline-end:8px;"><?=smartDate(@$tr_item->action_date)?></span>
 																						<span class="colorRed dir-rtl unicode-bidi-embed display-inline-block"><?=html_entity_decode(@$tr_remark)?></span>
 																					</div>
 																							<?php break; } ?>
@@ -1596,7 +1596,7 @@ foreach($all_what_news as $wn){
 																			      else if(@$wn->id_log_meeting_tracking != 0 && @$wn->track_type == 1){ ?>
 																			<div class="js-tracking-line-<?=@$wn->id?>" style="display:block;width:100%;">
 																				<div class="marginTop5 fontSize11 text-end" style="line-height:1.4;">
-																					<span class="marginRight2 log-date-grey dir-rtl unicode-bidi-embed"><?=smartDate(@$wn->lmt_action_date)?> -</span>
+																					<span class="marginRight2 log-date-grey dir-rtl unicode-bidi-embed" style="margin-inline-end:8px;"><?=smartDate(@$wn->lmt_action_date)?></span>
 																					<span class="colorRed dir-rtl unicode-bidi-embed">משימה במעקב</span>
 																				</div>
 																			</div>
@@ -1858,7 +1858,7 @@ foreach($all_what_news as $wn){
 																		?>
 																		<div class="marginTop5 fontSize11 text-end" style="line-height:1">
 																			<span class="border-black padding-2x-2y fontSize9 borderRadius20 align-items-center justify-content-center colorWhite bgColorBlack" style="display:inline-flex;line-height:1;background-color:#f2f6f9;color:#c0392b;font-weight:bold;"><?=@$tr_item->user_nickname?></span>
-																			<span class="marginRight2 log-date-grey dir-rtl unicode-bidi-embed"><?=smartDate(@$tr_item->action_date)?> -</span>
+																			<span class="marginRight2 log-date-grey dir-rtl unicode-bidi-embed" style="margin-inline-end:8px;"><?=smartDate(@$tr_item->action_date)?></span>
 																			<span class="colorRed dir-rtl unicode-bidi-embed display-inline-block"><?=html_entity_decode(@$tr_remark)?></span>
 																		</div>
 																		<?php break; } ?>

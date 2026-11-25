@@ -57,11 +57,10 @@ if(@$_POST['all_ids_to_edit'] == '') {
 							   LEFT JOIN dne_users u ON lmu.id_user = u.id
 							   LEFT JOIN dne_progress_status ps ON lmu.id_progress_status = ps.id
 							   WHERE lmu.id_meeting = ?
-                               AND lmu.action = ?							   
 							   AND lmu.is_remark_appears_log = ?
 							   AND lmu.remark <> ?
 							   ORDER BY lmu.id ASC");
-	$query->bind_param("isis",$id,$action_update_label,$one,$empty_remark);
+	$query->bind_param("iis",$id,$one,$empty_remark);   // meme regle que le tableau de meetings.php : toutes les remarques cochees « apparait dans le journal », quelle que soit l'action
 	$query->execute();
 	$query->store_result();	
 	$log_meeting_updates = fetch($query);
@@ -84,14 +83,14 @@ if(@$_POST['all_ids_to_edit'] == '') {
 		$action_date = @$item->action_date;
 		$user_nickname = @$item->user_nickname;
 
-		$all_remarks .= "<div class='marginTop5'>".@$user_nickname." - ".smartDate(@$action_date, @$meeting->p_lang).' - '.html_entity_decode(@$remark).'</div>';
+		$all_remarks .= "<div class='marginTop5'>".@$user_nickname." ".smartDate(@$action_date, @$meeting->p_lang).' '.html_entity_decode(@$remark).'</div>';
 
 		$progress_status_log_updates = simplifyStatusLabel(@$item->ps_name_he);
 		if(@$meeting->p_lang == 'EN')
 			$progress_status_log_updates = @$item->ps_name;
 
 		if(@$remark != ''){
-			$update_label_html = "<span class='badge-nickname-green'>"
+			$update_label_html = "<span class='badge-nickname-green' style='width:22px;min-width:22px;height:22px;flex-shrink:0;padding:2px;box-sizing:border-box;border-radius:50%;font-size:10px;font-weight:bold;vertical-align:middle;'>"
 							.@$user_nickname
 							."</span> "
 							."<span class='log-date-grey' style='unicode-bidi:isolate;'>"
@@ -99,16 +98,16 @@ if(@$_POST['all_ids_to_edit'] == '') {
 							."</span>";
 
 			if(preg_match('/\p{L}/u', $progress_status_log_updates)){
-				$update_label_html .=  " - <span style='font-weight:bold;'>"
+				$update_label_html .=  " <span style='font-weight:bold;margin-inline-start:6px;'>"
 								.@$progress_status_log_updates
 								."</span>";
 			}
 
-			$update_label_html .= " - ";
+			$update_label_html .= " ";
 
-			$description_updates .= "<div class='marginTop5 colorGreenDark ".@$padding_log_meeting_updates."' dir='".@$dir_updates."' style='display:flex;align-items:baseline;'>"
+			$description_updates .= "<div class='marginTop5 colorGreenDark ".@$padding_log_meeting_updates."' dir='".@$dir_updates."' style='display:flex;align-items:flex-start;'>"
 							."<span style='flex:0 0 auto;white-space:nowrap;'>".$update_label_html."</span>"
-							."<span style='flex:1;min-width:0;unicode-bidi:isolate;'>"
+							."<span style='flex:1;min-width:0;margin-inline-start:10px;unicode-bidi:isolate;'>"
 							.html_entity_decode(@$remark)
 							."</span>"
 							."</div>";
@@ -220,7 +219,7 @@ if(@$_POST['all_ids_to_edit'] == '') {
 			$tracking_table .= "<tr class='alignCenter' style='background-color:".@$bg_color_inputs->b_bgcolor.";'>";
 			if($tracking_rowspans[$tracking_row_index] > 0){
 				$tracking_table .= "<td rowspan='".$tracking_rowspans[$tracking_row_index]."' style='vertical-align:middle;text-align:center;width:9%;border:none!important;'>";
-				$tracking_table .= "<span style='display:inline-block;width:18px;height:18px;line-height:18px;border-radius:50%;background-color:#000;color:#fff;font-size:9px;text-align:center;vertical-align:middle;box-sizing:border-box;'>"
+				$tracking_table .= "<span style='display:inline-block;width:18px;height:18px;line-height:18px;border-radius:50%;background-color:#000;color:#fff;font-size:9px;font-weight:bold;text-align:center;vertical-align:middle;box-sizing:border-box;'>"
 									.@$item->user_nickname
 								."</span>";
 				$tracking_table .= "</td>";
