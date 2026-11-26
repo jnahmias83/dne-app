@@ -1677,7 +1677,7 @@ include 'menu_tasks.php';
 
 												if(@$remark != ''){
 													// remarque sur plusieurs lignes : alignee comme dans la fenetre des actions (badge/date/statut a part, texte en bloc)
-													$description .= "<div class='marginTop5 colorGreenDark ".@$dir_log_meeting_updates."' style='display:flex;align-items:flex-start;'>"
+													$description .= "<div class='marginTop5 colorGreenDark ".@$dir_log_meeting_updates."' style='display:flex;align-items:first baseline;'>"
 																	."<span style='flex:0 0 auto;white-space:nowrap;'>"
 																	."<span class='badge-nickname-green' style='width:22px;min-width:22px;height:22px;flex-shrink:0;padding:2px;box-sizing:border-box;font-size:10px;vertical-align:middle;'>"
 																	.@$item->user_nickname
@@ -1735,7 +1735,7 @@ include 'menu_tasks.php';
 													$track_initials = mb_strtoupper(mb_substr(@$item->user_nickname, 0, 2, 'UTF-8'));
 													// remarque sur plusieurs lignes : alignee comme dans la fenetre des actions (badge/date a part, texte en bloc)
 													$description .= "<div id='div-tracking-remarks-'".@$meeting_id."' class='marginTop5 display-block ".@$dir_log_meeting_tracking."' style='line-height:1.8;'>"
-																  . "<div style='display:flex;align-items:flex-start;'>"
+																  . "<div style='display:flex;align-items:first baseline;'>"
 																  . "<span style='flex:0 0 auto;white-space:nowrap;'>"
 																  . "<span class='badge-circle' style='display:inline-flex;align-items:center;justify-content:center;background-color:#333;width:22px;height:22px;padding:2px;box-sizing:border-box;font-size:10px;vertical-align:middle;'>".$track_initials."</span>"
 																  . " <span class='colorGrey ".(@$lang=='HE' ? 'dir-rtl' : 'dir-ltr')." unicode-bidi-embed' style='vertical-align:top;'>".smartDate(@$item->action_date, $lang)."</span>"
@@ -2308,7 +2308,7 @@ include 'menu_tasks.php';
 
 													if(@$remark != '')   // remarque sur plusieurs lignes : alignee comme dans la fenetre des actions
 														$description .= "<div class='marginTop5 colorGreenDark display-block ".@$dir_log_meeting_updates."'>"
-																		."<div style='display:flex;align-items:flex-start;'>"
+																		."<div style='display:flex;align-items:first baseline;'>"
 																		."<span style='flex:0 0 auto;white-space:nowrap;'>"
 																	    ."<span class='badge-nickname-green' style='width:22px;min-width:22px;height:22px;flex-shrink:0;padding:2px;box-sizing:border-box;font-size:10px;vertical-align:middle;'>"
 																	    .@$item->user_nickname
@@ -2355,7 +2355,7 @@ include 'menu_tasks.php';
 														$track_initials2 = mb_strtoupper(mb_substr(@$item->user_nickname, 0, 2, 'UTF-8'));
 														// remarque sur plusieurs lignes : alignee comme dans la fenetre des actions
 														$description .= "<div id='div-tracking-remarks-'".@$meeting_id."' class='marginTop5 display-block ".@$dir_log_meeting_tracking."' style='line-height:1.8;'>"
-																	  . "<div style='display:flex;align-items:flex-start;'>"
+																	  . "<div style='display:flex;align-items:first baseline;'>"
 																	  . "<span style='flex:0 0 auto;white-space:nowrap;'>"
 																	  . "<span class='badge-circle' style='display:inline-flex;background-color:#333;width:22px;height:22px;font-size:10px;vertical-align:middle;'>".$track_initials2."</span>"
 																	  . " <span class='colorGrey ".(@$lang=='HE' ? 'dir-rtl' : 'dir-ltr')." unicode-bidi-embed' style='vertical-align:top;'>".smartDate(@$item->action_date, $lang)."</span>"

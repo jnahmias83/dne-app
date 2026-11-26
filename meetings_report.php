@@ -1022,11 +1022,8 @@ foreach($chapters as $item){
 					// (TCPDF ne gere pas flex -> petit tableau : date/statut dans une colonne, remarque dans l'autre).
 					// Largeur de la colonne date/statut = longueur REELLE du texte (mesuree par TCPDF) + 0,3 mm, rapportee a la colonne Description.
 					// En hebreu le rapport est en mode RTL (setRTL) : TCPDF place lui-meme la 1re colonne (date/statut) a droite.
-					$lmu_desc_pct = max(1, (float)rtrim(@$description_width, '%'));
-					$lmu_margins = $pdf->getMargins();
-					$lmu_cell_mm = max(10, ($pdf->getPageWidth() - $lmu_margins['left'] - $lmu_margins['right']) * $lmu_desc_pct / 100 - 2.7);
-					$lmu_label_mm = $pdf->GetStringWidth(smartDate($action_date, $lang).'    ', 'dejavusans', '', 8.4)
-								  + ($show_status ? $pdf->GetStringWidth(@$progress_status_log_updates.'   ', 'dejavusans', 'B', 8.4) : 0);
+					$lmu_cell_mm = mqDescInnerMm($pdf, @$description_width);
+					$lmu_label_mm = mqLogLabelMm($pdf, smartDate($action_date, $lang), $show_status ? @$progress_status_log_updates : '');
 					$lmu_label_pct = round(min(60, max(8, $lmu_label_mm / $lmu_cell_mm * 100)), 1);
 					$lmu_rtl = (@$dir_table == 'rtl');
 					// morceaux dans l'ordre de lecture : date, -, statut, -
@@ -1044,6 +1041,7 @@ foreach($chapters as $item){
 						$description .= '<table cellpadding="0" cellspacing="0" style="width:100%;"><tr><td dir="'.@$dir_table.'" style="'.@$text_align.'">'.implode(' ', $lmu_parts)
 									  . '<br/><span dir="'.@$dir_table.'" style="color:#2d7a52;">'.$remark.'</span></td></tr></table>';
 					} else {
+						array_pop($lmu_parts);   // pas d'espaces invisibles en fin de colonne : l'ecart vient de la largeur de colonne
 						$lmu_label = '<td width="'.$lmu_label_pct.'%" style="'.@$text_align.'">'.implode(' ', $lmu_parts).'</td>';
 						$lmu_text = '<td width="'.(100 - $lmu_label_pct).'%" style="'.@$text_align.'"><span dir="'.@$dir_table.'" style="color:#2d7a52;">'.$remark.'</span></td>';
 						$description .= '<table cellpadding="0" cellspacing="0" style="width:100%;"><tr>'.$lmu_label.$lmu_text.'</tr></table>';
@@ -1445,6 +1443,26 @@ function mqWriteTop($pdf, $html){
 // place libre (mm) entre la position actuelle et le bas de la page
 function mqSpaceLeft($pdf){
 	return $pdf->getPageHeight() - $pdf->getBreakMargin() - $pdf->GetY();
+}
+
+// Lignes de journal (updates) : date + statut dans une petite colonne, remarque a cote. Le blanc qui reste dans cette
+// colonne = l'ecart avant la remarque ; il faut donc sa largeur exacte.
+// Largeur interieure reelle de la cellule Description : meme formule que mqWriteTasksByBlocks (tableau interieur =
+// 99 % de la largeur utile, moins les marges de cellule), moins le cellpadding="4" de chaque cote.
+function mqDescInnerMm($pdf, $description_width){
+	$pct = max(1, (float)rtrim((string)$description_width, '%'));
+	$m = $pdf->getMargins();
+	$cp = $pdf->getCellPaddings();
+	$Wc = $pdf->getPageWidth() - $m['left'] - $m['right'] - $cp['L'] - $cp['R'];
+	$tableW = 0.99 * $Wc - $cp['L'] - $cp['R'];
+	return max(10, $tableW * $pct / 100 - 2 * $pdf->getHTMLUnitToUnits('4', 1, 'px'));
+}
+// largeur rendue (police 8) de : date, un espace (TCPDF n'en rend qu'un entre date et statut), statut en gras,
+// + 1,5 mm d'ecart avant la remarque (meme proportion qu'a l'ecran : a peine plus que l'ecart date -> statut)
+function mqLogLabelMm($pdf, $date, $status){
+	$w = $pdf->GetStringWidth($date, 'dejavusans', '', 8);
+	if($status != '') $w += $pdf->GetStringWidth(' ', 'dejavusans', '', 8) + $pdf->GetStringWidth($status, 'dejavusans', 'B', 8);
+	return $w + 1.5;
 }
 
 function mqPageIsEmpty($pdf){
@@ -1852,14 +1870,11 @@ foreach($chapters as $item) {
 
 				if($remark != ''){
 					// Demande client : plus de badge ni de nom ; date, puis la remarque sur plusieurs lignes alignee (petit tableau, TCPDF ne gere pas flex)
-					$lmu_desc_pct2 = max(1, (float)rtrim(@$description_width, '%'));
-					$lmu_margins2 = $pdf->getMargins();   // largeur de la colonne date = longueur reelle de la date + 1,5 mm
-					$lmu_cell_mm2 = max(10, ($pdf->getPageWidth() - $lmu_margins2['left'] - $lmu_margins2['right']) * $lmu_desc_pct2 / 100 - 2.7);
+					$lmu_cell_mm2 = mqDescInnerMm($pdf, @$description_width);
 					// statut : meme regle que la partie principale (simplifie en hebreu, nom anglais en EN, rien si vide ou ללא/Without)
 					$lmu_status2 = trim((string)(@$lang == 'EN' ? @$item->ps_name : simplifyStatusLabel(@$item->ps_name_he)));
 					$lmu_show_status2 = preg_match('/\p{L}/u', $lmu_status2) && $lmu_status2 != 'ללא' && $lmu_status2 != 'Without';
-					$lmu_label_mm2 = $pdf->GetStringWidth(smartDate(@$action_date, $lang).'    ', 'dejavusans', '', 8.4)
-								   + ($lmu_show_status2 ? $pdf->GetStringWidth($lmu_status2.'   ', 'dejavusans', 'B', 8.4) : 0);
+					$lmu_label_mm2 = mqLogLabelMm($pdf, smartDate(@$action_date, $lang), $lmu_show_status2 ? $lmu_status2 : '');
 					$lmu_label_pct2 = round(min(60, max(6, $lmu_label_mm2 / $lmu_cell_mm2 * 100)), 1);
 					$lmu_rtl2 = (@$dir_table == 'rtl');
 					// morceaux dans l'ordre de lecture : date, -, statut, -
@@ -1876,6 +1891,7 @@ foreach($chapters as $item) {
 						// petit tableau d'une case (et non un div, qui ajoute une ligne vide au-dessus dans TCPDF)
 						$description .= '<table cellpadding="0" cellspacing="0" style="width:100%;"><tr><td dir="'.@$dir_table.'" style="'.@$text_align.'">'.implode(' ', $lmu_parts2).'<br/>'.$lmu_remark2.'</td></tr></table>';
 					} else {
+						array_pop($lmu_parts2);   // pas d'espaces invisibles en fin de colonne : l'ecart vient de la largeur de colonne
 						$lmu_label2 = '<td width="'.$lmu_label_pct2.'%" style="'.@$text_align.'">'.implode(' ', $lmu_parts2).'</td>';
 						$lmu_text2  = '<td width="'.(100 - $lmu_label_pct2).'%" style="'.@$text_align.'">'.$lmu_remark2.'</td>';
 						$description .= '<table cellpadding="0" cellspacing="0" style="width:100%;"><tr>'.$lmu_label2.$lmu_text2.'</tr></table>';
