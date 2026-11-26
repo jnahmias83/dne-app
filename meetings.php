@@ -5393,9 +5393,6 @@ td[id^="td_area_"] > div {
     color: #ffffff !important;
 }
 
-/* cadre beige arrondi autour du tableau des taches */
-.meetings-table-frame{border:1px solid #EFE5D7;border-radius:12px;background:#FFFAF4;padding:16px;box-sizing:border-box;}
-
 #meetings_table th {
     font-size: <?=(@$lang=='HE') ? '14px' : '13px';?>;
 }

@@ -1305,45 +1305,9 @@ foreach($chapters as $item){
 					$row_cell_heights[$rk] = array($rh, max($rw_mm, 1));
 					if ($rh > $row_max_h) $row_max_h = $rh;
 				}
-				// Cette librairie PDF ignore vertical-align et le padding par cellule (seul le cellpadding
-				// global du tableau compte) : on centre en ajoutant un espaceur vide avant le contenu court,
-				// dont la taille de police est calculee (via une mesure TCPDF) pour occuper exactement le
-				// demi-ecart de hauteur, sans arrondi a la ligne entiere.
+				// centrage vertical des cellules : fait plus loin, par MESURE reelle sur le brouillon (voir mqCenterRow) ;
+				// l'ancien espaceur estime ici (0.38 x hauteur) ne centrait pas
 				$row_pad_lines = array();
-				foreach ($row_cell_heights as $rk => $rhw) {
-					list($rh, $rw_mm) = $rhw;
-					// espaceur fixe (25% de la hauteur de ligne) plutot qu'un calcul precis base sur la mesure de
-					// texte : le calcul exact (demi-ecart mesure) ne correspondait pas assez fidelement au rendu
-					// reel de TCPDF
-					$gap_mm = ($rh < $row_max_h - 0.3) ? (0.38 * $row_max_h) : 0;
-					$gap_mm = min($gap_mm, 20); // evite un espaceur demesure (ex: description tres longue) qui pousserait le texte des autres colonnes hors de la cellule
-					if ($gap_mm > 0.3) {
-						// TCPDF n'est fiable/lineaire qu'a des tailles de police "normales" : on plafonne
-						// chaque ligne d'espaceur a 24px et on la repete autant que necessaire, plutot que
-						// de demander une seule ligne a une taille de police extreme (peu fiable pour les
-						// tres gros ecarts, ex: descriptions a 8+ lignes).
-						$unit_font_px = 24;
-						$unit_h = $pdf->getStringHeight($rw_mm, '') * ($unit_font_px / 10);
-						$spacer_html = '';
-						if ($unit_h > 0) {
-							$full_units = (int)floor($gap_mm / $unit_h);
-							$remainder_mm = $gap_mm - ($full_units * $unit_h);
-							for ($u = 0; $u < $full_units; $u++) {
-								$spacer_html .= '<span style="font-size:'.$unit_font_px.'px;">&nbsp;<br></span>';
-							}
-							if ($remainder_mm > 0.3) {
-								$one_line_h = $pdf->getStringHeight($rw_mm, '');
-								$rem_font_px = ($one_line_h > 0) ? max(1, round(10 * ($remainder_mm / $one_line_h), 1)) : 0;
-								if ($rem_font_px > 0) {
-									$spacer_html .= '<span style="font-size:'.$rem_font_px.'px;">&nbsp;<br></span>';
-								}
-							}
-						}
-						$row_pad_lines[$rk] = $spacer_html;
-					} else {
-						$row_pad_lines[$rk] = '';
-					}
-				}
 
 			    // page-break-inside:avoid pour les lignes anormalement hautes (ex: description tres longue avec
 			    // historique de modifications) : evite qu'une telle ligne soit coupee au milieu de la page (ce qui
@@ -1487,6 +1451,83 @@ function mqPageIsEmpty($pdf){
 	return $pdf->GetY() <= $pdf->getMargins()['top'] + 1;
 }
 
+// Centre verticalement le contenu des cellules d'une tache (N°, responsable, statut... face a une longue description).
+// Cette librairie PDF ignore vertical-align et le padding par cellule : on ajoute en haut de chaque cellule courte un
+// espaceur vide (une seule ligne <br> dont la taille de police donne la hauteur), de la moitie de l'ecart MESURE sur le
+// brouillon (meme police, memes largeurs). La hauteur de l'espaceur est verifiee dans la cellule elle-meme (elle depend
+// de la cellule) ; si elle n'est pas exacte, la cellule reste comme avant (en haut).
+// Les lignes vides en fin de cellule (<br> final, &nbsp;, blocs <div> de l'editeur) sont retirees : elles laissaient
+// un blanc sous le texte, qui paraissait alors trop haut.
+// Securite : si la ligne obtenue est plus haute que l'originale, la ligne d'origine est gardee telle quelle.
+function mqSpacer($px){
+	return '<span style="font-size:'.$px.'px;"><br></span>';
+}
+function mqTrimCell($c){
+	$c = preg_replace('#^\s*<div>#i', '', $c);                    // 1er bloc de l'editeur : pas de saut de ligne avant
+	$c = preg_replace('#<div>#i', '<br>', $c);                    // blocs suivants = retour a la ligne (comme a l'ecran)
+	$c = preg_replace('#</div>#i', '', $c);
+	return preg_replace('#(?:\s|&nbsp;|<br\s*/?>)+$#i', '', $c);  // lignes vides en fin de cellule
+}
+function mqCenterRow($pdf, $chunk){
+	$open = '<table cellpadding="4">';
+	if(!preg_match('#<tr style="font-size:10px;[^"]*">#', $chunk, $mo, PREG_OFFSET_CAPTURE)) return $chunk;
+	$trOpen = $mo[0][0];
+	$rowStart = $mo[0][1];
+	// cellules de la ligne (niveau 0 seulement : la description peut contenir de petits tableaux, les lignes de journal)
+	preg_match_all('#<(/?)(table|tr|td)\b[^>]*>#i', $chunk, $tags, PREG_SET_ORDER | PREG_OFFSET_CAPTURE, $rowStart + strlen($trOpen));
+	$depth = 0; $tdOpens = array(); $orig = array(); $cs = -1; $rowEnd = -1;
+	foreach($tags as $t){
+		$close = ($t[1][0] == '/'); $name = strtolower($t[2][0]); $pos = $t[0][1]; $len = strlen($t[0][0]);
+		if($name == 'table'){ $depth += $close ? -1 : 1; continue; }
+		if($depth > 0) continue;
+		if($name == 'td' && !$close){ $tdOpens[] = $t[0][0]; $cs = $pos + $len; }
+		elseif($name == 'td' && $close && $cs >= 0){ $orig[] = substr($chunk, $cs, $pos - $cs); $cs = -1; }
+		elseif($name == 'tr' && $close){ $rowEnd = $pos + $len; break; }
+		else return $chunk;   // structure imprevue : rien change
+	}
+	if($rowEnd < 0 || $depth != 0 || count($orig) < 2 || count($orig) != count($tdOpens)) return $chunk;
+	$build = function($contents) use ($open, $trOpen, $tdOpens){
+		$h = $open.$trOpen;
+		foreach($tdOpens as $i => $tdOpen) $h .= $tdOpen.$contents[$i].'</td>';
+		return $h.'</tr></table>';
+	};
+	$Horig = mqMeasure($pdf, $build($orig));
+	$trim = array_map('mqTrimCell', $orig);
+	$H = mqMeasure($pdf, $build($trim));
+	if($H > $Horig + 0.3) return $chunk;
+	// hauteur de la ligne quand seule la cellule $i est remplie (avec ou sans espaceur) ; mis en cache
+	static $cache = array();
+	$solo = function($i, $content) use ($pdf, $build, $trim, $tdOpens, &$cache){
+		$k = md5($tdOpens[$i].'|'.$content);
+		if(!isset($cache[$k])){
+			$c = array_fill(0, count($trim), '');
+			$c[$i] = $content;
+			$cache[$k] = mqMeasure($pdf, $build($c));
+		}
+		return $cache[$k];
+	};
+	$new = $trim;
+	foreach($trim as $i => $content){
+		$hs = $solo($i, $content);
+		$gap = ($H - $hs) / 2;
+		if($gap < 0.5) continue;
+		$u = $solo($i, mqSpacer(10).$content) - $hs;          // hauteur d'un espaceur de 10px dans CETTE cellule
+		if($u <= 0.1) continue;
+		$px = round(10 * $gap / $u, 2);
+		$got = $solo($i, mqSpacer($px).$content) - $hs;        // verification
+		if(abs($got - $gap) > 0.3 && $got > 0.1){
+			$px = round($px * $gap / $got, 2);
+			$got = $solo($i, mqSpacer($px).$content) - $hs;
+		}
+		if(abs($got - $gap) <= 0.3) $new[$i] = mqSpacer($px).$content;
+	}
+	if($new === $orig) return $chunk;
+	$rowNew = $build($new);
+	if(mqMeasure($pdf, $rowNew) > $H + 0.3) return $chunk;   // jamais plus haut
+	$trNew = substr($rowNew, strlen($open), -strlen('</table>'));
+	return substr($chunk, 0, $rowStart).$trNew.substr($chunk, $rowEnd);
+}
+
 // une tache (texte) : jamais coupee ; si elle ne tient pas, elle commence en haut de la page suivante
 function mqWriteBlockTogether($pdf, $html){
 	if(!mqPageIsEmpty($pdf) && mqMeasure($pdf, $html) > mqSpaceLeft($pdf))
@@ -1595,7 +1636,7 @@ function mqWriteTasksByBlocks($pdf, $html){
 		$chunk = isset($parts[$i + 1]) ? $parts[$i + 1] : '';
 		if($parts[$i] == 'C'){ $pending .= $chunk; continue; }
 		$pieces = explode('<!--MQIMG-->', $chunk, 2);
-		mqWriteBlockTogether($pdf, $open.$pending.$pieces[0].'</table>');
+		mqWriteBlockTogether($pdf, $open.$pending.mqCenterRow($pdf, $pieces[0]).'</table>');
 		$pending = '';
 		if(isset($pieces[1]) && trim($pieces[1]) != '')
 			mqWriteImageRow($pdf, $open.$pieces[1].'</table>');
@@ -1609,8 +1650,6 @@ if($lang != 'HE')
   $pdf->setRTL(false);
 $pdf->AddPage();
 mqWriteTasksByBlocks($pdf, $html1);
-if(!empty($GLOBALS['mq_frame']) && !empty($GLOBALS['mq_frame_w']))
-	$pdf->mqDrawFrames($GLOBALS['mq_frame'], $GLOBALS['mq_frame_x'], $GLOBALS['mq_frame_w']);
 
 $html2_header = '<table><tr><td style="text-align:center;font-size:18px;">'.@$image_concentration_label.'</td></tr></table>';
 $html2_body.= '<div class="row">';
