@@ -15,10 +15,8 @@
 #modalTaskTracking .row:has(#task_active_remarks_tracking) > .col-10 { flex:0 0 100%; max-width:100%; }
 #modalTaskTracking .mq-memo-title { display:flex; align-items:center; justify-content:center; gap:8px; color:#1a5276; font-weight:700; font-size:16px; direction:ltr; margin:4px 0 6px; }
 /* (4) remarques sans cadre, 2e ligne alignee sur la 1re (pas sous la date) */
-#modalTaskTracking [id^="div_log_meeting_tracking_"] { border:none !important; display:flex !important; align-items:flex-start; gap:5px; padding:2px 0 !important; line-height:1.5 !important; }
-#modalTaskTracking [id^="div_log_meeting_tracking_"] > span:last-child { flex:1; }
-/* (5) badge plus petit */
-#modalTaskTracking #task_active_remarks_tracking .badge-circle { width:18px !important; height:18px !important; font-size:8px !important; }
+/* (alignement de la 2e ligne et badges 22px : faits par le site depuis le 26/11, plus de regle ici) */
+#modalTaskTracking [id^="div_log_meeting_tracking_"] { border:none !important; padding:2px 0 !important; }
 /* (7) champ sans cadre ni texte d'aide, ligne rouge en bas ; Clear / ע|EN au-dessus du champ (place d'origine) */
 #modalTaskTracking .mq-input-box { border:none !important; background:#f4f5f7 !important; border-bottom:2px solid #d93a3a !important; border-radius:10px 10px 4px 4px; min-height:48px !important; padding:10px 12px !important; }
 #modalTaskTracking .mq-input-box:focus-within { background:#fff !important; border-bottom-width:3px !important; }

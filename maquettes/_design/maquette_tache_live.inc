@@ -1,6 +1,9 @@
 <style id="maquette-tache-live">
 /* ===== MAQUETTE VIVANTE - popup de la tache (#modalTaskFollowupActions) - aucun fichier du site modifie =====
    Uniquement l'affichage DANS le popup (#div_content_task_details) : l'image partagee (#contentToScreenshot) n'est pas touchee. */
+/* tableau des taches (derriere le popup) : comme tableau.html - pas de separateurs verticaux (l'en-tete th garde les siens),
+   ligne tres legere entre les taches (26/11) */
+#meetings_table td { border:none !important; border-bottom:1px solid #e9eeef !important; }
 
 /* (2) titre centre, plus de ligne vide dessous (la ligne des fleches est supprimee, fleches deplacees) */
 #modalTaskFollowupActions .modal-title { text-align:center; }

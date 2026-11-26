@@ -6,8 +6,8 @@ html, body { background:#f6f5f1 !important; }
 
 /* 1. Tableau allege : plus de quadrillage, juste des separateurs fins */
 #meetings_table { background:#fff; border:1px solid #e4e7eb !important; border-radius:14px; box-shadow:0 2px 12px rgba(26,82,118,.06); overflow:hidden; }
-#meetings_table td, #meetings_table th { border:none !important; border-bottom:1px solid #eef0f3 !important; }
-#meetings_table tr.bgColor-f2f6f9 th { background:#f5f7fa !important; color:#1a5276 !important; font-weight:600; }
+#meetings_table td { border:none !important; border-bottom:1px solid #e9eeef !important; }   /* pas de separateurs verticaux (en-tete th garde les siens), ligne tres legere entre les taches (26/11) */
+#meetings_table tr.bgColor-f2f6f9 th { background-color:#0E3C5D !important; color:#ffffff !important; font-weight:600; }   /* bleu marine du site (26/11) */
 
 /* 2. Couleur sur l'element seulement (pastille), la case reste blanche */
 #meetings_table [id^="td_task_"], #meetings_table [id^="td_responsible_"],
@@ -36,13 +36,8 @@ html, body { background:#f6f5f1 !important; }
 #meetings_table tr.task-row-highlight td, #meetings_table tr.row-darken td { background-color:#f2faf4 !important; }
 #meetings_table tr.task-row-highlight td:first-child, #meetings_table tr.row-darken td:first-child { box-shadow:inset -5px 0 0 #2e9e5b; }
 
-/* Remarques dans le tableau : 2e ligne alignee sur le debut du texte (pas sous le badge / la date), comme le popup מעקב */
-#meetings_table [id^="description_"] div.marginTop5.colorGreenDark,
-#meetings_table [id^="description_"] div[id^="div-tracking-remarks-"] { display:flex !important; align-items:baseline; gap:4px; }
-#meetings_table [id^="description_"] div.marginTop5.colorGreenDark > span { flex:0 0 auto; }
-#meetings_table [id^="description_"] div.marginTop5.colorGreenDark > span:last-child { flex:1 1 auto; min-width:0; }
-#meetings_table [id^="description_"] div[id^="div-tracking-remarks-"] > span { flex:0 0 auto; }
-#meetings_table [id^="description_"] div[id^="div-tracking-remarks-"] > span.colorRed { flex:1 1 auto; min-width:0; }
+/* Remarques dans le tableau : depuis le 26/11 le site aligne lui-meme la 2e ligne (flex + first baseline, badges 22px,
+   10px avant la remarque) -> plus de regle ici, la maquette montre l'affichage du site */
 
 /* 8. Barre de reglages au-dessus du tableau : plus discrete */
 .d-flex.justify-content-between:has(#check_all) { zoom:.8; opacity:.9; padding:4px 10px; background:#fff; border:1px solid #eceff3; border-radius:12px; margin-bottom:6px; }

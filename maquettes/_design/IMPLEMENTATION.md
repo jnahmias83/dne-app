@@ -24,6 +24,25 @@ Décision de l'utilisateur, le 2026-11-23 : le tableau de bord garde son CSS d'o
 - **Ne pas charger `dne-design.css` sur projects.php**, ou bien limiter ses règles aux autres pages. Sinon, les règles générales (tableaux, `.btn`, `.subtitle`…) changeraient le tableau de bord.
 - La maquette `tableau_de_bord.html` est remise à l'origine. Elle ne garde que le blocage des enregistrements (`maquette_blocage.inc`). La version précédente est sauvegardée dans `_design/backup_tableau_de_bord_avant_origine.html`.
 
+## Changements du site des 25-26/11 (repris dans les maquettes le 26/11)
+Les maquettes tableau, tache, maakav (copies de meetings.php, projet 20) et tableau_de_bord (copie de projects.php) ont été recopiées depuis dne.local le 26/11. Les blocs de design `<style id="maquette-…">` sont repris à l'identique (du premier bloc jusqu'au premier `</body>`). La galerie suit seule (vignettes en direct) et la liste `index.html` ne change pas (70 maquettes). La photo anti-régression a été refaite le 26/11.
+
+Ce qui a changé sur le site, et que `dne-design.css` ne doit pas écraser :
+- **En-tête du tableau des tâches (meetings.php)** : bleu marine `#0E3C5D`, texte blanc, séparateurs `#D6D2D2`. Le cadre beige autour du tableau a été retiré (le `<div class="meetings-table-frame">` reste, sans style).
+  - Décision de l'utilisateur (26/11) : la maquette prend aussi le bleu marine. `maquette-v1` (tableau.html) met l'en-tête en `#0E3C5D` et le texte en blanc, au lieu de `#f5f7fa`. tache.html et maakav.html le montrent aussi (CSS du site). Au passage sur le site, `dne-design.css` ne doit pas remettre le `#dedede` général sur cet en-tête.
+- **Lignes de journal updates et tracking** (tableau, popups, task_details, dashboard) :
+  - plus de tirets ;
+  - 10 px avant la remarque (`margin-inline-start`) et 6 px avant le statut ;
+  - badges ronds de 22 × 22 px, en gras.
+- **Règle d'exception** à garder : `td[id^="td_description_"] span.badge-nickname-green, td[id^="td_description_"] span.badge-circle {display:inline-flex !important; white-space:nowrap !important; font-weight:bold !important;}`. Sinon, la règle générale `td[id^="td_description_"] span {display:inline !important}` déforme les badges.
+- **Alignement de la remarque** : `align-items:first baseline` **seulement** dans le tableau de meetings.php (4 endroits). Les popups (fill_task_active_remarks.php, task_details.php) gardent `flex-start`, car `first baseline` y décalait le tracking de 17 px.
+- **Dashboard (projects.php)** : badges de 22 px et `min-height:22px` sur les lignes de journal, pour que les badges ne se touchent pas.
+- **Tableau des tâches dans les maquettes (26/11, demande de l'utilisateur)** : pas de séparateurs verticaux entre les colonnes, un trait horizontal très léger entre les tâches (`#meetings_table td { border:none !important; border-bottom:1px solid #e9eeef !important; }`, dans `maquette_v1.html.inc` et `maquette_tache_live.inc`). L'en-tête `th` garde ses séparateurs. Sur le site, la règle `td { border:1px solid #d6d2d2 !important }` de meetings.php est moins précise et sera donc battue par cette règle.
+- **Règles de maquette retirées le 26/11** (le site fait maintenant mieux, et elles recouvraient son affichage) :
+  - `maquette_v1.html.inc` : alignement des journaux du tableau (`display:flex; align-items:baseline; gap:4px`, écrit pour l'ancienne structure) ;
+  - `maquette_maakav_live.inc` : badge de tracking forcé à 18 px / police 8, et `flex` + `gap:5px` des lignes. Il reste seulement « sans cadre » (`border:none; padding:2px 0`).
+  - Mesuré après : badges de journal 22 × 22 px, ronds, en gras ; remarque alignée sur le statut (0 px) avec 10 px de marge, comme sur le site. Les badges de suivi de 18 px sous le numéro de tâche (`badge-circle-track`) ont la même taille sur le site.
+
 ## Mettre les maquettes en ligne (pour les montrer) : procédure
 Les scripts de déploiement ignorent `maquettes/`. Une mise en ligne se fait donc toujours à la main, et seulement avec l'accord de l'utilisateur.
 
